@@ -1,0 +1,214 @@
+[
+    {
+      "tittle": "Main",
+      "showAsTab": true,
+      "separateRoute": false,
+      "menu": [
+            {
+                "menuValue": "Dashboard",
+                "active_link" : "/dashboard",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "isax isax-element-45",
+                "subMenus": [
+                    {
+                        "menuValue": "Admin Dashboard",
+                        "route": "/dashboard/admin-dashboard"
+                    },
+                    {
+                        "menuValue": "Admin Dashboard 2",
+                        "route": "/dashboard/admin-dashboard-2"
+                    },
+                    {
+                        "menuValue": "Customer Dashboard",
+                        "route": "/customer-dashboard/customer-dashboard"
+                    },
+                    {
+                        "menuValue": "Super Admin Dashboard",
+                        "route": "/super-admin/super-admin-dashboard"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Super Admin",
+                "active_link" : "/super-admin",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "isax isax-shapes5",
+                "subMenus": [
+                    {
+                        "menuValue": "Admin Dashboard",
+                        "route": "/super-admin/super-admin-dashboard"
+                    },
+                    {
+                        "menuValue": "Companies",
+                        "route": "/super-admin/companies"
+                    },
+                    {
+                        "menuValue": "Subscriptions",
+                        "route": "/super-admin/subscriptions"
+                    },
+                    {
+                        "menuValue": "Packages",
+                        "route": "/super-admin/packages"
+                    },
+                    {
+                        "menuValue": "Domain",
+                        "route": "/super-admin/domain"
+                    },
+                    {
+                        "menuValue": "Purchase Transaction",
+                        "route": "/super-admin/purchase-transaction"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Frontend",
+                "Icon": "isax isax-note-215",
+                "route": "/index",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Applications",
+                "Icon": "isax isax-category-25",
+                "active_link": "/applications",
+                "hasSubRouteTwo": true,
+                "showSubRoute": false,
+                "subMenus": [
+                    {
+                        "menuValue": "Chat",
+                        "route": "/applications/chat",
+                        "active_link": "/applications/chat",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Calls",
+                        "customSubmenuTwo": true,
+                        "hasSubRoute": true,
+                        "showSubRoute": false,
+                        "subMenusTwo": [
+                            {
+                                "menuValue": "Voice Call",                        
+                                "route": "/calls/voice-call",
+                                "active_link": "/calls/voice-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Video Call",                        
+                                "route": "/calls/video-call",
+                                "active_link": "/calls/video-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Outgoing Call",                        
+                                "route": "/calls/outgoing-call",
+                                "active_link": "/calls/outgoing-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Incoming Call",                        
+                                "route": "/calls/incoming-call",
+                                "active_link": "/calls/incoming-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Call History",                        
+                                "route": "/calls/call-history",
+                                "active_link": "/calls/call-history",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            }
+                        ]
+                    },
+                    {
+                        "menuValue": "Calendar",
+                        "route": "/applications/calendar",
+                        "active_link": "/applications/calendar",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Email",
+                        "route": "/applications/email",
+                        "active_link": "/applications/email",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "To Do",
+                        "route": "/applications/todo",
+                        "active_link": "/applications/todo",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Notes",
+                        "route": "/applications/notes",
+                        "active_link": "/applications/notes",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Social Feed",
+                        "route": "/applications/social-feed",
+                        "active_link": "/applications/social-feed",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "File Manager",
+                        "route": "/applications/file-manager",
+                        "active_link": "/applications/file-manager",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Kanban",
+                        "route": "/applications/kanban-view",
+                        "active_link": "/applications/kanban-view",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Contacts",
+                        "route": "/applications/contacts",
+                        "active_link": "/applications/contacts",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Invoices",
+                        "route": "/applications/invoice",
+                        "active_link": "/applications/invoice",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Search List",
+                        "route": "/applications/search-list",
+                        "active_link": "/applications/search-list",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    }
+                ]
+            }
+        ]
+    }
+]

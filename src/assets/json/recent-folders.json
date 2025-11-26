@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "Title": "Personal Assets",
+        "Storage": "2.4 GB",
+        "Files": "135 files",
+        "Img": "avatar-07.jpg",
+        "ImgOne": "avatar-02.jpg"
+    },
+    {
+        "id": "2",
+        "Title": "Document",
+        "Storage": "4 GB",
+        "Files": "15 files",
+        "Img": "avatar-05.jpg",
+        "ImgOne": "avatar-02.jpg"
+    },
+    {
+        "id": "3",
+        "Title": "Handyimages",
+        "Storage": "1.4 GB",
+        "Files": "115 files",
+        "Img": "avatar-07.jpg",
+        "ImgOne": "avatar-02.jpg"
+    }
+]

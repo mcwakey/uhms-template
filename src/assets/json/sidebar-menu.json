@@ -1,0 +1,1600 @@
+[
+    {
+      "tittle": "Main",
+      "showAsTab": true,
+      "separateRoute": false,
+      "menu": [
+            {
+                "menuValue": "Dashboard",
+                "active_link" : "dashboard",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-layout-dashboard",
+                "subMenus": [
+                    {
+                        "menuValue": "Admin Dashboard",
+                        "route": "/dashboard/admin-dashboard",
+                        "active_link": "/dashboard/admin-dashboard"
+                    },
+                    {
+                        "menuValue": "Doctor Dashboard",
+                        "route": "/doctor/doctor-dashboard",
+                        "active_link": "/doctor/doctor-dashboard"
+                    },
+                    {
+                        "menuValue": "Patient Dashboard",
+                        "route": "/patient/patient-dashboard",
+                        "active_link": "/patient/patient-dashboard"
+                    }
+                ]
+            },            
+            {
+                "menuValue": "Applications",
+                "Icon": "ti ti-apps",
+                "active_link": "applications",
+                "active_link1": "calls",
+                "hasSubRouteTwo": true,
+                "showSubRoute": false,
+                "subMenus": [
+                    {
+                        "menuValue": "Chat",
+                        "route": "/applications/chat",
+                        "active_link": "/applications/chat",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Calls",
+                        "customSubmenuTwo": true,
+                        "active_link": "calls",
+                        "hasSubRoute": true,
+                        "showSubRoute": false,
+                        "subMenusTwo": [
+                            {
+                                "menuValue": "Voice Call",                        
+                                "route": "/calls/voice-call",
+                                "active_link": "/calls/voice-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Video Call",                        
+                                "route": "/calls/video-call",
+                                "active_link": "/calls/video-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Outgoing Call",                        
+                                "route": "/calls/outgoing-call",
+                                "active_link": "/calls/outgoing-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Incoming Call",                        
+                                "route": "/calls/incoming-call",
+                                "active_link": "/calls/incoming-call",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Call History",                        
+                                "route": "/calls/call-history",
+                                "active_link": "/calls/call-history",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            }
+                        ]
+                    },
+                    {
+                        "menuValue": "Calendar",
+                        "route": "/applications/calendar",
+                        "active_link": "/applications/calendar",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Contacts",
+                        "route": "/applications/contacts",
+                        "active_link": "/applications/contacts",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Email",
+                        "route": "/applications/email",
+                        "active_link": "/applications/email",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Invoice",
+                        "customSubmenuTwo": true,
+                        "active_link": "invoice",
+                        "hasSubRoute": true,
+                        "showSubRoute": false,
+                        "subMenusTwo": [
+                            {
+                                "menuValue": "invoice",                        
+                                "route": "/invoice/invoice-list",
+                                "active_link": "/invoice/invoice-list",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "invoice Details",                        
+                                "route": "/invoice/invoice-details",
+                                "active_link": "/invoice/invoice-details",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            }
+                        ]
+                    },
+                    {
+                        "menuValue": "To Do",
+                        "route": "/applications/todo",
+                        "active_link": "/applications/todo",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Notes",
+                        "route": "/applications/notes",
+                        "active_link": "/applications/notes",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Kanban Board",
+                        "route": "/applications/kanban-view",
+                        "active_link": "/applications/kanban-view",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "File Manager",
+                        "route": "/applications/file-manager",
+                        "active_link": "/applications/file-manager",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },                    
+                    {
+                        "menuValue": "Social Feed",
+                        "route": "/applications/social-feed",
+                        "active_link": "/applications/social-feed",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Search Result",
+                        "route": "/applications/search-list",
+                        "active_link": "/applications/search-list",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    }
+                ]
+            },
+            {
+                "menuValue": "Layouts",
+                "active_link" : "layout",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-layout-sidebar",
+                "subMenus": [
+                    {
+                        "menuValue": "Default",
+                        "route": "/layout/layout-default",
+                        "active_link": "/layout/layout-default"
+                    },
+                    {
+                        "menuValue": "Mini",
+                        "route": "/layout/layout-mini",
+                        "active_link": "/layout/layout-mini"
+                    },
+                    {
+                        "menuValue": "Hover View",
+                        "route": "/layout/layout-hover-view",
+                        "active_link": "/layout/layout-hover-view"
+                    },
+                    {
+                        "menuValue": "Hidden",
+                        "route": "/layout/layout-hidden",
+                        "active_link": "/layout/layout-hidden"
+                    },
+                    {
+                        "menuValue": "Full Width",
+                        "route": "/layout/layout-full-width",
+                        "active_link": "/layout/layout-full-width"
+                    },
+                    {
+                        "menuValue": "RTL",
+                        "route": "/layout/layout-rtl",
+                        "active_link": "/layout/layout-rtl"
+                    },
+                    {
+                        "menuValue": "Dark",
+                        "route": "/layout/layout-dark",
+                        "active_link": "/layout/layout-dark"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+      "tittle": "Clinic",
+      "showAsTab": true,
+      "separateRoute": false,
+      "menu": [
+        {
+            "menuValue": "Doctors",
+            "active_link" : "doctors",
+            "hasSubRoute": true,
+            "showSubRoute": false,
+            "Icon": "ti ti-user-plus",
+            "subMenus": [
+                {
+                    "menuValue": "Doctors",
+                    "route": "/doctors/doctors-list",
+                    "active_link": "/doctors/doctors-list"
+                },
+                {
+                    "menuValue": "Doctor Details",
+                    "route": "/doctors/doctor-details",
+                    "active_link": "/doctors/doctor-details"
+                },
+                {
+                    "menuValue": "Add Doctor",
+                    "route": "/doctors/add-doctor",
+                    "active_link": "/doctors/add-doctor"
+                },
+                {
+                    "menuValue": "Doctor Schedule",
+                    "route": "/doctors/doctor-schedule",
+                    "active_link": "/doctors/doctor-schedule"
+                }
+            ]
+        },
+        {
+            "menuValue": "Patients",
+            "active_link" : "patients",
+            "hasSubRoute": true,
+            "showSubRoute": false,
+            "Icon": "ti ti-user-heart",
+            "subMenus": [
+                {
+                    "menuValue": "Patients",
+                    "route": "/patients/patients-list",
+                    "active_link": "/patients/patients-list"
+                },
+                {
+                    "menuValue": "Patient Details",
+                    "route": "/patients/patient-details",
+                    "active_link": "/patients/patient-details"
+                },
+                {
+                    "menuValue": "Create Patient",
+                    "route": "/patients/create-patient",
+                    "active_link": "/patients/create-patient"
+                }
+            ]
+        },
+        {
+            "menuValue": "Appointments",
+            "active_link" : "appointments",
+            "hasSubRoute": true,
+            "showSubRoute": false,
+            "Icon": "ti ti-calendar-check",
+            "subMenus": [
+                {
+                    "menuValue": "Appointments",
+                    "route": "/appointments/appointments-list",
+                    "active_link": "/appointments/appointments-list"
+                },
+                {
+                    "menuValue": "New Appointment",
+                    "route": "/appointments/new-appointment",
+                    "active_link": "/appointments/new-appointment"
+                },
+                {
+                    "menuValue": "Calendar",
+                    "route": "/appointments/appointment-calendar",
+                    "active_link": "/appointments/appointment-calendar"
+                }
+            ]
+        },
+        {
+            "menuValue": "Locations",
+            "Icon": "ti ti-map-pin",
+            "active_link" : "/clinic/locations",
+            "route": "/clinic/locations",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Services",
+            "Icon": "ti ti-user-cog",
+            "active_link" : "/clinic/services",
+            "route": "/clinic/services",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Specializations",
+            "Icon": "ti ti-user-shield",
+            "active_link" : "/clinic/specializations",
+            "route": "/clinic/specializations",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Assets",
+            "Icon": "ti ti-asset",
+            "active_link" : "/clinic/assets",
+            "route": "/clinic/assets",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Activities",
+            "Icon": "ti ti-activity",
+            "active_link" : "/clinic/activities",
+            "route": "/clinic/activities",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Messages",
+            "Icon": "ti ti-messages",
+            "active_link" : "/clinic/messages",
+            "route": "/clinic/messages",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        }
+      ]
+    },
+    {
+        "tittle": "HRM",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Staffs",
+                "Icon": "ti ti-users-group",
+                "active_link" : "/hrm/staffs",
+                "route": "/hrm/staffs",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Departments",
+                "Icon": "ti ti-building-bank",
+                "active_link" : "/hrm/hrm-departments",
+                "route": "/hrm/hrm-departments",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Designation",
+                "Icon": "ti ti-user-cog",
+                "active_link" : "/hrm/designation",
+                "route": "/hrm/designation",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Attendance",
+                "Icon": "ti ti-user-check",
+                "active_link" : "/hrm/attendance",
+                "route": "/hrm/attendance",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Leaves",
+                "active_link" : "leaves",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-users-minus",
+                "subMenus": [
+                    {
+                        "menuValue": "Leaves",
+                        "route": "/leaves/leaves-list",
+                        "active_link": "/leaves/leaves-list"
+                    },
+                    {
+                        "menuValue": "Leave Type",
+                        "route": "/leaves/leave-type",
+                        "active_link": "/leaves/leave-type"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Holidays",
+                "Icon": "ti ti-home-exclamation",
+                "active_link" : "/hrm/holidays",
+                "route": "/hrm/holidays",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Payroll",
+                "Icon": "ti ti-coin",
+                "active_link" : "/hrm/payroll",
+                "route": "/hrm/payroll",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            }
+        ]
+    },
+    {
+        "tittle": "Finance & Accounts",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Expenses",
+                "active_link" : "expenses",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-users-minus",
+                "subMenus": [
+                    {
+                        "menuValue": "Expenses",
+                        "route": "/expenses/expenses-list",
+                        "active_link": "/expenses/expenses-list"
+                    },
+                    {
+                        "menuValue": "Expense Category",
+                        "route": "/expenses/expense-category",
+                        "active_link": "/expenses/expense-category"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Income",
+                "Icon": "ti ti-coins",
+                "active_link" : "/finance/income",
+                "route": "/finance/income",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Invoices",
+                "active_link" : "invoices",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-file-invoice",
+                "subMenus": [
+                    {
+                        "menuValue": "Invoices",
+                        "route": "/invoices/invoices-list",
+                        "active_link": "/invoices/invoices-list"
+                    },
+                    {
+                        "menuValue": "Invoice Details",
+                        "route": "/invoices/invoices-details",
+                        "active_link": "/invoices/invoices-details"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Payments",
+                "Icon": "ti ti-cards",
+                "active_link" : "/finance/payments",
+                "route": "/finance/payments",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Transactions",
+                "Icon": "ti ti-transition-right",
+                "active_link" : "/finance/transactions",
+                "route": "/finance/transactions",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            }
+        ]
+    },
+    {
+        "tittle": "Administration",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Users",
+                "active_link" : "users",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-user",
+                "subMenus": [
+                    {
+                        "menuValue": "Roles & Permissions",
+                        "route": "/users/roles-and-permissions",
+                        "active_link": "/users/roles-and-permissions"
+                    },
+                    {
+                        "menuValue": "Delete Account Request",
+                        "route": "/users/delete-account-request",
+                        "active_link": "/users/delete-account-request"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Reports",
+                "active_link" : "reports",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-report",
+                "subMenus": [
+                    {
+                        "menuValue": "Income Report",
+                        "route": "/reports/income-report",
+                        "active_link": "/reports/income-report"
+                    },
+                    {
+                        "menuValue": "Expense Report",
+                        "route": "/reports/expense-report",
+                        "active_link": "/reports/expense-report"
+                    },
+                    {
+                        "menuValue": "Profit & Loss",
+                        "route": "/reports/profit-and-loss",
+                        "active_link": "/reports/profit-and-loss"
+                    },
+                    {
+                        "menuValue": "Appointment Report",
+                        "route": "/reports/appointment-report",
+                        "active_link": "/reports/appointment-report"
+                    },
+                    {
+                        "menuValue": "Patient Report",
+                        "route": "/reports/patient-report",
+                        "active_link": "/reports/patient-report"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "tittle": "Content",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Pages",
+                "Icon": "ti ti-brand-pagekit",
+                "active_link" : "/content/pages",
+                "route": "/content/pages",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Blogs",
+                "active_link" : "blogs",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-brand-blogger",
+                "subMenus": [
+                    {
+                        "menuValue": "Add Blog",
+                        "route": "/blogs/add-blog",
+                        "active_link": "/blogs/add-blog"
+                    },
+                    {
+                        "menuValue": "Blogs",
+                        "route": "/blogs/blogs",
+                        "active_link": "/blogs/blogs"
+                    },
+                    {
+                        "menuValue": "Blog Categories",
+                        "route": "/blogs/blog-categories",
+                        "active_link": "/blogs/blog-categories"
+                    },
+                    {
+                        "menuValue": "Blog Comments",
+                        "route": "/blogs/blog-comments",
+                        "active_link": "/blogs/blog-comments"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Location",
+                "active_link" : "location",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-map-pins",
+                "subMenus": [
+                    {
+                        "menuValue": "Countries",
+                        "route": "/location/countries",
+                        "active_link": "/location/countries"
+                    },
+                    {
+                        "menuValue": "States",
+                        "route": "/location/states",
+                        "active_link": "/location/states"
+                    },
+                    {
+                        "menuValue": "Cities",
+                        "route": "/location/cities",
+                        "active_link": "/location/cities"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Testimonials",
+                "Icon": "ti ti-brand-wechat",
+                "active_link" : "/content/testimonials",
+                "route": "/content/testimonials",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "FAQ’S",
+                "Icon": "ti ti-question-mark",
+                "active_link" : "/content/faq",
+                "route": "/content/faq",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            }
+        ]
+    },
+    {
+        "tittle": "Support",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Contact Messages",
+                "Icon": "ti ti-message-dots",
+                "active_link" : "/support/contact-messages",
+                "route": "/support/contact-messages",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Tickets",
+                "Icon": "ti ti-ticket",
+                "active_link" : "/support/tickets",
+                "route": "/support/tickets",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Announcements",
+                "Icon": "ti ti-speakerphone",
+                "active_link" : "/support/announcements",
+                "route": "/support/announcements",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Newsletters",
+                "Icon": "ti ti-mail-bolt",
+                "active_link" : "/support/newsletters",
+                "route": "/support/newsletters",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            }
+        ]
+    },
+    {
+        "tittle": "Pages",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Starter",
+                "Icon": "ti ti-player-play",
+                "active_link" : "/pages/starter",
+                "route": "/pages/starter",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Profile",
+                "Icon": "ti ti-user-circle",
+                "active_link" : "/pages/profile",
+                "route": "/pages/profile",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Gallery",
+                "Icon": "ti ti-photo",
+                "active_link" : "/pages/gallery",
+                "route": "/pages/gallery",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Timeline",
+                "Icon": "ti ti-timeline-event-text",
+                "active_link" : "/pages/timeline",
+                "route": "/pages/timeline",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Pricing",
+                "Icon": "ti ti-tag",
+                "active_link" : "/pages/pricing",
+                "route": "/pages/pricing",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Coming Soon",
+                "Icon": "ti ti-sparkles",
+                "route": "/pages/coming-soon",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Under Maintenance",
+                "Icon": "ti ti-settings-down",
+                "route": "/pages/under-maintenance",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Privacy Policy",
+                "Icon": "ti ti-shield-check",
+                "route": "/pages/privacy-policy",
+                "active_link": "/pages/privacy-policy",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Terms & Conditions",
+                "Icon": "ti ti-file-time",
+                "route": "/pages/terms-and-conditions",
+                "active_link": "/pages/terms-and-conditions",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            }
+        ]
+    },
+    {
+        "tittle": "Authentication",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Login",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-login",
+                "subMenus": [
+                    {
+                        "menuValue": "Cover",
+                        "route": "/"
+                    },
+                    {
+                        "menuValue": "Illustration",
+                        "route": "/login-illustration"
+                    },
+                    {
+                        "menuValue": "Basic",
+                        "route": "/login-basic"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Register",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-file-pencil",
+                "subMenus": [
+                    {
+                        "menuValue": "Cover",
+                        "route": "/register-cover"
+                    },
+                    {
+                        "menuValue": "Illustration",
+                        "route": "/register"
+                    },
+                    {
+                        "menuValue": "Basic",
+                        "route": "/register-basic"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Forgot Password",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-lock-exclamation",
+                "subMenus": [
+                    {
+                        "menuValue": "Cover",
+                        "route": "/forgot-password-cover"
+                    },
+                    {
+                        "menuValue": "Illustration",
+                        "route": "/forgot-password"
+                    },
+                    {
+                        "menuValue": "Basic",
+                        "route": "/forgot-password-basic"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Reset Password",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-restore",
+                "subMenus": [
+                    {
+                        "menuValue": "Cover",
+                        "route": "/reset-password-cover"
+                    },
+                    {
+                        "menuValue": "Illustration",
+                        "route": "/reset-password"
+                    },
+                    {
+                        "menuValue": "Basic",
+                        "route": "/reset-password-basic"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Email Verification",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-mail-check",
+                "subMenus": [
+                    {
+                        "menuValue": "Cover",
+                        "route": "/email-verification-cover"
+                    },
+                    {
+                        "menuValue": "Illustration",
+                        "route": "/email-verification"
+                    },
+                    {
+                        "menuValue": "Basic",
+                        "route": "/email-verification-basic"
+                    }
+                ]
+            },
+            {
+                "menuValue": "2 Step Verification",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-discount-check",
+                "subMenus": [
+                    {
+                        "menuValue": "Cover",
+                        "route": "/two-step-verification-cover"
+                    },
+                    {
+                        "menuValue": "Illustration",
+                        "route": "/two-step-verification"
+                    },
+                    {
+                        "menuValue": "Basic",
+                        "route": "/two-step-verification-basic"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Lock Screen",
+                "Icon": "ti ti-lock",
+                "active_link" : "/lock-screen",
+                "route": "/lock-screen",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Error Pages",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-exclamation-mark-off",
+                "subMenus": [
+                    {
+                        "menuValue": "404 Error",
+                        "route": "/error-404"
+                    },
+                    {
+                        "menuValue": "500 Error",
+                        "route": "/error-500"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "tittle": "Settings",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Account Settings",
+                "active_link" : "account-settings",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-user-cog",
+                "subMenus": [
+                    {
+                        "menuValue": "Profile",
+                        "route": "/account-settings/profile-settings",
+                        "active_link": "/account-settings/profile-settings"
+                    },
+                    {
+                        "menuValue": "Security",
+                        "route": "/account-settings/security-settings",
+                        "active_link": "/account-settings/security-settings"
+                    },
+                    {
+                        "menuValue": "Notifications",
+                        "route": "/account-settings/notifications-settings",
+                        "active_link": "/account-settings/notifications-settings"
+                    },
+                    {
+                        "menuValue": "Integrations",
+                        "route": "/account-settings/integrations-settings",
+                        "active_link": "/account-settings/integrations-settings"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Website Settings",
+                "active_link" : "website-settings",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-world-cog",
+                "subMenus": [
+                    {
+                        "menuValue": "Organization",
+                        "route": "/website-settings/organization-settings",
+                        "active_link": "/website-settings/organization-settings"
+                    },
+                    {
+                        "menuValue": "Localization",
+                        "route": "/website-settings/localization-settings",
+                        "active_link": "/website-settings/localization-settings"
+                    },
+                    {
+                        "menuValue": "Prefixes",
+                        "route": "/website-settings/prefixes-settings",
+                        "active_link": "/website-settings/prefixes-settings"
+                    },
+                    {
+                        "menuValue": "SEO Setup",
+                        "route": "/website-settings/seo-setup-settings",
+                        "active_link": "/website-settings/seo-setup-settings"
+                    },
+                    {
+                        "menuValue": "Language",
+                        "route": "/website-settings/language-settings",
+                        "active_link": "/website-settings/language-settings"
+                    },
+                    {
+                        "menuValue": "Maintenance Mode",
+                        "route": "/website-settings/maintenance-mode-settings",
+                        "active_link": "/website-settings/maintenance-mode-settings"
+                    },
+                    {
+                        "menuValue": "Login & Register",
+                        "route": "/website-settings/login-and-register-settings",
+                        "active_link": "/website-settings/login-and-register-settings"
+                    },
+                    {
+                        "menuValue": "Preferences",
+                        "route": "/website-settings/preferences-settings",
+                        "active_link": "/website-settings/preferences-settings"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Clinic Settings",
+                "active_link" : "clinic-settings",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-building-hospital",
+                "subMenus": [
+                    {
+                        "menuValue": "Appointment",
+                        "route": "/clinic-settings/appointment-settings",
+                        "active_link": "/clinic-settings/appointment-settings"
+                    },
+                    {
+                        "menuValue": "Working Hours",
+                        "route": "/clinic-settings/working-hours-settings",
+                        "active_link": "/clinic-settings/working-hours-settings"
+                    },
+                    {
+                        "menuValue": "Cancellation Reason",
+                        "route": "/clinic-settings/cancellation-reason-settings",
+                        "active_link": "/clinic-settings/cancellation-reason-settings"
+                    }
+                ]
+            },
+            {
+                "menuValue": "App Settings",
+                "active_link" : "app-settings",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-device-mobile-cog",
+                "subMenus": [
+                    {
+                        "menuValue": "Invoice Settings",
+                        "route": "/app-settings/invoice-settings",
+                        "active_link": "/app-settings/invoice-settings"
+                    },
+                    {
+                        "menuValue": "Invoice Templates",
+                        "route": "/app-settings/invoice-templates-settings",
+                        "active_link": "/app-settings/invoice-templates-settings"
+                    },
+                    {
+                        "menuValue": "Signatures",
+                        "route": "/app-settings/signatures-settings",
+                        "active_link": "/app-settings/signatures-settings"
+                    },
+                    {
+                        "menuValue": "Custom Fields",
+                        "route": "/app-settings/custom-fields-settings",
+                        "active_link": "/app-settings/custom-fields-settings"
+                    }
+                ]
+            },
+            {
+                "menuValue": "System Settings",
+                "active_link" : "system-settings",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-device-desktop-cog",
+                "subMenus": [
+                    {
+                        "menuValue": "Email Settings",
+                        "route": "/system-settings/email-settings",
+                        "active_link": "/system-settings/email-settings"
+                    },
+                    {
+                        "menuValue": "Email Templates",
+                        "route": "/system-settings/email-templates-settings",
+                        "active_link": "/system-settings/email-templates-settings"
+                    },
+                    {
+                        "menuValue": "SMS Gateways",
+                        "route": "/system-settings/sms-gateways-settings",
+                        "active_link": "/system-settings/sms-gateways-settings"
+                    },
+                    {
+                        "menuValue": "SMS Templates",
+                        "route": "/system-settings/sms-templates-settings",
+                        "active_link": "/system-settings/sms-templates-settings"
+                    },
+                    {
+                        "menuValue": "GDPR Cookies",
+                        "route": "/system-settings/gdpr-cookies-settings",
+                        "active_link": "/system-settings/gdpr-cookies-settings"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Finance & Accounts",
+                "active_link" : "finance-accounts-settings",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-settings-dollar",
+                "subMenus": [
+                    {
+                        "menuValue": "Payment Methods",
+                        "route": "/finance-settings/payment-methods-settings",
+                        "active_link": "/finance-settings/payment-methods-settings"
+                    },
+                    {
+                        "menuValue": "Bank Accounts",
+                        "route": "/finance-settings/bank-accounts-settings",
+                        "active_link": "/finance-settings/bank-accounts-settings"
+                    },
+                    {
+                        "menuValue": "Tax Rates",
+                        "route": "/finance-settings/tax-rates-settings",
+                        "active_link": "/finance-settings/tax-rates-settings"
+                    },
+                    {
+                        "menuValue": "Currencies",
+                        "route": "/finance-settings/currencies-settings",
+                        "active_link": "/finance-settings/currencies-settings"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Other Settings",
+                "active_link" : "other-settings",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "Icon": "ti ti-settings-2",
+                "subMenus": [
+                    {
+                        "menuValue": "Sitemap",
+                        "route": "/others-settings/sitemap-settings",
+                        "active_link": "/others-settings/sitemap-settings"
+                    },
+                    {
+                        "menuValue": "Clear Cache",
+                        "route": "/others-settings/clear-cache-settings",
+                        "active_link": "/others-settings/clear-cache-settings"
+                    },
+                    {
+                        "menuValue": "Storage",
+                        "route": "/others-settings/storage-settings",
+                        "active_link": "/others-settings/storage-settings"
+                    },
+                    {
+                        "menuValue": "Cronjob",
+                        "route": "/others-settings/cronjob-settings",
+                        "active_link": "/others-settings/cronjob-settings"
+                    },
+                    {
+                        "menuValue": "Ban IP Address",
+                        "route": "/others-settings/ban-ip-address-settings",
+                        "active_link": "/others-settings/ban-ip-address-settings"
+                    },
+                    {
+                        "menuValue": "System Backup",
+                        "route": "/others-settings/system-backup-settings",
+                        "active_link": "/others-settings/system-backup-settings"
+                    },
+                    {
+                        "menuValue": "Database Backup",
+                        "route": "/others-settings/database-backup-settings",
+                        "active_link": "/others-settings/database-backup-settings"
+                    },
+                    {
+                        "menuValue": "System Update",
+                        "route": "/others-settings/system-update",
+                        "active_link": "/others-settings/system-update"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "tittle": "UI Interface",
+        "showAsTab": true,
+        "separateRoute": false,
+        "menu": [
+            {
+                "menuValue": "Base UI",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "active_link" : "base-ui",
+                "Icon": "ti ti-chart-pie",
+                "subMenus": [
+                    {
+                        "menuValue": "Accordion",
+                        "route": "/base-ui/ui-accordion",
+                        "active_link": "/base-ui/ui-accordion"
+                    },
+                    {
+                        "menuValue": "Alerts",
+                        "route": "/base-ui/ui-alerts",
+                        "active_link": "/base-ui/ui-alerts"
+                    },
+                    {
+                        "menuValue": "Avatar",
+                        "route": "/base-ui/ui-avatar",
+                        "active_link": "/base-ui/ui-avatar"
+                    },
+                    {
+                        "menuValue": "Badges",
+                        "route": "/base-ui/ui-badges",
+                        "active_link": "/base-ui/ui-badges"
+                    },
+                    {
+                        "menuValue": "Breadcrumb",
+                        "route": "/base-ui/ui-breadcrumb",
+                        "active_link": "/base-ui/ui-breadcrumb"
+                    },
+                    {
+                        "menuValue": "Buttons",
+                        "route": "/base-ui/ui-buttons",
+                        "active_link": "/base-ui/ui-buttons"
+                    },
+                    {
+                        "menuValue": "Button Group",
+                        "route": "/base-ui/ui-buttons-group",
+                        "active_link": "/base-ui/ui-buttons-group"
+                    },
+                    {
+                        "menuValue": "Card",
+                        "route": "/base-ui/ui-cards",
+                        "active_link": "/base-ui/ui-cards"
+                    },
+                    {
+                        "menuValue": "Carousel",
+                        "route": "/base-ui/ui-carousel",
+                        "active_link": "/base-ui/ui-carousel"
+                    },
+                    {
+                        "menuValue": "Collapse",
+                        "route": "/base-ui/ui-collapse",
+                        "active_link": "/base-ui/ui-collapse"
+                    },
+                    {
+                        "menuValue": "Dropdowns",
+                        "route": "/base-ui/ui-dropdowns",
+                        "active_link": "/base-ui/ui-dropdowns"
+                    },
+                    {
+                        "menuValue": "Ratio",
+                        "route": "/base-ui/ui-ratio",
+                        "active_link": "/base-ui/ui-ratio"
+                    },
+                    {
+                        "menuValue": "Grid",
+                        "route": "/base-ui/ui-grid",
+                        "active_link": "/base-ui/ui-grid"
+                    },
+                    {
+                        "menuValue": "Images",
+                        "route": "/base-ui/ui-images",
+                        "active_link": "/base-ui/ui-images"
+                    },
+                    {
+                        "menuValue": "Links",
+                        "route": "/base-ui/ui-links",
+                        "active_link": "/base-ui/ui-links"
+                    },
+                    {
+                        "menuValue": "List Group",
+                        "route": "/base-ui/ui-list-group",
+                        "active_link": "/base-ui/ui-list-group"
+                    },
+                    {
+                        "menuValue": "Modals",
+                        "route": "/base-ui/ui-modals",
+                        "active_link": "/base-ui/ui-modals"
+                    },
+                    {
+                        "menuValue": "Offcanvas",
+                        "route": "/base-ui/ui-offcanvas",
+                        "active_link": "/base-ui/ui-offcanvas"
+                    },
+                    {
+                        "menuValue": "Pagination",
+                        "route": "/base-ui/ui-pagination",
+                        "active_link": "/base-ui/ui-pagination"
+                    },
+                    {
+                        "menuValue": "Placeholders",
+                        "route": "/base-ui/ui-placeholders",
+                        "active_link": "/base-ui/ui-placeholders"
+                    },
+                    {
+                        "menuValue": "Popovers",
+                        "route": "/base-ui/ui-popovers",
+                        "active_link": "/base-ui/ui-popovers"
+                    },
+                    {
+                        "menuValue": "Progress",
+                        "route": "/base-ui/ui-progress",
+                        "active_link": "/base-ui/ui-progress"
+                    },
+                    {
+                        "menuValue": "Scrollspy",
+                        "route": "/base-ui/ui-scrollspy",
+                        "active_link": "/base-ui/ui-scrollspy"
+                    },
+                    {
+                        "menuValue": "Spinner",
+                        "route": "/base-ui/ui-spinner",
+                        "active_link": "/base-ui/ui-spinner"
+                    },
+                    {
+                        "menuValue": "Tabs",
+                        "route": "/base-ui/ui-nav-tabs",
+                        "active_link": "/base-ui/ui-nav-tabs"
+                    },
+                    {
+                        "menuValue": "Toasts",
+                        "route": "/base-ui/ui-toasts",
+                        "active_link": "/base-ui/ui-toasts"
+                    },
+                    {
+                        "menuValue": "Tooltips",
+                        "route": "/base-ui/ui-tooltips",
+                        "active_link": "/base-ui/ui-tooltips"
+                    },
+                    {
+                        "menuValue": "Typography",
+                        "route": "/base-ui/ui-typography",
+                        "active_link": "/base-ui/ui-typography"
+                    },
+                    {
+                        "menuValue": "Utilities",
+                        "route": "/base-ui/ui-utilities",
+                        "active_link": "/base-ui/ui-utilities"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Advanced UI",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "active_link" : "advance-ui",
+                "Icon": "ti ti-radar",
+                "subMenus": [
+                    {
+                        "menuValue": "Dragula",
+                        "route": "/advance-ui/extended-dragula",
+                        "active_link": "/advance-ui/extended-dragula"
+                    },
+                    {
+                        "menuValue": "Clipboard",
+                        "route": "/advance-ui/ui-clipboard",
+                        "active_link": "/advance-ui/ui-clipboard"
+                    },
+                    {
+                        "menuValue": "Range Slider",
+                        "route": "/advance-ui/ui-rangeslider",
+                        "active_link": "/advance-ui/ui-rangeslider"
+                    },
+                    {
+                        "menuValue": "Lightbox",
+                        "route": "/advance-ui/ui-lightbox",
+                        "active_link": "/advance-ui/ui-lightbox"
+                    },
+                    {
+                        "menuValue": "Rating",
+                        "route": "/advance-ui/ui-rating",
+                        "active_link": "/advance-ui/ui-rating"
+                    },
+                    {
+                        "menuValue": "Scrollbar",
+                        "route": "/advance-ui/ui-scrollbar",
+                        "active_link": "/advance-ui/ui-scrollbar"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Forms",
+                "Icon": "ti ti-forms",
+                "active_link": "forms",
+                "active_link1": "form-elements",
+                "active_link2": "form-layouts",
+                "hasSubRouteTwo": true,
+                "showSubRoute": false,
+                "subMenus": [
+                    {
+                        "menuValue": "Form Elements",
+                        "active_link": "form-elements",
+                        "customSubmenuTwo": true,
+                        "hasSubRoute": true,
+                        "showSubRoute": false,
+                        "subMenusTwo": [
+                            {
+                                "menuValue": "Basic Inputs",                        
+                                "route": "/form-elements/form-basic-inputs",
+                                "active_link": "/form-elements/form-basic-inputs",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Checkbox & Radios",                        
+                                "route": "/form-elements/form-checkbox-radios",
+                                "active_link": "/form-elements/form-checkbox-radios",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Input Groups",                        
+                                "route": "/form-elements/form-input-groups",
+                                "active_link": "/form-elements/form-input-groups",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Grid & Gutters",                        
+                                "route": "/form-elements/form-grid-gutters",
+                                "active_link": "/form-elements/form-grid-gutters",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Input Masks",                        
+                                "route": "/form-elements/form-mask",
+                                "active_link": "/form-elements/form-mask",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "File Uploads",                        
+                                "route": "/form-elements/form-fileupload",
+                                "active_link": "/form-elements/form-fileupload",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            }
+                        ]
+                    },
+                    {
+                        "menuValue": "Layouts",
+                        "customSubmenuTwo": true,
+                        "active_link": "form-layouts",
+                        "hasSubRoute": true,
+                        "showSubRoute": false,
+                        "subMenusTwo": [
+                            {
+                                "menuValue": "Horizontal Form",                        
+                                "route": "/form-layouts/form-horizontal",
+                                "active_link": "/form-layouts/form-horizontal",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Vertical Form",                        
+                                "route": "/form-layouts/form-vertical",
+                                "active_link": "/form-layouts/form-vertical",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            },
+                            {
+                                "menuValue": "Floating Labels",                        
+                                "route": "/form-layouts/form-floating-labels",
+                                "active_link": "/form-layouts/form-floating-labels",
+                                "hasSubRoute": false,
+                                "showSubRoute": false
+                            }
+                        ]
+                    },
+                    {
+                        "menuValue": "Form Validation",
+                        "route": "/forms/form-validation",
+                        "active_link": "/forms/form-validation",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    },
+                    {
+                        "menuValue": "Select2",
+                        "route": "/forms/form-select2",
+                        "active_link": "/forms/form-select2",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "customSubmenuTwo": false
+                    }
+                ]
+            },
+            {
+                "menuValue": "Tables",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "active_link" : "tables",
+                "Icon": "ti ti-table-row",
+                "subMenus": [
+                    {
+                        "menuValue": "Basic Tables",
+                        "route": "/tables/tables-basic",
+                        "active_link": "/tables/tables-basic"
+                    },
+                    {
+                        "menuValue": "Data Table",
+                        "route": "/tables/data-tables",
+                        "active_link": "/tables/data-tables"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Charts",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "active_link" : "charts",
+                "Icon": "ti ti-chart-donut",
+                "subMenus": [
+                    {
+                        "menuValue": "Apex Charts",
+                        "route": "/charts/chart-apex",
+                        "active_link": "/charts/chart-apex"
+                    },
+                    {
+                        "menuValue": "Chart C3",
+                        "route": "/charts/chart-c3",
+                        "active_link": "/charts/chart-c3"
+                    },
+                    {
+                        "menuValue": "Chart Js",
+                        "route": "/charts/chart-js",
+                        "active_link": "/charts/chart-js"
+                    },
+                    {
+                        "menuValue": "Morris Charts",
+                        "route": "/charts/chart-morris",
+                        "active_link": "/charts/chart-morris"
+                    },
+                    {
+                        "menuValue": "Flot Charts",
+                        "route": "/charts/chart-flot",
+                        "active_link": "/charts/chart-flot"
+                    }
+                ]
+            },
+            {
+                "menuValue": "Icons",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "active_link" : "icons",
+                "Icon": "ti ti-icons",
+                "subMenus": [
+                    {
+                        "menuValue": "Fontawesome Icons",
+                        "route": "/icons/icon-fontawesome",
+                        "active_link": "/icons/icon-fontawesome"
+                    },
+                    {
+                        "menuValue": "Tabler Icons",
+                        "route": "/icons/icon-tabler",
+                        "active_link": "/icons/icon-tabler"
+                    },
+                    {
+                        "menuValue": "Bootstrap Icons",
+                        "route": "/icons/icon-bootstrap",
+                        "active_link": "/icons/icon-bootstrap"
+                    },
+                    {
+                        "menuValue": "Remix Icons",
+                        "route": "/icons/icon-remix",
+                        "active_link": "/icons/icon-remix"
+                    },
+                    {
+                        "menuValue": "Feather Icons",
+                        "route": "/icons/icon-feather",
+                        "active_link": "/icons/icon-feather"
+                    },
+                    {
+                        "menuValue": "Ionic Icons",
+                        "route": "/icons/icon-ionic",
+                        "active_link": "/icons/icon-ionic"
+                    },
+                    {
+                        "menuValue": "Material Icons",
+                        "route": "/icons/icon-material",
+                        "active_link": "/icons/icon-material"
+                    },
+                    {
+                        "menuValue": "Pe7 Icons",
+                        "route": "/icons/icon-pe7",
+                        "active_link": "/icons/icon-pe7"
+                    },
+                    {
+                        "menuValue": "Simpleline Icons",
+                        "route": "/icons/icon-simpleline",
+                        "active_link": "/icons/icon-simpleline"
+                    },
+                    {
+                        "menuValue": "Weather Icons",
+                        "route": "/icons/icon-weather",
+                        "active_link": "/icons/icon-weather"
+                    },
+                    {
+                        "menuValue": "Typicon Icons",
+                        "route": "/icons/icon-typicon",
+                        "active_link": "/icons/icon-typicon"
+                    },
+                    {
+                        "menuValue": "Flag Icons",
+                        "route": "/icons/icon-flag",
+                        "active_link": "/icons/icon-flag"
+                    }
+                ]
+            }
+        ]
+    }
+]
