@@ -37,7 +37,7 @@
             <span class="input-icon-addon">
               <i class="ti ti-search"></i>
             </span>
-            <input type="text" class="form-control shadow-sm" placeholder="Search" />
+            <input type="text" class="form-control shadow-sm" :placeholder="t('header.search')" />
             <span
               class="input-icon-addon text-dark shadow fs-18 d-inline-flex p-0 header-search-icon"
               ><i class="ti ti-command"></i
@@ -62,18 +62,74 @@
 
         <!-- AI Assistance -->
         <a href="javascript:void(0);" class="btn btn-liner-gradient me-3 d-lg-flex d-none"
-          >AI Assistance<i class="ti ti-chart-bubble-filled ms-1"></i
+          >{{ t('header.ai_assistance') }}<i class="ti ti-chart-bubble-filled ms-1"></i
         ></a>
         <!-- AI Assistance -->
 
-        <!-- Appointment -->
+        
+
+        <!-- Localization Dropdown -->
         <div class="header-item">
+          <div class="dropdown me-3">
+            <a
+              href="javascript:void(0);"
+              class="topbar-link dropdown-toggle drop-arrow-none"
+              data-bs-toggle="dropdown"
+            >
+              <img
+                v-if="locale === 'en'"
+                src="@/assets/img/flags/us.svg"
+                class="rounded-circle"
+                width="24"
+                alt="flag"
+              />
+              <img
+                v-if="locale === 'fr'"
+                src="@/assets/img/flags/fr.svg"
+                class="rounded-circle"
+                width="24"
+                alt="flag"
+              />
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item d-flex align-items-center"
+                @click="setLanguage('en')"
+              >
+                <img
+                  src="@/assets/img/flags/us.svg"
+                  class="rounded-circle me-2"
+                  width="20"
+                  alt="flag"
+                />
+                {{ t('header.english') }}
+              </a>
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item d-flex align-items-center"
+                @click="setLanguage('fr')"
+              >
+                <img
+                  src="@/assets/img/flags/fr.svg"
+                  class="rounded-circle me-2"
+                  width="20"
+                  alt="flag"
+                />
+                {{ t('header.french') }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appointment -->
+        <!-- <div class="header-item">
           <div class="dropdown me-2">
             <router-link to="/appointments/new-appointment" class="btn topbar-link"
               ><i class="ti ti-calendar-due"></i
             ></router-link>
           </div>
-        </div>
+        </div> -->
         <!-- Appointment -->
 
         <!-- Settings -->
@@ -119,7 +175,7 @@
               <div class="p-2 border-bottom">
                 <div class="row align-items-center">
                   <div class="col">
-                    <h6 class="m-0 fs-16 fw-semibold">Notifications</h6>
+                    <h6 class="m-0 fs-16 fw-semibold">{{ t('header.notifications') }}</h6>
                   </div>
                 </div>
               </div>
@@ -323,7 +379,7 @@
                   to="/notifications"
                   class="text-center text-decoration-underline fs-14 mb-0"
                 >
-                  View All Notifications
+                  {{ t('header.view_all_notifications') }}
                 </router-link>
               </div>
             </div>
@@ -364,21 +420,21 @@
                 alt=""
               />
               <div class="ms-2">
-                <p class="fw-medium text-dark mb-0">Jimmy Anderson</p>
-                <span class="d-block fs-13">Administrator</span>
+                <p class="fw-medium text-dark mb-0">{{ userDisplayName }}</p>
+                <span class="d-block fs-13">{{ userRoleDisplay }}</span>
               </div>
             </div>
 
             <!-- Item-->
             <router-link to="/account-settings/profile-settings" class="dropdown-item">
               <i class="ti ti-user-circle me-1 align-middle"></i>
-              <span class="align-middle">Profile Settings</span>
+              <span class="align-middle">{{ t('header.profile_settings') }}</span>
             </router-link>
 
             <!-- Item-->
             <router-link to="/account-settings/profile-settings" class="dropdown-item">
               <i class="ti ti-settings me-1 align-middle"></i>
-              <span class="align-middle">Account Settings</span>
+              <span class="align-middle">{{ t('header.account_settings') }}</span>
             </router-link>
 
             <!-- item -->
@@ -386,7 +442,7 @@
               class="form-check form-switch form-check-reverse d-flex align-items-center justify-content-between dropdown-item mb-0"
             >
               <label class="form-check-label" for="notify"
-                ><i class="ti ti-bell me-1"></i>Notifications</label
+                ><i class="ti ti-bell me-1"></i>{{ t('header.notifications') }}</label
               >
               <input
                 class="form-check-input me-0"
@@ -399,14 +455,14 @@
             <!-- Item-->
             <router-link to="/finance/transactions" class="dropdown-item">
               <i class="ti ti-transition-right me-1 align-middle"></i>
-              <span class="align-middle">Transactions</span>
+              <span class="align-middle">{{ t('header.transactions') }}</span>
             </router-link>
 
             <!-- Item-->
             <div class="pt-2 mt-2 border-top">
-              <router-link to="/" class="dropdown-item text-danger">
+              <router-link to="/" class="dropdown-item text-danger" @click.prevent="onLogout">
                 <i class="ti ti-logout me-1 fs-17 align-middle"></i>
-                <span class="align-middle">Log Out</span>
+                <span class="align-middle">{{ t('header.logout') }}</span>
               </router-link>
             </div>
           </div>
@@ -419,46 +475,107 @@
   <theme-settings></theme-settings>
 </template>
 
-<script>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+/**
+ * LayoutsHeader Component
+ *
+ * The main header component for the application layout.
+ * Contains the logo, sidebar toggle, search, quick actions (appointments, settings),
+ * dark mode toggle, notifications, localization, and user profile menu.
+ *
+ * Features:
+ * - Sidebar visibility toggle
+ * - Dark/Light mode switching with persistence
+ * - Localization (Language switching)
+ * - Notification dropdown
+ * - User profile actions
+ * - Dynamic user information from AuthStore
+ */
+import { ref, onMounted, computed } from "vue";
+import { useI18n } from 'vue-i18n';
+import { useAuthStore } from '@/stores/authStore';
+import { notifySuccess, notifyError } from '@/utils/notifications/toast'
+import { storeToRefs } from 'pinia';
 
-export default {
-  data() {
-    return {};
-  },
-  methods: {
-    toggleSidebar1() {
-      const body = document.body;
-      body.classList.toggle("slide-nav");
-    },
-  },
-  setup() {
-    const isDarkMode = ref(false);
+const { t, locale } = useI18n();
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
-    const setThemeAttribute = (enabled) => {
-      document.documentElement.setAttribute("data-bs-theme", enabled ? "dark" : "light");
-    };
+const isDarkMode = ref(false);
 
-    const toggleDarkMode = () => {
-      isDarkMode.value = !isDarkMode.value;
-      localStorage.setItem("dark", isDarkMode.value ? "enabled" : "disabled");
-      setThemeAttribute(isDarkMode.value);
-    };
-
-    const initializeDarkMode = () => {
-      const darkMode = localStorage.getItem("dark");
-      isDarkMode.value = darkMode === "enabled";
-      setThemeAttribute(isDarkMode.value);
-    };
-
-    onMounted(() => {
-      initializeDarkMode();
-    });
-
-    return {
-      isDarkMode,
-      toggleDarkMode,
-    };
-  },
+/**
+ * Toggles the sidebar navigation on mobile/tablet views.
+ * Adds/removes the 'slide-nav' class on the body element.
+ */
+const toggleSidebar1 = () => {
+  const body = document.body;
+  body.classList.toggle("slide-nav");
 };
+
+/**
+ * Sets the theme attribute on the document element.
+ * @param {boolean} enabled - True for dark mode, false for light mode
+ */
+const setThemeAttribute = (enabled: boolean) => {
+  document.documentElement.setAttribute("data-bs-theme", enabled ? "dark" : "light");
+};
+
+/**
+ * Toggles the application theme between Dark and Light mode.
+ * Persists the preference to localStorage.
+ */
+const toggleDarkMode = () => {
+  isDarkMode.value = !isDarkMode.value;
+  localStorage.setItem("dark", isDarkMode.value ? "enabled" : "disabled");
+  setThemeAttribute(isDarkMode.value);
+};
+
+/**
+ * Updates the active locale for the application.
+ * @param {string} lang - The locale code (e.g., 'en', 'fr')
+ */
+const setLanguage = (lang: string) => {
+  locale.value = lang;
+};
+
+/**
+ * Initializes the theme based on localStorage preference.
+ * Runs on component mount.
+ */
+const initializeDarkMode = () => {
+  const darkMode = localStorage.getItem("dark");
+  isDarkMode.value = darkMode === "enabled";
+  setThemeAttribute(isDarkMode.value);
+};
+
+/**
+ * Handles user logout.
+ * Calls the logout action from the auth store.
+ */
+const onLogout = async () => {
+  try {
+  await authStore.logout();
+
+  notifySuccess(t('logout.success_message'))
+    
+    // Delay navigation to ensure toast displays
+    // setTimeout(() => {
+    //   authStore.handleRouteChange()
+    // }, 100)
+  } catch (error) {
+    notifyError(authStore.error || t('logout.error_message'))
+  }
+};
+
+// Computed properties for user display
+const userDisplayName = computed(() => user.value?.name || 'User');
+const userRoleDisplay = computed(() => {
+  if (user.value?.is_superuser) return 'Super Administrator';
+  if (user.value?.role) return user.value.role.charAt(0).toUpperCase() + user.value.role.slice(1);
+  return 'User';
+});
+
+onMounted(() => {
+  initializeDarkMode();
+});
 </script>

@@ -1,0 +1,38 @@
+{
+  "header": {
+    "search": "Rechercher",
+    "ai_assistance": "Assistance IA",
+    "notifications": "Notifications",
+    "view_all_notifications": "Voir toutes les notifications",
+    "profile_settings": "Paramètres de profil",
+    "account_settings": "Paramètres du compte",
+    "transactions": "Transactions",
+    "logout": "Se déconnecter",
+    "english": "Anglais",
+    "french": "Français"
+  },
+  "login": {
+    "title": "Accès aux soins de santé transparent avec une clinique moderne et intelligente",
+    "subtitle": "Découvrez une gestion des soins de santé efficace, sécurisée et conviviale conçue pour les cliniques modernes et les cabinets en pleine croissance.",
+    "sign_in": "Se connecter",
+    "staff_id_label": "ID Personnel / Email",
+    "staff_id_placeholder": "Entrez votre ID PERSONNEL",
+    "password_label": "Mot de passe",
+    "password_placeholder": "Mot de passe",
+    "remember_me": "Se souvenir de moi",
+    "forgot_password": "Mot de passe oublié ?",
+    "login_btn": "Connexion",
+    "or": "OU",
+    "no_account": "Vous n'avez pas encore de compte ?",
+    "contact_admin": "Contactez votre administrateur",
+    "copyright": "Droits d'auteur © {year} - ClickSoftwareGh.",
+    "staff_id_required": "L'ID Personnel / Email est requis",
+    "password_required": "Le mot de passe est requis",
+    "success_message": "Connexion réussie. Redirection...",
+    "error_message": "Échec de la connexion. Veuillez réessayer."
+  },
+  "logout": {
+    "success_message": "Déconnexion réussie",
+    "error_message": "Échec de la déconnexion. Veuillez réessayer."
+  }
+}

@@ -1,6 +1,11 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 import App from './App.vue'
 import { router } from './router';
+import i18n from './i18n';
 import VueApexCharts from "vue3-apexcharts"; 
 import Antd from 'ant-design-vue';
 import DatePicker from 'vue3-datepicker'
@@ -12,6 +17,15 @@ import FlagIcon from 'vue-flag-icon';
 import StarRating from "vue3-star-ratings";
 import Vue3Autocounter from 'vue3-autocounter';
 import VCalendar from 'v-calendar';
+
+// Debug Mode Configuration
+if (import.meta.env.VITE_DEBUG_MODE !== 'true') {
+  console.log = () => {}
+  console.debug = () => {}
+  console.info = () => {}
+  console.warn = () => {}
+  console.error = () => {}
+}
 
 /********** Common components **********/
 import FilterIndex from '@/components/common-component/filter-index.vue';
@@ -77,6 +91,30 @@ import '@/assets/scss/main.scss';
 
 const app = createApp(App);
 
+// Initialize Pinia
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
+
+// Initialize Toast notifications
+app.use(Toast, {
+  transition: 'Vue-Toastification__bounce',
+  maxToasts: 3,
+  newestOnTop: true,
+  position: 'top-right',
+  timeout: 3000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: false,
+  hideProgressBar: false,
+  closeButton: 'button',
+  icon: true,
+  rtl: false,
+})
+
 /********** Common components **********/
 app.component('filter-index', FilterIndex)
 
@@ -123,6 +161,7 @@ app.use(VueApexCharts)
 app.use(FlagIcon)
 .use(Antd)
 app.use(VCalendar)
+app.use(i18n)
 app.component(VueFeather.name, VueFeather)
 app.component('vue3-select', Vue3Select);
 app.component('vue-multiselect', Multiselect);

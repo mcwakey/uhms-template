@@ -1,7 +1,7 @@
 # Vue 3 + TypeScript Style Guide
 
-**Version:** 1.0.0  
-**Last Updated:** November 3, 2025  
+**Version:** 1.1.0  
+**Last Updated:** November 26, 2025  
 **Status:** Active
 
 This document defines the coding standards and best practices for the UHMS Vue.js application. All code must follow these guidelines to ensure consistency, maintainability, and quality.
@@ -14,18 +14,20 @@ This document defines the coding standards and best practices for the UHMS Vue.j
 2. [Component Structure](#component-structure)
 3. [TypeScript Usage](#typescript-usage)
 4. [Code Style](#code-style)
-5. [State Management (Pinia Stores)](#state-management-pinia-stores)
-6. [Component Communication](#component-communication)
-7. [Import/Export Patterns](#importexport-patterns)
-8. [Modal Design Standards](#modal-design-standards)
-9. [Before/After Migration Examples](#beforeafter-migration-examples)
+5. [Code Documentation Standards](#code-documentation-standards)
+6. [State Management (Pinia Stores)](#state-management-pinia-stores)
+7. [Component Communication](#component-communication)
+8. [Import/Export Patterns](#importexport-patterns)
+9. [Modal Design Standards](#modal-design-standards)
+10. [Localization Standards](#localization-standards)
+11. [Before/After Migration Examples](#beforeafter-migration-examples)
 
 ---
 
 ## 1. File Naming Conventions
 
 ### Components
-- **Standard:** PascalCase for all Vue components
+- **Standard:** PascalCase for all Vue components (reusable UI elements)
 - **Format:** `ComponentName.vue`
 
 ✅ **Correct:**
@@ -42,6 +44,24 @@ appointment-details-canvas.vue
 reschedule-modal.vue
 filter-index.vue
 layouts-header.vue
+```
+
+### Pages (Views)
+- **Standard:** kebab-case for all page components (views/routes)
+- **Format:** `page-name.vue`
+
+✅ **Correct:**
+```
+login-index.vue
+dashboard-index.vue
+patient-details.vue
+```
+
+❌ **Incorrect:**
+```
+LoginIndex.vue
+DashboardIndex.vue
+PatientDetails.vue
 ```
 
 ### Stores
@@ -275,7 +295,251 @@ async function handleSubmit() { }
 
 ---
 
-## 5. State Management (Pinia Stores)
+## 5. Code Documentation Standards
+
+### Documentation Philosophy
+
+**Standard:** All code must be well-documented with clear, concise comments that explain the "why" and "what", not just the "how".
+
+### When to Add Comments
+
+**Always document:**
+- File-level descriptions (purpose and features)
+- Complex business logic
+- Public functions and methods
+- Non-obvious code patterns
+- Constants and configuration objects
+- Store actions and getters
+- Component props and emits
+- Type interfaces (when not self-explanatory)
+
+**Avoid commenting:**
+- Obvious code (e.g., `// increment counter` for `counter++`)
+- Code that can be made self-documenting with better naming
+
+### Comment Styles
+
+#### JSDoc-Style Comments for Functions/Methods
+
+Use JSDoc-style comments for all public functions, methods, and actions:
+
+```typescript
+/**
+ * Authenticates user with credentials
+ * 
+ * @param credentials - Login credentials (username/email and password)
+ * @returns Promise<boolean> - True if login successful, false otherwise
+ * 
+ * Process:
+ * 1. Sends credentials to auth API
+ * 2. Decodes JWT token to extract user data
+ * 3. Stores tokens and user info in state
+ * 4. Redirects to appropriate dashboard based on role/department
+ */
+async login(credentials: LoginCredentials) {
+  // Implementation
+}
+```
+
+#### Single-Line Comments for Inline Explanations
+
+Use single-line comments for brief inline explanations:
+
+```typescript
+// Decode JWT to extract user information
+const decoded = jwtDecode<DecodedToken>(data.access)
+
+// Delay navigation to ensure toast displays
+setTimeout(() => {
+  this.handleRouteChange()
+}, 100)
+```
+
+#### Block Comments for File/Module Documentation
+
+Use block comments at the top of files to describe purpose and features:
+
+```typescript
+/**
+ * Authentication Store
+ * 
+ * Manages user authentication state, login/logout operations, and token management.
+ * Implements JWT-based authentication with automatic token refresh.
+ * 
+ * Features:
+ * - JWT token decoding and storage
+ * - Department-based role management
+ * - Password reset flow
+ * - Automatic token refresh on expiry
+ * - Persistent state via localStorage
+ */
+```
+
+#### Configuration and Constants
+
+Document configuration objects and constants:
+
+```typescript
+/**
+ * Route mapping for different user roles and departments
+ * Maps department types to their corresponding dashboard route names
+ */
+const ROUTES = {
+  admin: 'AdminDashboard',
+  consultation: 'ConsultationDashboard',
+  investigation: 'InvestigationDashboard',
+  nursing: 'NursingDashboard',
+}
+```
+
+### Component Documentation
+
+#### Component-Level Documentation
+
+Add a comment block at the start of the `<script setup>` section:
+
+```vue
+<script setup lang="ts">
+/**
+ * LoginIndex Component
+ * 
+ * Handles user authentication with form validation.
+ * Displays login form with username/email and password fields.
+ * 
+ * Features:
+ * - Form validation using Vee-Validate and Yup
+ * - Remember me functionality
+ * - Password visibility toggle
+ * - Responsive design with left-side branding
+ */
+
+import { ref, computed } from 'vue'
+// ... rest of imports
+</script>
+```
+
+#### Props and Emits Documentation
+
+```typescript
+/**
+ * Component Props
+ */
+interface Props {
+  /** Whether the modal is visible */
+  visible: boolean
+  /** Appointment data to display/edit */
+  appointment?: Appointment
+  /** Loading state indicator */
+  loading?: boolean
+}
+
+/**
+ * Component Emits
+ */
+interface Emits {
+  /** Emitted when modal visibility changes */
+  (e: 'update:visible', value: boolean): void
+  /** Emitted when appointment is saved */
+  (e: 'save', data: AppointmentFormData): void
+}
+```
+
+### Store Documentation
+
+#### Getters
+
+```typescript
+getters: {
+  /**
+   * Returns the current authenticated user
+   */
+  currentUser: (state) => state.user,
+  
+  /**
+   * Checks if user is a super administrator
+   */
+  isSuperAdmin: (state) => !!state.user?.is_superuser,
+}
+```
+
+#### Actions
+
+```typescript
+actions: {
+  /**
+   * Fetches appointments from the API
+   * 
+   * @param filters - Optional filter parameters
+   * @returns Promise<void>
+   * 
+   * Updates the appointments array in state and handles errors
+   */
+  async fetchAppointments(filters?: AppointmentFilters) {
+    // Implementation
+  },
+}
+```
+
+### Type Documentation
+
+Document complex interfaces:
+
+```typescript
+/**
+ * Represents a user in the system
+ */
+export interface User {
+  /** Unique identifier (UUID v4) */
+  uuid: string
+  /** User's email address */
+  email: string
+  /** First name */
+  first_name?: string
+  /** Last name */
+  last_name?: string
+  /** Whether user has super admin privileges */
+  is_superuser: boolean
+  /** User's role in the system */
+  role?: string
+  /** Department assignment */
+  department?: {
+    /** Department type (investigation, consultation, nursing) */
+    type: string
+    /** Department display name */
+    name?: string
+  }
+}
+```
+
+### Best Practices
+
+1. **Write self-documenting code first** - Use clear variable and function names
+2. **Comment the "why" not the "what"** - Explain business logic and decisions
+3. **Keep comments up-to-date** - Update comments when code changes
+4. **Use proper grammar and spelling** - Comments are part of the codebase
+5. **Be concise but complete** - Provide enough context without being verbose
+6. **Document edge cases** - Explain special handling and workarounds
+7. **Use TODO/FIXME markers** - Mark incomplete or problematic code clearly
+
+### TODO and FIXME Markers
+
+```typescript
+// TODO: Implement caching for frequently accessed data
+// FIXME: Handle race condition when multiple requests are made
+// NOTE: This is a temporary workaround until API v2 is ready
+```
+
+---
+
+## 6. State Management (Pinia Stores)
+
+### Store Responsibilities
+
+**Standard:** Stores should manage state and business logic only. They should NOT handle UI side effects like notifications or routing directly, unless exposing a helper action explicitly for that purpose.
+
+- **Do:** Return Promises/results from actions to let components handle success/failure UI.
+- **Do:** Manage global state (user, theme, data).
+- **Don't:** Call `notifySuccess` or `router.push` inside data fetching actions (e.g., `login`, `fetchData`). Let the component decide what to do with the result.
 
 ### Store Structure
 
@@ -345,7 +609,7 @@ isAdmin: (state) => !!state.user?.is_superuser
 
 ---
 
-## 6. Component Communication
+## 7. Component Communication
 
 ### Event Naming
 
@@ -387,7 +651,7 @@ emit('appointmentCreated', data)
 
 ---
 
-## 7. Import/Export Patterns
+## 8. Import/Export Patterns
 
 ### Path Aliases
 
@@ -451,7 +715,7 @@ export const API_BASE_URL = '/api'
 
 ---
 
-## 8. Modal Design Standards
+## 9. Modal Design Standards
 
 ### Standard Modal Structure
 
@@ -728,7 +992,90 @@ async function handleSubmit() {
 
 ---
 
-## 9. Before/After Migration Examples
+## 10. Localization Standards
+
+### Mandatory Localization
+
+**Standard:** All user-facing text must be localized using `vue-i18n`. Hardcoded strings in templates or scripts are strictly forbidden.
+
+### Implementation
+
+1.  **Use the `t` function:**
+    *   In templates: `{{ t('key.name') }}`
+    *   In scripts: `const { t } = useI18n(); ... t('key.name')`
+2.  **Locale Files:**
+    *   Add keys to `src/locales/en.json` (English)
+    *   Add keys to `src/locales/fr.json` (French)
+3.  **Key Naming Convention:**
+    *   Use `snake_case` for keys.
+    *   Nest keys by feature or component context.
+
+### Examples
+
+✅ **Correct:**
+
+*Template:*
+```vue
+<template>
+  <button>{{ t('auth.login_button') }}</button>
+  <p>{{ t('dashboard.welcome_message', { name: user.name }) }}</p>
+</template>
+```
+
+*Script:*
+```typescript
+import { useI18n } from 'vue-i18n';
+
+setup() {
+  const { t } = useI18n();
+  const errorMessage = computed(() => t('errors.network_error'));
+  return { t, errorMessage };
+}
+```
+
+*en.json:*
+```json
+{
+  "auth": {
+    "login_button": "Log In"
+  },
+  "dashboard": {
+    "welcome_message": "Welcome back, {name}"
+  },
+  "errors": {
+    "network_error": "Network error occurred"
+  }
+}
+```
+
+❌ **Incorrect:**
+
+*Template:*
+```vue
+<template>
+  <button>Log In</button> <!-- Hardcoded string -->
+</template>
+```
+
+---
+
+## 11. Environment Configuration
+
+### Environment Variables
+
+**Standard:** Use `.env` files for configuration. Access variables via `import.meta.env`.
+
+- **VITE_DEFAULT_LOCALE:** Sets the default language if none is selected (e.g., `en`, `fr`).
+- **VITE_DEBUG_MODE:** Controls console logging. Set to `true` to enable logs, `false` to suppress them in production.
+
+### Debugging
+
+**Standard:** Console logs (`console.log`, `console.debug`, etc.) are suppressed when `VITE_DEBUG_MODE` is not `true`.
+
+- **Do:** Use `console.error` for critical errors that should always be visible (unless suppressed by global handler).
+- **Don't:** Leave `console.log` in production code unless necessary for debugging specific issues.
+
+## 12. Before/After Migration Examples
 
 ### Example 1: Modal Component Migration
 
