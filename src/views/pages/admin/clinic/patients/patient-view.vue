@@ -1755,7 +1755,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick, type Ref, type ComputedRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axiosInstance from '@/utils/axios.js'
+import axiosInstance from '@/utils/axios'
 import { usePatientStore } from '@/stores/patientStore'
 import { useI18n } from 'vue-i18n'
 import AddInsuranceModal from '@/components/modal/AddInsuranceModal.vue'
@@ -2006,20 +2006,22 @@ function scrollToShowAddCard(): void {
 async function fetchAppointments(): Promise<void> {
   appointmentsLoading.value = true
   try {
+    
+    // const response = await axiosInstance.get(`/patients/${uuid}/appointments/`)
     const response = await axiosInstance.get(`/appointments/`, {
       params: {
         patient: uuid,
       },
     })
-    if (Array.isArray(response.data)) {
+    // if (Array.isArray(response.data)) {
       appointments.value = response.data
-    } else if (response.data && Array.isArray(response.data.data)) {
-      appointments.value = response.data.data
-    } else if (response.data && Array.isArray(response.data.results)) {
-      appointments.value = response.data.results
-    } else {
-      appointments.value = []
-    }
+    // } else if (response.data && Array.isArray(response.data.data)) {
+    //   appointments.value = response.data.data
+    // } else if (response.data && Array.isArray(response.data.results)) {
+    //   appointments.value = response.data.results
+    // } else {
+    //   appointments.value = []
+    // }
   } catch {
     appointments.value = []
   } finally {
@@ -2029,16 +2031,16 @@ async function fetchAppointments(): Promise<void> {
 
 async function fetchInsurances(): Promise<void> {
   try {
-    const response = await axiosInstance.get(`/patients/${uuid}/insurances`)
-    if (Array.isArray(response.data)) {
+    const response = await axiosInstance.get(`/patients/${uuid}/insurances/`)
+    // if (Array.isArray(response.data)) {
       insurances.value = response.data
-    } else if (response.data && Array.isArray(response.data.data)) {
-      insurances.value = response.data.data
-    } else if (response.data && Array.isArray(response.data.results)) {
-      insurances.value = response.data.results
-    } else {
-      insurances.value = []
-    }
+    // } else if (response.data && Array.isArray(response.data.data)) {
+    //   insurances.value = response.data.data
+    // } else if (response.data && Array.isArray(response.data.results)) {
+    //   insurances.value = response.data.results
+    // } else {
+    //   insurances.value = []
+    // }
   } catch {
     insurances.value = []
   }
@@ -2223,8 +2225,8 @@ function deleteAppointment(appointment: Appointment): void {
 // Lifecycle
 onMounted(() => {
   patientStore.fetchPatient(uuid)
-  fetchAppointments()
   fetchInsurances()
+  fetchAppointments()
 
   setTimeout(() => {
     const insuranceModal = document.getElementById('create_insurance')
