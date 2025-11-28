@@ -1,0 +1,714 @@
+[
+  { "region": "Ahafo", "cities": ["Goaso", "Hwidiem", "Kenyasi", "Kukuom"] },
+  {
+    "region": "Ashanti",
+    "cities": [
+      "Abrepo Junction",
+      "Abuakwa",
+      "Adum",
+      "Afrancho",
+      "Agogo",
+      "Agona",
+      "Ahodwo",
+      "Airport",
+      "Akumadan",
+      "Amakom",
+      "Aputuogya",
+      "Asafo",
+      "Ash-Town",
+      "Asokore Mampong",
+      "Asokwa",
+      "Asuofia",
+      "Atonsu",
+      "Ayeduasi",
+      "Ayigya",
+      "Bantama",
+      "Barekese",
+      "Bekwai",
+      "Boadi",
+      "Bomso",
+      "Breman",
+      "Brewery",
+      "Buoho",
+      "Buokrom Estate",
+      "Daban",
+      "Dakwadwom",
+      "Deduako",
+      "Denyame",
+      "Effiduase",
+      "Ejisu",
+      "Ejura",
+      "Emina",
+      "Esreso",
+      "Fawode",
+      "Gyinyasi",
+      "Jachie Pramso",
+      "Kaasi",
+      "KNUST",
+      "Kodie",
+      "Komfo Anokye",
+      "Konongo",
+      "Kotei",
+      "Krofrom",
+      "Kumasi",
+      "Maakro",
+      "Mampong",
+      "Mankranso",
+      "Manso Nkwanta",
+      "Nkawie",
+      "North Suntreso",
+      "Nyinahin",
+      "Obuasi",
+      "Oforikrom",
+      "Pankrono",
+      "Santasi",
+      "Sokoban",
+      "South Suntreso",
+      "Suame",
+      "Tafo",
+      "Takwa-Maakro",
+      "Tanoso",
+      "Tepa",
+      "TUC"
+    ]
+  },
+  {
+    "region": "Bono East",
+    "cities": [
+      "Atebubu",
+      "Buipe",
+      "Jema",
+      "Kintampo",
+      "Kwame Danso",
+      "Nkoranza",
+      "Prang",
+      "Techiman",
+      "Wenchi",
+      "Yeji"
+    ]
+  },
+  {
+    "region": "Bono",
+    "cities": [
+      "Banda Ahenkro",
+      "Brekum",
+      "Dormaa Ahenkro",
+      "New Drobo",
+      "Nsawkaw",
+      "Sampa",
+      "Sunyani"
+    ]
+  },
+  {
+    "region": "Central",
+    "cities": [
+      "Agona Swedru",
+      "Amanfrom",
+      "Anomabu",
+      "Apam",
+      "Bawjiase",
+      "Breman Asikuma",
+      "Budumburam",
+      "Cape Coast",
+      "Domeabra",
+      "Elmina",
+      "Foso",
+      "Kasoa Ofaakor",
+      "Kasoa Zongo",
+      "Liberia Camp",
+      "Mankessim",
+      "Millennium City",
+      "Mumford",
+      "Nyakrom",
+      "Nyananor",
+      "Nyanyano",
+      "Oduponkpehe",
+      "Opeikuma",
+      "Pentecost Seminary",
+      "Saltpond",
+      "Winneba"
+    ]
+  },
+  {
+    "region": "Eastern",
+    "cities": [
+      "Abetifi",
+      "Abompe",
+      "Aburi",
+      "Adeiso",
+      "Adjeiikrom",
+      "Adukrom",
+      "Ahwerease",
+      "Akim Oda",
+      "Akim Swedru",
+      "Akosombo",
+      "Akropong",
+      "Akwatia",
+      "Akyem Hemang",
+      "Amanokrom",
+      "Apirede",
+      "Asamankese",
+      "Asesewa",
+      "Atimpoku",
+      "Ayiensu",
+      "Begoro",
+      "Bepoase",
+      "Bisibom",
+      "Bososo",
+      "Brekusu",
+      "Coaltar",
+      "Dawu",
+      "Dedesoworako",
+      "Donkorkrom",
+      "Dwenase",
+      "Gyankama",
+      "Juaso",
+      "Kade",
+      "Kibi",
+      "Kitase",
+      "Koforidua",
+      "Kwabeng",
+      "Mamfe",
+      "Mampong",
+      "Mpraeso",
+      "New Abirem",
+      "Nkawkaw",
+      "Nsawam",
+      "Nsutam",
+      "Obooho",
+      "Obosomase",
+      "Odumase Krobo",
+      "Ofoase",
+      "Osino",
+      "Peduase",
+      "Saaman",
+      "Somanya",
+      "Summer",
+      "Suhum",
+      "Tease",
+      "Tutu"
+    ]
+  },
+  {
+    "region": "Greater Accra",
+    "cities": [
+      "Abelemkpe",
+      "Ablekuma",
+      "Abokobi",
+      "Abossey Okai",
+      "Accra Newtown",
+      "Achimota",
+      "Adabraka",
+      "Adenta",
+      "Afienya",
+      "Agbogba",
+      "Airport",
+      "Amasaman",
+      "Ashiaman",
+      "Ashongman",
+      "Aslyum Down",
+      "Baatsona - Spintex",
+      "Bortianor",
+      "Cantonment",
+      "Dansoman",
+      "Darkuman",
+      "Dawhenya",
+      "Dodowa",
+      "Dome",
+      "Dzorwulu",
+      "East Legon",
+      "Gbawe",
+      "Haatso",
+      "James Town",
+      "Kanda",
+      "Kaneshie",
+      "Kasoa",
+      "Kissieman",
+      "Kokrobite",
+      "Korle Bu",
+      "Kpone",
+      "Kwabenya",
+      "Kwashieman",
+      "Labadi",
+      "Labone",
+      "Lapaz",
+      "Lartebiokorshie",
+      "Lashibi",
+      "Legon",
+      "Madina",
+      "Makola",
+      "Mallam",
+      "McCarthy Hill",
+      "Michel Camp",
+      "Nima",
+      "Nungua",
+      "Oblogo Mallam",
+      "Odoponkpehe",
+      "Odorkor",
+      "Osu",
+      "Oyarifa",
+      "Patang",
+      "Prampram",
+      "Ridge",
+      "Roman Ridge",
+      "Sakumono",
+      "Santa Maria",
+      "Sowutuom",
+      "Taifa",
+      "Tema",
+      "Tema New Town",
+      "Tesano",
+      "Teshie",
+      "Tetegu",
+      "Tieman",
+      "Tudu",
+      "Weija",
+      "Westhills"
+    ]
+  },
+  { "region": "North East", "cities": ["Chereponi", "Gambaga", "Nalerigu", "Walewale"] },
+  {
+    "region": "Nothern",
+    "cities": ["Bimbila", "Gushiegu", "Kpandae", "Salaga", "Tamale", "Yendi"]
+  },
+  {
+    "region": "Oti",
+    "cities": ["Chinderi", "Jasikan", "Kadjebi", "Kete Krachi", "Kpassa", "Nkonya"]
+  },
+  { "region": "Savannah", "cities": ["Bole", "Buipe", "Damango", "Salaga", "Sawla", "Tolon"] },
+  {
+    "region": "Upper East",
+    "cities": ["Bawku", "Bolgatanga", "Bongo", "Navrongo", "Paga", "Tongo"]
+  },
+  {
+    "region": "Upper West",
+    "cities": [
+      "Funsi",
+      "Gwollu",
+      "Issa",
+      "Jirapa",
+      "Kaleo",
+      "Lambussie",
+      "Lawra",
+      "Nadowli",
+      "Nandom",
+      "Tumu",
+      "Wa",
+      "Wechiau"
+    ]
+  },
+  {
+    "region": "Volta",
+    "cities": [
+      "Adaklu Waya",
+      "Adidome",
+      "Aflao",
+      "Akatsi",
+      "Ave Dakpa",
+      "Ho.",
+      "Hohoe",
+      "Keta",
+      "Kpando",
+      "Kpetoe",
+      "Kpeve",
+      "Sogakope"
+    ]
+  },
+  {
+    "region": "Western North",
+    "cities": ["Akontombra", "Bibiani", "Dadieso", "Enchi", "Juaboso", "Sewhi Anhwiaso"]
+  },
+  {
+    "region": "Western",
+    "cities": [
+      "Aboso",
+      "Asankragua",
+      "Axim",
+      "Bogoso",
+      "Elubo",
+      "Half Assini",
+      "Inchaban",
+      "Prestea",
+      "Samreboi",
+      "Sekondi",
+      "Shama",
+      "Takoradi",
+      "Tarkwa"
+    ]
+  },
+  {
+    "countryOptions": [
+      {
+        "label": "Ghana",
+        "value": "ghana"
+      }
+    ]
+  },
+  {
+    "appointmentTypeOptions": [
+      {
+        "label": "In-person",
+        "value": "in-person"
+      },
+      {
+        "label": "Telehealth",
+        "value": "telehealth"
+      }
+    ]
+  },
+  {
+    "triageLevels": [
+      {
+        "id": 1,
+        "name": "Critical",
+        "min": 7,
+        "max": 10,
+        "time": "Immediate",
+        "colorClass": "bg-danger",
+        "description": "Critical — Immediate intervention needed"
+      },
+      {
+        "id": 2,
+        "name": "Urgent",
+        "min": 4,
+        "max": 6,
+        "time": "Needs care soon",
+        "colorClass": "bg-warning",
+        "description": "Urgent — Needs care soon"
+      },
+      {
+        "id": 3,
+        "name": "Stable",
+        "min": 0,
+        "max": 3,
+        "time": "Routine monitoring",
+        "colorClass": "bg-success",
+        "description": "Stable — Routine monitoring"
+      }
+    ]
+  },
+  {
+    "statusOptions": [
+      {
+        "label": "Scheduled",
+        "value": "scheduled"
+      },
+      {
+        "label": "Checked-in",
+        "value": "checked-in"
+      },
+      {
+        "label": "In-progress",
+        "value": "in-progress"
+      },
+      {
+        "label": "Completed",
+        "value": "completed"
+      },
+      {
+        "label": "Cancelled",
+        "value": "cancelled"
+      }
+    ]
+  },
+  {
+    "maritalStatusOptions": [
+      {
+        "label": "Single",
+        "value": "single"
+      },
+      {
+        "label": "Married",
+        "value": "married"
+      },
+      {
+        "label": "Divorced",
+        "value": "divorced"
+      },
+      {
+        "label": "Widowed",
+        "value": "widowed"
+      }
+    ]
+  },
+  {
+    "genderOptions": [
+      {
+        "label": "Male",
+        "value": "male"
+      },
+      {
+        "label": "Female",
+        "value": "female"
+      },
+      {
+        "label": "Other",
+        "value": "other"
+      }
+    ]
+  },
+  {
+    "serviceTypeOptions": [
+      {
+        "label": "Consultation",
+        "value": "consultation"
+      },
+      {
+        "label": "Investigation",
+        "value": "investigation"
+      },
+      {
+        "label": "Treatment",
+        "value": "treatment"
+      },
+      {
+        "label": "Procedure",
+        "value": "procedure"
+      },
+      {
+        "label": "Medication/Pharmacy",
+        "value": "medication"
+      },
+      {
+        "label": "Rehabilitation",
+        "value": "rehabilitation"
+      },
+      {
+        "label": "Preventive Services",
+        "value": "preventive"
+      },
+      {
+        "label": "Emergency Services",
+        "value": "emergency"
+      },
+      {
+        "label": "Nursing Care",
+        "value": "nursing"
+      },
+      {
+        "label": "Support Services",
+        "value": "support"
+      }
+    ]
+  },
+  {
+    "religionOptions": [
+      {
+        "label": "Islam",
+        "value": "Islam"
+      },
+      {
+        "label": "Christianity",
+        "value": "Christianity"
+      },
+      {
+        "label": "Others",
+        "value": "Others"
+      }
+    ]
+  },
+  {
+    "relationshipOptions": [
+      {
+        "label": "Father",
+        "value": "Father"
+      },
+      {
+        "label": "Mother",
+        "value": "Mother"
+      },
+      {
+        "label": "Brother",
+        "value": "Brother"
+      },
+      {
+        "label": "Sister",
+        "value": "Sister"
+      },
+      {
+        "label": "Spouse",
+        "value": "Spouse"
+      },
+      {
+        "label": "Son",
+        "value": "Son"
+      },
+      {
+        "label": "Daughter",
+        "value": "Daughter"
+      },
+      {
+        "label": "Friend",
+        "value": "Friend"
+      },
+      {
+        "label": "Other",
+        "value": "Other"
+      }
+    ]
+  },
+  {
+    "designationOptions": [
+      {
+        "label": "Chief Medical Officer",
+        "value": "Chief Medical Officer"
+      },
+      {
+        "label": "Medical Director",
+        "value": "Medical Director"
+      },
+      {
+        "label": "Senior Consultant",
+        "value": "Senior Consultant"
+      },
+      {
+        "label": "Consultant",
+        "value": "Consultant"
+      },
+      {
+        "label": "Specialist",
+        "value": "Specialist"
+      },
+      {
+        "label": "Cardiologist",
+        "value": "Cardiologist"
+      },
+      {
+        "label": "Orthopedic Surgeon",
+        "value": "Orthopedic Surgeon"
+      },
+      {
+        "label": "General Practitioner",
+        "value": "General Practitioner"
+      },
+      {
+        "label": "Pediatrician",
+        "value": "Pediatrician"
+      },
+      {
+        "label": "Gynecologist",
+        "value": "Gynecologist"
+      },
+      {
+        "label": "Dermatologist",
+        "value": "Dermatologist"
+      },
+      {
+        "label": "Radiologist",
+        "value": "Radiologist"
+      },
+      {
+        "label": "Pathologist",
+        "value": "Pathologist"
+      },
+      {
+        "label": "Anesthesiologist",
+        "value": "Anesthesiologist"
+      },
+      {
+        "label": "Chief Nursing Officer",
+        "value": "Chief Nursing Officer"
+      },
+      {
+        "label": "Senior Nurse",
+        "value": "Senior Nurse"
+      },
+      {
+        "label": "Registered Nurse",
+        "value": "Registered Nurse"
+      },
+      {
+        "label": "Nurse",
+        "value": "Nurse"
+      },
+      {
+        "label": "Nurse Practitioner",
+        "value": "Nurse Practitioner"
+      },
+      {
+        "label": "Chief Pharmacist",
+        "value": "Chief Pharmacist"
+      },
+      {
+        "label": "Pharmacist",
+        "value": "Pharmacist"
+      },
+      {
+        "label": "Pharmacy Assistant",
+        "value": "Pharmacy Assistant"
+      },
+      {
+        "label": "Medical Laboratory Scientist",
+        "value": "Medical Laboratory Scientist"
+      },
+      {
+        "label": "Laboratory Technician",
+        "value": "Laboratory Technician"
+      },
+      {
+        "label": "X-Ray Technician",
+        "value": "X-Ray Technician"
+      },
+      {
+        "label": "Physiotherapist",
+        "value": "Physiotherapist"
+      },
+      {
+        "label": "Occupational Therapist",
+        "value": "Occupational Therapist"
+      },
+      {
+        "label": "Medical Records Officer",
+        "value": "Medical Records Officer"
+      },
+      {
+        "label": "Administrative Manager",
+        "value": "Administrative Manager"
+      },
+      {
+        "label": "Human Resources Manager",
+        "value": "Human Resources Manager"
+      },
+      {
+        "label": "Finance Officer",
+        "value": "Finance Officer"
+      },
+      {
+        "label": "Accountant",
+        "value": "Accountant"
+      },
+      {
+        "label": "Receptionist",
+        "value": "Receptionist"
+      },
+      {
+        "label": "Secretary",
+        "value": "Secretary"
+      },
+      {
+        "label": "IT Officer",
+        "value": "IT Officer"
+      },
+      {
+        "label": "Maintenance Officer",
+        "value": "Maintenance Officer"
+      },
+      {
+        "label": "Security Officer",
+        "value": "Security Officer"
+      },
+      {
+        "label": "Cleaner",
+        "value": "Cleaner"
+      },
+      {
+        "label": "Driver",
+        "value": "Driver"
+      },
+      {
+        "label": "Other",
+        "value": "Other"
+      }
+    ]
+  }
+]
