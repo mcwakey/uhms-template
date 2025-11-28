@@ -104,5 +104,33 @@
     "other": "Autre",
     "reset": "Réinitialiser",
     "apply_filter": "Appliquer le filtre"
+  },
+  "appointment_modal": {
+    "title": "Prendre rendez-vous",
+    "new_appointment_for": "Nouveau rendez-vous pour",
+    "loading": "Chargement du formulaire...",
+    "date": "Date",
+    "select_date": "Sélectionner une date",
+    "book_by": "Type de rendez-vous",
+    "service": "Service",
+    "doctor": "Médecin",
+    "select_service": "Sélectionner un service...",
+    "select_doctor": "Sélectionner un médecin...",
+    "insurance": "Assurance",
+    "optional": "(Optionnel)",
+    "select_insurance": "Sélectionner une assurance",
+    "notes": "Notes",
+    "add_notes": "Ajouter des notes...",
+    "summary": "Résumé du rendez-vous",
+    "date_time": "Date et heure",
+    "cancel": "Annuler",
+    "confirm": "Confirmer le rendez-vous",
+    "creating": "Création en cours...",
+    "fill_required": "Veuillez remplir tous les champs obligatoires",
+    "success": "Rendez-vous créé avec succès",
+    "error_create": "Échec de la création du rendez-vous",
+    "error_services": "Échec du chargement des services",
+    "error_doctors": "Échec du chargement des médecins",
+    "no_insurance": "Aucune assurance trouvée pour ce patient"
   }
 }

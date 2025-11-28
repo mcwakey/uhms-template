@@ -1,883 +1,575 @@
 <template>
-  <div :id="modalId" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div :id="modalId" class="modal fade" tabindex="-1" aria-hidden="true" ref="modalRef">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content border-0 shadow">
-        <div class="modal-header border-0 pb-2 bg-gradient-primary text-white">
+      <div class="modal-content border-0 shadow-lg rounded-3">
+        <!-- Header -->
+        <div class="modal-header bg-gradient-primary text-white border-0 py-3 px-4">
           <div class="d-flex align-items-center">
-            <div class="me-2">
-              <div
-                class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center"
-              >
-                <i class="ti ti-calendar-plus fs-5 text-white"></i>
-              </div>
-            </div>
+            <!-- <div class="avatar avatar-md bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center me-3">
+              <i class="ti ti-calendar-plus fs-4 text-white"></i>
+            </div> -->
             <div>
-              <h5 class="fw-bold modal-title mb-0 text-white fs-16">{{ modalTitle }}</h5>
-              <p class="mb-0 fs-12 text-white opacity-75" v-if="selectedPatient">
-                {{ selectedPatient.full_name }}
-              </p>
+              <h5 class="modal-title fw-bold text-white mb-1">{{ modalTitle || t('appointment_modal.title') }}</h5>
+              <!-- <p class="mb-0 text-white text-opacity-75 fs-13" v-if="selectedPatient">
+                {{ t('appointment_modal.new_appointment_for') }} <span class="fw-semibold">{{ selectedPatient.full_name }}</span>
+              </p> -->
             </div>
           </div>
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <div class="modal-body p-3">
+        <div class="modal-body p-4 bg-light bg-opacity-10">
           <!-- Loading State -->
           <div v-if="loading" class="text-center py-5">
             <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">Loading...</span>
+              <span class="visually-hidden">{{ t('appointment_modal.loading') }}</span>
             </div>
-            <p class="text-muted">Loading appointment form...</p>
+            <p class="text-muted fw-medium">{{ t('appointment_modal.loading') }}</p>
           </div>
 
           <!-- Modal Content -->
           <div v-else>
             <!-- Patient Info Card -->
-            <div class="card bg-light border-0 mb-3" v-if="selectedPatient">
-              <div class="card-body p-2">
+            <div class="card border-0 shadow-sm mb-4" v-if="selectedPatient">
+              <div class="card-body p-3">
                 <div class="d-flex align-items-center">
-                  <div class="me-2">
-                    <div
-                      class="avatar avatar-xs bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
-                    >
-                      <i class="ti ti-user text-primary fs-6"></i>
-                    </div>
+                  <div class="avatar avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                    <i class="ti ti-user text-primary fs-5"></i>
                   </div>
                   <div class="flex-grow-1">
-                    <h6 class="mb-0 fw-bold text-dark fs-14">{{ selectedPatient.full_name }}</h6>
-                    <div class="d-flex align-items-center gap-2 text-muted fs-11">
-                      <span>OPD: {{ selectedPatient.opd_no }}</span>
-                      <span v-if="selectedPatient.phone">{{ selectedPatient.phone }}</span>
-                      <span v-if="selectedPatient.age"
-                        >{{ selectedPatient.age?.value
-                        }}{{ selectedPatient.age?.unit?.charAt(0) }} old</span
-                      >
+                    <h6 class="mb-1 fw-bold text-dark">{{ selectedPatient.full_name }}</h6>
+                    <div class="d-flex align-items-center gap-3 text-muted fs-12">
+                      <span class="d-flex align-items-center"><i class="ti ti-id me-1"></i>{{ selectedPatient.opd_no }}</span>
+                      <span v-if="selectedPatient.age" class="d-flex align-items-center"><i class="ti ti-calendar-time me-1"></i>{{ selectedPatient.age?.value }} {{ selectedPatient.age?.unit }}</span>
+                      <span class="d-flex align-items-center"><i class="ti ti-gender-bigender me-1"></i>{{ selectedPatient.gender }}</span>
+                      <span v-if="selectedPatient.phone" class="d-flex align-items-center"><i class="ti ti-phone me-1"></i>{{ selectedPatient.phone }}</span>
                     </div>
                   </div>
                   <div class="text-end">
-                    <span class="badge bg-success bg-opacity-10 text-success fs-10 px-2 py-1">
-                      Active
-                    </span>
+                    <span class="badge bg-success bg-opacity-10 text-muted px-2 py-1 rounded-pill">{{ selectedPatient.last_visit }}</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <form class="row g-3">
-              <!-- Basic Appointment Details -->
-              <div class="col-12">
-                <div class="card border-0">
-                  <div class="card-body pt-1 pb-2">
-                    <div class="row g-2">
-                      <div class="col-md-6">
-                        <label class="form-label mb-1 fw-medium fs-13">
-                          Date of Appointment<span class="text-danger ms-1">*</span>
-                        </label>
-                        <a-date-picker
-                          v-model:value="appointmentForm.date"
-                          class="form-control"
-                          placeholder="Select date"
-                          :disabled-date="(current) => current && current < dayjs().startOf('day')"
-                          size="default"
-                        />
-                      </div>
+              <!-- Date & Type Selection -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold text-dark fs-13">{{ t('appointment_modal.date') }} <span class="text-danger">*</span></label>
+                <a-date-picker
+                  v-model:value="appointmentForm.date"
+                  class="form-control w-100 shadow-none"
+                  :placeholder="t('appointment_modal.select_date')"
+                  :disabled-date="(current: any) => current && current < dayjs().startOf('day')"
+                  size="large"
+                  :allowClear="false"
+                  :format="'DD MMMM, YYYY'"
+                />
+              </div>
 
-                      <div class="col-md-6">
-                        <label class="form-label mb-1 fw-medium fs-13"> Appointment Type </label>
-                        <div class="appointment-type-toggle mt-1">
-                          <div class="btn-group w-100" role="group">
-                            <input
-                              type="radio"
-                              class="btn-check"
-                              name="appointmentType"
-                              id="serviceType"
-                              :checked="!appointmentForm.type"
-                              @change="appointmentForm.type = false"
-                            />
-                            <label class="btn btn-outline-primary btn-sm" for="serviceType">
-                              <i class="ti ti-stethoscope me-1"></i>Service
-                            </label>
-
-                            <input
-                              type="radio"
-                              class="btn-check"
-                              name="appointmentType"
-                              id="doctorType"
-                              :checked="appointmentForm.type"
-                              @change="appointmentForm.type = true"
-                            />
-                            <label class="btn btn-outline-primary btn-sm" for="doctorType">
-                              <i class="ti ti-user-heart me-1"></i>Doctor
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold text-dark fs-13">{{ t('appointment_modal.book_by') }}</label>
+                <div class="bg-white p-1 rounded border d-flex">
+                  <button 
+                    type="button" 
+                    class="btn btn-sm flex-fill fw-medium" 
+                    :class="!appointmentForm.type ? 'btn-primary shadow-sm' : 'btn-ghost text-muted'"
+                    @click="appointmentForm.type = false"
+                  >
+                    <i class="ti ti-stethoscope me-1"></i>{{ t('appointment_modal.service') }}
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn btn-sm flex-fill fw-medium" 
+                    :class="appointmentForm.type ? 'btn-primary shadow-sm' : 'btn-ghost text-muted'"
+                    @click="appointmentForm.type = true"
+                  >
+                    <i class="ti ti-user-heart me-1"></i>{{ t('appointment_modal.doctor') }}
+                  </button>
                 </div>
               </div>
 
-              <!-- Service/Doctor Selection -->
+              <!-- Dynamic Selection Area -->
               <div class="col-12">
-                <div class="card border-0">
-                  <div class="card-body pt-1 pb-2">
-                    <!-- Initial State - Show instruction -->
-                    <div class="row g-2" v-if="appointmentForm.type === null">
-                      <div class="col-12">
-                        <div class="text-center py-4">
-                          <div
-                            class="avatar avatar-lg bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
-                          >
-                            <i class="ti ti-arrow-up fs-3 text-primary"></i>
-                          </div>
-                          <h6 class="text-muted mb-2">Choose Appointment Type</h6>
-                          <p class="text-muted fs-13 mb-0">
-                            Select either "Service" or "Doctor" above to continue
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Service First Selection (when appointment type is Service) -->
-                    <div class="row g-2" v-if="appointmentForm.type === false">
+                <div class="card border border-dashed bg-white shadow-none">
+                  <div class="card-body p-3">
+                    
+                    <!-- Service First Flow -->
+                    <div class="row g-3" v-if="!appointmentForm.type">
                       <div class="col-md-6">
-                        <label class="form-label mb-1 fw-medium fs-13">
-                          Services<span class="text-danger ms-1">*</span>
-                        </label>
+                        <label class="form-label fw-semibold text-dark fs-13">{{ t('appointment_modal.service') }} <span class="text-danger">*</span></label>
                         <vue-multiselect
                           v-model="appointmentForm.service"
                           :options="servicesOptions"
                           :searchable="true"
-                          :close-on-select="true"
-                          :clear-on-select="true"
-                          :preserve-search="true"
-                          :placeholder="
-                            loadingServices ? 'Loading services...' : 'Select service...'
-                          "
+                          :placeholder="t('appointment_modal.select_service')"
                           label="label"
                           track-by="value"
-                          :allow-empty="true"
                           :loading="loadingServices"
-                          :disabled="loadingServices"
-                          select-label=""
-                          deselect-label=""
-                          selected-label=""
                           @select="onServiceSelect"
+                          class="custom-multiselect"
                         >
                           <template #option="{ option }">
                             <div class="d-flex align-items-center">
-                              <i class="ti ti-medical-cross me-2 text-primary"></i>
-                              <span>{{ option.label }}</span>
-                              <small class="text-muted ms-auto" v-if="option.code"
-                                >({{ option.code }})</small
-                              >
+                              <!-- <span class="d-flex align-items-center justify-content-center bg-light rounded-circle me-2" style="width: 24px; height: 24px;">
+                                <i class="ti ti-medical-cross text-primary fs-12"></i>
+                              </span> -->
+                              <span class="fw-semibold fs-13">{{ option.label }}</span>
                             </div>
                           </template>
                         </vue-multiselect>
                       </div>
-
                       <div class="col-md-6" v-if="appointmentForm.service">
-                        <label class="form-label mb-1 fw-medium fs-13">
-                          Doctor<span class="text-danger ms-1">*</span>
-                        </label>
+                        <label class="form-label fw-semibold text-dark fs-13">{{ t('appointment_modal.doctor') }} <span class="text-danger">*</span></label>
                         <vue-multiselect
                           v-model="appointmentForm.doctor"
                           :options="doctorOptions"
                           :searchable="true"
-                          :close-on-select="true"
-                          :clear-on-select="true"
-                          :preserve-search="true"
-                          :placeholder="
-                            loadingDoctors
-                              ? 'Loading doctors...'
-                              : 'Select doctor for this service...'
-                          "
+                          :placeholder="t('appointment_modal.select_doctor')"
                           label="label"
                           track-by="value"
-                          :allow-empty="true"
                           :loading="loadingDoctors"
-                          :disabled="loadingDoctors"
-                          select-label=""
-                          deselect-label=""
-                          selected-label=""
                           @select="onDoctorSelect"
+                          class="custom-multiselect"
                         >
-                          <template #option="{ option }">
+                           <template #option="{ option }">
                             <div class="d-flex align-items-center">
-                              <i class="ti ti-user-circle me-2 text-success"></i>
-                              <span>Dr. {{ option.label }}</span>
+                              <span class="d-flex align-items-center justify-content-center bg-light rounded-circle me-2" style="width: 24px; height: 24px;">
+                                <i class="ti ti-user text-success fs-12"></i>
+                              </span>
+                              
+                              <span class="fw-semibold fs-13">Dr. {{ option.label }}</span>
                             </div>
                           </template>
                         </vue-multiselect>
-                        <div class="mt-1">
-                          <small class="text-muted">
-                            <i class="ti ti-info-circle me-1"></i>
-                            Doctors available for selected service
-                          </small>
-                        </div>
                       </div>
                     </div>
 
-                    <!-- Doctor First Selection (when appointment type is Doctor) -->
-                    <div class="row g-2" v-if="appointmentForm.type === true">
+                    <!-- Doctor First Flow -->
+                    <div class="row g-3" v-else>
                       <div class="col-md-6">
-                        <label class="form-label mb-1 fw-medium fs-13">
-                          Doctor<span class="text-danger ms-1">*</span>
-                        </label>
+                        <label class="form-label fw-semibold text-dark fs-13">{{ t('appointment_modal.doctor') }} <span class="text-danger">*</span></label>
                         <vue-multiselect
                           v-model="appointmentForm.doctor"
                           :options="doctorOptions"
                           :searchable="true"
-                          :close-on-select="true"
-                          :clear-on-select="true"
-                          :preserve-search="true"
-                          :placeholder="loadingDoctors ? 'Loading doctors...' : 'Select doctor...'"
+                          :placeholder="t('appointment_modal.select_doctor')"
                           label="label"
                           track-by="value"
-                          :allow-empty="true"
                           :loading="loadingDoctors"
-                          :disabled="loadingDoctors"
-                          select-label=""
-                          deselect-label=""
-                          selected-label=""
                           @select="onDoctorSelect"
+                          class="custom-multiselect"
                         >
-                          <template #option="{ option }">
+                           <template #option="{ option }">
                             <div class="d-flex align-items-center">
-                              <i class="ti ti-user-circle me-2 text-success"></i>
+                              <span class="d-flex align-items-center justify-content-center bg-light rounded-circle me-2" style="width: 24px; height: 24px;">
+                                <i class="ti ti-user text-success fs-12"></i>
+                              </span>
                               <span>Dr. {{ option.label }}</span>
                             </div>
                           </template>
                         </vue-multiselect>
                       </div>
-
                       <div class="col-md-6" v-if="appointmentForm.doctor">
-                        <label class="form-label mb-1 fw-medium fs-13">
-                          Services<span class="text-danger ms-1">*</span>
-                        </label>
+                        <label class="form-label fw-semibold text-dark fs-13">{{ t('appointment_modal.service') }} <span class="text-danger">*</span></label>
                         <vue-multiselect
                           v-model="appointmentForm.service"
                           :options="servicesOptions"
                           :searchable="true"
-                          :close-on-select="true"
-                          :clear-on-select="true"
-                          :preserve-search="true"
-                          :placeholder="
-                            loadingServices
-                              ? 'Loading services...'
-                              : 'Select service for this doctor...'
-                          "
+                          :placeholder="t('appointment_modal.select_service')"
                           label="label"
                           track-by="value"
-                          :allow-empty="true"
                           :loading="loadingServices"
-                          :disabled="loadingServices"
-                          select-label=""
-                          deselect-label=""
-                          selected-label=""
                           @select="onServiceSelect"
+                          class="custom-multiselect"
                         >
                           <template #option="{ option }">
                             <div class="d-flex align-items-center">
-                              <i class="ti ti-medical-cross me-2 text-primary"></i>
+                              <span class="d-flex align-items-center justify-content-center bg-light rounded-circle me-2" style="width: 24px; height: 24px;">
+                                <i class="ti ti-medical-cross text-primary fs-12"></i>
+                              </span>
                               <span>{{ option.label }}</span>
-                              <small class="text-muted ms-auto" v-if="option.code"
-                                >({{ option.code }})</small
-                              >
                             </div>
                           </template>
                         </vue-multiselect>
-                        <div class="mt-1">
-                          <small class="text-muted">
-                            <i class="ti ti-info-circle me-1"></i>
-                            Services available for selected doctor
-                          </small>
-                        </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
 
               <!-- Insurance & Notes -->
-              <div class="col-12">
-                <div class="card border-0">
-                  <div class="card-body pt-1 pb-2">
-                    <div class="row g-2">
-                      <div class="col-md-6">
-                        <label class="form-label mb-1 fw-medium fs-13">
-                          Primary Insurance
-                          <span class="badge bg-info bg-opacity-10 text-info fs-10 ms-1"
-                            >Optional</span
-                          >
-                        </label>
-                        <vue-multiselect
-                          v-model="appointmentForm.primaryInsurance"
-                          :options="patientInsuranceOptions"
-                          :searchable="true"
-                          :close-on-select="true"
-                          :clear-on-select="true"
-                          :preserve-search="true"
-                          placeholder="Select insurance..."
-                          label="label"
-                          track-by="value"
-                          :allow-empty="true"
-                          :loading="false"
-                          select-label=""
-                          deselect-label=""
-                          selected-label=""
-                        >
-                          <template #option="{ option }">
-                            <div class="d-flex align-items-center">
-                              <i class="ti ti-shield-check me-2 text-primary"></i>
-                              <span>{{ option.label }}</span>
-                            </div>
-                          </template>
-                        </vue-multiselect>
-                        <div class="mt-1" v-if="patientInsuranceOptions.length === 0">
-                          <small class="text-muted">
-                            <i class="ti ti-info-circle me-1"></i>
-                            No insurance found for this patient
-                          </small>
-                        </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold text-dark fs-13">
+                  {{ t('appointment_modal.insurance') }} <span class="text-muted fw-normal">({{ t('appointment_modal.optional') }})</span>
+                </label>
+                <vue-multiselect
+                  v-model="appointmentForm.primaryInsurance"
+                  :options="patientInsuranceOptions"
+                  :placeholder="t('appointment_modal.select_insurance')"
+                  label="label"
+                  track-by="value"
+                  class="custom-multiselect"
+                >
+                   <template #option="{ option }">
+                      <div class="d-flex align-items-center">
+                        <i class="ti ti-shield-check me-2 text-info"></i>
+                        <span>{{ option.label }}</span>
                       </div>
+                    </template>
+                </vue-multiselect>
+              </div>
 
-                      <div class="col-md-6">
-                        <label class="form-label mb-1 fw-medium fs-13">
-                          Notes
-                          <span class="badge bg-info bg-opacity-10 text-info fs-10 ms-1"
-                            >Optional</span
-                          >
-                        </label>
-                        <textarea
-                          v-model="appointmentForm.notes"
-                          class="form-control"
-                          rows="3"
-                          placeholder="Enter notes..."
-                        ></textarea>
-                      </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold text-dark fs-13">
+                  {{ t('appointment_modal.notes') }} <span class="text-muted fw-normal">({{ t('appointment_modal.optional') }})</span>
+                </label>
+                <textarea
+                  v-model="appointmentForm.notes"
+                  class="form-control shadow-none"
+                  rows="1"
+                  :placeholder="t('appointment_modal.notes_placeholder')"
+                  style="min-height: 42px;"
+                ></textarea>
+              </div>
+
+              <!-- Summary Card -->
+              <div class="col-12" v-if="canCreateAppointment">
+                <div class="alert alert-primary bg-primary bg-opacity-10 border-0 mb-0">
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="ti ti-info-circle text-primary me-2"></i>
+                    <h6 class="mb-0 text-primary fw-bold fs-13">{{ t('appointment_modal.summary_title') }}</h6>
+                  </div>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <small class="text-muted d-block fs-11 text-uppercase fw-bold">{{ t('appointment_modal.date_time') }}</small>
+                      <span class="text-dark fw-medium fs-13">{{ dayjs(appointmentForm.date).format('DD MMMM, YYYY') }}</span>
+                    </div>
+                    <div class="col-md-4">
+                      <small class="text-muted d-block fs-11 text-uppercase fw-bold">{{ t('appointment_modal.service') }}</small>
+                      <span class="text-dark fw-medium fs-13">{{ appointmentForm.service?.label }}</span>
+                    </div>
+                    <div class="col-md-4">
+                      <small class="text-muted d-block fs-11 text-uppercase fw-bold">{{ t('appointment_modal.doctor') }}</small>
+                      <span class="text-dark fw-medium fs-13">Dr. {{ appointmentForm.doctor?.label }}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Appointment Summary -->
-              <div
-                class="col-12"
-                v-if="appointmentForm.service || appointmentForm.doctor || appointmentForm.date"
-              >
-                <div class="card border-0 bg-light">
-                  <div class="card-header bg-transparent border-0 pb-1">
-                    <h6 class="card-title mb-0 fw-bold fs-14 text-primary">
-                      <i class="ti ti-file-check me-1"></i>Summary
-                    </h6>
-                  </div>
-                  <div class="card-body pt-1 pb-2">
-                    <div class="row g-2">
-                      <div class="col-md-3" v-if="appointmentForm.date">
-                        <div class="summary-item">
-                          <small class="text-muted fw-medium">Date</small>
-                          <p class="mb-0 fw-bold text-dark">
-                            {{ dayjs(appointmentForm.date).format('MMM DD, YYYY') }}
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-md-3" v-if="appointmentForm.service">
-                        <div class="summary-item">
-                          <small class="text-muted fw-medium">Service</small>
-                          <p class="mb-0 fw-bold text-dark">{{ appointmentForm.service.label }}</p>
-                        </div>
-                      </div>
-                      <div class="col-md-3" v-if="appointmentForm.doctor">
-                        <div class="summary-item">
-                          <small class="text-muted fw-medium">Doctor</small>
-                          <p class="mb-0 fw-bold text-dark">
-                            Dr. {{ appointmentForm.doctor.label }}
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-md-3" v-if="appointmentForm.primaryInsurance">
-                        <div class="summary-item">
-                          <small class="text-muted fw-medium">Insurance</small>
-                          <p class="mb-0 fw-bold text-dark">
-                            {{ appointmentForm.primaryInsurance.label }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </form>
           </div>
         </div>
 
-        <div class="modal-footer border-0 pt-0 px-3 pb-3">
-          <div class="d-flex justify-content-between w-100">
-            <button
-              type="button"
-              class="btn btn-light btn-sm px-3 fw-medium"
-              data-bs-dismiss="modal"
-            >
-              <i class="ti ti-x me-1"></i>Cancel
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary btn-sm px-3 fw-medium"
-              @click="createAppointment"
-              :disabled="!canCreateAppointment || isSubmitting"
-            >
-              <span
-                v-if="isSubmitting"
-                class="spinner-border spinner-border-sm me-1"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              <i v-else class="ti ti-calendar-plus me-1"></i>
-              {{ isSubmitting ? 'Creating...' : 'Create Appointment' }}
-            </button>
-          </div>
+        <!-- Footer -->
+        <div class="modal-footer border-0 pt-0 px-4 pb-4">
+          <button type="button" class="btn btn-light fw-medium" data-bs-dismiss="modal">{{ t('appointment_modal.cancel') }}</button>
+          <button 
+            type="button" 
+            class="btn btn-primary fw-medium px-4"
+            @click="createAppointment"
+            :disabled="!canCreateAppointment || isSubmitting"
+          >
+            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+            {{ t('appointment_modal.confirm') }}
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
-// import { Modal } from 'bootstrap';
 import dayjs from 'dayjs'
 import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
+import { useI18n } from 'vue-i18n'
 
-export default {
-  name: 'SetAppointmentModal',
-  components: {
-    VueMultiselect,
-  },
-  props: {
-    modalId: {
-      type: String,
-      default: 'set_appointment_modal',
-    },
-    modalTitle: {
-      type: String,
-      default: 'Set Appointment',
-    },
-    selectedPatient: {
-      type: Object,
-      default: () => null,
-    },
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['update:visible', 'appointment-created', 'close'],
-  setup(props, { emit }) {
-    const loading = ref(false)
-    const isSubmitting = ref(false)
+const { t } = useI18n()
 
-    // Form data
-    const appointmentForm = ref({
-      date: dayjs(), // Default to today
-      type: false, // Default to service first (false = service first, true = doctor first)
-      service: null,
-      doctor: null,
-      primaryInsurance: null,
-      notes: '',
-    })
+// Props
+const props = withDefaults(defineProps<{
+  modalId?: string
+  modalTitle?: string
+  selectedPatient?: any
+  visible?: boolean
+}>(), {
+  modalId: 'set_appointment_modal',
+  modalTitle: '',
+  selectedPatient: null,
+  visible: false
+})
 
-    // Options data
-    const servicesOptions = ref([])
-    const doctorOptions = ref([])
-    const patientInsuranceOptions = ref([])
+// Emits
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void
+  (e: 'appointment-created', data: any): void
+  (e: 'close'): void
+}>()
 
-    // Loading states
-    const loadingServices = ref(false)
-    const loadingDoctors = ref(false)
+// State
+const loading = ref(false)
+const isSubmitting = ref(false)
+const modalRef = ref<HTMLElement | null>(null)
 
-    // Computed properties
-    const canCreateAppointment = computed(() => {
-      return (
-        appointmentForm.value.date && appointmentForm.value.service && appointmentForm.value.doctor
-      )
-    })
+// Form data
+const appointmentForm = ref({
+  date: dayjs(),
+  type: false, // false = service first, true = doctor first
+  service: null as any,
+  doctor: null as any,
+  primaryInsurance: null as any,
+  notes: '',
+})
 
-    // Methods
-    const resetForm = () => {
-      appointmentForm.value = {
-        date: dayjs(), // Default to today
-        type: false, // Default to service first
-        service: null,
-        doctor: null,
-        primaryInsurance: null,
-        notes: '',
-      }
-    }
+// Options
+const servicesOptions = ref<any[]>([])
+const doctorOptions = ref<any[]>([])
+const patientInsuranceOptions = ref<any[]>([])
 
-    const fetchServices = async () => {
-      try {
-        loadingServices.value = true
-        const response = await axiosInstance.get('/services/')
-        const services = response.data.results || response.data.data || response.data || []
+// Loading states
+const loadingServices = ref(false)
+const loadingDoctors = ref(false)
 
-        servicesOptions.value = services.map((service) => ({
-          label: service.name,
-          value: service.id,
-          code: service.code,
-          ...service,
-        }))
-      } catch (error) {
-        console.error('Error fetching services:', error)
-        message.error('Failed to load services')
-        servicesOptions.value = []
-      } finally {
-        loadingServices.value = false
-      }
-    }
+// Computed
+const canCreateAppointment = computed(() => {
+  return (
+    appointmentForm.value.date && 
+    appointmentForm.value.service && 
+    appointmentForm.value.doctor
+  )
+})
 
-    const fetchDoctors = async (serviceId = null) => {
-      try {
-        loadingDoctors.value = true
-        let response
-
-        if (serviceId) {
-          // Fetch doctors for a specific service
-          response = await axiosInstance.get(`/services/${serviceId}/staff/`)
-        } else {
-          // Fetch all doctors (staff members)
-          response = await axiosInstance.get('/staff/')
-        }
-
-        const doctors = response.data.results || response.data.data || response.data || []
-
-        doctorOptions.value = doctors.map((doctor) => ({
-          label: doctor.full_name || doctor.name,
-          value: doctor.uuid || doctor.id,
-          ...doctor,
-        }))
-      } catch (error) {
-        console.error('Error fetching doctors:', error)
-        message.error('Failed to load doctors')
-        doctorOptions.value = []
-      } finally {
-        loadingDoctors.value = false
-      }
-    }
-
-    const fetchPatientInsurance = async (patientId) => {
-      try {
-        if (!patientId) return
-
-        const response = await axiosInstance.get(`/patients/${patientId}/insurances/`)
-        const insurances = response.data.results || response.data.data || response.data || []
-
-        patientInsuranceOptions.value = insurances
-          .filter((insurance) => insurance.status === true) // Only active insurances
-          .map((insurance) => ({
-            label:
-              insurance.type === 'SELF-SPONSORED'
-                ? insurance.type
-                : insurance.type === 'nhia'
-                  ? `${insurance.scheme} (${insurance.plan?.company || ''}${insurance.plan?.company && insurance.plan?.name ? ' - ' : ''}${insurance.plan?.name || ''})`
-                  : `${insurance.plan?.company || ''}${insurance.plan?.company && insurance.plan?.name ? ' - ' : ''}${insurance.plan?.name || ''}`,
-            value: insurance.id,
-            type: insurance.type,
-            insurance: insurance,
-          }))
-      } catch (error) {
-        console.error('Error fetching patient insurance:', error)
-        patientInsuranceOptions.value = []
-      }
-    }
-
-    const onServiceSelect = (service) => {
-      appointmentForm.value.service = service
-      if (appointmentForm.value.type === false) {
-        // Service first - fetch doctors for this service
-        fetchDoctors(service.value)
-        appointmentForm.value.doctor = null
-      }
-    }
-
-    const onDoctorSelect = (doctor) => {
-      appointmentForm.value.doctor = doctor
-      if (appointmentForm.value.type === true) {
-        // Doctor first - might need to filter services for this doctor
-        appointmentForm.value.service = null
-      }
-    }
-
-    const createAppointment = async () => {
-      try {
-        if (!canCreateAppointment.value) {
-          message.warning('Please fill in all required fields')
-          return
-        }
-
-        isSubmitting.value = true
-
-        const appointmentData = {
-          patient: props.selectedPatient?.uuid || props.selectedPatient?.id,
-          service: appointmentForm.value.service?.value,
-          staff: appointmentForm.value.doctor?.value,
-          start_date: dayjs(appointmentForm.value.date).format('YYYY-MM-DD'),
-          notes: appointmentForm.value.notes,
-          primary_insurance: appointmentForm.value.primaryInsurance?.value || null,
-          status: 'SCHEDULED',
-          type: appointmentForm.value.type === true ? 'DOCTOR' : 'SERVICE',
-          mode: 'IN-PERSON',
-        }
-
-        // Remove undefined or null values
-        Object.keys(appointmentData).forEach((key) => {
-          if (appointmentData[key] === null || appointmentData[key] === undefined) {
-            delete appointmentData[key]
-          }
-        })
-
-        const response = await axiosInstance.post('/appointments/', appointmentData)
-
-        message.success('Appointment created successfully')
-
-        // Emit events
-        emit('appointment-created', response.data)
-        emit('update:visible', false)
-
-        // Reset form
-        resetForm()
-
-        // Close modal
-        const modalElement = document.getElementById(props.modalId)
-        if (modalElement) {
-          // try {
-          //   const modal = Modal.getInstance(modalElement);
-          //   if (modal) {
-          //     modal.hide();
-          //   }
-          // } catch {
-          // Fallback to window.bootstrap
-          if (window.bootstrap) {
-            const modal = window.bootstrap.Modal.getInstance(modalElement)
-            if (modal) {
-              modal.hide()
-            }
-            // }
-          }
-        }
-      } catch (error) {
-        console.error('Error creating appointment:', error)
-        message.error('Failed to create appointment')
-      } finally {
-        isSubmitting.value = false
-      }
-    }
-
-    // Watch for patient changes
-    watch(
-      () => props.selectedPatient,
-      (newPatient) => {
-        if (newPatient) {
-          fetchPatientInsurance(newPatient.uuid || newPatient.id)
-        }
-      },
-      { immediate: true }
-    )
-
-    // Watch for appointment type changes
-    watch(
-      () => appointmentForm.value.type,
-      (newType) => {
-        // Reset selections when type changes
-        appointmentForm.value.service = null
-        appointmentForm.value.doctor = null
-
-        if (newType !== null) {
-          // Fetch initial data based on type
-          fetchServices()
-          if (newType === true) {
-            // Doctor first - fetch all doctors
-            fetchDoctors()
-          }
-        }
-      }
-    ) // Watch for visible prop changes to show/hide modal
-    watch(
-      () => props.visible,
-      (newVisible) => {
-        nextTick(() => {
-          const modalElement = document.getElementById(props.modalId)
-
-          if (modalElement) {
-            if (newVisible) {
-              // Show the modal
-              // try {
-              //   const modal = new Modal(modalElement);
-              //   modal.show();
-              // } catch {
-              // Fallback to window.bootstrap
-              if (window.bootstrap) {
-                const modal = new window.bootstrap.Modal(modalElement)
-                modal.show()
-              }
-              // }
-            } else {
-              // Hide the modal
-              // try {
-              //   const modal = Modal.getInstance(modalElement);
-              //   if (modal) {
-              //     modal.hide();
-              //   }
-              // } catch {
-              // Fallback to window.bootstrap
-              if (window.bootstrap) {
-                const modal = window.bootstrap.Modal.getInstance(modalElement)
-                if (modal) {
-                  modal.hide()
-                }
-              }
-              // }
-            }
-          }
-        })
-      },
-      { immediate: true }
-    )
-
-    // Initialize data when component mounts
-    onMounted(() => {
-      fetchServices()
-      fetchDoctors()
-
-      // Add event listener for when modal is hidden
-      const modalElement = document.getElementById(props.modalId)
-      if (modalElement) {
-        modalElement.addEventListener('hidden.bs.modal', () => {
-          emit('update:visible', false)
-          emit('close')
-        })
-      }
-    })
-
-    return {
-      loading,
-      isSubmitting,
-      appointmentForm,
-      servicesOptions,
-      doctorOptions,
-      patientInsuranceOptions,
-      loadingServices,
-      loadingDoctors,
-      canCreateAppointment,
-      resetForm,
-      onServiceSelect,
-      onDoctorSelect,
-      createAppointment,
-      dayjs,
-    }
-  },
+// Methods
+const resetForm = () => {
+  appointmentForm.value = {
+    date: dayjs(),
+    type: false,
+    service: null,
+    doctor: null,
+    primaryInsurance: null,
+    notes: '',
+  }
 }
+
+const fetchServices = async (doctorId?: string | number) => {
+  try {
+    loadingServices.value = true
+    let url = '/services/'
+    if (doctorId) {
+      url = `/staff/${doctorId}/services/`
+    }
+    const response = await axiosInstance.get(url)
+    const services = response.data.results || response.data.data || response.data || []
+
+    servicesOptions.value = services.map((service: any) => ({
+      label: service.name,
+      value: service.id,
+      code: service.code, 
+      ...service,
+    }))
+  } catch (error) {
+    console.error('Error fetching services:', error)
+    message.error(t('appointment_modal.error_services'))
+    servicesOptions.value = []
+  } finally {
+    loadingServices.value = false
+  }
+}
+
+const fetchDoctors = async (serviceId?: string | number) => {
+  try {
+    loadingDoctors.value = true
+    let url = '/staff/'
+    if (serviceId) {
+      url = `/services/${serviceId}/staff/`
+    }
+    const response = await axiosInstance.get(url)
+
+    const doctors = response.data.results || response.data.data || response.data || []
+
+    doctorOptions.value = doctors.map((doctor: any) => ({
+      label: doctor.full_name || doctor.name,
+      value: doctor.uuid || doctor.id,
+      ...doctor,
+    }))
+  } catch (error) {
+    console.error('Error fetching doctors:', error)
+    message.error(t('appointment_modal.error_doctors'))
+    doctorOptions.value = []
+  } finally {
+    loadingDoctors.value = false
+  }
+}
+
+const fetchPatientInsurance = async (patientId: string | number) => {
+  try {
+    if (!patientId) return
+
+    const response = await axiosInstance.get(`/patients/${patientId}/insurances/`)
+    const insurances = response.data.results || response.data.data || response.data || []
+
+    patientInsuranceOptions.value = insurances
+      .filter((insurance: any) => insurance.status === true)
+      .map((insurance: any) => ({
+        label: insurance.type === 'SELF-SPONSORED'
+            ? insurance.type
+            : insurance.type === 'NHIA'
+              ? `${insurance.scheme} (${insurance.plan?.company || ''}${insurance.plan?.company && insurance.plan?.name ? ' - ' : ''}${insurance.plan?.name || ''})`
+              : `${insurance.plan?.company || ''}${insurance.plan?.company && insurance.plan?.name ? ' - ' : ''}${insurance.plan?.name || ''}`,
+        value: insurance.id,
+        type: insurance.type,
+        insurance: insurance,
+      }))
+  } catch (error) {
+    console.error('Error fetching patient insurance:', error)
+    patientInsuranceOptions.value = []
+  }
+}
+
+const onServiceSelect = (service: any) => {
+  appointmentForm.value.service = service
+  if (appointmentForm.value.type === false) {
+    fetchDoctors(service.value)
+    appointmentForm.value.doctor = null
+  }
+}
+
+const onDoctorSelect = (doctor: any) => {
+  appointmentForm.value.doctor = doctor
+  if (appointmentForm.value.type === true) {
+    fetchServices(doctor.value)
+    appointmentForm.value.service = null
+  }
+}
+
+const createAppointment = async () => {
+  try {
+    if (!canCreateAppointment.value) {
+      message.warning(t('appointment_modal.fill_required'))
+      return
+    }
+
+    isSubmitting.value = true
+
+    const appointmentData: any = {
+      patient: props.selectedPatient?.uuid || props.selectedPatient?.id,
+      service: appointmentForm.value.service?.value,
+      staff: appointmentForm.value.doctor?.value,
+      start_date: dayjs(appointmentForm.value.date).format('YYYY-MM-DD'),
+      notes: appointmentForm.value.notes,
+      primary_insurance: appointmentForm.value.primaryInsurance?.value || null,
+      status: 'SCHEDULED',
+      type: appointmentForm.value.type === true ? 'DOCTOR' : 'SERVICE',
+      mode: 'IN-PERSON',
+    }
+
+    Object.keys(appointmentData).forEach((key) => {
+      if (appointmentData[key] === null || appointmentData[key] === undefined) {
+        delete appointmentData[key]
+      }
+    })
+
+    const response = await axiosInstance.post('/appointments/', appointmentData)
+
+    message.success(t('appointment_modal.success'))
+    emit('appointment-created', response.data)
+    emit('update:visible', false)
+    resetForm()
+
+    const modalElement = document.getElementById(props.modalId)
+    if (modalElement && (window as any).bootstrap) {
+      const modal = (window as any).bootstrap.Modal.getInstance(modalElement)
+      if (modal) modal.hide()
+    }
+  } catch (error) {
+    console.error('Error creating appointment:', error)
+    message.error(t('appointment_modal.error_create'))
+  } finally {
+    isSubmitting.value = false
+  }
+}
+
+// Watchers
+watch(() => props.selectedPatient, (newPatient) => {
+  if (newPatient) {
+    fetchPatientInsurance(newPatient.uuid || newPatient.id)
+    fetchServices()
+  }
+}, { immediate: true })
+
+watch(() => appointmentForm.value.type, (newType) => {
+  appointmentForm.value.service = null
+  appointmentForm.value.doctor = null
+  
+  if (newType === false) {
+    fetchServices()
+    doctorOptions.value = []
+  } else {
+    fetchDoctors()
+    servicesOptions.value = []
+  }
+})
+
+watch(() => props.visible, (newVisible) => {
+  if (newVisible) {
+    // if (appointmentForm.value.type === false) {
+      fetchServices()
+    // } else {
+    //   fetchDoctors()
+    // }
+  }
+})
+
+onMounted(() => {
+  console.log('SetAppointmentModal mounted')
+  emit('update:visible', true)
+  console.log('visible:', props.visible)
+  // fetchServices()
+  // fetchDoctors()
+  
+  // const modalElement = document.getElementById(props.modalId)
+  // if (modalElement) {
+  //   modalElement.addEventListener('hidden.bs.modal', () => {
+  //     emit('update:visible', false)
+  //     emit('close')
+  //   })
+  // }
+})
 </script>
 
 <style scoped>
-/* Ensure modal centers properly */
-.modal-dialog {
-  margin: 1.75rem auto;
-  max-width: 800px;
-}
-
-.modal-dialog-centered {
-  display: flex;
-  align-items: center;
-  min-height: calc(100vh - 1rem);
-}
-
-/* Fix for modal positioning */
-.modal.fade .modal-dialog {
-  transform: translateY(-50px);
-  transition: transform 0.3s ease-out;
-}
-
-.modal.show .modal-dialog {
-  transform: none;
-}
-
-/* Ensure modal is centered even on smaller screens */
-@media (max-width: 768px) {
-  .modal-dialog {
-    margin: 0.5rem;
-    max-width: calc(100vw - 1rem);
-  }
-
-  .modal-dialog-centered {
-    min-height: calc(100vh - 1rem);
-  }
-}
-
-/* Summary item styling */
-.summary-item {
-  padding: 8px;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.7);
-}
-
-/* Appointment type toggle styling */
-.appointment-type-toggle .btn-group {
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.appointment-type-toggle .btn {
-  border-radius: 0;
-  font-size: 13px;
-  padding: 8px 16px;
-}
-
-.appointment-type-toggle .btn:first-child {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-.appointment-type-toggle .btn:last-child {
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
-/* Modal header gradient */
 .bg-gradient-primary {
   background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
 }
 
-/* Form improvements */
-.form-label {
-  font-weight: 500;
-  color: #495057;
-}
-
-/* Card styling */
-.card {
-  border-radius: 10px;
-}
-
-.card-header {
-  border-radius: 10px 10px 0 0;
-}
-
-/* Button styling */
-.btn-sm {
-  font-size: 13px;
-  font-weight: 500;
-}
-
-/* Close button for white text */
 .btn-close-white {
-  filter: invert(1) grayscale(100%) brightness(200%);
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.btn-close-white:hover {
+  opacity: 1;
+}
+
+.custom-multiselect :deep(.multiselect__tags) {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  padding-top: 6px;
+}
+
+.custom-multiselect :deep(.multiselect__placeholder) {
+  margin-bottom: 0;
+  padding-top: 2px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+}
+.btn-ghost:hover {
+  background: #f8f9fa;
 }
 </style>

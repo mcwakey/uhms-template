@@ -145,7 +145,7 @@
                       :to="{ name: 'ViewPatient', params: { id: record.uuid } }"
                       :title="t('patients.view_details')"  class="text-dark fw-semibold"
                       >{{ record.full_name }}
-                      <span class="text-body fs-13 fw-normal d-block">{{record.age.value}}{{ record.age.unit ? t('patients.age_unit') : '' }}, {{record.gender}} </span>
+                      <span class="text-body fs-13 fw-normal d-block">{{record.age.value}}{{ record.age.unit ? record.age.unit.charAt(0) : '' }} {{ t('patients.age_unit') }}, {{record.gender}} </span>
                       </router-link
                     >
                   <!-- </h6> -->
@@ -163,7 +163,7 @@
               </div>
             </template>
             <template v-if="column.key === 'date_of_birth'">
-              {{ record.date_of_birth }}
+              {{ dayjs(record.date_of_birth).format('DD MMM, YYYY') }}
               <!-- <span
                 v-if="record.age && typeof record.age === 'object'"
                 :class="[
@@ -256,11 +256,7 @@
                     </a>
                     <ul class="dropdown-menu p-2">
                         <li>
-                            <!-- <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link> -->
-                            <a href="javascript:void(0);" @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#view_staff"
-                             :title="t('patients.view_details')" class="dropdown-item d-flex align-items-center"
-                            >Edit</a>
-
+                            <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                         </li>
                         <li>
                             <!-- <router-link to="/patients/patient-details" class="dropdown-item d-flex align-items-center">View</router-link> -->
@@ -463,17 +459,17 @@ const exportData = (type: string) => {
 //   }
 // }
 
-// const openSetAppointmentModal = async (patient: Patient): Promise<void> => {
-//   selectedPatient.value = patient
+const openSetAppointmentModal = async (patient: Patient): Promise<void> => {
+  selectedPatient.value = patient
 
-//   await nextTick()
-//   const modalEl = document.getElementById('set_appointment')
-//   const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
-//   if (Bootstrap && modalEl) {
-//     const modal = new Bootstrap.Modal(modalEl)
-//     modal.show()
-//   }
-// }
+  await nextTick()
+  const modalEl = document.getElementById('set_appointment')
+  const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
+  if (Bootstrap && modalEl) {
+    const modal = new Bootstrap.Modal(modalEl)
+    modal.show()
+  }
+}
 
 const handleAppointmentCreated = (): void => {
   message.success(t('patients.appointment_created'))

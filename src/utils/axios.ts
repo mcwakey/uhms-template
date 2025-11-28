@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 // Request interceptor - Add auth token to requests
 axiosInstance.interceptors.request.use(
   (config) => {
-    const authData = localStorage.getItem('auth')
+    const authData = localStorage.getItem('authStore')
     if (authData) {
       try {
         const { token } = JSON.parse(authData)
@@ -41,7 +41,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const authData = localStorage.getItem('auth')
+        const authData = localStorage.getItem('authStore')
         if (authData) {
           const { refreshToken } = JSON.parse(authData)
           if (refreshToken) {
@@ -55,7 +55,7 @@ axiosInstance.interceptors.response.use(
             // Update stored token
             const parsedAuth = JSON.parse(authData)
             parsedAuth.token = access
-            localStorage.setItem('auth', JSON.stringify(parsedAuth))
+            localStorage.setItem('authStore', JSON.stringify(parsedAuth))
 
             // Retry original request with new token
             originalRequest.headers.Authorization = `Bearer ${access}`
@@ -64,7 +64,7 @@ axiosInstance.interceptors.response.use(
         }
       } catch (refreshError) {
         // Refresh failed - clear auth and redirect to login
-        localStorage.removeItem('auth')
+        localStorage.removeItem('authStore')
         window.location.href = '/login'
         return Promise.reject(refreshError)
       }

@@ -104,5 +104,33 @@
     "other": "Other",
     "reset": "Reset",
     "apply_filter": "Apply Filter"
+  },
+  "appointment_modal": {
+    "title": "Set Appointment",
+    "new_appointment_for": "New appointment for",
+    "loading": "Loading appointment form...",
+    "date": "Date",
+    "select_date": "Select date",
+    "book_by": "Appointment Type",
+    "service": "Service",
+    "doctor": "Doctor",
+    "select_service": "Select service...",
+    "select_doctor": "Select doctor...",
+    "insurance": "Insurance",
+    "optional": "(Optional)",
+    "select_insurance": "Select insurance",
+    "notes": "Notes",
+    "add_notes": "Add any notes...",
+    "summary": "Appointment Summary",
+    "date_time": "Date & Time",
+    "cancel": "Cancel",
+    "confirm": "Confirm Appointment",
+    "creating": "Creating...",
+    "fill_required": "Please fill in all required fields",
+    "success": "Appointment created successfully",
+    "error_create": "Failed to create appointment",
+    "error_services": "Failed to load services",
+    "error_doctors": "Failed to load doctors",
+    "no_insurance": "No insurance found for this patient"
   }
 }
