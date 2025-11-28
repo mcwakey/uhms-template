@@ -13,12 +13,10 @@
                 <div class="authen-overlay-item w-100">
                   <div class="authen-head text-center">
                     <h1 class="text-white fs-32 fw-bold mb-2">
-                      Seamless healthcare access <br />
-                      with smart, modern clinic
+                      {{ t('auth.seamless_access_title') }}
                     </h1>
                     <p class="text-light fw-normal text-light">
-                      Experience efficient, secure, and user-friendly healthcare management designed
-                      for modern clinics and growing practices.
+                      {{ t('auth.seamless_access_desc') }}
                     </p>
                   </div>
                   <div class="mt-4 mx-auto authen-overlay-img">
@@ -47,8 +45,8 @@
                   <div class="card border-1 p-lg-3 shadow-md rounded-3 m-0">
                     <div class="card-body">
                       <div class="text-center mb-3">
-                        <h5 class="mb-1 fs-20 fw-bold">Forgot Password</h5>
-                        <p class="text-muted">Enter your email to receive a password reset link.</p>
+                        <h5 class="mb-1 fs-20 fw-bold">{{ t('auth.forgot_password_title') }}</h5>
+                        <p class="text-muted">{{ t('auth.forgot_password_desc') }}</p>
                       </div>
 
                       <VeeForm
@@ -58,7 +56,7 @@
                       >
                         <div v-if="!emailSubmitted">
                           <div class="mb-3">
-                            <label class="form-label">Email</label>
+                            <label class="form-label">{{ t('auth.email_label') }}</label>
                             <div class="input-group">
                               <span class="input-group-text border-end-0 bg-white">
                                 <i class="ti ti-user fs-14 text-dark"></i>
@@ -67,7 +65,7 @@
                                 name="email"
                                 v-model="email"
                                 type="email"
-                                placeholder="Enter your email"
+                                :placeholder="t('auth.email_placeholder')"
                                 class="form-control border-start-0 ps-0"
                                 :class="{ 'is-invalid': errors.email }"
                               />
@@ -78,13 +76,13 @@
                           </div>
                           <div class="mb-2">
                             <button type="submit" class="btn bg-primary text-white w-100">
-                              Send Reset Link
+                              {{ t('auth.send_reset_link') }}
                             </button>
                           </div>
                         </div>
                         <div v-else>
                           <div class="mb-3">
-                            <label class="form-label">New Password</label>
+                            <label class="form-label">{{ t('auth.new_password_label') }}</label>
                             <div class="input-group">
                               <span class="input-group-text border-end-0 bg-white">
                                 <i class="ti ti-lock fs-14 text-dark"></i>
@@ -93,7 +91,7 @@
                                 name="password"
                                 v-model="password"
                                 type="password"
-                                placeholder="Enter new password"
+                                :placeholder="t('auth.new_password_placeholder')"
                                 class="form-control border-start-0 ps-0"
                                 :class="{ 'is-invalid': errors.password }"
                               />
@@ -103,7 +101,7 @@
                             </div>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label">Confirm Password</label>
+                            <label class="form-label">{{ t('auth.confirm_password_label') }}</label>
                             <div class="input-group">
                               <span class="input-group-text border-end-0 bg-white">
                                 <i class="ti ti-lock fs-14 text-dark"></i>
@@ -112,7 +110,7 @@
                                 name="confirmPassword"
                                 v-model="confirmPassword"
                                 type="password"
-                                placeholder="Confirm new password"
+                                :placeholder="t('auth.confirm_password_placeholder')"
                                 class="form-control border-start-0 ps-0"
                                 :class="{ 'is-invalid': errors.confirmPassword }"
                               />
@@ -123,20 +121,20 @@
                           </div>
                           <div class="mb-2">
                             <button type="submit" class="btn bg-primary text-white w-100">
-                              Reset Password
+                              {{ t('auth.reset_password_button') }}
                             </button>
                           </div>
                         </div>
                       </VeeForm>
                       <div class="text-center mt-3">
-                        <router-link to="/login" class="text-primary">Back to Login</router-link>
+                        <router-link to="/login" class="text-primary">{{ t('auth.back_to_login') }}</router-link>
                       </div>
                     </div>
                     <!-- end card body -->
                   </div>
                   <!-- end card -->
                 </div>
-                <p class="fs-14 text-dark text-center mt-4">
+                <p class="fs-14 text-dark text-center mt-4 pt-4">
                   Copyright &copy; {{ new Date().getFullYear() }} - ClickSoftwareGh.
                 </p>
               </div>
@@ -151,87 +149,83 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup lang="ts">
+/**
+ * ForgetIndex Component
+ * 
+ * Handles password reset flow:
+ * 1. User enters email -> Request reset token
+ * 2. Verify token -> Show password reset form
+ * 3. User enters new password -> Reset password
+ */
+import { ref, computed } from 'vue'
 import { Form as VeeForm, Field } from 'vee-validate'
 import * as Yup from 'yup'
-import { useAuthStore as authStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { notifySuccess, notifyError } from '@/utils/notifications/toast'
 
-export default {
-  components: {
-    VeeForm,
-    Field,
-  },
-  setup() {
-    const email = ref('')
-    const password = ref('')
-    const confirmPassword = ref('')
-    const emailSubmitted = ref(false)
-    const uuid = ref(null)
+const { t } = useI18n()
+const authStore = useAuthStore()
+const router = useRouter()
 
-    const emailSchema = Yup.object().shape({
-      email: Yup.string().email('Enter a valid email').required('Email is required'),
-    })
-    const passwordSchema = Yup.object().shape({
-      password: Yup.string()
-        .min(6, 'Password must be at least 6 characters')
-        .required('Password is required'),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Passwords must match')
-        .required('Confirm your password'),
-    })
+const email = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const emailSubmitted = ref(false)
+const uuid = ref<string | null>(null)
 
-    const currentSchema = ref(emailSchema)
+const emailSchema = Yup.object().shape({
+  email: Yup.string().email(t('validation.email_invalid')).required(t('validation.email_required')),
+})
 
-    const onSubmit = async (values) => {
-      if (!emailSubmitted.value) {
-        var response = await authStore().forgotPassword(values.email)
-        if (response.status === 200) {
-          response = await authStore().tokenVerify(response.data.token)
-          if (response.status === 200) {
-            uuid.value = response.data.uuid
-            emailSubmitted.value = true
-            currentSchema.value = passwordSchema
-          } else {
-            // Handle error response, e.g., show a notification or alert
-            console.error('Error verifying token:', response.data.detail)
-            emailSubmitted.value = false
-            currentSchema.value = emailSchema
-          }
+const passwordSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(6, t('validation.password_min_length'))
+    .required(t('validation.password_required')),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], t('validation.passwords_must_match'))
+    .required(t('validation.confirm_password_required')),
+})
+
+const currentSchema = computed(() => emailSubmitted.value ? passwordSchema : emailSchema)
+
+const onSubmit = async (values: any) => {
+  try {
+    if (!emailSubmitted.value) {
+      // Step 1: Send reset link
+      const response = await authStore.forgotPassword(values.email)
+      
+      if (response.status === 200) {
+        // Step 2: Verify token immediately (as per original logic)
+        if (response.data.token) {
+           const verifyResponse = await authStore.tokenVerify(response.data.token)
+           if (verifyResponse.status === 200) {
+             uuid.value = verifyResponse.data.uuid
+             emailSubmitted.value = true
+             notifySuccess(t('auth.reset_link_sent'))
+           } else {
+             notifyError(t('auth.token_verification_failed'))
+           }
         } else {
-          // Handle error response, e.g., show a notification or alert
-          console.error('Error sending reset link:', response.data.detail)
-          emailSubmitted.value = false
-          currentSchema.value = emailSchema
+           notifySuccess(t('auth.reset_link_sent_email'))
         }
       } else {
-        // Handle password reset logic here
-        if (values.password !== values.confirmPassword) {
-          // Show an error message if passwords do not match
-          // console.error('Passwords do not match')
-          return
-        }
-        await authStore().newPassword(uuid.value, values.password)
-        // Optionally redirect or show a success message
+        notifyError(t('auth.reset_link_failed'))
       }
-
-      //   emailSubmitted.value = true
-      //   currentSchema.value = passwordSchema
-      // } else {
-      //   // Handle password reset logic here
-      //   await authStore().resetPassword(password.value)
-      //   // Optionally redirect or show a success message
-      // }
+    } else {
+      // Step 3: Reset password
+      if (uuid.value) {
+        await authStore.newPassword(uuid.value, values.password)
+        notifySuccess(t('auth.password_reset_success'))
+        router.push('/login')
+      }
     }
-
-    return {
-      email,
-      password,
-      confirmPassword,
-      emailSubmitted,
-      currentSchema,
-      onSubmit,
-    }
-  },
+  } catch (error: any) {
+    console.error('Error in password reset flow:', error)
+    const message = error.response?.data?.detail || error.message || t('errors.general_error')
+    notifyError(message)
+  }
 }
 </script>

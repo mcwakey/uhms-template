@@ -13,219 +13,53 @@
                 "subMenus": [
                     {
                         "menuValue": "Admin Dashboard",
-                        "route": "/dashboard/admin-dashboard",
+                        "route": "/admin/dashboard/",
                         "active_link": "/dashboard/admin-dashboard"
                     },
                     {
-                        "menuValue": "Doctor Dashboard",
-                        "route": "/doctor/doctor-dashboard",
-                        "active_link": "/doctor/doctor-dashboard"
+                        "menuValue": "Consultation Dashboard",
+                        "route": "/consultation/dashboard",
+                        "active_link": "/consultation/dashboard"
+                    },
+                    {
+                        "menuValue": "Investigation Dashboard",
+                        "route": "/investigation/dashboard",
+                        "active_link": "/investigation/dashboard"
+                    },
+                    {
+                        "menuValue": "Treatment Dashboard",
+                        "route": "/treatment/dashboard",
+                        "active_link": "/treatment/dashboard"
+                    },
+                    {
+                        "menuValue": "Procedure Dashboard",
+                        "route": "/procedure/dashboard",
+                        "active_link": "/procedure/dashboard"
+                    },
+                    {
+                        "menuValue": "Medication Dashboard",
+                        "route": "/medication/dashboard",
+                        "active_link": "/medication/dashboard"
+                    },
+                    {
+                        "menuValue": "Emergency Services Dashboard",
+                        "route": "/emergency/dashboard",
+                        "active_link": "/emergency/dashboard"
+                    },
+                    {
+                        "menuValue": "Nursing Care Dashboard",
+                        "route": "/nursing/dashboard",
+                        "active_link": "/nursing/dashboard"
+                    },
+                    {
+                        "menuValue": "Support Services Dashboard",
+                        "route": "/support/dashboard",
+                        "active_link": "/support/dashboard"
                     },
                     {
                         "menuValue": "Patient Dashboard",
-                        "route": "/patient/patient-dashboard",
-                        "active_link": "/patient/patient-dashboard"
-                    }
-                ]
-            },            
-            {
-                "menuValue": "Applications",
-                "Icon": "ti ti-apps",
-                "active_link": "applications",
-                "active_link1": "calls",
-                "hasSubRouteTwo": true,
-                "showSubRoute": false,
-                "subMenus": [
-                    {
-                        "menuValue": "Chat",
-                        "route": "/applications/chat",
-                        "active_link": "/applications/chat",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "Calls",
-                        "customSubmenuTwo": true,
-                        "active_link": "calls",
-                        "hasSubRoute": true,
-                        "showSubRoute": false,
-                        "subMenusTwo": [
-                            {
-                                "menuValue": "Voice Call",                        
-                                "route": "/calls/voice-call",
-                                "active_link": "/calls/voice-call",
-                                "hasSubRoute": false,
-                                "showSubRoute": false
-                            },
-                            {
-                                "menuValue": "Video Call",                        
-                                "route": "/calls/video-call",
-                                "active_link": "/calls/video-call",
-                                "hasSubRoute": false,
-                                "showSubRoute": false
-                            },
-                            {
-                                "menuValue": "Outgoing Call",                        
-                                "route": "/calls/outgoing-call",
-                                "active_link": "/calls/outgoing-call",
-                                "hasSubRoute": false,
-                                "showSubRoute": false
-                            },
-                            {
-                                "menuValue": "Incoming Call",                        
-                                "route": "/calls/incoming-call",
-                                "active_link": "/calls/incoming-call",
-                                "hasSubRoute": false,
-                                "showSubRoute": false
-                            },
-                            {
-                                "menuValue": "Call History",                        
-                                "route": "/calls/call-history",
-                                "active_link": "/calls/call-history",
-                                "hasSubRoute": false,
-                                "showSubRoute": false
-                            }
-                        ]
-                    },
-                    {
-                        "menuValue": "Calendar",
-                        "route": "/applications/calendar",
-                        "active_link": "/applications/calendar",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "Contacts",
-                        "route": "/applications/contacts",
-                        "active_link": "/applications/contacts",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "Email",
-                        "route": "/applications/email",
-                        "active_link": "/applications/email",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "Invoice",
-                        "customSubmenuTwo": true,
-                        "active_link": "invoice",
-                        "hasSubRoute": true,
-                        "showSubRoute": false,
-                        "subMenusTwo": [
-                            {
-                                "menuValue": "invoice",                        
-                                "route": "/invoice/invoice-list",
-                                "active_link": "/invoice/invoice-list",
-                                "hasSubRoute": false,
-                                "showSubRoute": false
-                            },
-                            {
-                                "menuValue": "invoice Details",                        
-                                "route": "/invoice/invoice-details",
-                                "active_link": "/invoice/invoice-details",
-                                "hasSubRoute": false,
-                                "showSubRoute": false
-                            }
-                        ]
-                    },
-                    {
-                        "menuValue": "To Do",
-                        "route": "/applications/todo",
-                        "active_link": "/applications/todo",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "Notes",
-                        "route": "/applications/notes",
-                        "active_link": "/applications/notes",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "Kanban Board",
-                        "route": "/applications/kanban-view",
-                        "active_link": "/applications/kanban-view",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "File Manager",
-                        "route": "/applications/file-manager",
-                        "active_link": "/applications/file-manager",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },                    
-                    {
-                        "menuValue": "Social Feed",
-                        "route": "/applications/social-feed",
-                        "active_link": "/applications/social-feed",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    },
-                    {
-                        "menuValue": "Search Result",
-                        "route": "/applications/search-list",
-                        "active_link": "/applications/search-list",
-                        "hasSubRoute": false,
-                        "showSubRoute": false,
-                        "customSubmenuTwo": false
-                    }
-                ]
-            },
-            {
-                "menuValue": "Layouts",
-                "active_link" : "layout",
-                "hasSubRoute": true,
-                "showSubRoute": false,
-                "Icon": "ti ti-layout-sidebar",
-                "subMenus": [
-                    {
-                        "menuValue": "Default",
-                        "route": "/layout/layout-default",
-                        "active_link": "/layout/layout-default"
-                    },
-                    {
-                        "menuValue": "Mini",
-                        "route": "/layout/layout-mini",
-                        "active_link": "/layout/layout-mini"
-                    },
-                    {
-                        "menuValue": "Hover View",
-                        "route": "/layout/layout-hover-view",
-                        "active_link": "/layout/layout-hover-view"
-                    },
-                    {
-                        "menuValue": "Hidden",
-                        "route": "/layout/layout-hidden",
-                        "active_link": "/layout/layout-hidden"
-                    },
-                    {
-                        "menuValue": "Full Width",
-                        "route": "/layout/layout-full-width",
-                        "active_link": "/layout/layout-full-width"
-                    },
-                    {
-                        "menuValue": "RTL",
-                        "route": "/layout/layout-rtl",
-                        "active_link": "/layout/layout-rtl"
-                    },
-                    {
-                        "menuValue": "Dark",
-                        "route": "/layout/layout-dark",
-                        "active_link": "/layout/layout-dark"
+                        "route": "/patient/dashboard",
+                        "active_link": "/patient/dashboard"
                     }
                 ]
             }
@@ -237,55 +71,21 @@
       "separateRoute": false,
       "menu": [
         {
-            "menuValue": "Doctors",
-            "active_link" : "doctors",
-            "hasSubRoute": true,
-            "showSubRoute": false,
-            "Icon": "ti ti-user-plus",
-            "subMenus": [
-                {
-                    "menuValue": "Doctors",
-                    "route": "/doctors/doctors-list",
-                    "active_link": "/doctors/doctors-list"
-                },
-                {
-                    "menuValue": "Doctor Details",
-                    "route": "/doctors/doctor-details",
-                    "active_link": "/doctors/doctor-details"
-                },
-                {
-                    "menuValue": "Add Doctor",
-                    "route": "/doctors/add-doctor",
-                    "active_link": "/doctors/add-doctor"
-                },
-                {
-                    "menuValue": "Doctor Schedule",
-                    "route": "/doctors/doctor-schedule",
-                    "active_link": "/doctors/doctor-schedule"
-                }
-            ]
-        },
-        {
             "menuValue": "Patients",
             "active_link" : "patients",
             "hasSubRoute": true,
             "showSubRoute": false,
             "Icon": "ti ti-user-heart",
-            "subMenus": [
+             "subMenus": [
                 {
                     "menuValue": "Patients",
-                    "route": "/patients/patients-list",
-                    "active_link": "/patients/patients-list"
-                },
-                {
-                    "menuValue": "Patient Details",
-                    "route": "/patients/patient-details",
-                    "active_link": "/patients/patient-details"
+                    "route": "/admin/clinic/patients",
+                    "active_link": "/admin/clinic/patients"
                 },
                 {
                     "menuValue": "Create Patient",
-                    "route": "/patients/create-patient",
-                    "active_link": "/patients/create-patient"
+                    "route": "/admin/clinic/patients/create",
+                    "active_link": "/admin/clinic/patients/create"
                 }
             ]
         },
@@ -298,66 +98,37 @@
             "subMenus": [
                 {
                     "menuValue": "Appointments",
-                    "route": "/appointments/appointments-list",
-                    "active_link": "/appointments/appointments-list"
-                },
-                {
-                    "menuValue": "New Appointment",
-                    "route": "/appointments/new-appointment",
-                    "active_link": "/appointments/new-appointment"
+                    "route": "/admin/clinic/appointments",
+                    "active_link": "/admin/clinic/appointments"
                 },
                 {
                     "menuValue": "Calendar",
-                    "route": "/appointments/appointment-calendar",
-                    "active_link": "/appointments/appointment-calendar"
+                    "route": "/admin/clinic/appointments/calendar",
+                    "active_link": "/admin/clinic/appointments/calendar"
                 }
             ]
         },
         {
-            "menuValue": "Locations",
-            "Icon": "ti ti-map-pin",
-            "active_link" : "/clinic/locations",
-            "route": "/clinic/locations",
-            "hasSubRoute": false,
-            "showSubRoute": false
-        },
-        {
             "menuValue": "Services",
             "Icon": "ti ti-user-cog",
-            "active_link" : "/clinic/services",
-            "route": "/clinic/services",
+            "active_link": "/admin/clinic/services",
+            "route": "/admin/clinic/services",
             "hasSubRoute": false,
             "showSubRoute": false
         },
         {
             "menuValue": "Specializations",
             "Icon": "ti ti-user-shield",
-            "active_link" : "/clinic/specializations",
-            "route": "/clinic/specializations",
+            "active_link" : "/admin/clinic/specializations",
+            "route": "/admin/clinic/specializations",
             "hasSubRoute": false,
             "showSubRoute": false
         },
         {
-            "menuValue": "Assets",
-            "Icon": "ti ti-asset",
-            "active_link" : "/clinic/assets",
-            "route": "/clinic/assets",
-            "hasSubRoute": false,
-            "showSubRoute": false
-        },
-        {
-            "menuValue": "Activities",
-            "Icon": "ti ti-activity",
-            "active_link" : "/clinic/activities",
-            "route": "/clinic/activities",
-            "hasSubRoute": false,
-            "showSubRoute": false
-        },
-        {
-            "menuValue": "Messages",
-            "Icon": "ti ti-messages",
-            "active_link" : "/clinic/messages",
-            "route": "/clinic/messages",
+            "menuValue": "Locations",
+            "Icon": "ti ti-map-pin",
+            "active_link" : "/admin/clinic/locations",
+            "route": "/admin/clinic/locations",
             "hasSubRoute": false,
             "showSubRoute": false
         }
@@ -501,6 +272,14 @@
                 "Icon": "ti ti-transition-right",
                 "active_link" : "/finance/transactions",
                 "route": "/finance/transactions",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Assets",
+                "Icon": "ti ti-asset",
+                "active_link" : "/clinic/assets",
+                "route": "/clinic/assets",
                 "hasSubRoute": false,
                 "showSubRoute": false
             }

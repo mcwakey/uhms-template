@@ -34,5 +34,33 @@
   "logout": {
     "success_message": "Logout successful",
     "error_message": "Logout failed. Please try again."
+  },
+  "auth": {
+    "seamless_access_title": "Seamless healthcare access with smart, modern clinic",
+    "seamless_access_desc": "Experience efficient, secure, and user-friendly healthcare management designed for modern clinics and growing practices.",
+    "forgot_password_title": "Forgot Password",
+    "forgot_password_desc": "Enter your email to receive a password reset link.",
+    "email_label": "Email",
+    "email_placeholder": "Enter your email",
+    "send_reset_link": "Send Reset Link",
+    "new_password_label": "New Password",
+    "new_password_placeholder": "Enter new password",
+    "confirm_password_label": "Confirm Password",
+    "confirm_password_placeholder": "Confirm new password",
+    "reset_password_button": "Reset Password",
+    "back_to_login": "Back to Login",
+    "reset_link_sent": "Reset link sent and verified.",
+    "reset_link_sent_email": "Reset link sent to your email.",
+    "token_verification_failed": "Failed to verify token.",
+    "reset_link_failed": "Failed to send reset link.",
+    "password_reset_success": "Password reset successful. Please login."
+  },
+  "validation": {
+    "email_invalid": "Enter a valid email",
+    "email_required": "Email is required",
+    "password_min_length": "Password must be at least 6 characters",
+    "password_required": "Password is required",
+    "passwords_must_match": "Passwords must match",
+    "confirm_password_required": "Confirm your password"
   }
 }

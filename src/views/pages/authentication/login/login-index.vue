@@ -150,8 +150,9 @@
                     <!-- end card -->
                   </div>
                 </VeeForm>
-                <p class="fs-14 text-dark text-center mt-4">
-                  {{ t('login.copyright', { year: new Date().getFullYear() }) }}
+                <p class="fs-14 text-dark text-center mt-4 pt-4">
+                  <!-- {{ t('login.copyright', { year: new Date().getFullYear() }) }} -->
+                    Copyright &copy; {{ new Date().getFullYear() }} - ClickSoftwareGh.
                 </p>
               </div>
               <!-- end row-->
@@ -226,7 +227,7 @@ async function onSubmit(values: any) {
     // Delay navigation to ensure toast displays
     setTimeout(() => {
       authStore.handleRouteChange()
-    }, 200)
+    }, 100)
   } catch (error) {
     notifyError(authStore.error || t('login.error_message'))
   }

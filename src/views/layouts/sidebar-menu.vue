@@ -62,12 +62,12 @@
         <li>
             <ul>
                 <li>
-                    <a href="https://preclinic.dreamstechnologies.com/documentation/vue.html" target="_blank"><i class="ti ti-file-text"></i><span>Documentation</span></a>
+                    <a href="javascript:void(0);" target="_blank0"><i class="ti ti-file-text"></i><span>Documentation</span></a>
                 </li>
                 <li>
-                    <a href="https://preclinic.dreamstechnologies.com/documentation/changelog.html" target="_blank"><i class="ti ti-exchange"></i><span>Changelog</span><span class="badge bg-danger ms-2 badge-md rounded-2 fs-12 fw-medium">v1.7.2</span></a>
+                    <a href="javascript:void(0);" target="_blank0"><i class="ti ti-exchange"></i><span>Changelog</span><span class="badge bg-danger ms-2 badge-md rounded-2 fs-12 fw-medium">v1.7.2</span></a>
                 </li>
-                <li class="submenu">
+                <!-- <li class="submenu">
                     <a href="javascript:void(0);" :class="{ subdrop: multilevel[0] }" @click="multilevel[0] = !multilevel[0]">
                         <i class="ti ti-menu-2"></i>
                         <span>Multi Level</span>
@@ -92,7 +92,7 @@
                         </li>
                         <li><a href="javascript:void(0);">Multilevel 3</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </li>
     </ul>

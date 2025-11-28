@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
 import axiosInstance from '@/utils/axios'
 import { router } from '@/router'
-import { notifySuccess, notifyError } from '@/utils/notifications/toast'
 import type { AuthState, LoginCredentials, AuthResponse, DecodedToken } from '@/types'
 
 /**
@@ -169,15 +168,8 @@ export const useAuthStore = defineStore('authStore', {
      * @returns Promise with response or error
      */
     async forgotPassword(email: string) {
-      try {
-        const response = await axiosInstance.post('auth/password-reset-token/', { email })
-        return response
-      } catch (error: any) {
-        notifyError(
-          error.response?.data?.detail || 'Failed to send password reset email. Please try again.'
-        )
-        return error.response || error
-      }
+      const response = await axiosInstance.post('auth/password-reset-token/', { email })
+      return response
     },
 
     /**
@@ -190,16 +182,10 @@ export const useAuthStore = defineStore('authStore', {
       this.userToken = token
       try {
         const response = await axiosInstance.patch('auth/token/verification/', { token })
-        if (response.status === 200) {
-          return response
-        } else {
-          notifyError(response.data?.detail || 'Failed to verify token. Please try again.')
-          return false
-        }
+        return response
       } catch (error: any) {
         console.error('Token verification failed:', error)
-        notifyError(error.response?.data?.detail || 'Failed to verify token. Please try again.')
-        return error.response || error
+        throw error
       }
     },
 
@@ -216,16 +202,11 @@ export const useAuthStore = defineStore('authStore', {
           password2: password,
           token: this.userToken,
         })
-        notifySuccess(
-          response.data.message ||
-            'Password reset successful. You can now log in with your new password.'
-        )
         this.$reset()
-        router.push({ name: 'Login' })
+        return response
       } catch (error: any) {
         console.error('Password reset failed:', error)
-        notifyError(error.response?.data?.detail || 'Failed to reset password. Please try again.')
-        return error.response || error
+        throw error
       }
     },
 
