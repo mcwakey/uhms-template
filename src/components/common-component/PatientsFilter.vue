@@ -10,12 +10,31 @@
       </select>
     </div>
     <div class="mb-3">
-      <label class="form-label">{{ $t('patients.status') }}</label>
-      <select class="form-select" v-model="filters.status">
-        <option value="">{{ $t('patients.all') }}</option>
-        <option value="active">{{ $t('patients.active') }}</option>
-        <option value="inactive">{{ $t('patients.inactive') }}</option>
-      </select>
+      <label class="form-label">{{ $t('patients.dob') }}</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        v-model="filters.dobRange" 
+        placeholder="Select date range"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ $t('patients.address') }}</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        v-model="filters.address" 
+        placeholder="enter a locality or city"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ $t('patients.last_visit') }}</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        v-model="filters.lvdRange" 
+        placeholder="Select date range"
+      />
     </div>
   </div>
   <div class="filter-footer d-flex align-items-center justify-content-end border-top">
@@ -39,6 +58,9 @@ const emit = defineEmits(['filter'])
 const filters = reactive({
   gender: '',
   status: '',
+  dobRange: '',
+  address: '',
+  lvdRange: '',
 })
 
 const applyFilters = () => {
@@ -48,6 +70,11 @@ const applyFilters = () => {
 const resetFilters = () => {
   filters.gender = ''
   filters.status = ''
+  filters.dobRange = ''
+  filters.address = ''
+  filters.lvdRange = ''
   emit('filter', { ...filters })
 }
+
+defineExpose({ resetFilters })
 </script>

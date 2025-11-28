@@ -21,21 +21,33 @@ export const useTableStore = (endpoint: string) => {
     const perPage = ref(10)
     const totalCount = ref(0)
     const searchQuery = ref('')
+    const filters = ref<any>({})
 
     // Actions
     /**
      * Fetches paginated data from the API
-     * @param params - Additional query parameters
+     * @param newFilters - Additional query parameters or filters to update
      */
-    async function fetchData(params: any = {}) {
+    async function fetchData(newFilters: any = null) {
       loading.value = true
+      
+      // Update filters if provided
+      if (newFilters) {
+        filters.value = { ...filters.value, ...newFilters }
+      }
+
+      // Clean up filters (remove null/undefined/empty strings)
+      const activeFilters = Object.fromEntries(
+        Object.entries(filters.value).filter(([_, v]) => v !== null && v !== undefined && v !== '')
+      )
+
       try {
         const response = await axiosInstance.get(endpoint, {
           params: {
             page: currentPage.value,
             page_size: perPage.value,
             search: searchQuery.value,
-            ...params
+            ...activeFilters
           }
         })
         
@@ -110,6 +122,7 @@ export const useTableStore = (endpoint: string) => {
       perPage,
       totalCount,
       searchQuery,
+      filters,
       fetchData,
       fetchItemDetails,
       fetchItem,

@@ -32,10 +32,10 @@
             </a>
             <ul class="dropdown-menu p-2">
               <li>
-                <a class="dropdown-item" href="#">{{ $t('patients.download_pdf') }}</a>
+                <a class="dropdown-item" href="javascript:void(0);" @click="exportData('pdf')">{{ $t('patients.download_pdf') }}</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">{{ $t('patients.download_excel') }}</a>
+                <a class="dropdown-item" href="javascript:void(0);" @click="exportData('csv')">{{ $t('patients.download_excel') }}</a>
               </li>
             </ul>
           </div>
@@ -82,14 +82,14 @@
               <div
                 class="d-flex align-items-center justify-content-between border-bottom filter-header"
               >
-                <h4 class="mb-0">{{ $t('patients.filter') }}</h4>
+                <h4 class="mb-0 fw-bold">{{ $t('patients.filter') }}</h4>
                 <div class="d-flex align-items-center">
-                  <a href="javascript:void(0);" class="link-danger text-decoration-underline">{{
+                  <a href="javascript:void(0);" class="link-danger text-decoration-underline" @click="clearAllFilters">{{
                     $t('patients.clear_all')
                   }}</a>
                 </div>
               </div>
-              <FilterIndex></FilterIndex>
+              <PatientsFilter @filter="handleFilter" ref="patientsFilterRef" />
             </div>
           </div>
           <div class="dropdown">
@@ -98,14 +98,14 @@
               class="dropdown-toggle btn bg-white btn-md d-inline-flex align-items-center fw-normal rounded border text-dark px-2 py-1 fs-14"
               data-bs-toggle="dropdown"
             >
-              <span class="me-1"> {{ $t('patients.sort_by') }} : </span> {{ $t('patients.recent') }}
+              <span class="me-1"> {{ $t('patients.sort_by') }} : </span> {{ currentSortLabel }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end p-2">
               <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">{{ $t('patients.recent') }}</a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1" @click="handleSort('-created_at', t('patients.recent'))">{{ $t('patients.recent') }}</a>
               </li>
               <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">{{ $t('patients.oldest') }}</a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1" @click="handleSort('created_at', t('patients.oldest'))">{{ $t('patients.oldest') }}</a>
               </li>
             </ul>
           </div>
@@ -498,11 +498,11 @@ import { message } from 'ant-design-vue'
 import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import PatientsFilter from '../../../../../components/common-component/PatientsFilter.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
-import PatientDetailsModal from '@/components/modal/PatientDetailsModal.vue'
-import AddInsuranceModal from '@/components/modal/AddInsuranceModal.vue'
+// import PatientDetailsModal from '@/components/modal/PatientDetailsModal.vue'
+// import AddInsuranceModal from '@/components/modal/AddInsuranceModal.vue'
 import { useI18n } from 'vue-i18n'
 import constants from '@/assets/json/constants.json'
 import type { Patient } from '@/types/patient'
@@ -513,10 +513,11 @@ dayjs.extend(relativeTime)
 const { t } = useI18n()
 
 // Refs
-const insurances: Ref<any[]> = ref([])
+// const insurances: Ref<any[]> = ref([])
 const loading: Ref<boolean> = ref(false)
 const selectedPatient: Ref<Patient | null> = ref(null)
 const searchQuery: Ref<string> = ref('')
+const currentSortLabel = ref(t('patients.recent'))
 
 // Store
 const PatientsTable = useTableStore('patients')
@@ -528,6 +529,9 @@ const paginationConfig: ComputedRef<PaginationConfig> = computed(() => ({
   current: PatientsTable.currentPage.value,
   pageSize: PatientsTable.perPage.value,
   total: PatientsTable.totalCount.value,
+  showSizeChanger: true,
+  hideOnSinglePage: false,
+  showTotal: (total: number, range: [number, number]) => `${range[0]}-${range[1]} of ${total} items`,
 }))
 
 // Extract options from constants.json
@@ -537,6 +541,57 @@ const statusOptions: SelectOption[] =
   (constants.find((c: any) => c.statusOptions) || {}).statusOptions || []
 
 // Methods
+const patientsFilterRef = ref<any>(null)
+
+const handleFilter = async (filters: any) => {
+  await PatientsTable.fetchData(filters)
+}
+
+const clearAllFilters = async () => {
+  if (patientsFilterRef.value) {
+    patientsFilterRef.value.resetFilters()
+  } else {
+    await PatientsTable.fetchData()
+  }
+}
+
+const handleSort = async (sort: string, label: string) => {
+  currentSortLabel.value = label
+  await PatientsTable.fetchData({ ordering: sort })
+}
+
+const exportData = (type: string) => {
+  if (type === 'csv') {
+    // Simple CSV export
+    const headers = columns.value.filter(c => c.key !== 'actions').map(c => c.title).join(',')
+    const rows = tableData.value.map((row: any) => {
+      return columns.value.filter(c => c.key !== 'actions').map(c => {
+        let val = ''
+        if (c.key === 'full_name') val = row.full_name
+        else if (c.key === 'opd_no') val = row.opd_no
+        else if (c.key === 'gender') val = row.gender
+        else if (c.key === 'date_of_birth') val = row.date_of_birth
+        else if (c.key === 'phone') val = row.phone
+        else if (c.key === 'address') val = formatAddress(row.address) || ''
+        else if (c.key === 'last_visit_date') val = row.last_visit_date
+        
+        return `"${String(val || '').replace(/"/g, '""')}"`
+      }).join(',')
+    }).join('\n')
+    
+    const csvContent = `data:text/csv;charset=utf-8,${headers}\n${rows}`
+    const encodedUri = encodeURI(csvContent)
+    const link = document.createElement('a')
+    link.setAttribute('href', encodedUri)
+    link.setAttribute('download', 'patients_export.csv')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } else {
+    message.info('PDF export not implemented yet')
+  }
+}
+
 const handleSearch = async (): Promise<void> => {
   PatientsTable.searchQuery.value = searchQuery.value.trim()
   await PatientsTable.fetchData()
@@ -549,7 +604,7 @@ const openModal = async (record: Patient): Promise<void> => {
       return
     }
     await PatientsTable.fetchItemDetails(record.uuid)
-    insurances.value = await PatientsTable.fetchItem(`${record.uuid}/insurances`)
+    // insurances.value = await PatientsTable.fetchItem(`${record.uuid}/insurances`)
   } catch (error) {
     message.error(String(error))
   }
@@ -572,87 +627,87 @@ const handleAppointmentCreated = (): void => {
   selectedPatient.value = null
 }
 
-const handleInsuranceAdded = async (): Promise<void> => {
-  if (detailedItem.value.uuid) {
-    try {
-      insurances.value = await PatientsTable.fetchItem(`${detailedItem.value.uuid}/insurances`)
-    } catch (error) {
-      console.error('Error refreshing insurance list:', error)
-    }
-  }
-}
+// const handleInsuranceAdded = async (): Promise<void> => {
+//   if (detailedItem.value.uuid) {
+//     try {
+//       insurances.value = await PatientsTable.fetchItem(`${detailedItem.value.uuid}/insurances`)
+//     } catch (error) {
+//       console.error('Error refreshing insurance list:', error)
+//     }
+//   }
+// }
 
-const openAddInsuranceModal = async (): Promise<void> => {
-  const patientDetailsModal = document.getElementById('view_staff')
-  if (patientDetailsModal) {
-    const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
+// const openAddInsuranceModal = async (): Promise<void> => {
+//   const patientDetailsModal = document.getElementById('view_staff')
+//   if (patientDetailsModal) {
+//     const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
 
-    if (Bootstrap) {
-      let patientModal = Bootstrap.Modal.getInstance?.(patientDetailsModal) || null
-      if (!patientModal) {
-        patientModal = new Bootstrap.Modal(patientDetailsModal)
-      }
+//     if (Bootstrap) {
+//       let patientModal = Bootstrap.Modal.getInstance?.(patientDetailsModal) || null
+//       if (!patientModal) {
+//         patientModal = new Bootstrap.Modal(patientDetailsModal)
+//       }
 
-      patientModal.hide()
-      patientDetailsModal.addEventListener('hidden.bs.modal', openInsuranceModalAfterClose, {
-        once: true,
-      })
-    } else {
-      patientDetailsModal.classList.remove('show')
-      patientDetailsModal.style.display = 'none'
-      patientDetailsModal.setAttribute('aria-hidden', 'true')
+//       patientModal.hide()
+//       patientDetailsModal.addEventListener('hidden.bs.modal', openInsuranceModalAfterClose, {
+//         once: true,
+//       })
+//     } else {
+//       patientDetailsModal.classList.remove('show')
+//       patientDetailsModal.style.display = 'none'
+//       patientDetailsModal.setAttribute('aria-hidden', 'true')
 
-      const existingBackdrop = document.querySelector('.modal-backdrop')
-      if (existingBackdrop) {
-        existingBackdrop.remove()
-      }
+//       const existingBackdrop = document.querySelector('.modal-backdrop')
+//       if (existingBackdrop) {
+//         existingBackdrop.remove()
+//       }
 
-      setTimeout(openInsuranceModalAfterClose, 300)
-    }
-  } else {
-    openInsuranceModalAfterClose()
-  }
-}
+//       setTimeout(openInsuranceModalAfterClose, 300)
+//     }
+//   } else {
+//     openInsuranceModalAfterClose()
+//   }
+// }
 
-const openInsuranceModalAfterClose = async (): Promise<void> => {
-  await nextTick()
+// const openInsuranceModalAfterClose = async (): Promise<void> => {
+//   await nextTick()
 
-  const modalEl = document.getElementById('add_insurance')
-  const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
+//   const modalEl = document.getElementById('add_insurance')
+//   const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
 
-  if (Bootstrap && modalEl) {
-    const modal = new Bootstrap.Modal(modalEl)
-    modal.show()
-  } else if (modalEl) {
-    modalEl.classList.add('show')
-    modalEl.style.display = 'block'
-    modalEl.setAttribute('aria-hidden', 'false')
-    document.body.classList.add('modal-open')
+//   if (Bootstrap && modalEl) {
+//     const modal = new Bootstrap.Modal(modalEl)
+//     modal.show()
+//   } else if (modalEl) {
+//     modalEl.classList.add('show')
+//     modalEl.style.display = 'block'
+//     modalEl.setAttribute('aria-hidden', 'false')
+//     document.body.classList.add('modal-open')
 
-    const backdrop = document.createElement('div')
-    backdrop.className = 'modal-backdrop fade show'
-    backdrop.id = 'add-insurance-backdrop'
-    document.body.appendChild(backdrop)
+//     const backdrop = document.createElement('div')
+//     backdrop.className = 'modal-backdrop fade show'
+//     backdrop.id = 'add-insurance-backdrop'
+//     document.body.appendChild(backdrop)
 
-    const closeModal = (): void => {
-      modalEl.classList.remove('show')
-      modalEl.style.display = 'none'
-      modalEl.setAttribute('aria-hidden', 'true')
-      document.body.classList.remove('modal-open')
-      const backdrop = document.getElementById('add-insurance-backdrop')
-      if (backdrop) {
-        backdrop.remove()
-      }
-    }
+//     const closeModal = (): void => {
+//       modalEl.classList.remove('show')
+//       modalEl.style.display = 'none'
+//       modalEl.setAttribute('aria-hidden', 'true')
+//       document.body.classList.remove('modal-open')
+//       const backdrop = document.getElementById('add-insurance-backdrop')
+//       if (backdrop) {
+//         backdrop.remove()
+//       }
+//     }
 
-    const closeBtn = modalEl.querySelector('.btn-close')
-    if (closeBtn) {
-      closeBtn.addEventListener('click', closeModal)
-    }
+//     const closeBtn = modalEl.querySelector('.btn-close')
+//     if (closeBtn) {
+//       closeBtn.addEventListener('click', closeModal)
+//     }
 
-    backdrop.addEventListener('click', closeModal)
-  }
-}
+//     backdrop.addEventListener('click', closeModal)
+//   }
+// }
 
 const formatAddress = (address: any): string | null => {
   if (!address) return null

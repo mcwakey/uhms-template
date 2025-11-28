@@ -97,6 +97,12 @@
     "age_unit": "ans",
     "uuid_not_found": "UUID du patient introuvable",
     "appointment_created": "Rendez-vous créé avec succès",
-    "load_failed": "Échec du chargement des données du patient"
+    "load_failed": "Échec du chargement des données du patient",
+    "all": "Tous",
+    "male": "Homme",
+    "female": "Femme",
+    "other": "Autre",
+    "reset": "Réinitialiser",
+    "apply_filter": "Appliquer le filtre"
   }
 }
