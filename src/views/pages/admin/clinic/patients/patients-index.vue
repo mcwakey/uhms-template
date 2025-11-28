@@ -342,153 +342,6 @@
     @appointment-created="handleAppointmentCreated"
   />
 </template>
-<style scoped>
-/* Set Appointment Modal Styles */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.bg-gradient-light {
-  background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
-}
-
-.appointment-type-toggle .btn-group .btn {
-  border-radius: 0.375rem !important;
-  padding: 0.5rem 0.75rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-.appointment-type-toggle .btn-group .btn:first-child {
-  margin-right: 0.25rem;
-}
-
-.appointment-type-toggle .btn-group .btn-check:checked + .btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: #667eea;
-  color: white;
-}
-
-.form-control {
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-}
-
-.form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.125rem rgba(102, 126, 234, 0.15);
-}
-
-.multiselect {
-  border-radius: 0.375rem !important;
-  border: 1px solid #e2e8f0 !important;
-}
-
-.multiselect__tags {
-  border-radius: 0.375rem !important;
-  padding: 0.375rem 0.75rem !important;
-  min-height: 38px !important;
-  font-size: 0.875rem !important;
-}
-
-.multiselect__placeholder {
-  color: #94a3b8 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-}
-
-.multiselect__option--highlight {
-  background: #667eea !important;
-}
-
-.multiselect__option--selected {
-  background: #f1f5f9 !important;
-  color: #334155 !important;
-}
-
-.summary-item {
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 0.375rem;
-  text-align: center;
-}
-
-.btn-close-white {
-  filter: invert(1) grayscale(100%) brightness(200%);
-}
-
-.text-purple {
-  color: #8b5cf6 !important;
-}
-
-.avatar {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.avatar-xs {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.avatar-sm {
-  width: 2rem;
-  height: 2rem;
-}
-
-.avatar-md {
-  width: 3rem;
-  height: 3rem;
-}
-
-/* Compact font sizes */
-.fs-16 {
-  font-size: 1rem !important;
-}
-
-.fs-14 {
-  font-size: 0.875rem !important;
-}
-
-.fs-13 {
-  font-size: 0.8125rem !important;
-}
-
-.fs-12 {
-  font-size: 0.75rem !important;
-}
-
-.fs-11 {
-  font-size: 0.6875rem !important;
-}
-
-.fs-10 {
-  font-size: 0.625rem !important;
-}
-
-.fs-6 {
-  font-size: 0.875rem !important;
-}
-
-.fs-5 {
-  font-size: 1rem !important;
-}
-
-/* Remove all hover effects */
-.card,
-.btn,
-.form-control,
-.multiselect {
-  transition: none !important;
-}
-
-.card:hover {
-  transform: none !important;
-  box-shadow: inherit !important;
-}
-</style>
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -498,13 +351,13 @@ import { message } from 'ant-design-vue'
 import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
-import PatientsFilter from '../../../../../components/common-component/PatientsFilter.vue'
+import PatientsFilter from '@/components/common-component/PatientsFilter.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
 // import PatientDetailsModal from '@/components/modal/PatientDetailsModal.vue'
 // import AddInsuranceModal from '@/components/modal/AddInsuranceModal.vue'
 import { useI18n } from 'vue-i18n'
-import constants from '@/assets/json/constants.json'
+// import constants from '@/assets/json/constants.json'
 import type { Patient } from '@/types/patient'
 import type { TableColumn, PaginationConfig, SelectOption } from '@/types/common'
 
@@ -520,10 +373,10 @@ const searchQuery: Ref<string> = ref('')
 const currentSortLabel = ref(t('patients.recent'))
 
 // Store
-const PatientsTable = useTableStore('patients')
+const PatientsTable = useTableStore('patients/')
 
 // Computed
-const detailedItem: ComputedRef<Patient> = computed(() => PatientsTable.detailedItem.value || {})
+// const detailedItem: ComputedRef<Patient> = computed(() => PatientsTable.detailedItem.value || {})
 
 const paginationConfig: ComputedRef<PaginationConfig> = computed(() => ({
   current: PatientsTable.currentPage.value,
@@ -535,17 +388,13 @@ const paginationConfig: ComputedRef<PaginationConfig> = computed(() => ({
 }))
 
 // Extract options from constants.json
-const appointmentTypeOptions: SelectOption[] =
-  (constants.find((c: any) => c.appointmentTypeOptions) || {}).appointmentTypeOptions || []
-const statusOptions: SelectOption[] =
-  (constants.find((c: any) => c.statusOptions) || {}).statusOptions || []
+// const appointmentTypeOptions: SelectOption[] =
+//   (constants.find((c: any) => c.appointmentTypeOptions) || {}).appointmentTypeOptions || []
+// const statusOptions: SelectOption[] =
+//   (constants.find((c: any) => c.statusOptions) || {}).statusOptions || []
 
 // Methods
 const patientsFilterRef = ref<any>(null)
-
-const handleFilter = async (filters: any) => {
-  await PatientsTable.fetchData(filters)
-}
 
 const clearAllFilters = async () => {
   if (patientsFilterRef.value) {
@@ -553,6 +402,15 @@ const clearAllFilters = async () => {
   } else {
     await PatientsTable.fetchData()
   }
+}
+
+const handleFilter = async (filters: any) => {
+  await PatientsTable.fetchData(filters)
+}
+
+const handleSearch = async (): Promise<void> => {
+  PatientsTable.searchQuery.value = searchQuery.value.trim()
+  await PatientsTable.fetchData()
 }
 
 const handleSort = async (sort: string, label: string) => {
@@ -592,35 +450,30 @@ const exportData = (type: string) => {
   }
 }
 
-const handleSearch = async (): Promise<void> => {
-  PatientsTable.searchQuery.value = searchQuery.value.trim()
-  await PatientsTable.fetchData()
-}
+// const openModal = async (record: Patient): Promise<void> => {
+//   try {
+//     if (!record.uuid) {
+//       message.error(t('patients.uuid_not_found'))
+//       return
+//     }
+//     await PatientsTable.fetchItemDetails(record.uuid)
+//     // insurances.value = await PatientsTable.fetchItem(`${record.uuid}/insurances`)
+//   } catch (error) {
+//     message.error(String(error))
+//   }
+// }
 
-const openModal = async (record: Patient): Promise<void> => {
-  try {
-    if (!record.uuid) {
-      message.error(t('patients.uuid_not_found'))
-      return
-    }
-    await PatientsTable.fetchItemDetails(record.uuid)
-    // insurances.value = await PatientsTable.fetchItem(`${record.uuid}/insurances`)
-  } catch (error) {
-    message.error(String(error))
-  }
-}
+// const openSetAppointmentModal = async (patient: Patient): Promise<void> => {
+//   selectedPatient.value = patient
 
-const openSetAppointmentModal = async (patient: Patient): Promise<void> => {
-  selectedPatient.value = patient
-
-  await nextTick()
-  const modalEl = document.getElementById('set_appointment')
-  const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
-  if (Bootstrap && modalEl) {
-    const modal = new Bootstrap.Modal(modalEl)
-    modal.show()
-  }
-}
+//   await nextTick()
+//   const modalEl = document.getElementById('set_appointment')
+//   const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
+//   if (Bootstrap && modalEl) {
+//     const modal = new Bootstrap.Modal(modalEl)
+//     modal.show()
+//   }
+// }
 
 const handleAppointmentCreated = (): void => {
   message.success(t('patients.appointment_created'))
@@ -789,12 +642,159 @@ onMounted(async () => {
   }
 
   // Enable Bootstrap tooltips
-  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
-  tooltipTriggerList.forEach(function (tooltipTriggerEl: HTMLElement) {
-    const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
-    if (Bootstrap?.Tooltip) {
-      new Bootstrap.Tooltip(tooltipTriggerEl)
-    }
-  })
+  // const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
+  // tooltipTriggerList.forEach(function (tooltipTriggerEl: HTMLElement) {
+  //   const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
+  //   if (Bootstrap?.Tooltip) {
+  //     new Bootstrap.Tooltip(tooltipTriggerEl)
+  //   }
+  // })
 })
 </script>
+<style scoped>
+/* Set Appointment Modal Styles */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-light {
+  background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+}
+
+.appointment-type-toggle .btn-group .btn {
+  border-radius: 0.375rem !important;
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.appointment-type-toggle .btn-group .btn:first-child {
+  margin-right: 0.25rem;
+}
+
+.appointment-type-toggle .btn-group .btn-check:checked + .btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+  color: white;
+}
+
+.form-control {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.125rem rgba(102, 126, 234, 0.15);
+}
+
+.multiselect {
+  border-radius: 0.375rem !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.multiselect__tags {
+  border-radius: 0.375rem !important;
+  padding: 0.375rem 0.75rem !important;
+  min-height: 38px !important;
+  font-size: 0.875rem !important;
+}
+
+.multiselect__placeholder {
+  color: #94a3b8 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.multiselect__option--highlight {
+  background: #667eea !important;
+}
+
+.multiselect__option--selected {
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+}
+
+.summary-item {
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0.375rem;
+  text-align: center;
+}
+
+.btn-close-white {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.text-purple {
+  color: #8b5cf6 !important;
+}
+
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.avatar-xs {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.avatar-sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+.avatar-md {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Compact font sizes */
+.fs-16 {
+  font-size: 1rem !important;
+}
+
+.fs-14 {
+  font-size: 0.875rem !important;
+}
+
+.fs-13 {
+  font-size: 0.8125rem !important;
+}
+
+.fs-12 {
+  font-size: 0.75rem !important;
+}
+
+.fs-11 {
+  font-size: 0.6875rem !important;
+}
+
+.fs-10 {
+  font-size: 0.625rem !important;
+}
+
+.fs-6 {
+  font-size: 0.875rem !important;
+}
+
+.fs-5 {
+  font-size: 1rem !important;
+}
+
+/* Remove all hover effects */
+.card,
+.btn,
+.form-control,
+.multiselect {
+  transition: none !important;
+}
+
+.card:hover {
+  transform: none !important;
+  box-shadow: inherit !important;
+}
+</style>
