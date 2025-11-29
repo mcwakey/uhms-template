@@ -256,7 +256,7 @@
                     </a>
                     <ul class="dropdown-menu p-2">
                         <li>
-                            <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
+                            <router-link :to="{ name: 'EditPatient', params: { id: record.uuid } }" class="dropdown-item d-flex align-items-center">Edit</router-link>
                         </li>
                         <li>
                             <!-- <router-link to="/patients/patient-details" class="dropdown-item d-flex align-items-center">View</router-link> -->
@@ -282,7 +282,7 @@
                     </a>
                     <ul class="dropdown-menu p-2">
                         <li>
-                            <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
+                            <router-link :to="{ name: 'EditPatient', params: { id: record.uuid } }" class="dropdown-item d-flex align-items-center">Edit</router-link>
                         </li>
                         <li>
                             <router-link to="/patients/patient-details" class="dropdown-item d-flex align-items-center">View</router-link>

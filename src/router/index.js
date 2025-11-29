@@ -94,6 +94,12 @@ const routes = [
         component: () => import('@/views/pages/admin/clinic/patients/patient-view.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
+      {
+        path: 'patients/:id/edit',
+        name: 'EditPatient',
+        component: () => import('@/views/pages/admin/clinic/patients/patients-edit.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
 
       // { path: 'patients/:id/consultation', name: 'PatientConsultation', component: () => import('@/views/pages/admin/clinic/patients/consultation/inperson-consultation.vue'), meta: { requiresAuth: true, isAdmin: true } },
       // { path: 'patients/:id/telehealth', name: 'PatientTelehealth', component: () => import('@/views/pages/admin/clinic/patients/consultation/online-consultation.vue'), meta: { requiresAuth: true, isAdmin: true } },

@@ -15,7 +15,7 @@
 <div class="row justify-content-center">
       <div class="col-lg-10">
         <div class="mb-4">
-                        <h6 class="fw-bold mb-0 d-flex align-items-center"> <router-link to="/patients/patients-list" class="text-dark"> <i class="ti ti-chevron-left me-1"></i>{{ $t('patients.title') }}</router-link></h6>
+                        <h6 class="fw-bold mb-0 d-flex align-items-center"> <router-link to="/patients/patients-list" class="text-dark"> <i class="ti ti-chevron-left me-1"></i>{{ $t('patients.edit_title') || 'Edit Patient' }}</router-link></h6>
                     </div>
         <VeeForm
           :validation-schema="schema"
@@ -35,6 +35,7 @@
                     <div class="me-3">
                       <div class="avatar avatar-xl rounded-circle bg-light text-muted position-relative overflow-hidden">
                         <img v-if="formData.profile_image" :src="createObjectURL(formData.profile_image)" class="w-100 h-100 object-fit-cover" />
+                        <img v-else-if="formData.profile_image_url" :src="formData.profile_image_url" class="w-100 h-100 object-fit-cover" />
                         <i v-else class="ti ti-user fs-24 position-absolute top-50 start-50 translate-middle"></i>
                       </div>
                     </div>
@@ -161,14 +162,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.gender') }} <span class="text-danger">*</span></label>
                     <Field name="gender" v-model="formData.gender">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="GenderOptions"
                           label="label"
                           track-by="value"
-                          @update:model-value="(val: any) => field.onChange(val)"
+                          @update:model-value="(val: any) => handleChange(val)"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
                           :searchable="false"
@@ -184,14 +185,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.marital_status') }} <span class="text-danger">*</span></label>
                     <Field name="marital_status" v-model="formData.marital_status">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="MaritalStatusOptions"
                           label="label"
                           track-by="value"
-                          @update:model-value="(val: any) => field.onChange(val)"
+                          @update:model-value="(val: any) => handleChange(val)"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
                           :searchable="false"
@@ -207,14 +208,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.religion') }} <span class="text-danger">*</span></label>
                     <Field name="religion" v-model="formData.religion">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="ReligionOptions"
                           label="label"
                           track-by="value"
-                          @update:model-value="(val: any) => field.onChange(val)"
+                          @update:model-value="(val: any) => handleChange(val)"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
                           :searchable="false"
@@ -241,14 +242,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.country') }}</label>
                     <Field name="country" v-model="formData.country">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="CountryOptions"
                           label="label"
                           track-by="value"
-                          @update:model-value="(val: any) => field.onChange(val)"
+                          @update:model-value="(val: any) => handleChange(val)"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
                           :searchable="false"
@@ -264,14 +265,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.state') }}</label>
                     <Field name="state" v-model="formData.state">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="StateOptions"
                           label="label"
                           track-by="value"
-                          @update:model-value="(val: any) => field.onChange(val)"
+                          @update:model-value="(val: any) => handleChange(val)"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
                         />
@@ -286,14 +287,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.city') }}</label>
                     <Field name="city" v-model="formData.city">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="CityOptions"
                           label="label"
                           track-by="value"
-                          @update:model-value="(val: any) => field.onChange(val)"
+                          @update:model-value="(val: any) => handleChange(val)"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
                         />
@@ -354,15 +355,15 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.nok_relation') }} <span class="text-danger">*</span></label>
                     <Field name="nok_relation" v-model="formData.nok_relation">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="relationshipOptions"
                           :searchable="false"
                           :close-on-select="true"
                           :placeholder="$t('next_of_kin_modal.select_relationship')"
-                          @update:model-value="(val: any) => field.onChange(val)"
+                          @update:model-value="(val: any) => handleChange(val)"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                         />
                         <div v-if="meta.touched && errorMessage" class="invalid-feedback d-block">
@@ -425,14 +426,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.insurance_type') }}<span class="text-danger">*</span></label>
                     <Field name="insurance_type" v-model="formData.insurance_type">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="insuranceTypes"
                           label="name"
                           track-by="id"
-                          @update:model-value="(val: any) => { field.onChange(val); onInsuranceTypeSelect(val); }"
+                          @update:model-value="(val: any) => { handleChange(val); onInsuranceTypeSelect(val); }"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('insurance_modal.select_type')"
                           :loading="loadingInsuranceTypes"
@@ -448,14 +449,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.company') }}<span class="text-danger">*</span></label>
                     <Field name="company" v-model="formData.company">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="insuranceCompanies"
                           label="name"
                           track-by="id"
-                          @update:model-value="(val: any) => { field.onChange(val); onInsuranceCompanySelect(val); }"
+                          @update:model-value="(val: any) => { handleChange(val); onInsuranceCompanySelect(val); }"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('insurance_modal.select_company')"
                           :loading="loadingInsuranceCompanies"
@@ -472,14 +473,14 @@
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.insurance_plan') }}<span class="text-danger">*</span></label>
                     <Field name="insurance_plan" v-model="formData.insurance_plan">
-                      <template #default="{ field, meta, errorMessage }">
+                      <template #default="{ field, meta, errorMessage, handleChange, handleBlur }">
                         <vue-multiselect
-                          v-bind="field"
                           :model-value="field.value"
                           :options="insurancePlans"
                           label="name"
                           track-by="id"
-                          @update:model-value="(val: any) => { field.onChange(val); }"
+                          @update:model-value="(val: any) => { handleChange(val); }"
+                          @blur="handleBlur"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('insurance_modal.select_plan')"
                           :loading="loadingInsurancePlans"
@@ -568,7 +569,7 @@
           <!-- Actions -->
           <div class="d-flex align-items-center justify-content-end mb-4">
             <router-link :to="{ name: 'PatientList' }" class="btn btn-light me-2">{{ $t('patient_create.cancel') }}</router-link>
-            <button type="submit" class="btn btn-primary px-4">{{ $t('patient_create.add_new_patient') }}</button>
+            <button type="submit" class="btn btn-primary px-4">{{ $t('patient_create.save_changes') || 'Save Changes' }}</button>
           </div>
         </VeeForm>
       </div>
@@ -588,7 +589,7 @@ import { ref, computed, type Ref, type ComputedRef, onMounted } from 'vue'
 import * as yup from 'yup'
 import { Form as VeeForm, Field } from 'vee-validate'
 import { usePatientStore } from '@/stores/patientStore'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import constants from '@/assets/json/constants.json'
 import type { SelectOption } from '@/types/common'
@@ -598,6 +599,7 @@ import { message } from 'ant-design-vue'
 const { t } = useI18n()
 const patientStore = usePatientStore()
 const router = useRouter()
+const route = useRoute()
 
 const createObjectURL = (file: File) => {
   return URL.createObjectURL(file)
@@ -677,8 +679,105 @@ const onInsuranceCompanySelect = (selectedCompany: any) => {
   }
 }
 
-onMounted(() => {
-  loadInsuranceTypes()
+const loadPatientData = async () => {
+  const id = route.params.id
+  if (!id) return
+
+  try {
+    const response = await axiosInstance.get(`/patients/${id}/`)
+    const data = response.data
+
+    const findOption = (options: any[], value: any) => {
+      if (value === null || value === undefined) return ''
+      // If options are objects {label, value}
+      const found = options.find(opt => opt.value === value || opt.id === value)
+      if (found) return found
+      // If options are strings (like relationshipOptions might be treated if not mapped)
+      if (options.includes(value)) return value
+      return value
+    }
+
+    formData.value.first_name = data.first_name
+    formData.value.last_name = data.last_name
+    formData.value.other_names = data.other_names
+    formData.value.phone = data.phone
+    formData.value.other_phone = data.other_phone
+    formData.value.email = data.email
+    formData.value.date_of_birth = data.date_of_birth
+    
+    formData.value.gender = findOption(GenderOptions.value, data.gender)
+    formData.value.marital_status = findOption(MaritalStatusOptions.value, data.marital_status)
+    formData.value.religion = findOption(ReligionOptions.value, data.religion)
+    
+    if (data.address) {
+        formData.value.address_line_1 = data.address.address_line_1
+        formData.value.address_line_2 = data.address.address_line_2
+        formData.value.country = findOption(CountryOptions.value, data.address.country)
+        formData.value.state = findOption(StateOptions, data.address.state)
+        
+        const region = allRegions.find((r: any) => r.region === data.address.state)
+        if (region) {
+            const cities = region.cities.map((city: string) => ({ label: city, value: city }))
+            formData.value.city = findOption(cities, data.address.city)
+        }
+    }
+
+    if (data.emergency_contact) {
+        formData.value.nok_name = data.emergency_contact.name
+        formData.value.nok_relation = data.emergency_contact.relation
+        formData.value.nok_phone = data.emergency_contact.phone
+        formData.value.nok_other_phone = data.emergency_contact.other_phone
+    }
+    
+    if (data.insurance) {
+        formData.value.insurance_schema = data.insurance.schema
+        formData.value.membership_number = data.insurance.membership_number
+        formData.value.serial_number = data.insurance.serial_number
+        formData.value.issue_date = data.insurance.issue_date
+        formData.value.expiry_date = data.insurance.expiry_date
+
+        if (data.insurance.type) {
+            const typeId = typeof data.insurance.type === 'object' ? data.insurance.type.id : data.insurance.type
+            const selectedType = insuranceTypes.value.find((t: any) => t.id === typeId)
+            formData.value.insurance_type = selectedType || data.insurance.type
+
+            if (typeId) {
+                await loadInsuranceCompanies(typeId)
+                
+                if (data.insurance.company) {
+                    const companyId = typeof data.insurance.company === 'object' ? data.insurance.company.id : data.insurance.company
+                    const selectedCompany = insuranceCompanies.value.find((c: any) => c.id === companyId)
+                    formData.value.company = selectedCompany || data.insurance.company
+
+                    if (selectedCompany && selectedCompany._links?.plans) {
+                        await loadInsurancePlans(selectedCompany._links.plans)
+                        
+                        if (data.insurance.plan) {
+                            const planId = typeof data.insurance.plan === 'object' ? data.insurance.plan.id : data.insurance.plan
+                            const selectedPlan = insurancePlans.value.find((p: any) => p.id === planId)
+                            formData.value.insurance_plan = selectedPlan || data.insurance.plan
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (data.profile_image) {
+        formData.value.profile_image_url = data.profile_image
+    }
+    
+  } catch (error) {
+    console.error('Error loading patient:', error)
+    message.error('Failed to load patient data')
+  }
+}
+
+onMounted(async () => {
+  await loadInsuranceTypes()
+  if (route.params.id) {
+    await loadPatientData()
+  }
 })
 
 // Validation schema
@@ -782,6 +881,7 @@ interface FormData {
   nok_phone: string
   nok_other_phone: string
   profile_image: File | null
+  profile_image_url?: string
   insurance_type: any
   insurance_schema: string
   insurance_plan: any
@@ -823,6 +923,7 @@ const formData: Ref<FormData> = ref({
   nok_phone: '',
   nok_other_phone: '',
   profile_image: null,
+  profile_image_url: '',
   insurance_type: '',
   insurance_schema: '',
   insurance_plan: '',
@@ -896,6 +997,8 @@ function buildPayload(): FormData {
       [
         'address1',
         'address2',
+        'address_line_1',
+        'address_line_2',
         'city',
         'state',
         'country',
@@ -903,6 +1006,8 @@ function buildPayload(): FormData {
         'nok_relation',
         'nok_phone',
         'nok_other_phone',
+        'profile_image_url',
+        'insurance',
       ].includes(key)
     )
       return
@@ -977,10 +1082,18 @@ function buildPayload(): FormData {
 async function onSubmit(): Promise<void> {
   const payload = buildPayload()
   try {
-    await patientStore.createPatient(payload)
+    if (route.params.id) {
+      // @ts-ignore
+      await patientStore.updatePatient(route.params.id as string, payload)
+      message.success(t('patient_create.update_success') || 'Patient updated successfully')
+    } else {
+      await patientStore.createPatient(payload)
+      message.success(t('patient_create.create_success') || 'Patient created successfully')
+    }
     router.push({ name: 'PatientList' })
   } catch (error) {
     console.error(error)
+    message.error(t('patient_create.error') || 'An error occurred')
   }
 }
 </script>

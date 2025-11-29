@@ -76,7 +76,7 @@
             <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0">
               <div class="d-flex justify-content-between align-items-center mb-1">
                     <h5 class="fw-bold text-dark mb-0"><i class="ti ti-user-circle me-2 text-primary"></i>{{ $t('patient_view.about_patient') }}</h5>
-                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6"><i class="ti ti-pencil"></i></button>
+                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6" @click="editPatient"><i class="ti ti-pencil"></i></button>
                 </div>
             </div>
             <div class="card-body p-4">
@@ -1566,6 +1566,10 @@ const handleInsuranceUpdated = async (): Promise<void> => {
 const handleNextOfKinUpdated = async (): Promise<void> => {
   await patientStore.fetchPatient(uuid)
   console.log('Next of Kin updated, refreshing patient data')
+}
+
+function editPatient(): void {
+  router.push({ name: 'EditPatient', params: { id: uuid } })
 }
 
 function viewAppointment(appointment: Appointment): void {

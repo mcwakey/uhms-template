@@ -17,6 +17,8 @@ import FlagIcon from 'vue-flag-icon';
 import StarRating from "vue3-star-ratings";
 import Vue3Autocounter from 'vue3-autocounter';
 import VCalendar from 'v-calendar';
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/vue-tel-input.css';
 
 // Debug Mode Configuration
 if (import.meta.env.VITE_DEBUG_MODE !== 'true') {
@@ -162,6 +164,7 @@ app.use(FlagIcon)
 .use(Antd)
 app.use(VCalendar)
 app.use(i18n)
+app.use(VueTelInput);
 app.component(VueFeather.name, VueFeather)
 app.component('vue3-select', Vue3Select);
 app.component('vue-multiselect', Multiselect);

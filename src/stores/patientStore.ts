@@ -69,6 +69,30 @@ export const usePatientStore = defineStore('patient', {
       } finally {
         this.loading = false
       }
+    },
+
+    /**
+     * Updates an existing patient
+     * @param id - The patient's ID
+     * @param patientData - The patient data (FormData)
+     */
+    async updatePatient(id: string | number, patientData: FormData) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axiosInstance.put(`/patients/${id}/`, patientData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        return response.data
+      } catch (error: any) {
+        console.error('Error updating patient:', error)
+        this.error = error.response?.data?.message || 'Failed to update patient'
+        throw error
+      } finally {
+        this.loading = false
+      }
     }
   },
 })
