@@ -209,7 +209,7 @@
           <button
             type="button"
             class="btn btn-primary fw-medium px-4"
-            @click="addInsurance"
+            @click="updateInsurance"
             :disabled="isSubmitting || !canSubmit"
           >
             <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
@@ -227,12 +227,14 @@ import { useI18n } from 'vue-i18n'
 import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
+import dayjs from 'dayjs'
 
 const props = defineProps({
-  modalId: { type: String, default: 'add_insurance_modal' },
+  modalId: { type: String, default: 'edit_insurance_modal' },
   modalTitle: { type: String, default: undefined },
   subtitle: { type: String, default: '' },
   selectedPatient: { type: Object, default: () => null },
+  insuranceData: { type: Object, default: () => null },
   visible: { type: Boolean, default: false },
   showInfoCard: { type: Boolean, default: true },
   loadingMessage: { type: String, default: undefined },
@@ -240,12 +242,12 @@ const props = defineProps({
   submittingText: { type: String, default: undefined },
 })
 
-const displayTitle = computed(() => props.modalTitle || t('insurance_modal.add_title'))
-const displayLoadingMessage = computed(() => props.loadingMessage || t('insurance_modal.loading'))
-const displayPrimaryActionText = computed(() => props.primaryActionText || t('insurance_modal.add'))
-const displaySubmittingText = computed(() => props.submittingText || t('insurance_modal.adding'))
+const displayTitle = computed(() => props.modalTitle || t('insurance_modal.edit_title'))
+const displayLoadingMessage = computed(() => props.loadingMessage || t('insurance_modal.loading_details'))
+const displayPrimaryActionText = computed(() => props.primaryActionText || t('common.save_changes'))
+const displaySubmittingText = computed(() => props.submittingText || t('common.saving'))
 
-const emit = defineEmits(['update:visible', 'insurance-added', 'close'])
+const emit = defineEmits(['update:visible', 'insurance-updated', 'close'])
 
 const { t } = useI18n()
 const loading = ref(false)
@@ -371,7 +373,77 @@ const onInsuranceCompanySelect = (selectedCompany) => {
   }
 }
 
-const addInsurance = async () => {
+const populateForm = async () => {
+  if (!props.insuranceData) return
+
+  loading.value = true
+  try {
+    // Ensure types are loaded
+    if (insuranceTypes.value.length === 0) {
+      await loadInsuranceTypes()
+    }
+
+    const data = props.insuranceData
+
+    // Set basic fields
+    form.value.membershipNumber = data.membership_number
+    form.value.scheme = data.scheme
+    form.value.serialNumber = data.serial_number
+    form.value.issueDate = data.issue_date ? dayjs(data.issue_date) : null
+    form.value.expiryDate = data.expiry_date ? dayjs(data.expiry_date) : null
+    form.value.isActive = data.is_active ?? data.status
+
+    // Set Type
+    // Assuming data.insurance_type is an ID or object. If it's an ID, we find it in insuranceTypes.
+    // If the API returns nested objects, we use them directly.
+    // Let's assume the API returns IDs or we need to match them.
+    // Based on AddInsuranceModal, we send IDs.
+    // If the insuranceData comes from the list in patient-view, it might have nested objects or just IDs.
+    // Looking at patient-view.vue, insurance object has `plan` which has `company`.
+    // It seems the structure in patient-view might be different from what we expect for editing.
+    // We might need to fetch the full insurance details if the list item is partial.
+    // For now, let's try to map what we have.
+
+    // If we have the type ID or object
+    if (data.insurance_type) {
+        const typeId = typeof data.insurance_type === 'object' ? data.insurance_type.id : data.insurance_type
+        const foundType = insuranceTypes.value.find(t => t.id === typeId)
+        if (foundType) {
+            form.value.type = foundType
+            await loadInsuranceCompanies(foundType.id)
+        }
+    }
+
+    // If we have company
+    if (data.insurance_company) {
+        const companyId = typeof data.insurance_company === 'object' ? data.insurance_company.id : data.insurance_company
+        const foundCompany = insuranceCompanies.value.find(c => c.id === companyId)
+        if (foundCompany) {
+            form.value.company = foundCompany
+            if (foundCompany._links?.plans) {
+                await loadInsurancePlans(foundCompany._links.plans)
+            }
+        }
+    }
+
+    // If we have plan
+    if (data.plan) {
+        const planId = typeof data.plan === 'object' ? data.plan.id : data.plan
+        const foundPlan = insurancePlans.value.find(p => p.id === planId)
+        if (foundPlan) {
+            form.value.plan = foundPlan
+        }
+    }
+
+  } catch (error) {
+    console.error('Error populating form:', error)
+    message.error(t('insurance_modal.load_fail'))
+  } finally {
+    loading.value = false
+  }
+}
+
+const updateInsurance = async () => {
   try {
     if (!canSubmit.value) {
       message.warning(t('insurance_modal.fill_required'))
@@ -381,6 +453,11 @@ const addInsurance = async () => {
     if (!props.selectedPatient) {
       message.error(t('insurance_modal.no_patient'))
       return
+    }
+
+    if (!props.insuranceData || !props.insuranceData.id) {
+        message.error(t('insurance_modal.invalid_data'))
+        return
     }
 
     isSubmitting.value = true
@@ -398,19 +475,16 @@ const addInsurance = async () => {
       is_active: form.value.isActive,
     }
 
-    const response = await axiosInstance.post(
-      `/patients/${props.selectedPatient.uuid}/insurances/`,
+    const response = await axiosInstance.put(
+      `/patients/${props.selectedPatient.uuid}/insurances/${props.insuranceData.id}/`,
       payload
     )
 
-    message.success(t('insurance_modal.add_success'))
+    message.success(t('insurance_modal.update_success'))
 
     // Emit events
-    emit('insurance-added', response.data)
+    emit('insurance-updated', response.data)
     emit('update:visible', false)
-
-    // Reset form
-    resetForm()
 
     // Close modal
     const modalElement = document.getElementById(props.modalId)
@@ -421,20 +495,19 @@ const addInsurance = async () => {
       }
     }
   } catch (error) {
-    console.error('Error adding insurance:', error)
-    message.error(t('insurance_modal.add_fail'))
+    console.error('Error updating insurance:', error)
+    message.error(t('insurance_modal.update_fail'))
   } finally {
     isSubmitting.value = false
   }
 }
 
-// Watch for patient changes
+// Watch for insurance data changes to populate form
 watch(
-  () => props.selectedPatient,
-  (newPatient) => {
-    if (newPatient) {
-      resetForm()
-      loadInsuranceTypes()
+  () => props.insuranceData,
+  (newData) => {
+    if (newData) {
+      populateForm()
     }
   },
   { immediate: true }

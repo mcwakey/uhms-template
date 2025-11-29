@@ -46,6 +46,29 @@ export const usePatientStore = defineStore('patient', {
     clearPatient() {
       this.patient = null
       this.error = null
+    },
+
+    /**
+     * Creates a new patient
+     * @param patientData - The patient data (FormData)
+     */
+    async createPatient(patientData: FormData) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axiosInstance.post('/patients/', patientData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        return response.data
+      } catch (error: any) {
+        console.error('Error creating patient:', error)
+        this.error = error.response?.data?.message || 'Failed to create patient'
+        throw error
+      } finally {
+        this.loading = false
+      }
     }
   },
 })

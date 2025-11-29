@@ -43,7 +43,9 @@
                             </div>
                             <div class="d-flex align-items-center mb-1 gap-4 text-muted fs-13">
                                 <div class="d-flex align-items-center">
-                                    <i class="ti ti-phone me-1 text-dark"></i> {{ patientStore.patient?.phone || '-' }}
+                                    <i class="ti ti-phone me-1 text-dark"></i>
+                                    {{ patientStore.patient?.phone || '-' }}
+                                    {{ patientStore.patient?.other_phones ? ' / ' + patientStore.patient?.other_phones : '' }}
                                 </div>
                                 <div class="vr opacity-25"></div>
                                 <div class="d-flex align-items-center">
@@ -148,19 +150,22 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold text-dark mb-0"><i class="ti ti-users me-2 text-primary"></i>{{ $t('patient_view.next_of_kin') }}</h5>
-                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6"><i class="ti ti-pencil"></i></button>
+                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6" data-bs-toggle="modal" data-bs-target="#edit_next_of_kin_modal"><i class="ti ti-pencil"></i></button>
                 </div>
                 <div class="bg-light p-3 rounded-3 border-start border-primary border-3">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <h6 class="fw-bold text-dark mb-1">{{ patientStore.patient?.emergency_contact?.name || '-' }}</h6>
-                            <p class="text-muted mb-2 fs-13">{{ patientStore.patient?.emergency_contact?.relationship || '-' }}</p>
+                            <p class="text-muted mb-2 fs-13">{{ patientStore.patient?.emergency_contact?.relation || '-' }}</p>
                         </div>
                         <span class="avatar avatar-sm rounded-circle bg-white text-primary shadow-sm"><i class="ti ti-user"></i></span>
                     </div>
                     <div class="d-flex align-items-center mt-2">
                         <span class="avatar avatar-xs rounded-circle bg-white text-dark me-2 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;"><i class="ti ti-phone fs-12"></i></span>
-                        <span class="text-dark fw-medium fs-13">{{ patientStore.patient?.emergency_contact?.phone || '-' }}</span>
+                        <span class="text-dark fw-medium fs-13">
+                            {{ patientStore.patient?.emergency_contact?.phone || '-' }}
+                            {{ patientStore.patient?.emergency_contact?.other_phones ? ' / ' + patientStore.patient?.emergency_contact?.other_phones : '' }}
+                        </span>
                     </div>
                 </div>
 
@@ -169,7 +174,15 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold text-dark mb-0"><i class="ti ti-shield me-2 text-primary"></i>{{ $t('patient_view.insurance') }}</h5>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6"><i class="ti ti-pencil"></i></button>
+                        <button 
+                          class="btn btn-sm btn-primary-subtle rounded-3 fs-6" 
+                          @click="editCurrentInsurance"
+                          :disabled="insurances.length === 0"
+                          data-bs-toggle="modal"
+                          data-bs-target="#edit_insurance_modal"
+                        >
+                          <i class="ti ti-pencil"></i>
+                        </button>
                         <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6" @click="openCreateInsuranceModal"><i class="ti ti-plus"></i></button>
                     </div>
                 </div>
@@ -215,14 +228,11 @@
                           :key="insurance.id || index"
                           class="insurance-card flex-shrink-0"
                           :class="{ active: currentInsuranceIndex === index }"
-                          @click="openInsuranceModal(insurance)"
-                          data-bs-toggle="modal"
-                          data-bs-target="#edit_insurance"
-                          style="cursor: pointer; width: 100%; min-width: 100%;"
+                          style="width: 85%; min-width: 85%; margin-right: 10px;"
                         >
                           <div
                             class="card border-0 shadow-sm h-auto position-relative rounded-3 mb-0"
-                            :style="getCardGradient(index)"
+                            :style="getCardGradient(insurance)"
                           >
                             <div class="card-body text-white p-3">
                               <span
@@ -262,20 +272,6 @@
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Add New Insurance Card -->
-                        <div class="add-insurance-card flex-shrink-0" style="width: 100%; min-width: 100%;">
-                          <div
-                            class="card bg-light h-auto d-flex align-items-center justify-content-center border-dashed rounded-3 mb-0"
-                            style="cursor: pointer; min-height: 140px"
-                            @click="openCreateInsuranceModal"
-                          >
-                            <div class="text-center text-primary p-3">
-                              <i class="ti ti-plus fs-32 mb-2"></i>
-                              <div class="fw-semibold fs-13">{{ $t('patient_view.add_new_insurance') }}</div>
                             </div>
                           </div>
                         </div>
@@ -910,114 +906,21 @@
     ========================= -->
 
   <!-- Edit Insurance Modal -->
-  <div id="edit_insurance" class="modal fade modal-lg">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="fw-bold modal-title">
-            <i class="ti ti-shield-check me-2"></i>{{ $t('edit_insurance') }}
-          </h5>
-          <button
-            type="button"
-            class="btn-close btn-close-modal custom-btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="ti ti-x"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('insurance_company') }}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="selectedInsurance.company"
-                  :placeholder="$t('enter_company_name')"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('insurance_type') }}</label>
-                <select class="form-control" v-model="selectedInsurance.type">
-                  <option value="">{{ $t('select_type') }}</option>
-                  <option value="PPO">PPO</option>
-                  <option value="HMO">HMO</option>
-                  <option value="EPO">EPO</option>
-                  <option value="POS">POS</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('membership_number') }}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="selectedInsurance.membership_number"
-                  :placeholder="$t('enter_membership_number')"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('serial_number') }}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="selectedInsurance.serial_number"
-                  :placeholder="$t('enter_serial_number')"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('issue_date') }}</label>
-                <input type="date" class="form-control" v-model="selectedInsurance.issue_date" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('expiry_date') }}</label>
-                <input type="date" class="form-control" v-model="selectedInsurance.expiry_date" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('schema_plan') }}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="selectedInsurance.schema"
-                  :placeholder="$t('enter_schema_plan')"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ $t('status') }}</label>
-                <select class="form-control" v-model="selectedInsurance.status">
-                  <option :value="true">{{ $t('active') }}</option>
-                  <option :value="false">{{ $t('inactive') }}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            {{ $t('cancel') }}
-          </button>
-          <button type="button" class="btn btn-primary" @click="saveInsurance">
-            {{ $t('save_changes') }}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <EditInsuranceModal
+    modal-id="edit_insurance_modal"
+    :modal-title="$t('edit_insurance')"
+    :selected-patient="patientStore.patient"
+    :insurance-data="selectedInsurance"
+    @insurance-updated="handleInsuranceUpdated"
+  />
+
+  <!-- Edit Next of Kin Modal -->
+  <EditNextOfKinModal
+    modal-id="edit_next_of_kin_modal"
+    :patient-id="uuid"
+    :current-data="patientStore.patient?.emergency_contact"
+    @updated="handleNextOfKinUpdated"
+  />
 
   <!-- Add Insurance Modal -->
   <AddInsuranceModal
@@ -1201,6 +1104,8 @@ import axiosInstance from '@/utils/axios'
 import { usePatientStore } from '@/stores/patientStore'
 import { useI18n } from 'vue-i18n'
 import AddInsuranceModal from '@/components/modal/AddInsuranceModal.vue'
+import EditInsuranceModal from '@/components/modal/EditInsuranceModal.vue'
+import EditNextOfKinModal from '@/components/modal/EditNextOfKinModal.vue'
 import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
 import DateRangePicker from '@/components/common-component/DateRangePicker.vue'
 import type { TableColumn } from '@/types/common'
@@ -1326,13 +1231,12 @@ const appointmentColumns: TableColumn[] = [
 ]
 
 // Card gradient colors for different insurance cards
-const cardGradients: string[] = [
-  'background: #2c3e50',
-  'background: #34495e',
-  'background: #273c75',
-  'background: #40407a',
-  'background: #7f8c8d',
-]
+const cardGradients: Record<string, string> = {
+  'NHIA': 'background: #273c75',
+  'PRIVATE': 'background: #40407a',
+  'SELF-SPONSORED': 'background: #7f8c8d',
+  'DEFAULT': 'background: #2c3e50'
+}
 
 // Computed
 const filteredAppointments: ComputedRef<Appointment[]> = computed(() => {
@@ -1388,8 +1292,16 @@ function onDateRangeError(error: any): void {
   console.error('Date range picker error:', error)
 }
 
-function getCardGradient(index: number): string {
-  return cardGradients[index % cardGradients.length]
+function getCardGradient(insurance: Insurance): string {
+  const type = (insurance.type || '').toUpperCase()
+  if (type.includes('NHIA') || type.includes('NATIONAL')) {
+    return cardGradients['NHIA']
+  } else if (type.includes('PRIVATE') || type.includes('CORPORATE')) {
+    return cardGradients['PRIVATE']
+  } else if (type.includes('SELF') || type.includes('CASH')) {
+    return cardGradients['SELF-SPONSORED']
+  }
+  return cardGradients['DEFAULT']
 }
 
 function formatCardNumber(number: string | number | undefined): string {
@@ -1411,11 +1323,27 @@ function formatDate(date: string | undefined): string {
 function scrollToCard(index: number): void {
   currentInsuranceIndex.value = index
   if (insuranceSlider.value) {
-    const cardWidth = insuranceSlider.value.offsetWidth
-    insuranceSlider.value.scrollTo({
-      left: index * cardWidth,
-      behavior: 'smooth',
-    })
+    const cards = insuranceSlider.value.querySelectorAll('.insurance-card')
+    const card = cards[index] as HTMLElement
+
+    if (card) {
+      const container = insuranceSlider.value
+      const cardLeft = card.offsetLeft
+      const cardWidth = card.offsetWidth
+      const containerWidth = container.offsetWidth
+
+      // Target scroll position to center the card
+      let targetScrollLeft = cardLeft - containerWidth / 2 + cardWidth / 2
+
+      // Clamp
+      const maxScroll = container.scrollWidth - containerWidth
+      targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScroll))
+
+      container.scrollTo({
+        left: targetScrollLeft,
+        behavior: 'smooth',
+      })
+    }
   }
 }
 
@@ -1428,20 +1356,6 @@ function scrollToNextCard(): void {
 function scrollToPreviousCard(): void {
   if (currentInsuranceIndex.value > 0) {
     scrollToCard(currentInsuranceIndex.value - 1)
-  }
-}
-
-function scrollToShowAddCard(): void {
-  if (insuranceSlider.value) {
-    const slider = insuranceSlider.value
-    const addCard = slider.querySelector('.add-insurance-card')
-    if (addCard) {
-      addCard.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'end',
-      })
-    }
   }
 }
 
@@ -1507,6 +1421,12 @@ function openAppointmentDetails(appointment: Appointment): void {
 function openInsuranceModal(insurance: Insurance): void {
   selectedInsurance.value = { ...insurance }
   console.log('Opening insurance modal for:', insurance)
+}
+
+function editCurrentInsurance(): void {
+  if (insurances.value.length > 0 && insurances.value[currentInsuranceIndex.value]) {
+    openInsuranceModal(insurances.value[currentInsuranceIndex.value])
+  }
 }
 
 function openCreateInsuranceModal(): void {
@@ -1638,21 +1558,14 @@ const handleAppointmentCreated = async (): Promise<void> => {
   console.log('Appointment created, refreshing list')
 }
 
-function saveInsurance(): void {
-  console.log('Saving insurance:', selectedInsurance.value)
+const handleInsuranceUpdated = async (): Promise<void> => {
+  await fetchInsurances()
+  console.log('Insurance updated, refreshing list')
+}
 
-  const index = insurances.value.findIndex((ins) => ins.id === selectedInsurance.value.id)
-  if (index !== -1) {
-    insurances.value[index] = { ...selectedInsurance.value }
-  }
-
-  const modalEl = document.getElementById('edit_insurance')
-  if (window.bootstrap && modalEl) {
-    const modal = window.bootstrap.Modal.getInstance(modalEl)
-    if (modal) {
-      modal.hide()
-    }
-  }
+const handleNextOfKinUpdated = async (): Promise<void> => {
+  await patientStore.fetchPatient(uuid)
+  console.log('Next of Kin updated, refreshing patient data')
 }
 
 function viewAppointment(appointment: Appointment): void {
@@ -1740,7 +1653,7 @@ onMounted(() => {
   border-radius: 15px;
 }
 
-.insurance-card:hover .card {
+/* .insurance-card:hover .card {
   transform: translateY(1.2px);
-}
+} */
 </style>

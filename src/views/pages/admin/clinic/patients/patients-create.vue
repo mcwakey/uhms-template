@@ -3,7 +3,7 @@
   <layouts-sidebar></layouts-sidebar>
   <div class="page-wrapper">
     <div class="content pb-0">
-      <div class="d-flex align-items-sm-center flex-sm-row flex-column gap-2 mb-3">
+      <!-- <div class="d-flex align-items-sm-center flex-sm-row flex-column gap-2 mb-3">
         <div class="flex-grow-1">
           <h6 class="fw-bold mb-0 d-flex align-items-center">
             <router-link :to="{ name: 'PatientList' }" class="text-dark">
@@ -11,8 +11,12 @@
             </router-link>
           </h6>
         </div>
-      </div>
-      <div class="col-lg-12">
+      </div> -->
+<div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="mb-4">
+                        <h6 class="fw-bold mb-0 d-flex align-items-center"> <router-link to="/patients/patients-list" class="text-dark"> <i class="ti ti-chevron-left me-1"></i>{{ $t('patients.title') }}</router-link></h6>
+                    </div>
         <div class="card">
           <div class="card-body pb-0">
             <VeeForm
@@ -27,12 +31,12 @@
                 </div>
               </div> -->
               <div class="bg-light px-3 py-2 mb-3">
-                <h6 class="fw-bold mb-0">{{ $t('patient_information') }}</h6>
+                <h6 class="fw-bold mb-0">{{ $t('patient_create.patient_information') }}</h6>
               </div>
               <div class="row">
                 <div class="col-lg-12">
                   <div class="mb-3 d-flex align-items-center">
-                    <label class="form-label mb-0">{{ $t('profile_image') }}</label>
+                    <label class="form-label mb-0">{{ $t('patient_create.profile_image') }}</label>
                     <div
                       class="drag-upload-btn avatar avatar-xxl rounded-circle bg-light text-muted position-relative overflow-hidden z-1 mb-2 ms-4 p-0"
                     >
@@ -60,7 +64,7 @@
                   <div class="col-lg-4">
                     <div class="mb-3">
                       <label class="form-label"
-                        >{{ $t('first_name') }} <span class="text-danger">*</span></label
+                        >{{ $t('patient_create.first_name') }} <span class="text-danger">*</span></label
                       >
                       <Field
                         type="text"
@@ -74,7 +78,7 @@
                   <div class="col-lg-4">
                     <div class="mb-3">
                       <label class="form-label"
-                        >{{ $t('last_name') }} <span class="text-danger">*</span></label
+                        >{{ $t('patient_create.last_name') }} <span class="text-danger">*</span></label
                       >
                       <Field
                         type="text"
@@ -87,7 +91,7 @@
                   </div>
                   <div class="col-lg-4">
                     <div class="mb-3">
-                      <label class="form-label">{{ $t('other_names') }}</label>
+                      <label class="form-label">{{ $t('patient_create.other_names') }}</label>
                       <Field
                         type="text"
                         class="form-control"
@@ -99,7 +103,7 @@
                   <div class="col-lg-4">
                     <div class="mb-3">
                       <label class="form-label"
-                        >{{ $t('phone_no') }} <span class="text-danger">*</span></label
+                        >{{ $t('patient_create.phone_no') }} <span class="text-danger">*</span></label
                       >
                       <Field
                         type="tel"
@@ -110,7 +114,7 @@
                           styleClasses: ['form-control'].join(' '),
                           name: 'phone',
                           type: 'tel',
-                          placeholder: 'e.g. 0801234567',
+                          placeholder: $t('patient_create.placeholder_phone'),
                         }"
                         :validCharactersOnly="true"
                         :class="{ 'is-invalid': errors.phone }"
@@ -119,7 +123,7 @@
                   </div>
                   <div class="col-lg-4">
                     <div class="mb-3">
-                      <label class="form-label">{{ $t('other_phone') }}</label>
+                      <label class="form-label">{{ $t('patient_create.other_phone') }}</label>
                       <Field
                         type="tel"
                         as="vue-tel-input"
@@ -129,7 +133,7 @@
                           styleClasses: ['form-control'].join(' '),
                           name: 'other_phone',
                           type: 'tel',
-                          placeholder: 'e.g. 0801234567',
+                          placeholder: $t('patient_create.placeholder_phone'),
                         }"
                         :validCharactersOnly="true"
                       />
@@ -137,7 +141,7 @@
                   </div>
                   <div class="col-lg-4">
                     <div class="mb-3">
-                      <label class="form-label">{{ $t('email') }}</label>
+                      <label class="form-label">{{ $t('patient_create.email') }}</label>
                       <Field
                         type="email"
                         class="form-control"
@@ -150,13 +154,13 @@
                   <div class="col-lg-4">
                     <div class="mb-3">
                       <label class="form-label"
-                        >{{ $t('dob') }} <span class="text-danger">*</span></label
+                        >{{ $t('patient_create.dob') }} <span class="text-danger">*</span></label
                       >
                       <Field
                         name="date_of_birth"
                         as="a-date-picker"
                         class="form-control datetimepicker"
-                        placeholder="dd/mm/yyyy"
+                        :placeholder="$t('patient_create.placeholder_date')"
                         v-model="formData.date_of_birth"
                         :class="{ 'is-invalid': errors.date_of_birth }"
                         type="date"
@@ -166,7 +170,7 @@
                   <div class="col-lg-4">
                     <div class="mb-3">
                       <label class="form-label mb-1 fw-medium"
-                        >{{ $t('gender') }}<span class="text-danger ms-1">*</span></label
+                        >{{ $t('patient_create.gender') }}<span class="text-danger ms-1">*</span></label
                       >
                       <Field
                         class="form-select"
@@ -175,7 +179,7 @@
                         v-model="formData.gender"
                         :class="{ 'is-invalid': errors.gender }"
                       >
-                        <option value="" disabled>{{ $t('select') }}</option>
+                        <option value="" disabled>{{ $t('patient_create.select') }}</option>
                         <option v-for="opt in GenderOptions" :key="opt.value" :value="opt.value">
                           {{ opt.label }}
                         </option>
@@ -185,7 +189,7 @@
                   <div class="col-lg-4">
                     <div class="mb-3">
                       <label class="form-label"
-                        >{{ $t('marital_status') }} <span class="text-danger">*</span></label
+                        >{{ $t('patient_create.marital_status') }} <span class="text-danger">*</span></label
                       >
                       <Field
                         class="form-select"
@@ -194,7 +198,7 @@
                         v-model="formData.marital_status"
                         :class="{ 'is-invalid': errors.marital_status }"
                       >
-                        <option value="" disabled>{{ $t('select') }}</option>
+                        <option value="" disabled>{{ $t('patient_create.select') }}</option>
                         <option
                           v-for="opt in MaritalStatusOptions"
                           :key="opt.value"
@@ -208,7 +212,7 @@
                   <div class="col-lg-4">
                     <div class="mb-3">
                       <label class="form-label"
-                        >{{ $t('religion') }} <span class="text-danger">*</span></label
+                        >{{ $t('patient_create.religion') }} <span class="text-danger">*</span></label
                       >
                       <Field
                         class="form-select"
@@ -217,35 +221,35 @@
                         v-model="formData.religion"
                         :class="{ 'is-invalid': errors.religion }"
                       >
-                        <option value="" disabled>{{ $t('select') }}</option>
-                        <option value="Islam">Islam</option>
-                        <option value="Christianity">Christianity</option>
-                        <option value="Others">Others</option>
+                        <option value="" disabled>{{ $t('patient_create.select') }}</option>
+                        <option value="Islam">{{ $t('patient_create.islam') }}</option>
+                        <option value="Christianity">{{ $t('patient_create.christianity') }}</option>
+                        <option value="Others">{{ $t('patient_create.others') }}</option>
                       </Field>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="bg-light px-3 py-2 mb-3">
-                <h6 class="fw-bold mb-0">{{ $t('address_information') }}</h6>
+                <h6 class="fw-bold mb-0">{{ $t('patient_create.address_information') }}</h6>
               </div>
               <div class="row">
                 <div class="col-lg-6">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('country') }}</label>
+                    <label class="form-label">{{ $t('patient_create.country') }}</label>
                     <Field
                       class="form-select"
                       name="country"
                       as="select"
                       v-model="formData.country"
                     >
-                      <option value="Ghana" selected>Ghana</option>
+                      <option value="Ghana" selected>{{ $t('patient_create.ghana') }}</option>
                     </Field>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('state') }}</label>
+                    <label class="form-label">{{ $t('patient_create.state') }}</label>
                     <Field
                       class="form-select"
                       name="state"
@@ -253,7 +257,7 @@
                       v-model="formData.state"
                       :class="{ 'is-invalid': errors.state }"
                     >
-                      <option value="" disabled>{{ $t('select') }}</option>
+                      <option value="" disabled>{{ $t('patient_create.select') }}</option>
                       <option
                         v-for="region in StateOptions"
                         :key="region.value"
@@ -266,7 +270,7 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('city') }}</label>
+                    <label class="form-label">{{ $t('patient_create.city') }}</label>
                     <Field
                       class="form-select"
                       name="city"
@@ -274,7 +278,7 @@
                       v-model="formData.city"
                       :class="{ 'is-invalid': errors.city }"
                     >
-                      <option value="" disabled>{{ $t('select') }}</option>
+                      <option value="" disabled>{{ $t('patient_create.select') }}</option>
                       <option v-for="city in CityOptions" :key="city.value" :value="city.value">
                         {{ city.label }}
                       </option>
@@ -283,7 +287,7 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('address1') }}</label>
+                    <label class="form-label">{{ $t('patient_create.address1') }}</label>
                     <Field
                       type="text"
                       class="form-control"
@@ -294,7 +298,7 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('address2') }}</label>
+                    <label class="form-label">{{ $t('patient_create.address2') }}</label>
                     <Field
                       type="text"
                       class="form-control"
@@ -305,13 +309,13 @@
                 </div>
               </div>
               <div class="bg-light px-3 py-2 mb-3">
-                <h6 class="fw-bold mb-0">{{ $t('next_of_kin_information') }}</h6>
+                <h6 class="fw-bold mb-0">{{ $t('patient_create.next_of_kin_information') }}</h6>
               </div>
               <div class="row">
                 <div class="col-lg-6">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('nok_name') }} <span class="text-danger">*</span></label
+                      >{{ $t('patient_create.nok_name') }} <span class="text-danger">*</span></label
                     >
                     <Field
                       type="text"
@@ -325,7 +329,7 @@
                 <div class="col-lg-6">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('nok_relation') }} <span class="text-danger">*</span></label
+                      >{{ $t('patient_create.nok_relation') }} <span class="text-danger">*</span></label
                     >
                     <Field
                       type="text"
@@ -339,7 +343,7 @@
                 <div class="col-lg-6">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('nok_phone') }} <span class="text-danger">*</span></label
+                      >{{ $t('patient_create.nok_phone') }} <span class="text-danger">*</span></label
                     >
                     <Field
                       type="tel"
@@ -349,9 +353,9 @@
                       :inputOptions="{
                         styleClasses: ['form-control'].join(' '),
                         name: 'nok_phone',
-                        type: 'tel',
-                        placeholder: 'e.g. 0801234567',
-                      }"
+                          type: 'tel',
+                          placeholder: $t('patient_create.placeholder_phone'),
+                        }"
                       :validCharactersOnly="true"
                       :class="{ 'is-invalid': errors.nok_phone }"
                     />
@@ -359,7 +363,7 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('nok_other_phone') }}</label>
+                    <label class="form-label">{{ $t('patient_create.nok_other_phone') }}</label>
                     <Field
                       type="tel"
                       class="form-control nok"
@@ -370,13 +374,13 @@
                 </div>
               </div>
               <div class="bg-light px-3 py-2 mb-3">
-                <h6 class="fw-bold mb-0">{{ $t('insurance_information') }}</h6>
+                <h6 class="fw-bold mb-0">{{ $t('patient_create.insurance_information') }}</h6>
               </div>
               <div class="row">
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('insurance_type') }}<span class="text-danger">*</span></label
+                      >{{ $t('patient_create.insurance_type') }}<span class="text-danger">*</span></label
                     >
                     <Field
                       class="form-select"
@@ -385,7 +389,7 @@
                       v-model="formData.insurance_type"
                       :class="{ 'is-invalid': errors.insurance_type }"
                     >
-                      <option value="" disabled>{{ $t('select') }}</option>
+                      <option value="" disabled>{{ $t('patient_create.select') }}</option>
                       <option v-for="opt in InsuranceOptions" :key="opt.value" :value="opt.value">
                         {{ opt.label }}
                       </option>
@@ -395,7 +399,7 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('insurance_schema') }}<span class="text-danger">*</span></label
+                      >{{ $t('patient_create.insurance_schema') }}<span class="text-danger">*</span></label
                     >
                     <Field
                       type="text"
@@ -409,7 +413,7 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('insurance_plan') }}<span class="text-danger">*</span></label
+                      >{{ $t('patient_create.insurance_plan') }}<span class="text-danger">*</span></label
                     >
                     <Field
                       type="text"
@@ -423,7 +427,7 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('membership_number') }} <span class="text-danger">*</span></label
+                      >{{ $t('patient_create.membership_number') }} <span class="text-danger">*</span></label
                     >
                     <Field
                       type="text"
@@ -437,7 +441,7 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('serial_number') }} <span class="text-danger">*</span></label
+                      >{{ $t('patient_create.serial_number') }} <span class="text-danger">*</span></label
                     >
                     <Field
                       type="text"
@@ -451,7 +455,7 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('company') }}<span class="text-danger">*</span></label
+                      >{{ $t('patient_create.company') }}<span class="text-danger">*</span></label
                     >
                     <Field
                       type="text"
@@ -465,13 +469,13 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('issue_date') }} <span class="text-danger">*</span></label
+                      >{{ $t('patient_create.issue_date') }} <span class="text-danger">*</span></label
                     >
                     <Field
                       name="issue_date"
                       as="a-date-picker"
                       class="form-control datetimepicker"
-                      placeholder="dd/mm/yyyy"
+                        :placeholder="$t('patient_create.placeholder_date')"
                       v-model="formData.issue_date"
                       :class="{ 'is-invalid': errors.issue_date }"
                       type="date"
@@ -481,13 +485,13 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label"
-                      >{{ $t('expiry_date') }} <span class="text-danger">*</span></label
+                      >{{ $t('patient_create.expiry_date') }} <span class="text-danger">*</span></label
                     >
                     <Field
                       name="expiry_date"
                       as="a-date-picker"
                       class="form-control datetimepicker"
-                      placeholder="dd/mm/yyyy"
+                        :placeholder="$t('patient_create.placeholder_date')"
                       v-model="formData.expiry_date"
                       :class="{ 'is-invalid': errors.expiry_date }"
                       type="date"
@@ -497,19 +501,20 @@
               </div>
               <div class="d-flex align-items-center justify-content-end mb-3">
                 <router-link :to="{ name: 'PatientList' }" class="btn btn-light me-2">{{
-                  $t('cancel')
+                  $t('patient_create.cancel')
                 }}</router-link>
-                <button type="submit" class="btn btn-primary">{{ $t('add_new_patient') }}</button>
+                <button type="submit" class="btn btn-primary">{{ $t('patient_create.add_new_patient') }}</button>
               </div>
             </VeeForm>
           </div>
         </div>
       </div>
+</div>
     </div>
     <div class="footer text-center bg-white p-2 border-top">
       <p class="text-dark mb-0">
         2025 &copy; <a href="javascript:void(0);" class="link-primary">Preclinic</a>,
-        {{ $t('all_rights_reserved') }}
+        {{ $t('patient_create.all_rights_reserved') }}
       </p>
     </div>
   </div>
@@ -519,39 +524,41 @@
 import { ref, computed, type Ref, type ComputedRef } from 'vue'
 import * as yup from 'yup'
 import { Form as VeeForm, Field } from 'vee-validate'
-import { useCreateStore } from '@/stores/createStore'
+import { usePatientStore } from '@/stores/patientStore'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import constants from '@/assets/json/constants.json'
 import type { SelectOption } from '@/types/common'
 
 const { t } = useI18n()
-const createStore = useCreateStore()
+const patientStore = usePatientStore()
 const router = useRouter()
 
 // Validation schema
-const schema = yup.object().shape({
-  first_name: yup.string().required('First name is required'),
-  last_name: yup.string().required('Last name is required'),
-  date_of_birth: yup.date().required('Date of birth is required'),
-  phone: yup.string().required('Phone number is required'),
-  gender: yup.string().required('Gender is required'),
-  marital_status: yup.string().required('Marital status is required'),
-  religion: yup.string().required('Religion is required'),
-  city: yup.string().required('City is required'),
-  state: yup.string().required('State is required'),
-  country: yup.string().required('Country is required'),
-  address_line_1: yup.string().required('Address line 1 is required'),
-  nok_name: yup.string().required('Next of kin name is required'),
-  nok_relation: yup.string().required('Next of kin relationship is required'),
-  nok_phone: yup.string().required('Next of kin phone is required'),
-  insurance_schema: yup.string().required('Insurance schema is required'),
-  insurance_plan: yup.string().required('Insurance plan is required'),
-  membership_number: yup.string().required('Membership number is required'),
-  serial_number: yup.string().required('Serial number is required'),
-  company: yup.string().required('Company is required'),
-  issue_date: yup.date().required('Issue date is required'),
-  expiry_date: yup.date().required('Expiry date is required'),
+const schema = computed(() => {
+  return yup.object().shape({
+    first_name: yup.string().required(t('validation.first_name_required')),
+    last_name: yup.string().required(t('validation.last_name_required')),
+    date_of_birth: yup.date().required(t('validation.dob_required')),
+    phone: yup.string().required(t('validation.phone_required')),
+    gender: yup.string().required(t('validation.gender_required')),
+    marital_status: yup.string().required(t('validation.marital_status_required')),
+    religion: yup.string().required(t('validation.religion_required')),
+    city: yup.string().required(t('validation.city_required')),
+    state: yup.string().required(t('validation.state_required')),
+    country: yup.string().required(t('validation.country_required')),
+    address_line_1: yup.string().required(t('validation.address_required')),
+    nok_name: yup.string().required(t('validation.nok_name_required')),
+    nok_relation: yup.string().required(t('validation.nok_relation_required')),
+    nok_phone: yup.string().required(t('validation.nok_phone_required')),
+    insurance_schema: yup.string().required(t('validation.insurance_schema_required')),
+    insurance_plan: yup.string().required(t('validation.insurance_plan_required')),
+    membership_number: yup.string().required(t('validation.membership_number_required')),
+    serial_number: yup.string().required(t('validation.serial_number_required')),
+    company: yup.string().required(t('validation.company_required')),
+    issue_date: yup.date().required(t('validation.issue_date_required')),
+    expiry_date: yup.date().required(t('validation.expiry_date_required')),
+  })
 })
 
 // Options
@@ -567,10 +574,21 @@ const CityOptions: ComputedRef<SelectOption[]> = computed(() => {
   return region ? region.cities.map((city: string) => ({ label: city, value: city })) : []
 })
 
-const GenderOptions: SelectOption[] =
-  constants.find((obj: any) => obj.genderOptions)?.genderOptions || []
-const MaritalStatusOptions: SelectOption[] =
-  constants.find((obj: any) => obj.maritalStatusOptions)?.maritalStatusOptions || []
+const GenderOptions = computed(() => {
+  const options = constants.find((obj: any) => obj.genderOptions)?.genderOptions || []
+  return options.map((opt: SelectOption) => ({
+    ...opt,
+    label: t(`gender.${opt.value.toLowerCase()}`),
+  }))
+})
+
+const MaritalStatusOptions = computed(() => {
+  const options = constants.find((obj: any) => obj.maritalStatusOptions)?.maritalStatusOptions || []
+  return options.map((opt: SelectOption) => ({
+    ...opt,
+    label: t(`marital_status.${opt.value.toLowerCase()}`),
+  }))
+})
 const InsuranceOptions: SelectOption[] =
   constants.find((obj: any) => obj.insuranceOptions)?.insuranceOptions || []
 
@@ -777,7 +795,7 @@ function buildPayload(): FormData {
 async function onSubmit(): Promise<void> {
   const payload = buildPayload()
   try {
-    await createStore.createPatient(payload)
+    await patientStore.createPatient(payload)
     router.push({ name: 'PatientList' })
   } catch (error) {
     console.error(error)
