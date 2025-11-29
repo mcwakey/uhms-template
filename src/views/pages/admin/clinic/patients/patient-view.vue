@@ -9,281 +9,176 @@
   <div class="page-wrapper">
     <!-- Start Content -->
     <div class="content">
-      <!-- Clean Breadcrumb -->
-      <div class="mb-4">
+      <!-- Breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent p-0 mb-0">
             <li class="breadcrumb-item">
-              <router-link
-                :to="{ name: 'PatientList' }"
-                class="text-decoration-none d-flex align-items-center text-primary"
-              >
-                <i class="ti ti-arrow-left me-2"></i>Back to Patients
+              <router-link :to="{ name: 'PatientList' }" class="text-muted text-decoration-none hover-primary d-flex align-items-center">
+                <i class="ti ti-arrow-left me-2"></i>{{ $t('patient_view.back_to_patients') }}
               </router-link>
             </li>
           </ol>
         </nav>
-      </div>
-
-      <!-- Modern Patient Profile Header -->
-      <div class="card border-0 shadow-sm mb-4 rounded-4">
-        <div class="card-body p-4">
-          <div class="row align-items-center">
-            <!-- Patient Avatar & Info -->
-            <div class="col-lg-8">
-              <div class="d-flex align-items-center">
-                <!-- Avatar -->
-                <div class="me-4">
-                  <div class="position-relative">
-                    <img
-                      src="@/assets/img/users/user-08.jpg"
-                      alt="Patient Avatar"
-                      class="rounded-circle shadow-sm"
-                      style="width: 90px; height: 90px; object-fit: cover"
-                    />
-                    <div class="position-absolute bottom-0 end-0">
-                      <span
-                        class="badge bg-success rounded-circle p-2 border border-white shadow-sm"
-                      >
-                        <i class="ti ti-check fs-12"></i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Patient Details -->
-                <div class="flex-grow-1">
-                  <div class="d-flex align-items-center mb-2">
-                    <h2 class="mb-0 me-3 fw-bold text-dark">
-                      {{ patientStore.patient?.full_name || 'Unknown Patient' }}
-                    </h2>
-                    <span
-                      class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill"
-                    >
-                      #{{ patientStore.patient?.opd_no || '-' }}
-                    </span>
-                  </div>
-
-                  <div class="row g-3 text-muted mb-3">
-                    <div class="col-auto">
-                      <div class="d-flex align-items-center">
-                        <i class="ti ti-user-circle me-2 text-primary"></i>
-                        <span>{{ patientStore.patient?.gender || '-' }}</span>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <div class="d-flex align-items-center">
-                        <i class="ti ti-calendar me-2 text-primary"></i>
-                        <span>{{ patientStore.patient?.age?.value || '-' }} years old</span>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <div class="d-flex align-items-center">
-                        <i class="ti ti-phone me-2 text-primary"></i>
-                        <span>{{ patientStore.patient?.phone || '-' }}</span>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <div class="d-flex align-items-center">
-                        <i class="ti ti-mail me-2 text-primary"></i>
-                        <span>{{ patientStore.patient?.email || '-' }}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Address -->
-                  <div
-                    v-if="patientStore.patient?.address"
-                    class="d-flex align-items-center text-muted"
-                  >
-                    <i class="ti ti-map-pin me-2 text-primary"></i>
-                    <span class="me-2">
-                      {{
-                        [
-                          patientStore.patient.address.address_line_1,
-                          patientStore.patient.address.city,
-                          patientStore.patient.address.state,
-                          patientStore.patient.address.country,
-                        ]
-                          .filter(Boolean)
-                          .join(', ')
-                      }}
-                    </span>
-                    <a
-                      v-if="
-                        patientStore.patient.address.latitude &&
-                        patientStore.patient.address.longitude
-                      "
-                      :href="`https://maps.google.com/?q=${patientStore.patient.address.latitude},${patientStore.patient.address.longitude}`"
-                      target="_blank"
-                      class="text-primary"
-                      title="View on map"
-                    >
-                      <i class="ti ti-external-link fs-14"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="col-lg-4 text-end">
-              <div class="d-flex justify-content-end gap-2 flex-wrap">
-                <button class="btn btn-outline-primary rounded-pill px-3">
-                  <i class="ti ti-phone me-1"></i>Call
-                </button>
-                <button class="btn btn-outline-primary rounded-pill px-3">
-                  <i class="ti ti-message-circle me-1"></i>Message
-                </button>
-                <button @click="openSetAppointmentModal" class="btn btn-primary rounded-pill px-4">
-                  <i class="ti ti-calendar-plus me-1"></i>Book Appointment
-                </button>
-              </div>
-            </div>
-          </div>
+        <div class="d-flex align-items-center gap-2">
+           <span class="badge bg-success-subtle text-success rounded-3 px-3 py-2">
+             <i class="ti ti-circle-check-filled me-1"></i> {{ $t('patient_view.active_patient') }}
+           </span>
         </div>
       </div>
 
-      <!-- Modern Dashboard Style Cards -->
+      <!-- Profile Header (Horizontal) -->
+      <div class="card border shadow-none rounded-3 mb-4">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex align-items-center">
+                        <div class="position-relative me-4 flex-shrink-0">
+                            <img src="@/assets/img/users/user-08.jpg" class="rounded shadow-sm" style="width: 80px; height: 80px; object-fit: cover;" alt="Patient">
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-1">
+                                <h4 class="fw-bold text-dark mb-0 me-2">{{ patientStore.patient?.full_name || $t('patient_view.unknown_patient') }}</h4>
+                                <span class="badge bg-light text-dark border rounded px-2">#{{ patientStore.patient?.opd_no || '-' }}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1 gap-4 text-muted fs-13">
+                                <div class="d-flex align-items-center">
+                                    <i class="ti ti-phone me-1 text-dark"></i> {{ patientStore.patient?.phone || '-' }}
+                                </div>
+                                <div class="vr opacity-25"></div>
+                                <div class="d-flex align-items-center">
+                                    <i class="ti ti-mail me-1 text-dark"></i> {{ patientStore.patient?.email || '-' }}
+                                </div>
+                            </div>
+                          <p class="text-muted"><i class="ti ti-map-pin me-1"></i>{{ patientStore.patient?.address?.city || $t('patient_view.unknown_location') }}</p>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <div class="d-flex justify-content-lg-end gap-2">
+                        <button class="btn btn-outline-light text-dark border shadow-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="ti ti-phone"></i></button>
+                        <button class="btn btn-outline-light text-dark border shadow-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="ti ti-message-circle"></i></button>
+                        <button @click="openSetAppointmentModal" class="btn btn-primary rounded-3 px-4 d-inline-flex align-items-center">
+                            <i class="ti ti-calendar-plus me-2"></i>{{ $t('patient_view.book_appointment') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
       <div class="row g-4 mb-4">
-        <!-- Personal Information Stats -->
-        <div class="col-lg-5">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body p-4 mb-1">
-              <div class="d-flex align-items-center justify-content-between mb-4">
-                <h5 class="fw-bold mb-0 text-dark">
-                  <i class="ti ti-user-heart me-2 text-primary"></i>Personal Overview
-                </h5>
-                <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
-                  Profile Complete
+        <!-- Left Column: Personal Details & Insurance -->
+        <div class="col-lg-4 d-flex">
+          <div class="card border shadow-none rounded-3 w-100">
+            <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h5 class="fw-bold text-dark mb-0"><i class="ti ti-user-circle me-2 text-primary"></i>{{ $t('patient_view.about_patient') }}</h5>
+                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6"><i class="ti ti-pencil"></i></button>
                 </div>
-              </div>
-
-              <!-- Key Information List -->
-              <div class="space-y-4">
-                <div class="d-flex align-items-center py-3 border-bottom">
-                  <div class="flex-shrink-0 me-3">
-                    <div
-                      class="bg-gradient-primary rounded-circle p-2"
-                      style="
-                        width: 45px;
-                        height: 45px;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                      "
-                    >
-                      <i
-                        class="ti ti-briefcase text-white d-flex align-items-center justify-content-center h-100"
-                      ></i>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm rounded-circle bg-light text-dark flex-shrink-0 me-2"><i class="ti ti-calendar-event fs-16"></i></span>
+                            <div>
+                                <h6 class="fs-12 fw-bold mb-0 text-muted text-uppercase">{{ $t('patient_view.age') }}</h6>
+                                <p class="mb-0 fw-semibold text-dark">{{ patientStore.patient?.age?.value || '-' }} Years</p>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="fw-semibold mb-1 text-dark">Occupation</h6>
-                    <p class="text-muted mb-0">
-                      {{ patientStore.patient?.occupation || 'Not specified' }}
-                    </p>
-                  </div>
-                </div>
-
-                <div class="d-flex align-items-center py-3 border-bottom">
-                  <div class="flex-shrink-0 me-3">
-                    <div
-                      class="bg-gradient-success rounded-circle p-2"
-                      style="
-                        width: 45px;
-                        height: 45px;
-                        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-                      "
-                    >
-                      <i
-                        class="ti ti-heart text-white d-flex align-items-center justify-content-center h-100"
-                      ></i>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm rounded-circle bg-light text-dark flex-shrink-0 me-2"><i class="ti ti-gender-male fs-16"></i></span>
+                            <div>
+                                <h6 class="fs-12 fw-bold mb-0 text-muted text-uppercase">{{ $t('patient_view.gender') }}</h6>
+                                <p class="mb-0 fw-semibold text-dark">{{ patientStore.patient?.gender || '-' }}</p>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="fw-semibold mb-1 text-dark">Marital Status</h6>
-                    <p class="text-muted mb-0">
-                      {{ patientStore.patient?.marital_status || 'Not specified' }}
-                    </p>
-                  </div>
-                </div>
-
-                <div class="d-flex align-items-center py-3 border-bottom">
-                  <div class="flex-shrink-0 me-3">
-                    <div
-                      class="bg-gradient-danger rounded-circle p-2"
-                      style="
-                        width: 45px;
-                        height: 45px;
-                        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-                      "
-                    >
-                      <i
-                        class="ti ti-droplet text-white d-flex align-items-center justify-content-center h-100"
-                      ></i>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm rounded-circle bg-light text-dark flex-shrink-0 me-2"><i class="ti ti-droplet fs-16"></i></span>
+                            <div>
+                                <h6 class="fs-12 fw-bold mb-0 text-muted text-uppercase">{{ $t('patient_view.blood_group') }}</h6>
+                                <p class="mb-0 fw-semibold text-dark">{{ patientStore.patient?.blood_group || '-' }}</p>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="fw-semibold mb-1 text-dark">Blood Group</h6>
-                    <div class="d-flex align-items-center">
-                      <span class="badge bg-danger text-white me-2 px-2 py-1 rounded">{{
-                        patientStore.patient?.blood_group || 'Unknown'
-                      }}</span>
-                      <small class="text-muted">{{
-                        patientStore.patient?.blood_group
-                          ? 'Compatible for transfusion'
-                          : 'Blood type not recorded'
-                      }}</small>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm rounded-circle bg-light text-dark flex-shrink-0 me-2"><i class="ti ti-briefcase fs-16"></i></span>
+                            <div>
+                                <h6 class="fs-12 fw-bold mb-0 text-muted text-uppercase">{{ $t('patient_view.occupation') }}</h6>
+                                <p class="mb-0 fw-semibold text-dark">{{ patientStore.patient?.occupation || '-' }}</p>
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm rounded-circle bg-light text-dark flex-shrink-0 me-2"><i class="ti ti-heart fs-16"></i></span>
+                            <div>
+                                <h6 class="fs-12 fw-bold mb-0 text-muted text-uppercase">{{ $t('patient_view.marital_status') }}</h6>
+                                <p class="mb-0 fw-semibold text-dark">{{ patientStore.patient?.marital_status || '-' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm rounded-circle bg-light text-dark flex-shrink-0 me-2"><i class="ti ti-book-2 fs-16"></i></span>
+                            <div>
+                                <h6 class="fs-12 fw-bold mb-0 text-muted text-uppercase">{{ $t('patient_view.religion') }}</h6>
+                                <p class="mb-0 fw-semibold text-dark">{{ patientStore.patient?.religion || '-' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-12">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm rounded-circle bg-light text-dark flex-shrink-0 me-2"><i class="ti ti-mail fs-16"></i></span>
+                            <div class="overflow-hidden">
+                                <h6 class="fs-12 fw-bold mb-0 text-muted text-uppercase">Email</h6>
+                                <p class="mb-0 fw-semibold text-dark text-truncate">{{ patientStore.patient?.email || '-' }}</p>
+                            </div>
+                        </div>
+                    </div> -->
                 </div>
 
-                <div class="d-flex align-items-center py-3">
-                  <div class="flex-shrink-0 me-3">
-                    <div
-                      class="bg-gradient-info rounded-circle p-2"
-                      style="
-                        width: 45px;
-                        height: 45px;
-                        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-                      "
-                    >
-                      <i
-                        class="ti ti-shield-check text-white d-flex align-items-center justify-content-center h-100"
-                      ></i>
+                <div class="border-top my-4"></div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0"><i class="ti ti-users me-2 text-primary"></i>{{ $t('patient_view.next_of_kin') }}</h5>
+                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6"><i class="ti ti-pencil"></i></button>
+                </div>
+                <div class="bg-light p-3 rounded-3 border-start border-primary border-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">{{ patientStore.patient?.emergency_contact?.name || '-' }}</h6>
+                            <p class="text-muted mb-2 fs-13">{{ patientStore.patient?.emergency_contact?.relationship || '-' }}</p>
+                        </div>
+                        <span class="avatar avatar-sm rounded-circle bg-white text-primary shadow-sm"><i class="ti ti-user"></i></span>
                     </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="fw-semibold mb-1 text-dark">Insurance Coverage</h6>
-                    <div class="d-flex align-items-center">
-                      <span class="badge bg-success text-white me-2 px-2 py-1 rounded"
-                        >{{ insurances.length }} Active Plan{{
-                          insurances.length !== 1 ? 's' : ''
-                        }}</span
-                      >
-                      <small class="text-muted">{{
-                        insurances.length > 0 ? 'Fully covered' : 'No active plans'
-                      }}</small>
+                    <div class="d-flex align-items-center mt-2">
+                        <span class="avatar avatar-xs rounded-circle bg-white text-dark me-2 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;"><i class="ti ti-phone fs-12"></i></span>
+                        <span class="text-dark fw-medium fs-13">{{ patientStore.patient?.emergency_contact?.phone || '-' }}</span>
                     </div>
-                  </div>
                 </div>
 
-                <div class="flex-fill w-100">
-                  <!-- <div class="card-header">
-                    <h5 class="fw-bold mb-0">
-                      <i class="ti ti-shield-check me-1"></i>{{ $t('insurance') }}
-                      <span class="badge badge-soft-success border border-success fs-13 fw-medium ms-2">
-                        {{ insurances.length }}
-                      </span>
-                    </h5>
-                  </div> -->
-                  <div class="">
-                    <div v-if="insurances.length === 0" class="text-center text-muted py-4">
-                      <!-- <div class="mb-3">
-                        <i class="ti ti-shield-x fs-48 text-muted opacity-50"></i>
-                      </div> -->
-                      <p class="mb-3">{{ $t('no_insurance_details') }}</p>
-                      <button class="btn btn-primary" @click="openCreateInsuranceModal">
-                        <i class="ti ti-plus me-1"></i>{{ $t('add_first_insurance') }}
+                <div class="border-top my-4"></div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0"><i class="ti ti-shield me-2 text-primary"></i>{{ $t('patient_view.insurance') }}</h5>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6"><i class="ti ti-pencil"></i></button>
+                        <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6" @click="openCreateInsuranceModal"><i class="ti ti-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div v-if="insurances.length === 0" class="text-center text-muted py-3">
+                      <p class="mb-2 fs-13">{{ $t('patient_view.no_insurance_details') }}</p>
+                      <button class="btn btn-sm btn-primary rounded-3" @click="openCreateInsuranceModal">
+                        <i class="ti ti-plus me-1"></i>{{ $t('patient_view.add_first_insurance') }}
                       </button>
                     </div>
                     <div v-else class="insurance-slider-container position-relative">
@@ -293,10 +188,10 @@
                         @click="scrollToPreviousCard"
                         :disabled="currentInsuranceIndex === 0"
                         class="position-absolute start-0 top-50 translate-middle-y btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
-                        style="width: 50px; height: 50px; z-index: 10; left: 15px"
+                        style="width: 32px; height: 32px; z-index: 10; left: 5px"
                         :class="{ 'opacity-25': currentInsuranceIndex === 0 }"
                       >
-                        <i class="ti ti-chevron-left fs-18"></i>
+                        <i class="ti ti-chevron-left fs-16"></i>
                       </button>
 
                       <!-- Right Arrow Overlay -->
@@ -305,14 +200,14 @@
                         @click="scrollToNextCard"
                         :disabled="currentInsuranceIndex === insurances.length"
                         class="position-absolute end-0 top-50 translate-middle-y btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
-                        style="width: 50px; height: 50px; z-index: 10; right: 15px"
+                        style="width: 32px; height: 32px; z-index: 10; right: 5px"
                         :class="{ 'opacity-25': currentInsuranceIndex === insurances.length - 1 }"
                       >
-                        <i class="ti ti-chevron-right fs-18"></i>
+                        <i class="ti ti-chevron-right fs-16"></i>
                       </button>
 
                       <div
-                        class="d-flex overflow-auto insurance-cards-wrapper"
+                        class="d-flex overflow-hidden insurance-cards-wrapper"
                         ref="insuranceSlider"
                       >
                         <div
@@ -323,32 +218,30 @@
                           @click="openInsuranceModal(insurance)"
                           data-bs-toggle="modal"
                           data-bs-target="#edit_insurance"
-                          style="cursor: pointer"
+                          style="cursor: pointer; width: 100%; min-width: 100%;"
                         >
                           <div
-                            class="card border-0 shadow-sm h-auto position-relative"
+                            class="card border-0 shadow-sm h-auto position-relative rounded-3 mb-0"
                             :style="getCardGradient(index)"
                           >
-                            <!-- ...existing card content... -->
-                            <div class="card-body text-white p-2">
-                              <!-- Status badge positioned absolutely at top right -->
+                            <div class="card-body text-white p-3">
                               <span
                                 :class="[
-                                  'badge fs-10 fw-medium position-absolute',
+                                  'badge fs-10 fw-medium position-absolute rounded-3',
                                   insurance.status === true ? 'bg-success' : 'bg-danger',
                                 ]"
                                 style="top: 12px; right: 8px"
                               >
-                                {{ insurance.status ? t('active') : t('inactive') }}
+                                {{ insurance.status ? t('patient_view.active') : t('patient_view.inactive') }}
                               </span>
 
-                              <div class="mb-2">
+                              <div class="mb-3">
                                 <div>
                                   <h6 class="text-white mb-1 fw-bold">
-                                    {{ insurance.plan?.company || t('na') }}
+                                    {{ insurance.plan?.company || t('patient_view.na') }}
                                   </h6>
                                   <small class="text-white-50">{{
-                                    insurance.plan?.name || t('na')
+                                    insurance.plan?.name || t('patient_view.na')
                                   }}</small>
                                 </div>
                               </div>
@@ -356,14 +249,14 @@
                               <div class="row">
                                 <div class="col-8">
                                   <div class="text-white-50 fs-12 mb-1">
-                                    {{ t('membership_number') }}
+                                    {{ t('patient_view.membership_number') }}
                                   </div>
                                   <div class="fw-bold fs-14 letter-spacing">
                                     {{ formatCardNumber(insurance.membership_number) }}
                                   </div>
                                 </div>
                                 <div class="col-4">
-                                  <div class="text-white-50 fs-12 mb-1">{{ t('expiry_date') }}</div>
+                                  <div class="text-white-50 fs-12 mb-1">{{ t('patient_view.expiry_date') }}</div>
                                   <div class="fw-semibold fs-13">
                                     {{ formatDate(insurance.expiry_date) }}
                                   </div>
@@ -374,711 +267,257 @@
                         </div>
 
                         <!-- Add New Insurance Card -->
-                        <div class="add-insurance-card flex-shrink-0">
+                        <div class="add-insurance-card flex-shrink-0" style="width: 100%; min-width: 100%;">
                           <div
-                            class="card bg-light h-auto d-flex align-items-center justify-content-center"
-                            style="cursor: pointer; min-height: 115px"
+                            class="card bg-light h-auto d-flex align-items-center justify-content-center border-dashed rounded-3 mb-0"
+                            style="cursor: pointer; min-height: 140px"
                             @click="openCreateInsuranceModal"
                           >
                             <div class="text-center text-primary p-3">
-                              <i class="ti ti-plus fs-48 mb-2"></i>
-                              <!-- <div class="fw-semibold fs-13">{{ $t('add_insurance') }}</div> -->
+                              <i class="ti ti-plus fs-32 mb-2"></i>
+                              <div class="fw-semibold fs-13">{{ $t('patient_view.add_new_insurance') }}</div>
                             </div>
                           </div>
                         </div>
                       </div>
-
-                      <!-- Card Position Indicator -->
-                      <!-- <div v-if="insurances.length > 1" class="d-flex justify-content-center mt-3">
-                        <span class="text-muted fs-14">
-                          {{ currentInsuranceIndex + 1 }} of {{ insurances.length }}
-                        </span>
-                      </div> -->
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
 
-        <!-- Health Information Dashboard -->
-        <div class="col-lg-7">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body p-4">
-              <div class="d-flex align-items-center justify-content-between mb-4">
-                <h5 class="fw-bold mb-0 text-dark">
-                  <i class="ti ti-heart-rate-monitor me-2 text-primary"></i>Health Information
-                </h5>
-                <div class="d-flex align-items-center">
-                  <!-- <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill me-2">
-                                        <i class="ti ti-circle-check me-1"></i>Normal Range
-                                    </div> -->
-                  <small class="text-muted">
-                    Updated: {{ patientStore.patient?.last_visit_date || 'Never' }}
-                  </small>
-                </div>
-              </div>
-
-              <!-- Health Tabs -->
-              <ul class="nav nav-pills nav-justified mb-4" id="healthTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button
-                    class="nav-link active fw-semibold"
-                    id="health-metrics-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#health-metrics"
-                    type="button"
-                    role="tab"
-                    aria-controls="health-metrics"
-                    aria-selected="false"
-                  >
-                    <i class="ti ti-activity me-1"></i>Health Metrics
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button
-                    class="nav-link fw-semibold"
-                    id="medical-history-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#medical-history"
-                    type="button"
-                    role="tab"
-                    aria-controls="medical-history"
-                    aria-selected="true"
-                  >
-                    <i class="ti ti-file-medical me-1"></i>Medical History
-                  </button>
-                </li>
-              </ul>
-
-              <!-- Tab Content -->
-              <div class="tab-content" id="healthTabsContent">
-                <!-- Medical History Tab -->
-                <div
-                  class="tab-pane fade"
-                  id="medical-history"
-                  role="tabpanel"
-                  aria-labelledby="medical-history-tab"
-                >
-                  <div class="row g-4">
-                    <!-- Column 1: Current Conditions, Known Allergies, Family History -->
-                    <div class="col-md-6">
-                      <!-- Current Conditions -->
-                      <div class="mb-4">
-                        <h6 class="fw-bold text-dark mb-2">
-                          <i class="ti ti-alert-circle me-1 text-secondary fs-14"></i>Current
-                          Conditions
-                        </h6>
-                        <div class="row g-2">
-                          <div class="col-12">
-                            <div class="p-2 bg-light rounded-2 border border-light">
-                              <div class="d-flex align-items-center">
-                                <div
-                                  class="bg-primary bg-opacity-10 rounded-circle p-1 me-2"
-                                  style="width: 30px; height: 30px"
-                                >
-                                  <i
-                                    class="ti ti-heart text-primary fs-14 d-flex align-items-center justify-content-center h-100"
-                                  ></i>
-                                </div>
-                                <div>
-                                  <h6 class="fw-semibold mb-0 text-dark fs-13">Hypertension</h6>
-                                  <small class="text-muted">Since 2020 • Controlled</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-12">
-                            <div class="p-2 bg-light rounded-2 border border-light">
-                              <div class="d-flex align-items-center">
-                                <div
-                                  class="bg-info bg-opacity-10 rounded-circle p-1 me-2"
-                                  style="width: 30px; height: 30px"
-                                >
-                                  <i
-                                    class="ti ti-eye text-info fs-14 d-flex align-items-center justify-content-center h-100"
-                                  ></i>
-                                </div>
-                                <div>
-                                  <h6 class="fw-semibold mb-0 text-dark fs-13">Myopia</h6>
-                                  <small class="text-muted">Since childhood • Corrected</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Known Allergies -->
-                      <div class="mb-4">
-                        <h6 class="fw-bold text-dark mb-2">
-                          <i class="ti ti-shield-x me-1 text-muted fs-14"></i>Known Allergies
-                        </h6>
-                        <div class="row g-2">
-                          <div class="col-12">
-                            <div
-                              class="p-2 rounded-2 border"
-                              style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                            >
-                              <div class="d-flex align-items-center">
-                                <div
-                                  class="rounded-circle p-1 me-2"
-                                  style="width: 30px; height: 30px; background-color: #f1f3f4"
-                                >
-                                  <i
-                                    class="ti ti-pill fs-14 d-flex align-items-center justify-content-center h-100"
-                                    style="color: #6c757d"
-                                  ></i>
-                                </div>
-                                <div>
-                                  <h6 class="fw-semibold mb-0 text-dark fs-13">Penicillin</h6>
-                                  <small class="text-muted">Severe reaction • Avoid</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-12">
-                            <div
-                              class="p-2 rounded-2 border"
-                              style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                            >
-                              <div class="d-flex align-items-center">
-                                <div
-                                  class="rounded-circle p-1 me-2"
-                                  style="width: 30px; height: 30px; background-color: #f1f3f4"
-                                >
-                                  <i
-                                    class="ti ti-leaf fs-14 d-flex align-items-center justify-content-center h-100"
-                                    style="color: #6c757d"
-                                  ></i>
-                                </div>
-                                <div>
-                                  <h6 class="fw-semibold mb-0 text-dark fs-13">Pollen</h6>
-                                  <small class="text-muted">Seasonal • Managed</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Family History -->
-                      <div>
-                        <h6 class="fw-bold text-dark mb-2">
-                          <i class="ti ti-users me-1 text-muted fs-14"></i>Family History
-                        </h6>
-                        <div
-                          class="d-flex align-items-center p-2 rounded-2 border mb-2"
-                          style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                        >
-                          <div class="flex-shrink-0 me-2">
-                            <div
-                              class="rounded-circle p-1"
-                              style="width: 30px; height: 30px; background-color: #f1f3f4"
-                            >
-                              <i
-                                class="ti ti-heart fs-14 d-flex align-items-center justify-content-center h-100"
-                                style="color: #6c757d"
-                              ></i>
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="fw-semibold mb-0 text-dark fs-13">Cardiovascular Disease</h6>
-                            <small class="text-muted">Father • Age 55</small>
-                          </div>
-                        </div>
-                        <div
-                          class="d-flex align-items-center p-2 rounded-2 border"
-                          style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                        >
-                          <div class="flex-shrink-0 me-2">
-                            <div
-                              class="rounded-circle p-1"
-                              style="width: 30px; height: 30px; background-color: #f1f3f4"
-                            >
-                              <i
-                                class="ti ti-droplet fs-14 d-flex align-items-center justify-content-center h-100"
-                                style="color: #6c757d"
-                              ></i>
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="fw-semibold mb-0 text-dark fs-13">Diabetes Type 2</h6>
-                            <small class="text-muted">Mother • Age 48</small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Column 2: Current Medications, Previous Surgeries -->
-                    <div class="col-md-6">
-                      <!-- Current Medications -->
-                      <div class="mb-4">
-                        <h6 class="fw-bold text-dark mb-2">
-                          <i class="ti ti-pill me-1 text-muted fs-14"></i>Current Medications
-                        </h6>
-                        <div class="row g-2">
-                          <div class="col-12">
-                            <div
-                              class="p-2 rounded-2 border"
-                              style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                            >
-                              <div class="d-flex align-items-center">
-                                <div
-                                  class="rounded-circle p-1 me-2"
-                                  style="width: 30px; height: 30px; background-color: #f1f3f4"
-                                >
-                                  <i
-                                    class="ti ti-heart fs-14 d-flex align-items-center justify-content-center h-100"
-                                    style="color: #6c757d"
-                                  ></i>
-                                </div>
-                                <div>
-                                  <h6 class="fw-semibold mb-0 text-dark fs-13">Lisinopril 10mg</h6>
-                                  <small class="text-muted">Once daily • For hypertension</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-12">
-                            <div
-                              class="p-2 rounded-2 border"
-                              style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                            >
-                              <div class="d-flex align-items-center">
-                                <div
-                                  class="rounded-circle p-1 me-2"
-                                  style="width: 30px; height: 30px; background-color: #f1f3f4"
-                                >
-                                  <i
-                                    class="ti ti-eye fs-14 d-flex align-items-center justify-content-center h-100"
-                                    style="color: #6c757d"
-                                  ></i>
-                                </div>
-                                <div>
-                                  <h6 class="fw-semibold mb-0 text-dark fs-13">Artificial Tears</h6>
-                                  <small class="text-muted">As needed • For dry eyes</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-12">
-                            <div
-                              class="p-2 rounded-2 border"
-                              style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                            >
-                              <div class="d-flex align-items-center">
-                                <div
-                                  class="rounded-circle p-1 me-2"
-                                  style="width: 30px; height: 30px; background-color: #f1f3f4"
-                                >
-                                  <i
-                                    class="ti ti-shield fs-14 d-flex align-items-center justify-content-center h-100"
-                                    style="color: #6c757d"
-                                  ></i>
-                                </div>
-                                <div>
-                                  <h6 class="fw-semibold mb-0 text-dark fs-13">Multivitamin</h6>
-                                  <small class="text-muted">Once daily • Supplement</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Previous Surgeries -->
-                      <div>
-                        <h6 class="fw-bold text-dark mb-2">
-                          <i class="ti ti-cut me-1 text-muted fs-14"></i>Previous Surgeries
-                        </h6>
-                        <div
-                          class="d-flex align-items-center p-2 rounded-2 border"
-                          style="background-color: #fbfbfb; border-color: #e9ecef !important"
-                        >
-                          <div class="flex-shrink-0 me-2">
-                            <div
-                              class="rounded-circle p-1"
-                              style="width: 30px; height: 30px; background-color: #f1f3f4"
-                            >
-                              <i
-                                class="ti ti-calendar fs-14 d-flex align-items-center justify-content-center h-100"
-                                style="color: #6c757d"
-                              ></i>
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="fw-semibold mb-0 text-dark fs-13">Appendectomy</h6>
-                            <small class="text-muted">March 2018 • Successful</small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Health Metrics Tab -->
-                <div
-                  class="tab-pane fade show active"
-                  id="health-metrics"
-                  role="tabpanel"
-                  aria-labelledby="health-metrics-tab"
-                >
-                  <!-- Primary Vital Signs Cards -->
-                  <div class="row g-2 mb-3">
+        <!-- Right Column: Vital Signs & Medical History -->
+        <div class="col-lg-8">
+           <!-- Vital Signs -->
+           <div class="card border shadow-none rounded-3 w-100 mb-4">
+             <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-dark mb-0"><i class="ti ti-activity-heartbeat me-2 text-primary"></i>{{ $t('patient_view.vital_signs') }}</h5>
+                <small class="text-muted">{{ $t('patient_view.last_visit') }}: {{ patientStore.patient?.last_visit_date || '-' }}</small>
+             </div>
+             <div class="card-body p-4">
+                <div class="row g-3">
                     <!-- Blood Pressure -->
-                    <div class="col-md-6 col-lg-3">
-                      <div
-                        class="card border-0"
-                        style="
-                          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                          border-radius: 12px;
-                        "
-                      >
-                        <div class="card-body p-2 text-white">
-                          <div class="d-flex align-items-center justify-content-between mb-1">
-                            <div
-                              class="bg-white bg-opacity-20 rounded-circle p-1"
-                              style="width: 32px; height: 32px"
-                            >
-                              <i
-                                class="ti ti-heart text-white fs-14 d-flex align-items-center justify-content-center h-100"
-                              ></i>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-droplet fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.blood_pressure') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.blood_pressure || '-' }}
+                                </p>
                             </div>
-                            <span
-                              class="badge bg-white bg-opacity-20 text-white px-2 py-1 rounded-pill"
-                              style="font-size: 10px"
-                              >Normal</span
-                            >
-                          </div>
-                          <h5 class="fw-bold mb-0 text-white">
-                            {{ patientStore.patient?.vital_signs?.blood_pressure || '-' }}
-                          </h5>
-                          <p class="mb-0 text-white-50" style="font-size: 11px">Blood Pressure</p>
-                          <small class="text-white-50" style="font-size: 10px">mmHg</small>
                         </div>
-                      </div>
                     </div>
-
                     <!-- Heart Rate -->
-                    <div class="col-md-6 col-lg-3">
-                      <div
-                        class="card border-0"
-                        style="
-                          background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-                          border-radius: 12px;
-                        "
-                      >
-                        <div class="card-body p-2 text-white">
-                          <div class="d-flex align-items-center justify-content-between mb-1">
-                            <div
-                              class="bg-white bg-opacity-20 rounded-circle p-1"
-                              style="width: 32px; height: 32px"
-                            >
-                              <i
-                                class="ti ti-activity text-white fs-14 d-flex align-items-center justify-content-center h-100"
-                              ></i>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-heart-rate-monitor fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.heart_rate') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.heart_rate || '-' }}
+                                </p>
                             </div>
-                            <span
-                              class="badge bg-white bg-opacity-20 text-white px-2 py-1 rounded-pill"
-                              style="font-size: 10px"
-                              >Normal</span
-                            >
-                          </div>
-                          <h5 class="fw-bold mb-0 text-white">
-                            {{ patientStore.patient?.vital_signs?.heart_rate || '-' }}
-                          </h5>
-                          <p class="mb-0 text-white-50" style="font-size: 11px">Heart Rate</p>
-                          <small class="text-white-50" style="font-size: 10px">bpm</small>
                         </div>
-                      </div>
                     </div>
-
-                    <!-- Temperature -->
-                    <div class="col-md-6 col-lg-3">
-                      <div
-                        class="card border-0"
-                        style="
-                          background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-                          border-radius: 12px;
-                        "
-                      >
-                        <div class="card-body p-2 text-white">
-                          <div class="d-flex align-items-center justify-content-between mb-1">
-                            <div
-                              class="bg-white bg-opacity-20 rounded-circle p-1"
-                              style="width: 32px; height: 32px"
-                            >
-                              <i
-                                class="ti ti-temperature text-white fs-14 d-flex align-items-center justify-content-center h-100"
-                              ></i>
-                            </div>
-                            <span
-                              class="badge bg-white bg-opacity-20 text-white px-2 py-1 rounded-pill"
-                              style="font-size: 10px"
-                              >Normal</span
-                            >
-                          </div>
-                          <h5 class="fw-bold mb-0 text-white">
-                            {{ patientStore.patient?.vital_signs?.temperature || '-' }}
-                          </h5>
-                          <p class="mb-0 text-white-50" style="font-size: 11px">Temperature</p>
-                          <small class="text-white-50" style="font-size: 10px">°C</small>
-                        </div>
-                      </div>
-                    </div>
-
                     <!-- SpO2 -->
-                    <div class="col-md-6 col-lg-3">
-                      <div
-                        class="card border-0"
-                        style="
-                          background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-                          border-radius: 12px;
-                        "
-                      >
-                        <div class="card-body p-2 text-white">
-                          <div class="d-flex align-items-center justify-content-between mb-1">
-                            <div
-                              class="bg-white bg-opacity-20 rounded-circle p-1"
-                              style="width: 32px; height: 32px"
-                            >
-                              <i
-                                class="ti ti-lungs text-white fs-14 d-flex align-items-center justify-content-center h-100"
-                              ></i>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-lungs fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.spo2') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.spo2 || '-' }}
+                                </p>
                             </div>
-                            <span
-                              class="badge bg-white bg-opacity-20 text-white px-2 py-1 rounded-pill"
-                              style="font-size: 10px"
-                              >Normal</span
-                            >
-                          </div>
-                          <h5 class="fw-bold mb-0 text-white">
-                            {{ patientStore.patient?.vital_signs?.spo2 || '-' }}
-                          </h5>
-                          <p class="mb-0 text-white-50" style="font-size: 11px">
-                            Oxygen Saturation
-                          </p>
-                          <small class="text-white-50" style="font-size: 10px">%</small>
                         </div>
-                      </div>
                     </div>
-                  </div>
-
-                  <!-- Physical Measurements Section -->
-                  <div class="row g-2">
-                    <!-- BMI Chart -->
-                    <div class="col-lg-8">
-                      <div class="card border-0 shadow-sm h-100" style="border-radius: 16px">
-                        <div class="card-body p-2">
-                          <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h6 class="fw-bold text-dark mb-0">
-                              <i class="ti ti-chart-line me-2 text-primary"></i>Physical Assessment
-                            </h6>
-                            <!-- <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
-                                                            Updated Today
-                                                        </div> -->
-                          </div>
-
-                          <!-- BMI Visual Indicator -->
-                          <div class="mb-4">
-                            <div class="d-flex align-items-center justify-content-between mb-2">
-                              <span class="fw-semibold text-dark">BMI Status</span>
-                              <span class="badge bg-success text-white px-3 py-1 rounded-pill"
-                                >Normal Weight</span
-                              >
+                    <!-- Temperature -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-temperature fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.temperature') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.temperature || '-' }}
+                                </p>
                             </div>
-                            <div class="progress" style="height: 8px; border-radius: 10px">
-                              <div
-                                class="progress-bar bg-gradient"
-                                style="
-                                  width: 65%;
-                                  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
-                                  border-radius: 10px;
-                                "
-                              ></div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-1">
-                              <small class="text-muted">Underweight</small>
-                              <small class="text-muted">Normal</small>
-                              <small class="text-muted">Overweight</small>
-                              <small class="text-muted">Obese</small>
-                            </div>
-                          </div>
-
-                          <!-- Physical Stats Grid -->
-                          <div class="row g-3">
-                            <div class="col-md-4">
-                              <div
-                                class="p-3 rounded-3 border"
-                                style="background: linear-gradient(135deg, #667eea15, #764ba215)"
-                              >
-                                <div class="d-flex align-items-center mb-2">
-                                  <div
-                                    class="bg-primary bg-opacity-15 rounded-circle p-2 me-2"
-                                    style="width: 35px; height: 35px"
-                                  >
-                                    <i
-                                      class="ti ti-ruler-measure text-primary fs-14 d-flex align-items-center justify-content-center h-100"
-                                    ></i>
-                                  </div>
-                                  <span class="text-muted fs-13">Height</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-0">
-                                  {{ patientStore.patient?.vital_signs?.height || '-' }}
-                                  <small class="text-muted fs-14">cm</small>
-                                </h4>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div
-                                class="p-3 rounded-3 border"
-                                style="background: linear-gradient(135deg, #43e97b15, #38f9d715)"
-                              >
-                                <div class="d-flex align-items-center mb-2">
-                                  <div
-                                    class="bg-success bg-opacity-15 rounded-circle p-2 me-2"
-                                    style="width: 35px; height: 35px"
-                                  >
-                                    <i
-                                      class="ti ti-scale text-success fs-14 d-flex align-items-center justify-content-center h-100"
-                                    ></i>
-                                  </div>
-                                  <span class="text-muted fs-13">Weight</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-0">
-                                  {{ patientStore.patient?.vital_signs?.weight || '-' }}
-                                  <small class="text-muted fs-14">kg</small>
-                                </h4>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <div
-                                class="p-3 rounded-3 border"
-                                style="background: linear-gradient(135deg, #4facfe15, #00f2fe15)"
-                              >
-                                <div class="d-flex align-items-center mb-2">
-                                  <div
-                                    class="bg-info bg-opacity-15 rounded-circle p-2 me-2"
-                                    style="width: 35px; height: 35px"
-                                  >
-                                    <i
-                                      class="ti ti-calculator text-info fs-14 d-flex align-items-center justify-content-center h-100"
-                                    ></i>
-                                  </div>
-                                  <span class="text-muted fs-13">BMI</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-0">
-                                  {{ patientStore.patient?.vital_signs?.bmi || '-' }}
-                                  <small class="text-muted fs-14">kg/m²</small>
-                                </h4>
-                              </div>
-                            </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-
-                    <!-- Health Summary -->
-                    <div class="col-lg-4">
-                      <div class="card border-0 shadow-sm h-100" style="border-radius: 16px">
-                        <div class="card-body p-2">
-                          <h6 class="fw-bold text-dark mb-3">
-                            <i class="ti ti-health-recognition me-2 text-success"></i>Health Summary
-                          </h6>
-
-                          <!-- Health Score -->
-                          <div class="text-center mb-2">
-                            <div class="position-relative d-inline-block">
-                              <div
-                                class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
-                                style="width: 80px; height: 80px"
-                              >
-                                <h3 class="fw-bold text-success mb-0">85</h3>
-                              </div>
-                              <div class="position-absolute top-0 start-0 w-100 h-100">
-                                <svg width="80" height="80" style="transform: rotate(-90deg)">
-                                  <circle
-                                    cx="40"
-                                    cy="40"
-                                    r="35"
-                                    fill="none"
-                                    stroke="#e9ecef"
-                                    stroke-width="6"
-                                  ></circle>
-                                  <circle
-                                    cx="40"
-                                    cy="40"
-                                    r="35"
-                                    fill="none"
-                                    stroke="#28a745"
-                                    stroke-width="6"
-                                    stroke-dasharray="220"
-                                    stroke-dashoffset="44"
-                                    stroke-linecap="round"
-                                  ></circle>
-                                </svg>
-                              </div>
+                    <!-- Height -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-ruler fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.height') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.height || '-' }} <small class="fs-12 fw-normal ms-1">cm</small>
+                                </p>
                             </div>
-                            <p class="mb-0 text-muted fs-13 mt-2">Health Score</p>
-                            <small class="text-success fw-semibold">Excellent</small>
-                          </div>
-
-                          <!-- Health Indicators -->
-                          <div class="space-y-3">
-                            <div class="d-flex align-items-center">
-                              <div
-                                class="bg-success bg-opacity-15 rounded-circle p-1 me-2"
-                                style="width: 24px; height: 24px"
-                              >
-                                <i
-                                  class="ti ti-check text-success fs-12 d-flex align-items-center justify-content-center h-100"
-                                ></i>
-                              </div>
-                              <span class="text-dark fs-13">Blood pressure normal</span>
-                            </div>
-                            <div class="d-flex align-items-center">
-                              <div
-                                class="bg-success bg-opacity-15 rounded-circle p-1 me-2"
-                                style="width: 24px; height: 24px"
-                              >
-                                <i
-                                  class="ti ti-check text-success fs-12 d-flex align-items-center justify-content-center h-100"
-                                ></i>
-                              </div>
-                              <span class="text-dark fs-13">Heart rate stable</span>
-                            </div>
-                            <div class="d-flex align-items-center">
-                              <div
-                                class="bg-success bg-opacity-15 rounded-circle p-1 me-2"
-                                style="width: 24px; height: 24px"
-                              >
-                                <i
-                                  class="ti ti-check text-success fs-12 d-flex align-items-center justify-content-center h-100"
-                                ></i>
-                              </div>
-                              <span class="text-dark fs-13">BMI in healthy range</span>
-                            </div>
-                            <div class="d-flex align-items-center">
-                              <div
-                                class="bg-warning bg-opacity-15 rounded-circle p-1 me-2"
-                                style="width: 24px; height: 24px"
-                              >
-                                <i
-                                  class="ti ti-alert-triangle text-warning fs-12 d-flex align-items-center justify-content-center h-100"
-                                ></i>
-                              </div>
-                              <span class="text-dark fs-13">Monitor hypertension</span>
-                            </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
+                    <!-- Weight -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-weight fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.weight') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.weight || '-' }} <small class="fs-12 fw-normal ms-1">kg</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- BMI -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-calculator fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.bmi') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.bmi || '-' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Health Score -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-activity fs-20"></i></span>
+                            <div>
+                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.health_score') }}</h6>
+                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
+                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.health_score || '-' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
+             </div>
+           </div>
+
+           <!-- Medical History & Medications -->
+           <div class="card border shadow-none rounded-3 w-100 mb-4">
+             <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0">
+                <h5 class="fw-bold text-dark mb-0"><i class="ti ti-file-medical me-2 text-primary"></i>{{ $t('patient_view.medical_history') }}</h5>
+             </div>
+             <div class="card-body p-4">
+                <div class="row g-4 mb-4">
+                    <!-- Conditions -->
+                    <div class="col-md-9">
+                        <h6 class="fw-bold text-dark mb-3 fs-14 d-flex align-items-center">
+                            {{ $t('patient_view.conditions') }}
+                        </h6>
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center p-3 border rounded-3 bg-light-subtle hover-bg-light transition-all h-100">
+                                    <div class="avatar avatar-sm bg-white shadow-sm rounded-circle me-3 text-danger flex-shrink-0">
+                                        <i class="ti ti-heartbeat fs-16"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fs-13 fw-bold mb-1 text-dark">Hypertension</h6>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle fs-10 rounded-pill">Controlled</span>
+                                        <span class="text-muted fs-11 ms-2">Since 2020</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center p-3 border rounded-3 bg-light-subtle hover-bg-light transition-all h-100">
+                                    <div class="avatar avatar-sm bg-white shadow-sm rounded-circle me-3 text-info flex-shrink-0">
+                                        <i class="ti ti-eye fs-16"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fs-13 fw-bold mb-1 text-dark">Myopia</h6>
+                                        <span class="badge bg-info-subtle text-info border border-info-subtle fs-10 rounded-pill">Corrected</span>
+                                        <span class="text-muted fs-11 ms-2">Since childhood</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Allergies -->
+                    <div class="col-md-3">
+                        <h6 class="fw-bold text-dark mb-3 fs-14 d-flex align-items-center">
+                            {{ $t('patient_view.allergies') }}
+                        </h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="d-flex align-items-center px-3 py-2 border border-danger-subtle bg-danger-subtle text-danger rounded-pill">
+                                <i class="ti ti-alert-triangle me-2 fs-14"></i>
+                                <span class="fw-semibold fs-13">Penicillin</span>
+                            </div>
+                            <div class="d-flex align-items-center px-3 py-2 border border-warning-subtle bg-warning-subtle text-warning rounded-pill">
+                                <i class="ti ti-flower me-2 fs-14"></i>
+                                <span class="fw-semibold fs-13">Pollen</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-top mb-4"></div>
+
+                <!-- Medications Table -->
+                <h5 class="fw-bold text-dark mb-3 fs-14"><i class="ti ti-pill me-2 text-primary"></i>{{ $t('patient_view.medications') }}</h5>
+                <div class="table-responsive border rounded-3">
+                    <table class="table table-nowrap mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4 py-3">{{ $t('patient_view.medication') }}</th>
+                                <th class="py-3">{{ $t('patient_view.dosage') }}</th>
+                                <th class="py-3">{{ $t('patient_view.prescribed_by') }}</th>
+                                <th class="pe-4 py-3">{{ $t('patient_view.date') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <span class="avatar avatar-xs bg-primary-subtle text-primary rounded-circle me-2"><i class="ti ti-pill"></i></span>
+                                        <div>
+                                            <h6 class="fw-semibold mb-0 text-dark fs-14">Lisinopril</h6>
+                                            <small class="text-muted">ACE Inhibitor</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border">10mg</span>
+                                    <span class="text-muted ms-2 fs-13">Once daily</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="@/assets/img/doctors/doctor-03.jpg" class="avatar avatar-xs rounded-circle me-2" alt="Doctor">
+                                        <span class="text-dark fs-13">Dr. Sarah Smith</span>
+                                    </div>
+                                </td>
+                                <td class="pe-4 text-muted fs-13">12 Oct 2024</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <span class="avatar avatar-xs bg-info-subtle text-info rounded-circle me-2"><i class="ti ti-droplet"></i></span>
+                                        <div>
+                                            <h6 class="fw-semibold mb-0 text-dark fs-14">Artificial Tears</h6>
+                                            <small class="text-muted">Eye Drops</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border">2 drops</span>
+                                    <span class="text-muted ms-2 fs-13">As needed</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="@/assets/img/doctors/doctor-03.jpg" class="avatar avatar-xs rounded-circle me-2" alt="Doctor">
+                                        <span class="text-dark fs-13">Dr. Sarah Smith</span>
+                                    </div>
+                                </td>
+                                <td class="pe-4 text-muted fs-13">10 Oct 2024</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+             </div>
+           </div>
         </div>
       </div>
 
@@ -1091,7 +530,7 @@
             aria-expanded="false"
             class="nav-link active bg-transparent"
           >
-            <span>{{ $t('appointments') }}</span>
+            <span>{{ $t('patient_view.appointments') }}</span>
           </a>
         </li>
         <li class="nav-item">
@@ -1101,7 +540,7 @@
             aria-expanded="true"
             class="nav-link bg-transparent"
           >
-            <span>{{ $t('transactions') }}</span>
+            <span>{{ $t('patient_view.transactions') }}</span>
           </a>
         </li>
       </ul>
@@ -1123,7 +562,7 @@
                           <input
                             type="search"
                             class="form-control form-control-sm"
-                            placeholder="Search"
+                            :placeholder="$t('patient_view.search')"
                             v-model="searchQuery"
                           />
                         </label>
@@ -1153,19 +592,19 @@
                   data-bs-toggle="dropdown"
                   data-bs-auto-close="outside"
                 >
-                  <i class="ti ti-filter text-gray-5 me-1"></i>Filters
+                  <i class="ti ti-filter text-gray-5 me-1"></i>{{ $t('patient_view.filters') }}
                 </a>
                 <div class="dropdown-menu dropdown-lg dropdown-menu-end filter-dropdown p-0">
                   <div
                     class="d-flex align-items-center justify-content-between border-bottom filter-header"
                   >
-                    <h4 class="mb-0 fw-bold">Filter</h4>
+                    <h4 class="mb-0 fw-bold">{{ $t('patient_view.filter') }}</h4>
                     <div class="d-flex align-items-center">
                       <a
                         href="javascript:void(0);"
                         class="link-danger text-decoration-underline"
                         @click="clearAllFilters"
-                        >Clear All</a
+                        >{{ $t('patient_view.clear_all') }}</a
                       >
                     </div>
                   </div>
@@ -1173,12 +612,12 @@
                     <div class="filter-body pb-0">
                       <div class="mb-3">
                         <div class="d-flex align-items-center justify-content-between">
-                          <label class="form-label mb-1">Doctor</label>
+                          <label class="form-label mb-1">{{ $t('patient_view.doctor') }}</label>
                           <a
                             href="javascript:void(0);"
                             class="link-primary mb-1"
                             @click="selected = []"
-                            >Reset</a
+                            >{{ $t('patient_view.reset') }}</a
                           >
                         </div>
                         <vue-multiselect
@@ -1191,12 +630,12 @@
                       </div>
                       <div class="mb-3">
                         <div class="d-flex align-items-center justify-content-between">
-                          <label class="form-label">Designation</label>
+                          <label class="form-label">{{ $t('patient_view.designation') }}</label>
                           <a
                             href="javascript:void(0);"
                             class="link-primary mb-1"
                             @click="selectedOne = []"
-                            >Reset</a
+                            >{{ $t('patient_view.reset') }}</a
                           >
                         </div>
                         <vue-multiselect
@@ -1209,12 +648,12 @@
                       </div>
                       <div class="mb-3">
                         <div class="d-flex align-items-center justify-content-between">
-                          <label class="form-label">Department</label>
+                          <label class="form-label">{{ $t('patient_view.department') }}</label>
                           <a
                             href="javascript:void(0);"
                             class="link-primary mb-1"
                             @click="selectedTwo = []"
-                            >Reset</a
+                            >{{ $t('patient_view.reset') }}</a
                           >
                         </div>
                         <vue-multiselect
@@ -1227,7 +666,7 @@
                       </div>
                       <div class="mb-3">
                         <label class="form-label mb-1 text-dark fs-14 fw-medium"
-                          >Date<span class="text-danger">*</span></label
+                          >{{ $t('patient_view.date') }}<span class="text-danger">*</span></label
                         >
                         <div class="input-icon-end position-relative">
                           <a-date-picker
@@ -1239,12 +678,12 @@
                       </div>
                       <div class="mb-3">
                         <div class="d-flex align-items-center justify-content-between">
-                          <label class="form-label">Amount</label>
+                          <label class="form-label">{{ $t('patient_view.amount') }}</label>
                           <a
                             href="javascript:void(0);"
                             class="link-primary mb-1"
                             @click="selectedThree = []"
-                            >Reset</a
+                            >{{ $t('patient_view.reset') }}</a
                           >
                         </div>
                         <vue-multiselect
@@ -1257,12 +696,12 @@
                       </div>
                       <div class="mb-3">
                         <div class="d-flex align-items-center justify-content-between">
-                          <label class="form-label">Status</label>
+                          <label class="form-label">{{ $t('patient_view.status') }}</label>
                           <a
                             href="javascript:void(0);"
                             class="link-primary mb-1"
                             @click="selectedFour = []"
-                            >Reset</a
+                            >{{ $t('patient_view.reset') }}</a
                           >
                         </div>
                         <vue-multiselect
@@ -1278,9 +717,9 @@
                       class="filter-footer d-flex align-items-center justify-content-end border-top"
                     >
                       <a href="javascript:void(0);" class="btn btn-light btn-md me-2 fw-medium"
-                        >Close</a
+                        >{{ $t('patient_view.close') }}</a
                       >
-                      <button type="submit" class="btn btn-primary btn-md fw-medium">Filter</button>
+                      <button type="submit" class="btn btn-primary btn-md fw-medium">{{ $t('patient_view.filter') }}</button>
                     </div>
                   </form>
                 </div>
@@ -1295,7 +734,7 @@
               table-layout="fixed"
               :data-source="filteredAppointments"
               :pagination="false"
-              row-key="id"
+              :row-key="(record: any) => record.id || record.uuid || record.appointment_number"
               :loading="appointmentsLoading"
             >
               <template #bodyCell="{ column, record }">
@@ -1327,9 +766,9 @@
                 </template>
                 <template v-if="column.key === 'staff_name'">
                   <div class="d-flex align-items-center ms-2">
-                    <router-link
+                    <a
+                      href="javascript:void(0);"
                       v-if="record.staff && record.staff.uuid"
-                      :to="{ name: 'ViewStaff', params: { id: record.staff.uuid } }"
                       class="avatar me-2 fs-14"
                     >
                       <img
@@ -1339,7 +778,7 @@
                         alt="Staff"
                         class="rounded-circle m-r-5"
                       />
-                    </router-link>
+                    </a>
                     <div v-else class="avatar me-2 fs-14">
                       <img
                         width="16"
@@ -1351,13 +790,13 @@
                     </div>
                     <div>
                       <h6 class="mb-1 fs-14 fw-semibold">
-                        <router-link
+                        <a
+                          href="javascript:void(0);"
                           v-if="record.staff && record.staff.uuid"
-                          :to="{ name: 'ViewStaff', params: { id: record.staff.uuid } }"
                           class="text-primary fw-semibold"
                         >
                           {{ record.staff.name }}
-                        </router-link>
+                        </a>
                         <span
                           v-else-if="record.staff && record.staff.name"
                           class="text-dark fw-semibold"
@@ -1416,7 +855,7 @@
                           class="dropdown-item"
                           href="javascript:void(0);"
                           @click="viewAppointment(record)"
-                          >View</a
+                          >{{ $t('patient_view.view') }}</a
                         >
                       </li>
                       <li>
@@ -1424,7 +863,7 @@
                           class="dropdown-item"
                           href="javascript:void(0);"
                           @click="editAppointment(record)"
-                          >Edit</a
+                          >{{ $t('patient_view.edit') }}</a
                         >
                       </li>
                       <li>
@@ -1432,7 +871,7 @@
                           class="dropdown-item"
                           href="javascript:void(0);"
                           @click="deleteAppointment(record)"
-                          >Delete</a
+                          >{{ $t('patient_view.delete') }}</a
                         >
                       </li>
                     </ul>
@@ -1445,12 +884,15 @@
         <div class="tab-pane" id="transactions">
           <!-- Transactions content placeholder -->
           <div class="text-center py-5">
-            <p class="text-muted">Transaction details will be available here.</p>
+            <p class="text-muted">{{ $t('patient_view.transaction_details_placeholder') }}</p>
           </div>
         </div>
       </div>
       <!-- tab content end -->
     </div>
+    <!-- End Content -->
+
+    <!-- </div> -->
     <!-- End Content -->
 
     <!-- Footer Start -->
@@ -1598,7 +1040,7 @@
     <div class="offcanvas-header d-block pb-0 px-0">
       <div class="border-bottom d-flex align-items-center justify-content-between pb-3 px-3">
         <h5 class="offcanvas-title fs-18 fw-bold">
-          Appointment Details
+          {{ $t('patient_view.appointment_details') }}
           <span class="badge badge-soft-primary border pt-1 px-2 border-primary fw-medium ms-2">
             {{ selectedAppointment?.appointment_number || '' }}
           </span>
@@ -1614,7 +1056,7 @@
       </div>
     </div>
     <div class="offcanvas-body pt-0 px-0">
-      <h6 class="bg-light py-2 px-3 fw-bold">When & Where</h6>
+      <h6 class="bg-light py-2 px-3 fw-bold">{{ $t('patient_view.when_where') }}</h6>
       <div class="px-3 my-4">
         <div
           class="bg-light p-3 mb-3 border rounded-3 d-flex align-items-center justify-content-between"
@@ -1650,7 +1092,7 @@
           </div>
         </div>
         <p class="text-dark mb-3 fw-semibold d-flex align-items-center justify-content-between">
-          Appointment On
+          {{ $t('patient_view.appointment_on') }}
           <span class="text-body fw-normal">
             {{
               selectedAppointment?.start_date
@@ -1665,7 +1107,7 @@
           </span>
         </p>
         <p class="text-dark mb-3 fw-semibold d-flex align-items-center justify-content-between">
-          Time
+          {{ $t('patient_view.time') }}
           <span class="text-body fw-normal">
             {{ selectedAppointment?.start_time || '-' }}
             <template v-if="selectedAppointment?.end_time">
@@ -1674,15 +1116,15 @@
           </span>
         </p>
         <p class="text-dark mb-3 fw-semibold d-flex align-items-center justify-content-between">
-          Location
+          {{ $t('patient_view.location') }}
           <span class="text-body fw-normal">{{ selectedAppointment?.location || '-' }}</span>
         </p>
         <p class="text-dark mb-3 fw-semibold d-flex align-items-center justify-content-between">
-          Appointment Type
+          {{ $t('patient_view.appointment_type') }}
           <span class="text-body fw-normal">{{ selectedAppointment?.type || '-' }}</span>
         </p>
         <div class="text-dark mb-3 fw-semibold d-flex align-items-center justify-content-between">
-          Service
+          {{ $t('patient_view.service') }}
           <div class="text-body fw-normal d-flex align-items-center">
             {{ selectedAppointment?.service?.name || 'No Service' }}
             <span v-if="selectedAppointment?.service?.code" class="text-muted ms-2 fs-13">
@@ -1691,11 +1133,11 @@
           </div>
         </div>
       </div>
-      <h6 class="bg-light py-2 px-3 text-dark fw-bold">Appointment Details</h6>
+      <h6 class="bg-light py-2 px-3 text-dark fw-bold">{{ $t('patient_view.appointment_details') }}</h6>
       <div class="px-3 my-4">
         <div class="d-flex align-items-center justify-content-between mb-3">
           <div class="d-flex align-items-center">
-            Telehealth
+            {{ $t('patient_view.telehealth') }}
             <label class="d-flex align-items-center form-switch ps-1">
               <input
                 class="form-check-input m-0 me-2"
@@ -1712,13 +1154,13 @@
               href="javascript:void(0);"
               class="btn-primary btn btn-sm rounded d-flex align-items-center"
             >
-              <i class="ti ti-video me-1"></i> Start
+              <i class="ti ti-video me-1"></i> {{ $t('patient_view.start') }}
             </a>
           </div>
         </div>
         <div class="row align-items-center">
           <div class="col-lg-6 col-md-6">
-            <p class="text-dark">Status</p>
+            <p class="text-dark">{{ $t('patient_view.status') }}</p>
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="mb-3">
@@ -1737,13 +1179,13 @@
                           : 'badge-soft-secondary text-secondary',
                 ]"
               >
-                {{ selectedAppointment?.status || 'Pending' }}
+                {{ selectedAppointment?.status || $t('patient_view.pending') }}
               </span>
             </div>
           </div>
         </div>
         <div v-if="selectedAppointment?.notes" class="mb-3">
-          <p class="text-dark fw-semibold mb-1">Notes</p>
+          <p class="text-dark fw-semibold mb-1">{{ $t('patient_view.notes') }}</p>
           <p class="text-body fs-13">{{ selectedAppointment.notes }}</p>
         </div>
       </div>
@@ -1885,11 +1327,11 @@ const appointmentColumns: TableColumn[] = [
 
 // Card gradient colors for different insurance cards
 const cardGradients: string[] = [
-  'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-  'background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-  'background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-  'background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+  'background: #2c3e50',
+  'background: #34495e',
+  'background: #273c75',
+  'background: #40407a',
+  'background: #7f8c8d',
 ]
 
 // Computed
@@ -1969,7 +1411,7 @@ function formatDate(date: string | undefined): string {
 function scrollToCard(index: number): void {
   currentInsuranceIndex.value = index
   if (insuranceSlider.value) {
-    const cardWidth = 396
+    const cardWidth = insuranceSlider.value.offsetWidth
     insuranceSlider.value.scrollTo({
       left: index * cardWidth,
       behavior: 'smooth',
@@ -2013,16 +1455,19 @@ async function fetchAppointments(): Promise<void> {
         patient: uuid,
       },
     })
-    // if (Array.isArray(response.data)) {
+    
+    if (Array.isArray(response.data)) {
       appointments.value = response.data
-    // } else if (response.data && Array.isArray(response.data.data)) {
-    //   appointments.value = response.data.data
-    // } else if (response.data && Array.isArray(response.data.results)) {
-    //   appointments.value = response.data.results
-    // } else {
-    //   appointments.value = []
-    // }
-  } catch {
+    } else if (response.data && Array.isArray(response.data.data)) {
+      appointments.value = response.data.data
+    } else if (response.data && Array.isArray(response.data.results)) {
+      appointments.value = response.data.results
+    } else {
+      console.warn('Unexpected appointments response format:', response.data)
+      appointments.value = []
+    }
+  } catch (error) {
+    console.error('Error fetching appointments:', error)
     appointments.value = []
   } finally {
     appointmentsLoading.value = false
@@ -2052,7 +1497,7 @@ function openAppointmentDetails(appointment: Appointment): void {
 
   if (appointment.status !== 'SCHEDULED') {
     router.push({
-      name: 'AppointmentDetails',
+      name: 'ViewAppointment',
       params: { id: appointment.id },
     })
     return
@@ -2242,16 +1687,15 @@ onMounted(() => {
 
 <style scoped>
 .insurance-card {
-  width: 380px;
-  min-width: 380px;
+  width: 100%;
+  min-width: 100%;
 }
 
 .insurance-cards-wrapper {
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0 15px;
-  padding-right: 30px; /* Extra padding to ensure add-card is fully visible */
+  padding: 0;
 }
 
 .insurance-cards-wrapper::-webkit-scrollbar {
@@ -2259,13 +1703,13 @@ onMounted(() => {
 }
 
 .insurance-card:not(:last-child) {
-  margin-right: 1rem;
+  margin-right: 0;
 }
 
 .add-insurance-card {
-  width: 180px;
-  min-width: 180px;
-  margin-left: 1rem;
+  width: 100%;
+  min-width: 100%;
+  margin-left: 0;
 }
 
 .add-insurance-card .card {

@@ -536,6 +536,7 @@ const toggleDarkMode = () => {
  */
 const setLanguage = (lang: string) => {
   locale.value = lang;
+  localStorage.setItem('user_locale', lang);
 };
 
 /**
