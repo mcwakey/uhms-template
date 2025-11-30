@@ -59,17 +59,17 @@ export const useAuthStore = defineStore('authStore', {
     /**
      * Checks if user belongs to investigation department
      */
-    isInvestigation: (state) =>state.user?.department?.type === 'investigation',
+    isInvestigation: (state) => !!state.user?.is_superuser || state.user?.department?.type === 'investigation',
     
     /**
      * Checks if user belongs to consultation department
      */
-    isConsultation: (state) => state.user?.department?.type === 'consultation',
+    isConsultation: (state) => !!state.user?.is_superuser || state.user?.department?.type === 'consultation',
     
     /**
      * Checks if user belongs to nursing department
      */
-    isNursing: (state) => state.user?.department?.type === 'nursing',
+    isNursing: (state) => !!state.user?.is_superuser || state.user?.department?.type === 'nursing',
 
     /**
      * Returns the user's role

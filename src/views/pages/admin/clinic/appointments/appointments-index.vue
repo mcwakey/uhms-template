@@ -32,10 +32,10 @@
             </a>
             <ul class="dropdown-menu p-2">
               <li>
-                <a class="dropdown-item" href="#">Download as PDF</a>
+                <a class="dropdown-item" href="javascript:void(0);" @click="handleExport('PDF')">Download as PDF</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">Download as Excel</a>
+                <a class="dropdown-item" href="javascript:void(0);" @click="handleExport('Excel')">Download as Excel</a>
               </li>
             </ul>
           </div>
@@ -114,12 +114,17 @@
               >
                 <h4 class="mb-0">Filter</h4>
                 <div class="d-flex align-items-center">
-                  <a href="javascript:void(0);" class="link-danger text-decoration-underline"
+                  <a href="javascript:void(0);" class="link-danger text-decoration-underline" @click="handleFilter({})"
                     >Clear All</a
                   >
                 </div>
               </div>
-              <FilterIndex></FilterIndex>
+              <AppointmentFilter
+                :doctors="doctorsList"
+                :services="availableServices"
+                @filter="handleFilter"
+                @close="closeFilterDropdown"
+              />
             </div>
           </div>
           <div class="dropdown">
@@ -128,14 +133,14 @@
               class="dropdown-toggle btn bg-white btn-md d-inline-flex align-items-center fw-normal rounded border text-dark px-2 py-1 fs-14"
               data-bs-toggle="dropdown"
             >
-              <span class="me-1"> Sort By : </span> Recent
+              <span class="me-1"> Sort By : </span> {{ currentSortLabel }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end p-2">
               <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Recent</a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1" @click="handleSort('-start_date', 'Recent')">Recent</a>
               </li>
               <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Oldest</a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1" @click="handleSort('start_date', 'Oldest')">Oldest</a>
               </li>
             </ul>
           </div>
@@ -159,7 +164,7 @@
                   :data-bs-target="record.status === 'SCHEDULED' ? '#view_details' : undefined" -->
                 <a
                   href="javascript:void(0);"
-                  class="dropdown-item d-flex align-items-center text-primary fw-semibold"
+                  class="dropdown-item d-flex align-items-center text-primary"
                   @click="openSideBar(record)"
                   data-bs-toggle="offcanvas"
                   data-bs-target="#view_details"
@@ -195,22 +200,22 @@
                   />
                 </router-link>
                 <div>
-                  <h6 class="mb-1 fs-14 fw-semibold">
+                  <h6 class="mb-1 fs-14 fw-bold">
                     <router-link
                       :to="{ name: 'ViewPatient', params: { id: record.patient.uuid } }"
-                      class="text-primary fw-semibold"
+                      class="text-dark"
                     >
                       {{ record.patient.name }}
                     </router-link>
                   </h6>
-                  <span class="text-body fs-13 fw-normal d-block"> {{ record.patient.phone }}</span>
+                  <span class="text-muted fs-13 fw-normal d-block"> {{ record.patient.opd_no }}</span>
                 </div>
               </div>
             </template>
             <template v-if="column.key === 'staff_name'">
               <div class="d-flex align-items-center ms-2">
                 <router-link
-                  :to="{ name: 'ViewStaff', params: { id: record.staff.uuid } }"
+                  to="#"
                   class="avatar me-2 fs-14"
                 >
                   <img
@@ -222,22 +227,22 @@
                   />
                 </router-link>
                 <div>
-                  <h6 class="mb-1 fs-14 fw-semibold">
+                  <h6 class="mb-1 fs-14 fw-medium">
                     <router-link
-                      :to="{ name: 'ViewStaff', params: { id: record.staff.uuid } }"
-                      class="text-primary fw-semibold"
+                      to="#"
+                      class="text-dark"
                     >
                       {{ record.staff.name }}
                     </router-link>
                   </h6>
-                  <span class="mb-0 fs-13 text-truncate"> {{ record.staff.specialization }}</span>
+                  <span class="mb-0 fs-13 text-truncate text-muted"> {{ record.staff.specialization }}</span>
                 </div>
               </div>
             </template>
             <template v-if="column.key === 'service_name'">
               <div class="d-flex align-items-center ms-2">
                 <div>
-                  <h6 class="mb-1 fs-14 fw-semibold">
+                  <h6 class="mb-1 fs-14 fw-normal">
                     {{ record.service?.name || 'No Service' }}
                   </h6>
                   <span class="mb-0 fs-13 text-muted" v-if="record.service?.code">
@@ -270,94 +275,101 @@
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-end justify-content-end">
-                <!-- <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openSetAppointmentModal(record)"
-                    title="{{$t('set_appointment')}}"
-                    data-bs-toggle="modal" data-bs-target="#set_appointment"
-                    class="text-success fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-player-play"></i>
-                  </a>
-                </div> -->
-                <div
-                  v-if="record.status === 'IN-PROGRESS' || record.status === 'COMPLETED'"
-                  class="action-item me-2"
+              <div class="d-flex align-items-center justify-content-end gap-1">
+                <!-- Main Action Button -->
+                <router-link
+                  v-if="['SCHEDULED', 'CONFIRMED'].includes(record.status)"
+                  :to="{ name: 'PatientVitals', params: { id: record.id } }"
+                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-primary"
+                  title="Enter Vitals"
                 >
-                  <RouterLink
-                    :to="{ name: 'ViewAppointment', params: { id: record.id } }"
-                    class="text-primary fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-eye"></i>
-                  </RouterLink>
-                  <!-- <a
-                    href="javascript:void(0);"
-                    @click="openSetAppointmentModal(record)"
-                    title="{{$t('set_appointment')}}"
-                    data-bs-toggle="modal" data-bs-target="#set_appointment"
-                    class="text-primary fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-eye"></i>
-                  </a> -->
-                </div>
-                <div class="action-item me-2">
-                  <!-- <a
-                    href="javascript:void(0);"
-                    @click="openSetAppointmentModal(record)"
-                    title="{{$t('set_appointment')}}"
-                    data-bs-toggle="modal" data-bs-target="#set_appointment"
-                    class="text-warning fs-18 rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </a> -->
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_staff"
-                    title="{{$t('set_appointment')}}"
-                    class="text-danger fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div>
-                <!-- <div class="action-item">
-                  <a href="javascript:void(0);" data-bs-toggle="dropdown" title="More Actions"><i class="ti ti-dots-vertical"></i></a>
-                  <ul class="dropdown-menu p-2">
-                    <li>
-                    <router-link
-                      class="dropdown-item"
-                      :to="{ name: 'ViewPatient', params: { id: record.uuid } }"
-                      title="View Patient"
-                    >{{$t('view')}}</router-link>
-                    </li>
-                    <li>
-                    <a class="dropdown-item" href="javascript:void(0);" @click="openModal(record)" title="Edit Patient">{{$t('edit')}}</a>
-                    </li>
-                    <li>
-                    <a class="dropdown-item" href="javascript:void(0);" @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#delete_staff" title="Delete Patient">{{$t('delete')}}</a>
-                    </li>
-                  </ul>
-                </div> -->
-              </div>
-              <!-- <div class="action-item d-flex justify-content-center">
-                <a href="javascript:void(0);" data-bs-toggle="dropdown">
+                  <i class="ti ti-activity"></i>
+                </router-link>
+                <a
+                  v-else-if="record.status === 'CHECKED_IN'"
+                  href="javascript:void(0);"
+                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-success"
+                  @click="startAppointment(record)"
+                  title="Start Appointment"
+                >
+                  <i class="ti ti-stethoscope"></i>
+                </a>
+                <router-link
+                  v-else-if="record.status === 'IN-PROGRESS'"
+                  :to="{ name: 'ViewAppointment', params: { id: record.id } }"
+                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-warning"
+                  title="Continue Consultation"
+                >
+                  <i class="ti ti-player-play"></i>
+                </router-link>
+                <router-link
+                  v-else
+                  :to="{ name: 'ViewAppointment', params: { id: record.id } }"
+                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-secondary"
+                  title="View Details"
+                >
+                  <i class="ti ti-eye"></i>
+                </router-link>
+
+                <!-- Dropdown Actions -->
+                <a
+                  href="javascript:void(0);"
+                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   <i class="ti ti-dots-vertical"></i>
                 </a>
-                <ul class="dropdown-menu p-2">
-                  <li>
-                  <a class="dropdown-item" href="javascript:void(0);" @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#view_staff">View</a>
-                  </li>
-                  <li>
-                  <a class="dropdown-item" href="javascript:void(0);" @click="openModal(record)" data-bs-target="#edit_staff">Edit</a>
-                  </li>
-                  <li>
-                  <a class="dropdown-item" href="javascript:void(0);" @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#delete_staff">Delete</a>
-                  </li>
+                <ul class="dropdown-menu dropdown-menu-end p-2">
+                  <!-- Reschedule / Cancel for active appointments -->
+                  <template
+                    v-if="['SCHEDULED', 'CONFIRMED', 'CHECKED_IN'].includes(record.status)"
+                  >
+                    <li>
+                      <a
+                        class="dropdown-item d-flex align-items-center"
+                        href="javascript:void(0);"
+                        @click="openRescheduleModal(record)"
+                      >
+                        <i class="ti ti-calendar-time me-2"></i> Reschedule
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item d-flex align-items-center text-danger"
+                        href="javascript:void(0);"
+                        @click="cancelAppointment(record)"
+                      >
+                        <i class="ti ti-x me-2"></i> Cancel
+                      </a>
+                    </li>
+                  </template>
+
+                  <!-- Edit / Delete for others -->
+                  <template v-else>
+                    <li>
+                      <a
+                        class="dropdown-item d-flex align-items-center"
+                        href="javascript:void(0);"
+                        @click="openModal(record)"
+                      >
+                        <i class="ti ti-edit me-2"></i> Edit
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item d-flex align-items-center text-danger"
+                        href="javascript:void(0);"
+                        @click="openModal(record)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#delete_staff"
+                      >
+                        <i class="ti ti-trash me-2"></i> Delete
+                      </a>
+                    </li>
+                  </template>
                 </ul>
-              </div> -->
+              </div>
             </template>
           </template>
         </a-table>
@@ -414,7 +426,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
+import { onMounted, onUnmounted, computed, ref, watch, reactive } from 'vue'
 import { message } from 'ant-design-vue'
 import { useTableStore } from '@/stores/dataTableStore'
 import { useAppointmentStore } from '@/stores/appointmentStore'
@@ -422,6 +434,7 @@ import { usePatientStore } from '@/stores/patientStore'
 import { useStaffStore } from '@/stores/staffStore'
 import type { Appointment, AppointmentStatus, Service, TableColumn } from '@/types'
 import FilterIndex from '@/components/common-component/filter-index.vue'
+import AppointmentFilter from '../../../../../components/common-component/AppointmentFilter.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import AppointmentDetailsCanvas from '@/components/common-component/AppointmentDetailsCanvas.vue'
 import RescheduleModal from '@/components/modal/RescheduleModal.vue'
@@ -441,7 +454,7 @@ const loading = ref<boolean>(false)
 const searchQuery = ref<string>('')
 
 // Stores
-const AppointmentsTable = useTableStore('appointments')
+const AppointmentsTable = reactive(useTableStore('appointments'))
 const AppointmentsStore = useAppointmentStore()
 const PatientStore = usePatientStore()
 const StaffStore = useStaffStore()
@@ -457,6 +470,8 @@ const showRescheduleModal = ref<boolean>(false)
 const rescheduleLoading = ref<boolean>(false)
 const servicesLoading = ref<boolean>(false)
 const availableServices = ref<Service[]>([])
+const doctorsList = ref<any[]>([])
+const currentSortLabel = ref<string>('Recent')
 
 // Change doctor modal state
 const showChangeDoctorModal = ref<boolean>(false)
@@ -476,7 +491,7 @@ const isTelehealthEnabled = ref<boolean>(false)
 
 // Development mode check
 const isDevelopment = computed(() => {
-  return import.meta.env.DEV || false
+  return (import.meta as any).env.DEV || false
 })
 
 // Watch for modal state changes to handle body scroll
@@ -547,7 +562,7 @@ const toggleTelehealth = (isEnabled: boolean) => {
 }
 
     // Method to handle doctor transfer
-const handleDoctorChanged = async (transferData) => {
+const handleDoctorChanged = async (transferData: any) => {
   try {
     console.log('📝 Doctor transfer data:', transferData)
 
@@ -571,7 +586,7 @@ const handleDoctorChanged = async (transferData) => {
     message.success(
       `Appointment transferred to ${transferData.newDoctor.full_name || transferData.newDoctor.name} successfully!`
     )
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating appointment doctor:', error)
     message.error('Failed to transfer appointment. Please try again.')
   }
@@ -585,34 +600,34 @@ const paginationConfig = computed(() => ({
   showQuickJumper: false,
 }))
 
-const openModalPatient = async (record) => {
+const openModalPatient = async (record: any) => {
   try {
     AppointmentsStore.selectedAppointment = record
     await PatientStore.fetchPatient(record.patient.uuid)
-  } catch (error) {
+  } catch (error: any) {
     message.error(error)
   }
 }
 
-const openModalStaff = async (record) => {
+const openModalStaff = async (record: any) => {
   try {
     AppointmentsStore.selectedAppointment = record
     await StaffStore.fetchStaff(record.staff.uuid)
-  } catch (error) {
+  } catch (error: any) {
     message.error(error)
   }
 }
 
-const openModal = async (record) => {
+const openModal = async (record: any) => {
   try {
     AppointmentsStore.selectedAppointment = record
     await AppointmentsStore.fetchAppointment(record.id)
-  } catch (error) {
+  } catch (error: any) {
     message.error(error)
   }
 }
 
-const openSideBar = async (record) => {
+const openSideBar = async (record: any) => {
   try {
     // Map the appointment data to ensure proper structure for sidebar
     const mappedAppointment = {
@@ -691,14 +706,14 @@ const openSideBar = async (record) => {
         ...AppointmentsStore.selectedAppointment,
       }
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error opening sidebar:', error)
     message.error('Failed to load appointment details')
   }
 }
 
     // Method to handle status updates
-const updateAppointmentStatus = async (newStatus) => {
+const updateAppointmentStatus = async (newStatus: any) => {
   try {
     if (!selectedAppointment.value.id) {
       throw new Error('No appointment selected')
@@ -711,14 +726,14 @@ const updateAppointmentStatus = async (newStatus) => {
     await AppointmentsTable.fetchData()
 
     message.success(`Appointment status updated to ${newStatus}`)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating status:', error)
     message.error('Failed to update appointment status')
   }
 }
 
     // Reschedule modal functions
-const openRescheduleModal = async (appointment) => {
+const openRescheduleModal = async (appointment: any) => {
   try {
     console.log('🔄 Opening reschedule modal...')
     AppointmentsStore.selectedAppointment = appointment
@@ -736,7 +751,7 @@ const openRescheduleModal = async (appointment) => {
       console.log('🔄 Opening reschedule modal now...')
       showRescheduleModal.value = true
     }, 150)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error opening reschedule modal:', error)
     message.error('Failed to open reschedule modal')
   }
@@ -873,7 +888,7 @@ const forceCloseAllOverlays = () => {
 }
 
     // Change doctor modal functions
-const openChangeDoctorModal = async (appointment) => {
+const openChangeDoctorModal = async (appointment: any) => {
   try {
     console.log('🔄 Opening change doctor modal...')
     AppointmentsStore.selectedAppointment = appointment
@@ -886,14 +901,14 @@ const openChangeDoctorModal = async (appointment) => {
       console.log('🔄 Opening change doctor modal now...')
       showChangeDoctorModal.value = true
     }, 150)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error opening change doctor modal:', error)
     message.error('Failed to open change doctor modal')
   }
 }
 
     // Handle reschedule save from the modal component
-const handleRescheduleSave = async (formData) => {
+const handleRescheduleSave = async (formData: any) => {
   try {
     rescheduleLoading.value = true
 
@@ -987,7 +1002,7 @@ const handleRescheduleSave = async (formData) => {
 
     message.success('Appointment rescheduled successfully')
     showRescheduleModal.value = false
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error rescheduling appointment:', error)
 
     // Enhanced error handling with more specific messages
@@ -1006,7 +1021,7 @@ const handleRescheduleSave = async (formData) => {
           errorMessage = data.message
         } else if (typeof data === 'object') {
           // Handle field-specific errors
-          const fieldErrors = []
+          const fieldErrors: string[] = []
           Object.keys(data).forEach((field) => {
             const fieldError = Array.isArray(data[field]) ? data[field].join(', ') : data[field]
             fieldErrors.push(`${field}: ${fieldError}`)
@@ -1048,7 +1063,7 @@ const handleRescheduleSave = async (formData) => {
 }
 
     // Handle doctor change save from the modal component
-const handleDoctorChangeSave = async (transferData) => {
+const handleDoctorChangeSave = async (transferData: any) => {
   try {
     changeDoctorLoading.value = true
 
@@ -1075,7 +1090,7 @@ const handleDoctorChangeSave = async (transferData) => {
       `Appointment transferred to ${transferData.newDoctor.full_name || transferData.newDoctor.name} successfully!`
     )
     showChangeDoctorModal.value = false
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating appointment doctor:', error)
     message.error('Failed to transfer appointment. Please try again.')
   } finally {
@@ -1088,7 +1103,7 @@ const fetchServices = async () => {
     servicesLoading.value = true
     const response = await axiosInstance.get('/services/')
     availableServices.value = response.data.results || response.data || []
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching services:', error)
     message.error('Failed to load services')
     availableServices.value = []
@@ -1132,7 +1147,7 @@ const fetchServices = async () => {
      * Expected Fields: start_date, service, service_id, notes, status, duration, priority
      */
     // Test function to check API endpoint
-const testAppointmentAPI = async (appointmentId) => {
+const testAppointmentAPI = async (appointmentId: any) => {
   try {
     console.log('🧪 Testing appointment API for ID:', appointmentId)
 
@@ -1261,7 +1276,7 @@ const testAppointmentAPI = async (appointmentId) => {
     message.success('🎉 API test completed successfully! Check console for detailed results.')
 
     return comprehensiveResponse.data
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error testing appointment API:', error)
 
     if (error.response) {
@@ -1291,8 +1306,70 @@ const testAppointmentAPI = async (appointmentId) => {
   }
 }
 
+const fetchDoctors = async () => {
+  try {
+    // Fetch doctors (staff with role 'doctor' or similar logic)
+    // Assuming /staff/ endpoint supports filtering or returns all staff
+    const response = await axiosInstance.get('/staff/', { params: { page_size: 100 } })
+    doctorsList.value = response.data.results || response.data || []
+  } catch (error: any) {
+    console.error('Error fetching doctors:', error)
+    // Don't show error message to user as this is secondary data
+  }
+}
+
+const openVitalsModal = (record: any) => {
+  message.info('Vitals entry feature coming soon')
+  console.log('Open vitals for:', record)
+}
+
+const startAppointment = async (record: any) => {
+  try {
+    AppointmentsStore.selectedAppointment = record
+    await updateAppointmentStatus('IN-PROGRESS')
+    // Optional: Redirect to consultation view
+    // router.push({ name: 'ViewAppointment', params: { id: record.id } })
+  } catch (error) {
+    console.error('Error starting appointment:', error)
+  }
+}
+
+const cancelAppointment = async (record: any) => {
+  if (confirm('Are you sure you want to cancel this appointment?')) {
+    try {
+      AppointmentsStore.selectedAppointment = record
+      await updateAppointmentStatus('CANCELLED')
+    } catch (error) {
+      console.error('Error cancelling appointment:', error)
+    }
+  }
+}
+
+const handleFilter = (filters: any) => {
+  console.log('Applying filters:', filters)
+  AppointmentsTable.fetchData(filters)
+  closeFilterDropdown()
+}
+
+const handleSort = (sortValue: string, label: string) => {
+  currentSortLabel.value = label
+  AppointmentsTable.fetchData({ ordering: sortValue })
+}
+
+const handleExport = (type: string) => {
+  message.success(`Exporting as ${type}...`)
+  // Implement actual export logic here
+  // e.g., window.open(`${import.meta.env.VITE_API_URL}/appointments/export?format=${type.toLowerCase()}`, '_blank')
+}
+
+const closeFilterDropdown = () => {
+  // Attempt to close the dropdown by clicking the body or finding the toggle
+  // Since we can't easily access the bootstrap instance, we'll simulate a click outside
+  document.body.click()
+}
+
     // Utility function for date formatting
-const formatDateForAPI = (dateString, timeString = null) => {
+const formatDateForAPI = (dateString: string, timeString: string | null = null) => {
   if (!dateString) return null
 
   const date = new Date(dateString)
@@ -1306,7 +1383,7 @@ const formatDateForAPI = (dateString, timeString = null) => {
 }
 
     // Utility function for service data extraction
-const extractServiceData = (serviceSelection) => {
+const extractServiceData = (serviceSelection: any) => {
   if (!serviceSelection) return null
 
   const serviceId =
@@ -1325,7 +1402,7 @@ const refreshAppointmentData = async () => {
       await AppointmentsStore.fetchAppointment(selectedAppointment.value.id)
     }
     await AppointmentsTable.fetchData()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error refreshing data:', error)
     message.error('Failed to refresh appointment data')
   }
@@ -1377,7 +1454,7 @@ const columns = [
     ]
 
     // Date range filter handlers
-const handleDateRangeFilter = async (data) => {
+const handleDateRangeFilter = async (data: any) => {
   try {
     console.log('📅 Date range filter applied:', data)
 
@@ -1397,13 +1474,13 @@ const handleDateRangeFilter = async (data) => {
     await AppointmentsTable.fetchData(filters)
 
     message.success(`Filtered appointments from ${data.startDate} to ${data.endDate}`)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error applying date range filter:', error)
     message.error('Failed to apply date range filter')
   }
 }
 
-const handleDateRangeError = (error) => {
+const handleDateRangeError = (error: any) => {
   console.error('DateRangePicker error:', error)
   message.error('Date range picker error: ' + error)
 }
@@ -1419,6 +1496,8 @@ const handleDateRangeError = (error) => {
 
     // Fetch available services for reschedule modal
     await fetchServices()
+    // Fetch doctors for filter
+    await fetchDoctors()
   } catch (error: any) {
     console.error('Failed to load data:', error)
     message.error('Failed to load data')

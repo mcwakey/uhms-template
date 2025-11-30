@@ -28,10 +28,10 @@
             </a>
             <ul class="dropdown-menu p-2">
               <li>
-                <a class="dropdown-item" href="#">Download as PDF</a>
+                <a class="dropdown-item" href="javascript:void(0);" @click="handleExport('PDF')">Download as PDF</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">Download as Excel</a>
+                <a class="dropdown-item" href="javascript:void(0);" @click="handleExport('Excel')">Download as Excel</a>
               </li>
             </ul>
           </div>
@@ -109,12 +109,17 @@
               >
                 <h4 class="mb-0 fw-bold">Filter</h4>
                 <div class="d-flex align-items-center">
-                  <a href="javascript:void(0);" class="link-danger text-decoration-underline"
+                  <a href="javascript:void(0);" class="link-danger text-decoration-underline" @click="handleFilter({})"
                     >Clear All</a
                   >
                 </div>
               </div>
-              <filter-index></filter-index>
+              <AppointmentFilter
+                :doctors="doctorsList"
+                :services="availableServices"
+                @filter="handleFilter"
+                @close="closeFilterDropdown"
+              />
             </div>
           </div>
           <div class="dropdown">
@@ -123,23 +128,14 @@
               class="dropdown-toggle btn bg-white btn-md d-inline-flex align-items-center fw-normal rounded border text-dark px-2 py-1 fs-14"
               data-bs-toggle="dropdown"
             >
-              <span class="me-1"> Sort By : </span> Recent
+              <span class="me-1"> Sort By : </span> {{ currentSortLabel }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end p-2">
               <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Recently Added</a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1" @click="handleSort('-start_date', 'Recent')">Recent</a>
               </li>
               <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Ascending</a>
-              </li>
-              <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Desending</a>
-              </li>
-              <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Last Month</a>
-              </li>
-              <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Last 7 Days</a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1" @click="handleSort('start_date', 'Oldest')">Oldest</a>
               </li>
             </ul>
           </div>
@@ -271,7 +267,7 @@ import { useAppointmentStore } from '@/stores/appointmentStore'
 import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import CalendarModal from '@/components/modal/CalendarModal.vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import AppointmentFilter from '@/components/common-component/AppointmentFilter.vue'
 import AppointmentDetailsCanvas from '@/components/common-component/AppointmentDetailsCanvas.vue'
 import RescheduleModal from '@/components/modal/RescheduleModal.vue'
 import DateRangePicker from '@/components/common-component/DateRangePicker.vue'
@@ -287,7 +283,7 @@ export default {
     LayoutsHeader,
     LayoutsSidebar,
     CalendarModal,
-    FilterIndex,
+    AppointmentFilter,
     AppointmentDetailsCanvas,
     RescheduleModal,
     DateRangePicker,
@@ -310,6 +306,8 @@ export default {
     const rescheduleLoading = ref(false)
     const servicesLoading = ref(false)
     const availableServices = ref([])
+    const doctorsList = ref([])
+    const currentSortLabel = ref('Recent')
 
     // Development mode check
     const isDevelopment = computed(() => {
@@ -731,6 +729,8 @@ export default {
 
       // Fetch appointments data
       await fetchAppointments()
+      await fetchServices()
+      await fetchDoctors()
 
       // TODO: Re-enable date range picker initialization later
       // initializeDateRangePicker();
@@ -810,14 +810,43 @@ export default {
     const fetchServices = async () => {
       try {
         servicesLoading.value = true
-        const response = await axiosInstance.get('/services')
-        availableServices.value = response.data.data || response.data || []
+        const response = await axiosInstance.get('/services/')
+        availableServices.value = response.data.results || response.data || []
       } catch (error) {
         console.error('Error fetching services:', error)
         availableServices.value = []
       } finally {
         servicesLoading.value = false
       }
+    }
+
+    const fetchDoctors = async () => {
+      try {
+        const response = await axiosInstance.get('/staff/', { params: { page_size: 100 } })
+        doctorsList.value = response.data.results || response.data || []
+      } catch (error) {
+        console.error('Error fetching doctors:', error)
+      }
+    }
+
+    const handleFilter = (filters) => {
+      console.log('Applying filters:', filters)
+      AppointmentsStore.fetchAppointments(filters)
+      closeFilterDropdown()
+    }
+
+    const handleSort = (sortValue, label) => {
+      currentSortLabel.value = label
+      AppointmentsStore.fetchAppointments({ ordering: sortValue })
+    }
+
+    const handleExport = (type) => {
+      message.success(`Exporting as ${type}...`)
+      // Implement actual export logic here
+    }
+
+    const closeFilterDropdown = () => {
+      document.body.click()
     }
 
     // Test API function for debugging
@@ -865,6 +894,13 @@ export default {
       handleRescheduleSave,
       testAppointmentAPI,
       isDevelopment,
+      // Filters & Sort
+      doctorsList,
+      currentSortLabel,
+      handleFilter,
+      handleSort,
+      handleExport,
+      closeFilterDropdown,
     }
   },
 }
