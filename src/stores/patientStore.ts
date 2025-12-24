@@ -50,15 +50,15 @@ export const usePatientStore = defineStore('patient', {
 
     /**
      * Creates a new patient
-     * @param patientData - The patient data (FormData)
+     * @param patientData - The patient data (JSON object)
      */
-    async createPatient(patientData: FormData) {
+    async createPatient(patientData: any) {
       this.loading = true
       this.error = null
       try {
         const response = await axiosInstance.post('/patients/', patientData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         })
         return response.data
@@ -74,15 +74,15 @@ export const usePatientStore = defineStore('patient', {
     /**
      * Updates an existing patient
      * @param id - The patient's ID
-     * @param patientData - The patient data (FormData)
+     * @param patientData - The patient data (JSON object)
      */
-    async updatePatient(id: string | number, patientData: FormData) {
+    async updatePatient(id: string | number, patientData: any) {
       this.loading = true
       this.error = null
       try {
         const response = await axiosInstance.put(`/patients/${id}/`, patientData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         })
         return response.data

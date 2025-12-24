@@ -14,9 +14,16 @@
       </div> -->
 <div class="row justify-content-center">
       <div class="col-lg-10">
-        <div class="mb-4">
-                        <h6 class="fw-bold mb-0 d-flex align-items-center"> <router-link to="/patients/patients-list" class="text-dark"> <i class="ti ti-chevron-left me-1"></i>{{ $t('patients.title') }}</router-link></h6>
-                    </div>
+        <div class="mb-4 d-flex align-items-center justify-content-between">
+          <h6 class="fw-bold mb-0 d-flex align-items-center">
+            <router-link to="/patients/patients-list" class="text-dark">
+              <i class="ti ti-chevron-left me-1"></i>{{ $t('patients.title') }}
+            </router-link>
+          </h6>
+          <button type="button" class="btn btn-outline-secondary btn-sm" @click="fillRandomData">
+            <i class="ti ti-wand me-1"></i> Fill Random Data (Test)
+          </button>
+        </div>
         <VeeForm
           :validation-schema="schema"
           v-slot="{ errors }"
@@ -274,6 +281,7 @@
                           @update:model-value="(val: any) => field.onChange(val)"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
+                          :loading="loadingStates"
                         />
                         <div v-if="meta.touched && errorMessage" class="invalid-feedback d-block">
                           {{ errorMessage }}
@@ -296,6 +304,7 @@
                           @update:model-value="(val: any) => field.onChange(val)"
                           :class="{ 'is-invalid': meta.touched && !meta.valid }"
                           :placeholder="$t('patient_create.select')"
+                          :loading="loadingCities"
                         />
                         <div v-if="meta.touched && errorMessage" class="invalid-feedback d-block">
                           {{ errorMessage }}
@@ -423,7 +432,7 @@
               <div class="row">
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.insurance_type') }}<span class="text-danger">*</span></label>
+                    <label class="form-label">{{ $t('patient_create.insurance_type') }}</label>
                     <Field name="insurance_type" v-model="formData.insurance_type">
                       <template #default="{ field, meta, errorMessage }">
                         <vue-multiselect
@@ -446,7 +455,10 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.company') }}<span class="text-danger">*</span></label>
+                    <label class="form-label">
+                      {{ $t('patient_create.company') }}
+                      <span v-if="insuranceFieldsRequired.company" class="text-danger">*</span>
+                    </label>
                     <Field name="company" v-model="formData.company">
                       <template #default="{ field, meta, errorMessage }">
                         <vue-multiselect
@@ -470,7 +482,10 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.insurance_plan') }}<span class="text-danger">*</span></label>
+                    <label class="form-label">
+                      {{ $t('patient_create.insurance_plan') }}
+                      <span v-if="insuranceFieldsRequired.plan" class="text-danger">*</span>
+                    </label>
                     <Field name="insurance_plan" v-model="formData.insurance_plan">
                       <template #default="{ field, meta, errorMessage }">
                         <vue-multiselect
@@ -494,7 +509,10 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.insurance_schema') }}<span class="text-danger">*</span></label>
+                    <label class="form-label">
+                      {{ $t('patient_create.insurance_schema') }}
+                      <span v-if="insuranceFieldsRequired.schema" class="text-danger">*</span>
+                    </label>
                     <Field
                       type="text"
                       class="form-control"
@@ -507,7 +525,10 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.membership_number') }} <span class="text-danger">*</span></label>
+                    <label class="form-label">
+                      {{ $t('patient_create.membership_number') }}
+                      <span v-if="insuranceFieldsRequired.membership_number" class="text-danger">*</span>
+                    </label>
                     <Field
                       type="text"
                       class="form-control"
@@ -520,7 +541,10 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.serial_number') }} <span class="text-danger">*</span></label>
+                    <label class="form-label">
+                      {{ $t('patient_create.serial_number') }}
+                      <span v-if="insuranceFieldsRequired.serial_number" class="text-danger">*</span>
+                    </label>
                     <Field
                       type="text"
                       class="form-control"
@@ -533,7 +557,10 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.issue_date') }} <span class="text-danger">*</span></label>
+                    <label class="form-label">
+                      {{ $t('patient_create.issue_date') }}
+                      <span v-if="insuranceFieldsRequired.issue_date" class="text-danger">*</span>
+                    </label>
                     <Field
                       name="issue_date"
                       as="a-date-picker"
@@ -548,7 +575,10 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.expiry_date') }} <span class="text-danger">*</span></label>
+                    <label class="form-label">
+                      {{ $t('patient_create.expiry_date') }}
+                      <span v-if="insuranceFieldsRequired.expiry_date" class="text-danger">*</span>
+                    </label>
                     <Field
                       name="expiry_date"
                       as="a-date-picker"
@@ -594,6 +624,7 @@ import constants from '@/assets/json/constants.json'
 import type { SelectOption } from '@/types/common'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
+import dayjs from 'dayjs'
 
 const { t } = useI18n()
 const patientStore = usePatientStore()
@@ -677,35 +708,110 @@ const onInsuranceCompanySelect = (selectedCompany: any) => {
   }
 }
 
-onMounted(() => {
-  loadInsuranceTypes()
+onMounted(async () => {
+  await loadInsuranceTypes()
+  
+  // Set "Cash & Carry" as default insurance type
+  const cashAndCarry = insuranceTypes.value.find(
+    (type) => (type.name || '').toLowerCase() === 'cash & carry'
+  )
+  if (cashAndCarry) {
+    formData.value.insurance_type = cashAndCarry
+  }
 })
 
-// Validation schema
+// Validation schema with conditional insurance validation
 const schema = computed(() => {
-  return yup.object().shape({
+  const baseSchema = {
     first_name: yup.string().required(t('validation.first_name_required')),
     last_name: yup.string().required(t('validation.last_name_required')),
     date_of_birth: yup.date().required(t('validation.dob_required')),
     phone: yup.string().required(t('validation.phone_required')),
-    gender: yup.string().required(t('validation.gender_required')),
-    marital_status: yup.string().required(t('validation.marital_status_required')),
-    religion: yup.string().required(t('validation.religion_required')),
-    city: yup.string().required(t('validation.city_required')),
-    state: yup.string().required(t('validation.state_required')),
-    country: yup.string().required(t('validation.country_required')),
+    gender: yup.mixed().required(t('validation.gender_required')),
+    marital_status: yup.mixed().required(t('validation.marital_status_required')),
+    religion: yup.mixed().required(t('validation.religion_required')),
+    city: yup.mixed().required(t('validation.city_required')),
+    state: yup.mixed().required(t('validation.state_required')),
+    country: yup.mixed().required(t('validation.country_required')),
     address_line_1: yup.string().required(t('validation.address_required')),
     nok_name: yup.string().required(t('validation.nok_name_required')),
     nok_relation: yup.string().required(t('validation.nok_relation_required')),
-    nok_phone: yup.string().required(t('validation.nok_phone_required')),
-    insurance_type: yup.mixed().required(t('validation.insurance_type_required') || 'Insurance Type is required'),
-    insurance_schema: yup.string().required(t('validation.insurance_schema_required')),
-    insurance_plan: yup.mixed().required(t('validation.insurance_plan_required')),
-    membership_number: yup.string().required(t('validation.membership_number_required')),
-    serial_number: yup.string().required(t('validation.serial_number_required')),
-    company: yup.mixed().required(t('validation.company_required')),
-    issue_date: yup.date().required(t('validation.issue_date_required')),
-    expiry_date: yup.date().required(t('validation.expiry_date_required')),
+    // nok_phone: yup.string().required(t('validation.nok_phone_required')),
+  }
+
+  // Get the insurance type name for validation logic
+  const getInsuranceTypeName = () => {
+    const type = formData.value.insurance_type
+    if (!type) return null
+    return (type?.name || type).toLowerCase()
+  }
+
+  const insuranceTypeName = getInsuranceTypeName()
+
+  // Insurance validation is optional by default (Cash & Carry)
+  let insuranceValidation: any = {
+    insurance_type: yup.mixed().nullable(),
+    insurance_schema: yup.string().nullable(),
+    insurance_plan: yup.mixed().nullable(),
+    membership_number: yup.string().nullable(),
+    serial_number: yup.string().nullable(),
+    company: yup.mixed().nullable(),
+    issue_date: yup.date().nullable(),
+    expiry_date: yup.date().nullable(),
+  }
+
+  // Apply conditional validation based on insurance type
+  if (insuranceTypeName && insuranceTypeName !== 'CASH & CARRY') {
+    switch (insuranceTypeName) {
+      case 'nhia':
+        // NHIA requires: scheme, membershipNumber, serialNumber, expiryDate
+        insuranceValidation = {
+          insurance_type: yup.mixed().required(t('validation.insurance_type_required')),
+          insurance_schema: yup.string().required(t('validation.insurance_schema_required')),
+          membership_number: yup.string().required(t('validation.membership_number_required')),
+          serial_number: yup.string().required(t('validation.serial_number_required')),
+          expiry_date: yup.date().required(t('validation.expiry_date_required')),
+          // Optional fields
+          insurance_plan: yup.mixed().nullable(),
+          company: yup.mixed().nullable(),
+          issue_date: yup.date().nullable(),
+        }
+        break
+
+      case 'private':
+      case 'corporate':
+        // Private/Corporate requires: company, plan, membershipNumber, expiryDate
+        insuranceValidation = {
+          insurance_type: yup.mixed().required(t('validation.insurance_type_required')),
+          company: yup.mixed().required(t('validation.company_required')),
+          insurance_plan: yup.mixed().required(t('validation.insurance_plan_required')),
+          membership_number: yup.string().required(t('validation.membership_number_required')),
+          expiry_date: yup.date().required(t('validation.expiry_date_required')),
+          // Optional fields
+          insurance_schema: yup.string().nullable(),
+          serial_number: yup.string().nullable(),
+          issue_date: yup.date().nullable(),
+        }
+        break
+
+      default:
+        // For any other insurance type, make basic fields required
+        insuranceValidation = {
+          insurance_type: yup.mixed().required(t('validation.insurance_type_required')),
+          insurance_schema: yup.string().nullable(),
+          insurance_plan: yup.mixed().nullable(),
+          membership_number: yup.string().nullable(),
+          serial_number: yup.string().nullable(),
+          company: yup.mixed().nullable(),
+          issue_date: yup.date().nullable(),
+          expiry_date: yup.date().nullable(),
+        }
+    }
+  }
+
+  return yup.object().shape({
+    ...baseSchema,
+    ...insuranceValidation,
   })
 })
 
@@ -760,6 +866,84 @@ const CountryOptions = computed(() => [
   { label: t('patient_create.ghana'), value: 'Ghana' }
 ])
 
+// Loading states for location dropdowns
+const loadingStates = ref(false)
+const loadingCities = ref(false)
+
+// Computed properties for conditional required fields based on insurance type
+const insuranceTypeName = computed(() => {
+  const type = formData.value.insurance_type
+  if (!type) return null
+  const name = (type?.name || type || '').toLowerCase()
+  console.log('🔍 Insurance Type Selected:', name, type)
+  return name
+})
+
+const isNHIA = computed(() => {
+  const name = insuranceTypeName.value
+  return name === 'nhia'
+})
+
+const isPrivateOrCorporate = computed(() => {
+  const name = insuranceTypeName.value
+  return name === 'private' || name === 'corporate'
+})
+
+const isCashAndCarry = computed(() => {
+  return insuranceTypeName.value === 'CASH & CARRY'
+})
+
+// Determine which insurance fields are required
+const insuranceFieldsRequired = computed(() => {
+  let requiredFields
+  
+  if (isCashAndCarry.value || !formData.value.insurance_type) {
+    requiredFields = {
+      schema: false,
+      company: false,
+      plan: false,
+      membership_number: false,
+      serial_number: false,
+      issue_date: false,
+      expiry_date: false,
+    }
+  } else if (isNHIA.value) {
+    requiredFields = {
+      schema: true,
+      company: false,
+      plan: false,
+      membership_number: true,
+      serial_number: true,
+      issue_date: false,
+      expiry_date: true,
+    }
+  } else if (isPrivateOrCorporate.value) {
+    requiredFields = {
+      schema: false,
+      company: true,
+      plan: true,
+      membership_number: true,
+      serial_number: false,
+      issue_date: false,
+      expiry_date: true,
+    }
+  } else {
+    // Default for other insurance types
+    requiredFields = {
+      schema: false,
+      company: false,
+      plan: false,
+      membership_number: false,
+      serial_number: false,
+      issue_date: false,
+      expiry_date: false,
+    }
+  }
+  
+  console.log('📋 Insurance Fields Required:', requiredFields)
+  return requiredFields
+})
+
 // Form data interface
 interface FormData {
   first_name: string
@@ -813,7 +997,7 @@ const formData: Ref<FormData> = ref({
   gender: '',
   marital_status: '',
   religion: '',
-  country: 'Ghana',
+  country: { label: 'Ghana', value: 'Ghana' },
   state: '',
   city: '',
   address_line_1: '',
@@ -823,7 +1007,7 @@ const formData: Ref<FormData> = ref({
   nok_phone: '',
   nok_other_phone: '',
   profile_image: null,
-  insurance_type: '',
+  insurance_type: '',  // Will be set to Cash & Carry on mount
   insurance_schema: '',
   insurance_plan: '',
   membership_number: '',
@@ -850,128 +1034,217 @@ function onFileChange(e: Event): void {
   }
 }
 
-function buildPayload(): FormData {
-  const payload = new FormData()
-
-  const extractValue = (val: any) => {
-    if (val && typeof val === 'object' && 'value' in val) {
-      return val.value
+/**
+ * Generates random data for testing purposes
+ */
+async function fillRandomData(): Promise<void> {
+  try {
+    const firstNames = ['John', 'Jane', 'Michael', 'Sarah', 'David', 'Emma', 'James', 'Olivia', 'Kwame', 'Ama', 'Kofi', 'Abena']
+    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Mensah', 'Osei', 'Boateng', 'Adjei']
+    const emailDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'example.com']
+    
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)]
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)]
+    
+    // Generate random date of birth (18-80 years old)
+    const today = new Date()
+    const minAge = 18
+    const maxAge = 80
+    const age = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge
+    const dob = new Date(today.getFullYear() - age, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1)
+    
+    // Fill patient information
+    formData.value.first_name = firstName
+    formData.value.last_name = lastName
+    formData.value.other_names = Math.random() > 0.5 ? firstNames[Math.floor(Math.random() * firstNames.length)] : ''
+    formData.value.date_of_birth = dayjs(dob) as any
+    formData.value.phone = `+233${Math.floor(Math.random() * 900000000 + 100000000)}`
+    formData.value.other_phone = Math.random() > 0.5 ? `+233${Math.floor(Math.random() * 900000000 + 100000000)}` : ''
+    formData.value.email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${emailDomains[Math.floor(Math.random() * emailDomains.length)]}`
+    
+    // Select random gender
+    if (GenderOptions.value.length > 0) {
+      formData.value.gender = GenderOptions.value[Math.floor(Math.random() * GenderOptions.value.length)] as any
     }
-    return val
+    
+    // Select random marital status
+    if (MaritalStatusOptions.value.length > 0) {
+      formData.value.marital_status = MaritalStatusOptions.value[Math.floor(Math.random() * MaritalStatusOptions.value.length)] as any
+    }
+    
+    // Select random religion
+    if (ReligionOptions.value.length > 0) {
+      formData.value.religion = ReligionOptions.value[Math.floor(Math.random() * ReligionOptions.value.length)] as any
+    }
+    
+    // Address information
+    formData.value.country = CountryOptions.value[0] as any // Ghana
+    if (StateOptions.length > 0) {
+      const randomState = StateOptions[Math.floor(Math.random() * StateOptions.length)]
+      formData.value.state = randomState as any
+      
+      // Use nextTick to ensure reactivity updates before accessing computed
+      await new Promise(resolve => setTimeout(resolve, 50))
+      
+      if (CityOptions.value.length > 0) {
+        formData.value.city = CityOptions.value[Math.floor(Math.random() * CityOptions.value.length)] as any
+      }
+    }
+    
+    const streets = ['Main Street', 'Oak Avenue', 'High Street', 'Market Road', 'Independence Avenue', 'Liberation Road']
+    formData.value.address_line_1 = `${Math.floor(Math.random() * 500 + 1)} ${streets[Math.floor(Math.random() * streets.length)]}`
+    formData.value.address_line_2 = Math.random() > 0.6 ? `Apt ${Math.floor(Math.random() * 100 + 1)}` : ''
+    
+    // Next of Kin information
+    formData.value.nok_name = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`
+    formData.value.nok_relation = relationshipOptions.value[Math.floor(Math.random() * relationshipOptions.value.length)]
+    formData.value.nok_phone = `+233${Math.floor(Math.random() * 900000000 + 100000000)}`
+    formData.value.nok_other_phone = Math.random() > 0.5 ? `+233${Math.floor(Math.random() * 900000000 + 100000000)}` : ''
+    
+    // Insurance information - randomly select type
+    if (insuranceTypes.value.length > 0) {
+      const randomInsuranceType = insuranceTypes.value[Math.floor(Math.random() * insuranceTypes.value.length)]
+      formData.value.insurance_type = randomInsuranceType
+      
+      const typeName = (randomInsuranceType?.name || '').toLowerCase()
+      
+      // Fill insurance fields based on type
+      if (typeName === 'nhia') {
+        formData.value.insurance_schema = `NHIA-${Math.floor(Math.random() * 9000 + 1000)}`
+        formData.value.membership_number = `NHIA${Math.floor(Math.random() * 900000000 + 100000000)}`
+        formData.value.serial_number = `SN${Math.floor(Math.random() * 90000000 + 10000000)}`
+        
+        const expiryDate = new Date()
+        expiryDate.setFullYear(expiryDate.getFullYear() + Math.floor(Math.random() * 3 + 1))
+        formData.value.expiry_date = dayjs(expiryDate) as any
+      } else if (typeName === 'private' || typeName === 'corporate') {
+        // Load companies first
+        if (randomInsuranceType.id) {
+          await loadInsuranceCompanies(randomInsuranceType.id)
+          
+          if (insuranceCompanies.value.length > 0) {
+            const randomCompany = insuranceCompanies.value[Math.floor(Math.random() * insuranceCompanies.value.length)]
+            formData.value.company = randomCompany
+            
+            // Load plans
+            if (randomCompany._links?.plans) {
+              await loadInsurancePlans(randomCompany._links.plans)
+              
+              if (insurancePlans.value.length > 0) {
+                formData.value.insurance_plan = insurancePlans.value[Math.floor(Math.random() * insurancePlans.value.length)]
+              }
+            }
+          }
+        }
+        
+        formData.value.membership_number = `PVT${Math.floor(Math.random() * 900000000 + 100000000)}`
+        
+        const issueDate = new Date()
+        issueDate.setMonth(issueDate.getMonth() - Math.floor(Math.random() * 12))
+        formData.value.issue_date = dayjs(issueDate) as any
+        
+        const expiryDate = new Date(issueDate)
+        expiryDate.setFullYear(expiryDate.getFullYear() + 1)
+        formData.value.expiry_date = dayjs(expiryDate) as any
+      }
+      // Cash & Carry doesn't need additional fields
+    }
+    
+    message.success('Form filled with random data for testing')
+  } catch (error) {
+    console.error('Error filling random data:', error)
+    message.error('Failed to fill random data')
+  }
+}
+
+/**
+ * Helper function to extract value from SelectOption objects or return primitive value
+ */
+const extractValue = (val: any) => {
+  if (val && typeof val === 'object' && 'value' in val) {
+    return val.value
+  }
+  return val
+}
+
+/**
+ * Helper function to format date as YYYY-MM-DD
+ */
+const formatDate = (dateValue: any): string | null => {
+  if (!dateValue) return null
+  const date = new Date(dateValue)
+  const yyyy = date.getFullYear()
+  const mm = String(date.getMonth() + 1).padStart(2, '0')
+  const dd = String(date.getDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
+}
+
+/**
+ * Builds the JSON payload for patient creation
+ * Returns a JSON object instead of FormData
+ */
+function buildPayload(): any {
+  // Extract values from form data
+  const payload: any = {
+    first_name: formData.value.first_name,
+    last_name: formData.value.last_name,
+    other_names: formData.value.other_names || '',
+    date_of_birth: formatDate(formData.value.date_of_birth),
+    phone: formData.value.phone,
+    other_phone: formData.value.other_phone || '',
+    email: formData.value.email || '',
+    gender: extractValue(formData.value.gender),
+    marital_status: extractValue(formData.value.marital_status),
+    religion: extractValue(formData.value.religion),
   }
 
-  // Address as object
-  const address = {
+  // Address as nested object
+  payload.address = {
     address_line_1: formData.value.address_line_1,
-    address_line_2: formData.value.address_line_2,
+    address_line_2: formData.value.address_line_2 || '',
     city: extractValue(formData.value.city),
     state: extractValue(formData.value.state),
     country: extractValue(formData.value.country),
   }
 
-  // Emergency contact as object
-  const emergency_contact = {
+  // Emergency contact as nested object
+  payload.emergency_contact = {
     name: formData.value.nok_name,
     relation: formData.value.nok_relation,
     phone: formData.value.nok_phone,
-    other_phone: formData.value.nok_other_phone,
+    other_phone: formData.value.nok_other_phone || '',
   }
 
-  // Insurance as object
-  const insurance = {
-    type: (formData.value.insurance.type as any)?.id || (formData.value.insurance_type as any)?.id || formData.value.insurance_type,
-    schema: formData.value.insurance.schema || formData.value.insurance_schema,
-    plan: (formData.value.insurance.plan as any)?.id || (formData.value.insurance_plan as any)?.id || formData.value.insurance_plan,
-    membership_number:
-      formData.value.insurance.membership_number || formData.value.membership_number,
-    serial_number: formData.value.insurance.serial_number || formData.value.serial_number,
-    company: (formData.value.insurance.company as any)?.id || (formData.value.company as any)?.id || formData.value.company,
-    issue_date: formData.value.insurance.issue_date || formData.value.issue_date,
-    expiry_date: formData.value.insurance.expiry_date || formData.value.expiry_date,
+  // Insurance as nested object
+  // Cash & Carry patients will have minimal insurance data
+  const insuranceType = formData.value.insurance_type
+  const insuranceTypeName = (insuranceType?.name || insuranceType || '').toLowerCase()
+  
+  payload.insurance = {
+    type: (formData.value.insurance_type as any)?.id || formData.value.insurance_type,
   }
 
-  // Append all fields
-  Object.keys(formData.value).forEach((key) => {
-    if (
-      [
-        'address1',
-        'address2',
-        'city',
-        'state',
-        'country',
-        'nok_name',
-        'nok_relation',
-        'nok_phone',
-        'nok_other_phone',
-      ].includes(key)
-    )
-      return
-    
-    let value = formData.value[key as keyof FormData]
-    
-    // Handle SelectOption objects (extract value)
-    if (value && typeof value === 'object' && 'value' in value) {
-      value = (value as any).value
-    }
-
-    if (value !== undefined && value !== null) {
-      payload.append(key, value as string | Blob)
-    }
-  })
-
-  // Format date_of_birth as YYYY-MM-DD
-  if (formData.value.date_of_birth) {
-    const date = new Date(formData.value.date_of_birth)
-    const yyyy = date.getFullYear()
-    const mm = String(date.getMonth() + 1).padStart(2, '0')
-    const dd = String(date.getDate()).padStart(2, '0')
-    payload.set('date_of_birth', `${yyyy}-${mm}-${dd}`)
+  // Only add insurance fields if not Cash & Carry
+  if (insuranceTypeName !== 'CASH & CARRY' && insuranceType) {
+    payload.insurance.schema = formData.value.insurance_schema || ''
+    payload.insurance.plan = (formData.value.insurance_plan as any)?.id || formData.value.insurance_plan || null
+    payload.insurance.membership_number = formData.value.membership_number || ''
+    payload.insurance.serial_number = formData.value.serial_number || ''
+    payload.insurance.company = (formData.value.company as any)?.id || formData.value.company || null
+    payload.insurance.issue_date = formatDate(formData.value.issue_date)
+    payload.insurance.expiry_date = formatDate(formData.value.expiry_date)
   }
 
-  if (formData.value.issue_date) {
-    const date = new Date(formData.value.issue_date)
-    const yyyy = date.getFullYear()
-    const mm = String(date.getMonth() + 1).padStart(2, '0')
-    const dd = String(date.getDate()).padStart(2, '0')
-    payload.set('issue_date', `${yyyy}-${mm}-${dd}`)
+  // Handle profile image separately if using FormData is needed
+  // For JSON, you might need to upload the image separately or convert to base64
+  if (formData.value.profile_image) {
+    // If your API supports base64 images in JSON:
+    // payload.profile_image = await convertToBase64(formData.value.profile_image)
+    // Otherwise, you'll need to handle file upload separately
+    console.log('Profile image will need separate upload handling')
   }
 
-  if (formData.value.expiry_date) {
-    const date = new Date(formData.value.expiry_date)
-    const yyyy = date.getFullYear()
-    const mm = String(date.getMonth() + 1).padStart(2, '0')
-    const dd = String(date.getDate()).padStart(2, '0')
-    payload.set('expiry_date', `${yyyy}-${mm}-${dd}`)
-  }
-
-  // Append address fields
-  Object.entries(address).forEach(([k, v]) => {
-    payload.append(`address[${k}]`, v)
-  })
-
-  // Append emergency contact fields
-  Object.entries(emergency_contact).forEach(([k, v]) => {
-    payload.append(`emergency_contact[${k}]`, v)
-  })
-
-  // Remove insurance fields from root
-  ;[
-    'insurance_type',
-    'insurance_schema',
-    'insurance_plan',
-    'membership_number',
-    'serial_number',
-    'company',
-    'issue_date',
-    'expiry_date',
-  ].forEach((key) => payload.delete(key))
-
-  // Append insurance as nested fields
-  Object.entries(insurance).forEach(([k, v]) => {
-    payload.append(`insurance[${k}]`, v)
-  })
-
-  return payload as any
+  return payload
 }
 
 async function onSubmit(): Promise<void> {

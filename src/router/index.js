@@ -108,14 +108,14 @@ const routes = [
         path: 'appointments/:id/consultation',
         name: 'PatientConsultation',
         component: () =>
-          import('@/views/pages/admin/clinic/patients/consultation/inperson-consultation.vue'),
+          import('@/views/pages/admin/clinic/appointments/consultation/inperson-consultation.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/:id/telehealth',
         name: 'PatientTelehealth',
         component: () =>
-          import('@/views/pages/admin/clinic/patients/consultation/online-consultation.vue'),
+          import('@/views/pages/admin/clinic/appointments/consultation/online-consultation.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
