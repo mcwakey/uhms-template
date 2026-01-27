@@ -262,13 +262,15 @@
                   'badge border fw-medium fs-13 ',
                   record.status === 'SCHEDULED' || record.status === 'RESCHEDULED'
                     ? 'badge-soft-primary text-primary'
-                    : record.status === 'IN-PROGRESS'
-                      ? 'badge-soft-warning text-warning'
-                      : record.status === 'COMPLETED'
-                        ? 'badge-soft-success text-success'
-                        : record.status === 'CANCELLED'
-                          ? 'badge-soft-danger text-danger'
-                          : 'badge-soft-secondary text-secondary',
+                    : record.status === 'CHECKED-IN'
+                      ? 'badge-soft-success text-success'
+                      : record.status === 'IN-PROGRESS'
+                        ? 'badge-soft-warning text-warning'
+                        : record.status === 'COMPLETED'
+                          ? 'badge-soft-success text-success'
+                          : record.status === 'CANCELLED'
+                            ? 'badge-soft-danger text-danger'
+                            : 'badge-soft-secondary text-secondary',
                 ]"
               >
                 {{ record.status }}
@@ -286,7 +288,7 @@
                   <i class="ti ti-activity"></i>
                 </router-link>
                 <a
-                  v-else-if="record.status === 'CHECKED_IN'"
+                  v-else-if="record.status === 'CHECKED-IN'"
                   href="javascript:void(0);"
                   class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-success"
                   @click="startAppointment(record)"
@@ -323,7 +325,7 @@
                 <ul class="dropdown-menu dropdown-menu-end p-2">
                   <!-- Reschedule / Cancel for active appointments -->
                   <template
-                    v-if="['SCHEDULED', 'CONFIRMED', 'CHECKED_IN'].includes(record.status)"
+                    v-if="['SCHEDULED', 'CONFIRMED', 'CHECKED-IN'].includes(record.status)"
                   >
                     <li>
                       <a

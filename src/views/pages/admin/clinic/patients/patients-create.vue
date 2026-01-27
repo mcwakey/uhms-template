@@ -16,7 +16,7 @@
       <div class="col-lg-10">
         <div class="mb-4 d-flex align-items-center justify-content-between">
           <h6 class="fw-bold mb-0 d-flex align-items-center">
-            <router-link to="/patients/patients-list" class="text-dark">
+            <router-link to="/admin/clinic/patients" class="text-dark">
               <i class="ti ti-chevron-left me-1"></i>{{ $t('patients.title') }}
             </router-link>
           </h6>
@@ -341,82 +341,91 @@
 
           <!-- Next of Kin Card -->
           <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
               <h5 class="card-title mb-0">{{ $t('patient_create.next_of_kin_information') }}</h5>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-primary" 
+                @click="addNextOfKin"
+              >
+                <i class="ti ti-plus me-1"></i>{{ $t('patient_create.add_next_of_kin') }}
+              </button>
             </div>
             <div class="card-body">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.nok_name') }} <span class="text-danger">*</span></label>
-                    <Field
-                      type="text"
-                      class="form-control"
-                      name="nok_name"
-                      v-model="formData.nok_name"
-                      :class="{ 'is-invalid': errors.nok_name }"
-                    />
-                    <div class="invalid-feedback">{{ errors.nok_name }}</div>
-                  </div>
+              <!-- NOK Entry -->
+              <div 
+                v-for="(nok, index) in nextOfKinEntries" 
+                :key="index"
+                class="nok-entry mb-4 pb-4"
+                :class="{ 'border-bottom': index < nextOfKinEntries.length - 1 }"
+              >
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="mb-0 text-primary">
+                    <i class="ti ti-user-check me-1"></i>
+                    {{ $t('patient_create.nok_entry') }} #{{ index + 1 }}
+                  </h6>
+                  <button 
+                    v-if="nextOfKinEntries.length > 1"
+                    type="button" 
+                    class="btn btn-sm btn-outline-danger" 
+                    @click="removeNextOfKin(index)"
+                    :title="$t('patient_create.remove_next_of_kin')"
+                  >
+                    <i class="ti ti-trash"></i>
+                  </button>
                 </div>
-                <div class="col-lg-6">
-                  <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.nok_relation') }} <span class="text-danger">*</span></label>
-                    <Field name="nok_relation" v-model="formData.nok_relation">
-                      <template #default="{ field, meta, errorMessage }">
-                        <vue-multiselect
-                          v-bind="field"
-                          :model-value="field.value"
-                          :options="relationshipOptions"
-                          :searchable="false"
-                          :close-on-select="true"
-                          :placeholder="$t('next_of_kin_modal.select_relationship')"
-                          @update:model-value="(val: any) => field.onChange(val)"
-                          :class="{ 'is-invalid': meta.touched && !meta.valid }"
-                        />
-                        <div v-if="meta.touched && errorMessage" class="invalid-feedback d-block">
-                          {{ errorMessage }}
-                        </div>
-                      </template>
-                    </Field>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label class="form-label">{{ $t('patient_create.nok_name') }}<span class="text-danger">*</span></label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="nok.name"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.nok_phone') }} <span class="text-danger">*</span></label>
-                    <Field
-                      type="tel"
-                      as="vue-tel-input"
-                      name="nok_phone"
-                      v-model="formData.nok_phone"
-                      :inputOptions="{
-                        styleClasses: 'form-control',
-                        name: 'nok_phone',
-                        type: 'tel',
-                        placeholder: $t('patient_create.placeholder_phone'),
-                      }"
-                      :validCharactersOnly="true"
-                      :class="{ 'is-invalid': errors.nok_phone }"
-                    />
-                    <div class="invalid-feedback d-block" v-if="errors.nok_phone">{{ errors.nok_phone }}</div>
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label class="form-label">{{ $t('patient_create.nok_relation') }}<span class="text-danger">*</span></label>
+                      <vue-multiselect
+                        v-model="nok.relation"
+                        :options="relationshipOptions"
+                        :searchable="false"
+                        :close-on-select="true"
+                        :placeholder="$t('next_of_kin_modal.select_relationship')"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.nok_other_phone') }}</label>
-                    <Field
-                      type="tel"
-                      as="vue-tel-input"
-                      name="nok_other_phone"
-                      v-model="formData.nok_other_phone"
-                      :inputOptions="{
-                        styleClasses: 'form-control',
-                        name: 'nok_other_phone',
-                        type: 'tel',
-                        placeholder: $t('patient_create.placeholder_phone'),
-                      }"
-                      :validCharactersOnly="true"
-                    />
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label class="form-label">{{ $t('patient_create.nok_phone') }}<span class="text-danger">*</span></label>
+                      <vue-tel-input
+                        v-model="nok.phone"
+                        class="form-control"
+                        :validCharactersOnly="true"
+                        :inputOptions="{
+                          styleClasses: 'form-control',
+                          type: 'tel',
+                          placeholder: $t('patient_create.placeholder_phone'),
+                        }"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label class="form-label">{{ $t('patient_create.nok_other_phone') }}</label>
+                      <vue-tel-input
+                        v-model="nok.other_phone"
+                        class="form-control"
+                        :validCharactersOnly="true"
+                        :inputOptions="{
+                          styleClasses: 'form-control',
+                          type: 'tel',
+                          placeholder: $t('patient_create.placeholder_phone'),
+                        }"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -425,170 +434,155 @@
 
           <!-- Insurance Information Card -->
           <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
               <h5 class="card-title mb-0">{{ $t('patient_create.insurance_information') }}</h5>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-primary" 
+                @click="addInsurance"
+              >
+                <i class="ti ti-plus me-1"></i>{{ $t('patient_create.add_insurance') }}
+              </button>
             </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">{{ $t('patient_create.insurance_type') }}</label>
-                    <Field name="insurance_type" v-model="formData.insurance_type">
-                      <template #default="{ field, meta, errorMessage }">
-                        <vue-multiselect
-                          v-bind="field"
-                          :model-value="field.value"
-                          :options="insuranceTypes"
-                          label="name"
-                          track-by="id"
-                          @update:model-value="(val: any) => { field.onChange(val); onInsuranceTypeSelect(val); }"
-                          :class="{ 'is-invalid': meta.touched && !meta.valid }"
-                          :placeholder="$t('insurance_modal.select_type')"
-                          :loading="loadingInsuranceTypes"
-                        />
-                        <div v-if="meta.touched && errorMessage" class="invalid-feedback d-block">
-                          {{ errorMessage }}
-                        </div>
-                      </template>
-                    </Field>
-                  </div>
+            <div v-if="insuranceEntries.length > 0" class="card-body">
+              
+              <!-- Insurance Entry -->
+              <div 
+                v-for="(insurance, index) in insuranceEntries" 
+                :key="index"
+                class="insurance-entry mb-4 pb-4"
+                :class="{ 'border-bottom': index < insuranceEntries.length - 1 }"
+              >
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="mb-0 text-primary">
+                    <i class="ti ti-shield-check me-1"></i>
+                    {{ $t('patient_create.insurance_entry') }} #{{ index + 1 }}
+                  </h6>
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-outline-danger" 
+                    @click="removeInsurance(index)"
+                    :title="$t('patient_create.remove_insurance')"
+                  >
+                    <i class="ti ti-trash"></i>
+                  </button>
                 </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">
-                      {{ $t('patient_create.company') }}
-                      <span v-if="insuranceFieldsRequired.company" class="text-danger">*</span>
-                    </label>
-                    <Field name="company" v-model="formData.company">
-                      <template #default="{ field, meta, errorMessage }">
-                        <vue-multiselect
-                          v-bind="field"
-                          :model-value="field.value"
-                          :options="insuranceCompanies"
-                          label="name"
-                          track-by="id"
-                          @update:model-value="(val: any) => { field.onChange(val); onInsuranceCompanySelect(val); }"
-                          :class="{ 'is-invalid': meta.touched && !meta.valid }"
-                          :placeholder="$t('insurance_modal.select_company')"
-                          :loading="loadingInsuranceCompanies"
-                          :disabled="!formData.insurance_type"
-                        />
-                        <div v-if="meta.touched && errorMessage" class="invalid-feedback d-block">
-                          {{ errorMessage }}
-                        </div>
-                      </template>
-                    </Field>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">{{ $t('patient_create.insurance_type') }}</label>
+                      <vue-multiselect
+                        v-model="insurance.insurance_type"
+                        :options="insuranceTypes"
+                        label="name"
+                        track-by="id"
+                        @update:model-value="(val: any) => onInsuranceTypeSelect(val, index)"
+                        :placeholder="$t('insurance_modal.select_type')"
+                        :loading="loadingInsuranceTypes"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">
-                      {{ $t('patient_create.insurance_plan') }}
-                      <span v-if="insuranceFieldsRequired.plan" class="text-danger">*</span>
-                    </label>
-                    <Field name="insurance_plan" v-model="formData.insurance_plan">
-                      <template #default="{ field, meta, errorMessage }">
-                        <vue-multiselect
-                          v-bind="field"
-                          :model-value="field.value"
-                          :options="insurancePlans"
-                          label="name"
-                          track-by="id"
-                          @update:model-value="(val: any) => { field.onChange(val); }"
-                          :class="{ 'is-invalid': meta.touched && !meta.valid }"
-                          :placeholder="$t('insurance_modal.select_plan')"
-                          :loading="loadingInsurancePlans"
-                          :disabled="!formData.company"
-                        />
-                        <div v-if="meta.touched && errorMessage" class="invalid-feedback d-block">
-                          {{ errorMessage }}
-                        </div>
-                      </template>
-                    </Field>
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">
+                        {{ $t('patient_create.company') }}
+                        <span v-if="getInsuranceFieldsRequired(insurance).company" class="text-danger">*</span>
+                      </label>
+                      <vue-multiselect
+                        v-model="insurance.company"
+                        :options="insurance.companiesOptions || []"
+                        label="name"
+                        track-by="id"
+                        @update:model-value="(val: any) => onInsuranceCompanySelect(val, index)"
+                        :placeholder="$t('insurance_modal.select_company')"
+                        :loading="insurance.loadingCompanies"
+                        :disabled="!insurance.insurance_type"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">
-                      {{ $t('patient_create.insurance_schema') }}
-                      <span v-if="insuranceFieldsRequired.schema" class="text-danger">*</span>
-                    </label>
-                    <Field
-                      type="text"
-                      class="form-control"
-                      name="insurance_schema"
-                      v-model="formData.insurance_schema"
-                      :class="{ 'is-invalid': errors.insurance_schema }"
-                    />
-                    <div class="invalid-feedback">{{ errors.insurance_schema }}</div>
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">
+                        {{ $t('patient_create.insurance_plan') }}
+                        <span v-if="getInsuranceFieldsRequired(insurance).plan" class="text-danger">*</span>
+                      </label>
+                      <vue-multiselect
+                        v-model="insurance.insurance_plan"
+                        :options="insurance.plansOptions || []"
+                        label="name"
+                        track-by="id"
+                        :placeholder="$t('insurance_modal.select_plan')"
+                        :loading="insurance.loadingPlans"
+                        :disabled="!insurance.company"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">
-                      {{ $t('patient_create.membership_number') }}
-                      <span v-if="insuranceFieldsRequired.membership_number" class="text-danger">*</span>
-                    </label>
-                    <Field
-                      type="text"
-                      class="form-control"
-                      name="membership_number"
-                      v-model="formData.membership_number"
-                      :class="{ 'is-invalid': errors.membership_number }"
-                    />
-                    <div class="invalid-feedback">{{ errors.membership_number }}</div>
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">
+                        {{ $t('patient_create.insurance_schema') }}
+                        <span v-if="getInsuranceFieldsRequired(insurance).schema" class="text-danger">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="insurance.insurance_schema"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">
-                      {{ $t('patient_create.serial_number') }}
-                      <span v-if="insuranceFieldsRequired.serial_number" class="text-danger">*</span>
-                    </label>
-                    <Field
-                      type="text"
-                      class="form-control"
-                      name="serial_number"
-                      v-model="formData.serial_number"
-                      :class="{ 'is-invalid': errors.serial_number }"
-                    />
-                    <div class="invalid-feedback">{{ errors.serial_number }}</div>
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">
+                        {{ $t('patient_create.membership_number') }}
+                        <span v-if="getInsuranceFieldsRequired(insurance).membership_number" class="text-danger">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="insurance.membership_number"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">
-                      {{ $t('patient_create.issue_date') }}
-                      <span v-if="insuranceFieldsRequired.issue_date" class="text-danger">*</span>
-                    </label>
-                    <Field
-                      name="issue_date"
-                      as="a-date-picker"
-                      class="form-control datetimepicker w-100"
-                      :placeholder="$t('patient_create.placeholder_date')"
-                      v-model="formData.issue_date"
-                      :class="{ 'is-invalid': errors.issue_date }"
-                      type="date"
-                    />
-                    <div class="invalid-feedback">{{ errors.issue_date }}</div>
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">
+                        {{ $t('patient_create.serial_number') }}
+                        <span v-if="getInsuranceFieldsRequired(insurance).serial_number" class="text-danger">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="insurance.serial_number"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="mb-3">
-                    <label class="form-label">
-                      {{ $t('patient_create.expiry_date') }}
-                      <span v-if="insuranceFieldsRequired.expiry_date" class="text-danger">*</span>
-                    </label>
-                    <Field
-                      name="expiry_date"
-                      as="a-date-picker"
-                      class="form-control datetimepicker w-100"
-                      :placeholder="$t('patient_create.placeholder_date')"
-                      v-model="formData.expiry_date"
-                      :class="{ 'is-invalid': errors.expiry_date }"
-                      type="date"
-                    />
-                    <div class="invalid-feedback">{{ errors.expiry_date }}</div>
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">
+                        {{ $t('patient_create.issue_date') }}
+                        <span v-if="getInsuranceFieldsRequired(insurance).issue_date" class="text-danger">*</span>
+                      </label>
+                      <a-date-picker
+                        class="form-control datetimepicker w-100"
+                        :placeholder="$t('patient_create.placeholder_date')"
+                        v-model:value="insurance.issue_date"
+                        type="date"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label class="form-label">
+                        {{ $t('patient_create.expiry_date') }}
+                        <span v-if="getInsuranceFieldsRequired(insurance).expiry_date" class="text-danger">*</span>
+                      </label>
+                      <a-date-picker
+                        class="form-control datetimepicker w-100"
+                        :placeholder="$t('patient_create.placeholder_date')"
+                        v-model:value="insurance.expiry_date"
+                        type="date"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -686,43 +680,214 @@ const loadInsurancePlans = async (companyLink: string) => {
   }
 }
 
-const onInsuranceTypeSelect = (selectedType: any) => {
-  // Reset dependent fields
-  formData.value.company = ''
-  formData.value.insurance_plan = ''
-  insuranceCompanies.value = []
-  insurancePlans.value = []
+// Insurance Entries Array (for form repeater)
+interface InsuranceEntry {
+  insurance_type: any
+  company: any
+  insurance_plan: any
+  insurance_schema: string
+  membership_number: string
+  serial_number: string
+  issue_date: any
+  expiry_date: any
+  // Per-entry dropdown options and loading states
+  companiesOptions: any[]
+  plansOptions: any[]
+  loadingCompanies: boolean
+  loadingPlans: boolean
+}
 
-  if (selectedType && selectedType.id) {
-    loadInsuranceCompanies(selectedType.id)
+const insuranceEntries = ref<InsuranceEntry[]>([])
+
+// Initialize with one empty insurance entry
+const createEmptyInsuranceEntry = (): InsuranceEntry => ({
+  insurance_type: null,
+  company: null,
+  insurance_plan: null,
+  insurance_schema: '',
+  membership_number: '',
+  serial_number: '',
+  issue_date: null,
+  expiry_date: null,
+  companiesOptions: [],
+  plansOptions: [],
+  loadingCompanies: false,
+  loadingPlans: false,
+})
+
+const addInsurance = () => {
+  insuranceEntries.value.push(createEmptyInsuranceEntry())
+}
+
+// Next of Kin Entries Array (for form repeater)
+interface NextOfKinEntry {
+  name: string
+  relation: string
+  phone: string
+  other_phone: string
+}
+
+const nextOfKinEntries = ref<NextOfKinEntry[]>([])
+
+const createEmptyNextOfKinEntry = (): NextOfKinEntry => ({
+  name: '',
+  relation: '',
+  phone: '',
+  other_phone: '',
+})
+
+const addNextOfKin = () => {
+  nextOfKinEntries.value.push(createEmptyNextOfKinEntry())
+}
+
+const removeNextOfKin = (index: number) => {
+  if (nextOfKinEntries.value.length > 1) {
+    nextOfKinEntries.value.splice(index, 1)
   }
 }
 
-const onInsuranceCompanySelect = (selectedCompany: any) => {
+const removeInsurance = (index: number) => {
+  insuranceEntries.value.splice(index, 1)
+}
+
+// Load insurance companies for a specific entry
+const loadInsuranceCompaniesForEntry = async (typeId: number, index: number) => {
+  const entry = insuranceEntries.value[index]
+  if (!entry) return
+
+  try {
+    entry.loadingCompanies = true
+    const response = await axiosInstance.get(`/insurance/companies/?type=${typeId}`)
+    entry.companiesOptions = response.data.results || response.data || []
+  } catch (error) {
+    console.error('Error loading insurance companies:', error)
+    message.error(t('insurance_modal.load_fail'))
+    entry.companiesOptions = []
+  } finally {
+    entry.loadingCompanies = false
+  }
+}
+
+// Load insurance plans for a specific entry
+const loadInsurancePlansForEntry = async (companyLink: string, index: number) => {
+  const entry = insuranceEntries.value[index]
+  if (!entry) return
+
+  try {
+    entry.loadingPlans = true
+    const response = await axiosInstance.get(companyLink)
+    entry.plansOptions = response.data.results || response.data || []
+  } catch (error) {
+    console.error('Error loading insurance plans:', error)
+    message.error(t('insurance_modal.load_fail'))
+    entry.plansOptions = []
+  } finally {
+    entry.loadingPlans = false
+  }
+}
+
+const onInsuranceTypeSelect = async (selectedType: any, index: number) => {
+  const entry = insuranceEntries.value[index]
+  if (!entry) return
+
   // Reset dependent fields
-  formData.value.insurance_plan = ''
-  insurancePlans.value = []
+  entry.company = null
+  entry.insurance_plan = null
+  entry.companiesOptions = []
+  entry.plansOptions = []
+
+  if (selectedType && selectedType.id) {
+    await loadInsuranceCompaniesForEntry(selectedType.id, index)
+  }
+}
+
+const onInsuranceCompanySelect = async (selectedCompany: any, index: number) => {
+  const entry = insuranceEntries.value[index]
+  if (!entry) return
+
+  // Reset dependent fields
+  entry.insurance_plan = null
+  entry.plansOptions = []
 
   if (selectedCompany && selectedCompany._links?.plans) {
-    loadInsurancePlans(selectedCompany._links.plans)
+    await loadInsurancePlansForEntry(selectedCompany._links.plans, index)
+  }
+}
+
+// Determine which insurance fields are required for a specific entry
+const getInsuranceFieldsRequired = (entry: InsuranceEntry) => {
+  if (!entry.insurance_type) {
+    return {
+      schema: false,
+      company: false,
+      plan: false,
+      membership_number: false,
+      serial_number: false,
+      issue_date: false,
+      expiry_date: false,
+    }
+  }
+
+  const typeName = (entry.insurance_type?.name || entry.insurance_type || '').toLowerCase()
+
+  if (typeName === 'cash & carry') {
+    return {
+      schema: false,
+      company: false,
+      plan: false,
+      membership_number: false,
+      serial_number: false,
+      issue_date: false,
+      expiry_date: false,
+    }
+  } else if (typeName === 'nhia') {
+    return {
+      schema: true,
+      company: false,
+      plan: false,
+      membership_number: true,
+      serial_number: true,
+      issue_date: false,
+      expiry_date: true,
+    }
+  } else if (typeName === 'private' || typeName === 'corporate') {
+    return {
+      schema: false,
+      company: true,
+      plan: true,
+      membership_number: true,
+      serial_number: false,
+      issue_date: false,
+      expiry_date: true,
+    }
+  } else {
+    return {
+      schema: false,
+      company: false,
+      plan: false,
+      membership_number: false,
+      serial_number: false,
+      issue_date: false,
+      expiry_date: false,
+    }
   }
 }
 
 onMounted(async () => {
   await loadInsuranceTypes()
   
-  // Set "Cash & Carry" as default insurance type
-  const cashAndCarry = insuranceTypes.value.find(
-    (type) => (type.name || '').toLowerCase() === 'cash & carry'
-  )
-  if (cashAndCarry) {
-    formData.value.insurance_type = cashAndCarry
-  }
+  // Initialize with NO insurance entries (user can add if needed)
+  insuranceEntries.value = []
+  
+  // Initialize with one Next of Kin entry (required)
+  nextOfKinEntries.value.push(createEmptyNextOfKinEntry())
 })
 
-// Validation schema with conditional insurance validation
+// Validation schema - simplified for array-based NOK and Insurance
 const schema = computed(() => {
-  const baseSchema = {
+  // Only validate the VeeValidate Field components in the form
+  // NOK and Insurance arrays are validated manually before submission
+  return yup.object().shape({
     first_name: yup.string().required(t('validation.first_name_required')),
     last_name: yup.string().required(t('validation.last_name_required')),
     date_of_birth: yup.date().required(t('validation.dob_required')),
@@ -734,84 +899,6 @@ const schema = computed(() => {
     state: yup.mixed().required(t('validation.state_required')),
     country: yup.mixed().required(t('validation.country_required')),
     address_line_1: yup.string().required(t('validation.address_required')),
-    nok_name: yup.string().required(t('validation.nok_name_required')),
-    nok_relation: yup.string().required(t('validation.nok_relation_required')),
-    // nok_phone: yup.string().required(t('validation.nok_phone_required')),
-  }
-
-  // Get the insurance type name for validation logic
-  const getInsuranceTypeName = () => {
-    const type = formData.value.insurance_type
-    if (!type) return null
-    return (type?.name || type).toLowerCase()
-  }
-
-  const insuranceTypeName = getInsuranceTypeName()
-
-  // Insurance validation is optional by default (Cash & Carry)
-  let insuranceValidation: any = {
-    insurance_type: yup.mixed().nullable(),
-    insurance_schema: yup.string().nullable(),
-    insurance_plan: yup.mixed().nullable(),
-    membership_number: yup.string().nullable(),
-    serial_number: yup.string().nullable(),
-    company: yup.mixed().nullable(),
-    issue_date: yup.date().nullable(),
-    expiry_date: yup.date().nullable(),
-  }
-
-  // Apply conditional validation based on insurance type
-  if (insuranceTypeName && insuranceTypeName !== 'CASH & CARRY') {
-    switch (insuranceTypeName) {
-      case 'nhia':
-        // NHIA requires: scheme, membershipNumber, serialNumber, expiryDate
-        insuranceValidation = {
-          insurance_type: yup.mixed().required(t('validation.insurance_type_required')),
-          insurance_schema: yup.string().required(t('validation.insurance_schema_required')),
-          membership_number: yup.string().required(t('validation.membership_number_required')),
-          serial_number: yup.string().required(t('validation.serial_number_required')),
-          expiry_date: yup.date().required(t('validation.expiry_date_required')),
-          // Optional fields
-          insurance_plan: yup.mixed().nullable(),
-          company: yup.mixed().nullable(),
-          issue_date: yup.date().nullable(),
-        }
-        break
-
-      case 'private':
-      case 'corporate':
-        // Private/Corporate requires: company, plan, membershipNumber, expiryDate
-        insuranceValidation = {
-          insurance_type: yup.mixed().required(t('validation.insurance_type_required')),
-          company: yup.mixed().required(t('validation.company_required')),
-          insurance_plan: yup.mixed().required(t('validation.insurance_plan_required')),
-          membership_number: yup.string().required(t('validation.membership_number_required')),
-          expiry_date: yup.date().required(t('validation.expiry_date_required')),
-          // Optional fields
-          insurance_schema: yup.string().nullable(),
-          serial_number: yup.string().nullable(),
-          issue_date: yup.date().nullable(),
-        }
-        break
-
-      default:
-        // For any other insurance type, make basic fields required
-        insuranceValidation = {
-          insurance_type: yup.mixed().required(t('validation.insurance_type_required')),
-          insurance_schema: yup.string().nullable(),
-          insurance_plan: yup.mixed().nullable(),
-          membership_number: yup.string().nullable(),
-          serial_number: yup.string().nullable(),
-          company: yup.mixed().nullable(),
-          issue_date: yup.date().nullable(),
-          expiry_date: yup.date().nullable(),
-        }
-    }
-  }
-
-  return yup.object().shape({
-    ...baseSchema,
-    ...insuranceValidation,
   })
 })
 
@@ -1095,59 +1182,77 @@ async function fillRandomData(): Promise<void> {
     formData.value.address_line_1 = `${Math.floor(Math.random() * 500 + 1)} ${streets[Math.floor(Math.random() * streets.length)]}`
     formData.value.address_line_2 = Math.random() > 0.6 ? `Apt ${Math.floor(Math.random() * 100 + 1)}` : ''
     
-    // Next of Kin information
-    formData.value.nok_name = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`
-    formData.value.nok_relation = relationshipOptions.value[Math.floor(Math.random() * relationshipOptions.value.length)]
-    formData.value.nok_phone = `+233${Math.floor(Math.random() * 900000000 + 100000000)}`
-    formData.value.nok_other_phone = Math.random() > 0.5 ? `+233${Math.floor(Math.random() * 900000000 + 100000000)}` : ''
+    // Clear existing Next of Kin entries and create 1-2 new ones
+    nextOfKinEntries.value = []
+    const numNOKs = Math.floor(Math.random() * 2) + 1 // 1 or 2
     
-    // Insurance information - randomly select type
-    if (insuranceTypes.value.length > 0) {
-      const randomInsuranceType = insuranceTypes.value[Math.floor(Math.random() * insuranceTypes.value.length)]
-      formData.value.insurance_type = randomInsuranceType
+    for (let i = 0; i < numNOKs; i++) {
+      const nokEntry = createEmptyNextOfKinEntry()
+      nokEntry.name = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`
+      nokEntry.relation = relationshipOptions.value[Math.floor(Math.random() * relationshipOptions.value.length)]
+      nokEntry.phone = `+233${Math.floor(Math.random() * 900000000 + 100000000)}`
+      nokEntry.other_phone = Math.random() > 0.5 ? `+233${Math.floor(Math.random() * 900000000 + 100000000)}` : ''
+      nextOfKinEntries.value.push(nokEntry)
+    }
+    
+    // Clear existing insurance entries
+    insuranceEntries.value = []
+    
+    // Generate 1-2 random insurance entries
+    const numInsurances = Math.floor(Math.random() * 2) + 1 // 1 or 2
+    
+    for (let i = 0; i < numInsurances; i++) {
+      const entry = createEmptyInsuranceEntry()
       
-      const typeName = (randomInsuranceType?.name || '').toLowerCase()
-      
-      // Fill insurance fields based on type
-      if (typeName === 'nhia') {
-        formData.value.insurance_schema = `NHIA-${Math.floor(Math.random() * 9000 + 1000)}`
-        formData.value.membership_number = `NHIA${Math.floor(Math.random() * 900000000 + 100000000)}`
-        formData.value.serial_number = `SN${Math.floor(Math.random() * 90000000 + 10000000)}`
+      if (insuranceTypes.value.length > 0) {
+        const randomInsuranceType = insuranceTypes.value[Math.floor(Math.random() * insuranceTypes.value.length)]
+        entry.insurance_type = randomInsuranceType
         
-        const expiryDate = new Date()
-        expiryDate.setFullYear(expiryDate.getFullYear() + Math.floor(Math.random() * 3 + 1))
-        formData.value.expiry_date = dayjs(expiryDate) as any
-      } else if (typeName === 'private' || typeName === 'corporate') {
-        // Load companies first
-        if (randomInsuranceType.id) {
-          await loadInsuranceCompanies(randomInsuranceType.id)
+        const typeName = (randomInsuranceType?.name || '').toLowerCase()
+        
+        // Fill insurance fields based on type
+        if (typeName === 'nhia') {
+          entry.insurance_schema = `NHIA-${Math.floor(Math.random() * 9000 + 1000)}`
+          entry.membership_number = `NHIA${Math.floor(Math.random() * 900000000 + 100000000)}`
+          entry.serial_number = `SN${Math.floor(Math.random() * 90000000 + 10000000)}`
           
-          if (insuranceCompanies.value.length > 0) {
-            const randomCompany = insuranceCompanies.value[Math.floor(Math.random() * insuranceCompanies.value.length)]
-            formData.value.company = randomCompany
+          const expiryDate = new Date()
+          expiryDate.setFullYear(expiryDate.getFullYear() + Math.floor(Math.random() * 3 + 1))
+          entry.expiry_date = dayjs(expiryDate) as any
+        } else if (typeName === 'private' || typeName === 'corporate') {
+          // Load companies first
+          if (randomInsuranceType.id) {
+            await loadInsuranceCompaniesForEntry(randomInsuranceType.id, i)
             
-            // Load plans
-            if (randomCompany._links?.plans) {
-              await loadInsurancePlans(randomCompany._links.plans)
+            if (entry.companiesOptions.length > 0) {
+              const randomCompany = entry.companiesOptions[Math.floor(Math.random() * entry.companiesOptions.length)]
+              entry.company = randomCompany
               
-              if (insurancePlans.value.length > 0) {
-                formData.value.insurance_plan = insurancePlans.value[Math.floor(Math.random() * insurancePlans.value.length)]
+              // Load plans
+              if (randomCompany._links?.plans) {
+                await loadInsurancePlansForEntry(randomCompany._links.plans, i)
+                
+                if (entry.plansOptions.length > 0) {
+                  entry.insurance_plan = entry.plansOptions[Math.floor(Math.random() * entry.plansOptions.length)]
+                }
               }
             }
           }
+          
+          entry.membership_number = `PVT${Math.floor(Math.random() * 900000000 + 100000000)}`
+          
+          const issueDate = new Date()
+          issueDate.setMonth(issueDate.getMonth() - Math.floor(Math.random() * 12))
+          entry.issue_date = dayjs(issueDate) as any
+          
+          const expiryDate = new Date(issueDate)
+          expiryDate.setFullYear(expiryDate.getFullYear() + 1)
+          entry.expiry_date = dayjs(expiryDate) as any
         }
-        
-        formData.value.membership_number = `PVT${Math.floor(Math.random() * 900000000 + 100000000)}`
-        
-        const issueDate = new Date()
-        issueDate.setMonth(issueDate.getMonth() - Math.floor(Math.random() * 12))
-        formData.value.issue_date = dayjs(issueDate) as any
-        
-        const expiryDate = new Date(issueDate)
-        expiryDate.setFullYear(expiryDate.getFullYear() + 1)
-        formData.value.expiry_date = dayjs(expiryDate) as any
+        // Cash & Carry doesn't need additional fields
       }
-      // Cash & Carry doesn't need additional fields
+      
+      insuranceEntries.value.push(entry)
     }
     
     message.success('Form filled with random data for testing')
@@ -1207,33 +1312,54 @@ function buildPayload(): any {
     country: extractValue(formData.value.country),
   }
 
-  // Emergency contact as nested object
-  payload.emergency_contact = {
-    name: formData.value.nok_name,
-    relation: formData.value.nok_relation,
-    phone: formData.value.nok_phone,
-    other_phone: formData.value.nok_other_phone || '',
-  }
-
-  // Insurance as nested object
-  // Cash & Carry patients will have minimal insurance data
-  const insuranceType = formData.value.insurance_type
-  const insuranceTypeName = (insuranceType?.name || insuranceType || '').toLowerCase()
+  // Emergency contacts as array of nested objects
+  // API expects singular 'emergency_contact' but we send the first complete entry
+  const validNOKs = nextOfKinEntries.value.filter(nok => 
+    nok.name && nok.relation && nok.phone
+  )
   
-  payload.insurance = {
-    type: (formData.value.insurance_type as any)?.id || formData.value.insurance_type,
+  if (validNOKs.length > 0) {
+    // Send the first valid NOK as emergency_contact (singular)
+    payload.emergency_contact = {
+      name: validNOKs[0].name,
+      relation: validNOKs[0].relation,
+      phone: validNOKs[0].phone,
+      other_phone: validNOKs[0].other_phone || '',
+    }
+    
+    // If there are additional NOKs, send them as emergency_contacts (plural) array
+    if (validNOKs.length > 1) {
+      payload.emergency_contacts = validNOKs.slice(1).map(nok => ({
+        name: nok.name,
+        relation: nok.relation,
+        phone: nok.phone,
+        other_phone: nok.other_phone || '',
+      }))
+    }
   }
 
-  // Only add insurance fields if not Cash & Carry
-  if (insuranceTypeName !== 'CASH & CARRY' && insuranceType) {
-    payload.insurance.schema = formData.value.insurance_schema || ''
-    payload.insurance.plan = (formData.value.insurance_plan as any)?.id || formData.value.insurance_plan || null
-    payload.insurance.membership_number = formData.value.membership_number || ''
-    payload.insurance.serial_number = formData.value.serial_number || ''
-    payload.insurance.company = (formData.value.company as any)?.id || formData.value.company || null
-    payload.insurance.issue_date = formatDate(formData.value.issue_date)
-    payload.insurance.expiry_date = formatDate(formData.value.expiry_date)
-  }
+  // Insurances as array of nested objects
+  payload.insurances = insuranceEntries.value.map(entry => {
+    const insuranceType = entry.insurance_type
+    const insuranceTypeName = (insuranceType?.name || insuranceType || '').toLowerCase()
+    
+    const insurance: any = {
+      type: (entry.insurance_type as any)?.id || entry.insurance_type,
+    }
+
+    // Only add insurance fields if not Cash & Carry
+    if (insuranceTypeName !== 'cash & carry' && insuranceType) {
+      insurance.schema = entry.insurance_schema || ''
+      insurance.plan = (entry.insurance_plan as any)?.id || entry.insurance_plan || null
+      insurance.membership_number = entry.membership_number || ''
+      insurance.serial_number = entry.serial_number || ''
+      insurance.company = (entry.company as any)?.id || entry.company || null
+      insurance.issue_date = formatDate(entry.issue_date)
+      insurance.expiry_date = formatDate(entry.expiry_date)
+    }
+
+    return insurance
+  }).filter(insurance => insurance.type) // Filter out entries without a type selected
 
   // Handle profile image separately if using FormData is needed
   // For JSON, you might need to upload the image separately or convert to base64
@@ -1248,12 +1374,100 @@ function buildPayload(): any {
 }
 
 async function onSubmit(): Promise<void> {
+  // Manual validation for Next of Kin (at least one complete entry required)
+  const validNOKs = nextOfKinEntries.value.filter(nok => 
+    nok.name && nok.relation && nok.phone
+  )
+  
+  if (validNOKs.length === 0) {
+    message.error(t('validation.at_least_one_nok_required') || 'At least one complete Next of Kin is required (Name, Relationship, and Phone)')
+    return
+  }
+  
+  // Manual validation for Insurance entries (if added, must be complete)
+  for (let i = 0; i < insuranceEntries.value.length; i++) {
+    const entry = insuranceEntries.value[i]
+    const entryNum = i + 1
+    
+    if (!entry.insurance_type) {
+      message.error(`Insurance #${entryNum}: Please select an insurance type`)
+      return
+    }
+    
+    const typeName = (entry.insurance_type?.name || '').toLowerCase()
+    const required = getInsuranceFieldsRequired(entry)
+    
+    // Validate based on insurance type
+    if (typeName !== 'cash & carry') {
+      if (required.schema && !entry.insurance_schema) {
+        message.error(`Insurance #${entryNum}: Schema is required for ${entry.insurance_type?.name}`)
+        return
+      }
+      if (required.company && !entry.company) {
+        message.error(`Insurance #${entryNum}: Company is required for ${entry.insurance_type?.name}`)
+        return
+      }
+      if (required.plan && !entry.insurance_plan) {
+        message.error(`Insurance #${entryNum}: Plan is required for ${entry.insurance_type?.name}`)
+        return
+      }
+      if (required.membership_number && !entry.membership_number) {
+        message.error(`Insurance #${entryNum}: Membership number is required for ${entry.insurance_type?.name}`)
+        return
+      }
+      if (required.serial_number && !entry.serial_number) {
+        message.error(`Insurance #${entryNum}: Serial number is required for ${entry.insurance_type?.name}`)
+        return
+      }
+      if (required.expiry_date && !entry.expiry_date) {
+        message.error(`Insurance #${entryNum}: Expiry date is required for ${entry.insurance_type?.name}`)
+        return
+      }
+    }
+  }
+  
   const payload = buildPayload()
+  
+  // Log payload for debugging
+  console.log('📤 Submitting patient payload:', JSON.stringify(payload, null, 2))
+  
   try {
     await patientStore.createPatient(payload)
+    message.success(t('validation.patient_created_success') || 'Patient created successfully')
     router.push({ name: 'PatientList' })
-  } catch (error) {
-    console.error(error)
+  } catch (error: any) {
+    console.error('❌ Error creating patient:', error)
+    
+    // Try to extract meaningful error message from API response
+    let errorMessage = t('validation.patient_create_failed') || 'Failed to create patient. Please try again.'
+    
+    if (error?.response?.data) {
+      const errorData = error.response.data
+      
+      // Check for various error message formats
+      if (typeof errorData === 'string') {
+        errorMessage = errorData
+      } else if (errorData.message) {
+        errorMessage = errorData.message
+      } else if (errorData.error) {
+        errorMessage = errorData.error
+      } else if (errorData.detail) {
+        errorMessage = errorData.detail
+      } else {
+        // If error data is an object with field-specific errors
+        const fieldErrors = Object.entries(errorData)
+          .filter(([key, value]) => key !== 'status' && key !== 'statusCode')
+          .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+        
+        if (fieldErrors.length > 0) {
+          errorMessage = fieldErrors.join('\n')
+        }
+      }
+      
+      console.log('📋 API Error Details:', errorData)
+    }
+    
+    message.error(errorMessage, 10) // Show for 10 seconds
   }
 }
 </script>
@@ -1352,4 +1566,53 @@ async function onSubmit(): Promise<void> {
 :deep(.ant-picker-input > input) {
   font-size: 14px;
 }
+
+/* Insurance Entry Repeater */
+.insurance-entry {
+  position: relative;
+}
+
+.insurance-entry.border-bottom {
+  border-color: #e9ecef !important;
+}
+
+.insurance-entry h6 {
+  font-weight: 600;
+  color: #2c5cc5;
+}
+
+.insurance-entry .btn-outline-danger {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.insurance-entry .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Next of Kin Entry Repeater */
+.nok-entry {
+  position: relative;
+}
+
+.nok-entry.border-bottom {
+  border-color: #e9ecef !important;
+}
+
+.nok-entry h6 {
+  font-weight: 600;
+  color: #2c5cc5;
+}
+
+.nok-entry .btn-outline-danger {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.nok-entry .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
 </style>
+

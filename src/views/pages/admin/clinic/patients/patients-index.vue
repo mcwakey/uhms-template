@@ -114,11 +114,10 @@
 
       <div class="table-responsive">
         <a-table
-          class="table table-nowrap datatable pagination-rounded"
+          class="table table-nowrap datatable"
           :columns="columns"
           :data-source="tableData"
-          :pagination="paginationConfig"
-          @change="PatientsTable.handleTableChange"
+          :pagination="false"
           :row-key="(record: any) => record.uuid || record.id"
           :loading="loading"
         >
@@ -296,6 +295,16 @@
           </template>
         </a-table>
       </div>
+
+      <!-- Custom Pagination -->
+      <data-table-pagination
+        :total="PatientsTable.totalCount.value"
+        :currentPage="PatientsTable.currentPage.value"
+        :pageSize="PatientsTable.perPage.value"
+        :pageSizeOptions="[5, 10, 20, 50]"
+        @update:currentPage="handlePageChange"
+        @update:pageSize="handlePageSizeChange"
+      />
     </div>
     <!-- End Content -->
   </div>
@@ -412,6 +421,17 @@ const handleSearch = async (): Promise<void> => {
 const handleSort = async (sort: string, label: string) => {
   currentSortLabel.value = label
   await PatientsTable.fetchData({ ordering: sort })
+}
+
+const handlePageChange = async (page: number) => {
+  PatientsTable.currentPage.value = page
+  await PatientsTable.fetchData()
+}
+
+const handlePageSizeChange = async (size: number) => {
+  PatientsTable.perPage.value = size
+  PatientsTable.currentPage.value = 1
+  await PatientsTable.fetchData()
 }
 
 const exportData = (type: string) => {

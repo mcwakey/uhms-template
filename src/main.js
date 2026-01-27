@@ -8,6 +8,7 @@ import { router } from './router';
 import i18n from './i18n';
 import VueApexCharts from "vue3-apexcharts"; 
 import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/reset.css';
 import DatePicker from 'vue3-datepicker'
 import Multiselect from 'vue-multiselect'
 import Vue3Select from 'vue3-select-component'
@@ -31,6 +32,7 @@ if (import.meta.env.VITE_DEBUG_MODE !== 'true') {
 
 /********** Common components **********/
 import FilterIndex from '@/components/common-component/filter-index.vue';
+import DataTablePagination from '@/components/common-component/DataTablePagination.vue';
 
 /********** Layouts components **********/
 import LayoutsHeader from '@/views/layouts/layouts-header.vue';
@@ -119,6 +121,8 @@ app.use(Toast, {
 
 /********** Common components **********/
 app.component('filter-index', FilterIndex)
+app.component('DataTablePagination', DataTablePagination)
+app.component('data-table-pagination', DataTablePagination)
 
 /********** Layouts components **********/
 app.component('layouts-header', LayoutsHeader )

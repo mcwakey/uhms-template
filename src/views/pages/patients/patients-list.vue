@@ -94,7 +94,7 @@
 
             <!--  Start Table -->
             <div class="table-responsive">
-                <a-table class="table table-nowrap datatable" :columns="columns" :data-source="filteredPages">
+                <a-table class="table table-nowrap datatable" :columns="columns" :data-source="paginatedData" :pagination="false">
                     <template #bodyCell="{ column, record }">
                         <template v-if="column.key === 'Patient'">
                             <div class="d-flex align-items-center">
@@ -150,6 +150,14 @@
                 </a-table>
             </div>
             <!--  End Table -->
+
+            <!-- Custom Pagination -->
+            <data-table-pagination
+                :total="filteredPages.length"
+                v-model:currentPage="currentPage"
+                v-model:pageSize="pageSize"
+                :pageSizeOptions="[3, 5, 10]"
+            />
             
         </div>
         <!-- End Content -->
@@ -377,6 +385,16 @@ export default {
             searchQuery: "",
             data,
             columns,
+            currentPage: 1,
+            pageSize: 3,
+        }
+    },
+    watch: {
+        searchQuery() {
+            this.currentPage = 1;
+        },
+        pageSize() {
+            this.currentPage = 1;
         }
     },
     methods: {
@@ -400,6 +418,11 @@ export default {
                     record.Status.toLowerCase().includes(query) 
                 );
             });
+        },
+        paginatedData() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.filteredPages.slice(start, end);
         },
     },
 }

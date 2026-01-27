@@ -725,10 +725,10 @@
           <!-- Filter/Search Bar End -->
           <div class="table-responsive">
             <a-table
-              class="table table-nowrap datatable pagination-rounded"
+              class="table table-nowrap datatable"
               :columns="appointmentColumns"
               table-layout="fixed"
-              :data-source="filteredAppointments"
+              :data-source="paginatedAppointments"
               :pagination="false"
               :row-key="(record: any) => record.id || record.uuid || record.appointment_number"
               :loading="appointmentsLoading"
@@ -876,6 +876,14 @@
               </template>
             </a-table>
           </div>
+          
+          <!-- Custom Pagination -->
+          <DataTablePagination
+            :total="filteredAppointments.length"
+            v-model:currentPage="currentPage"
+            v-model:pageSize="pageSize"
+            :pageSizeOptions="pageSizeOptions"
+          />
         </div>
         <div class="tab-pane" id="transactions">
           <!-- Transactions content placeholder -->
@@ -1098,7 +1106,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, nextTick, type Ref, type ComputedRef } from 'vue'
+import { ref, onMounted, computed, nextTick, watch, type Ref, type ComputedRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axiosInstance from '@/utils/axios'
 import { usePatientStore } from '@/stores/patientStore'
@@ -1108,6 +1116,7 @@ import EditInsuranceModal from '@/components/modal/EditInsuranceModal.vue'
 import EditNextOfKinModal from '@/components/modal/EditNextOfKinModal.vue'
 import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
 import DateRangePicker from '@/components/common-component/DateRangePicker.vue'
+import DataTablePagination from '@/components/common-component/DataTablePagination.vue'
 import type { TableColumn } from '@/types/common'
 
 // Types
@@ -1230,6 +1239,16 @@ const appointmentColumns: TableColumn[] = [
   { title: '', key: 'actions', width: 30 },
 ]
 
+// Pagination state
+const currentPage: Ref<number> = ref(1)
+const pageSize: Ref<number> = ref(5)
+const pageSizeOptions: number[] = [5, 10, 20, 50]
+
+// Reset to page 1 when page size changes
+watch(pageSize, () => {
+  currentPage.value = 1
+})
+
 // Card gradient colors for different insurance cards
 const cardGradients: Record<string, string> = {
   'NHIA': 'background: #273c75',
@@ -1268,6 +1287,18 @@ const filteredAppointments: ComputedRef<Appointment[]> = computed(() => {
   return filtered
 })
 
+// Paginated appointments (for table display)
+const paginatedAppointments: ComputedRef<Appointment[]> = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  return filteredAppointments.value.slice(start, end)
+})
+
+// Reset page when filters change
+watch([searchQuery, dateRange], () => {
+  currentPage.value = 1
+})
+
 // Methods
 function clearAllFilters(): void {
   searchQuery.value = ''
@@ -1281,6 +1312,7 @@ function clearAllFilters(): void {
     startDate: null,
     endDate: null,
   }
+  currentPage.value = 1
 }
 
 function onDateRangeApply(dateRangeData: DateRange): void {

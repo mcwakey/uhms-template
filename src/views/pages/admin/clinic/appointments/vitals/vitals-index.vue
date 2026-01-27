@@ -1602,7 +1602,7 @@ async function saveVitals() {
 async function confirmTriage() {
   if (!selfUrl.value) return
   try {
-    await axiosInstance.patch(selfUrl.value, { is_confirmed: true })
+    await axiosInstance.patch(selfUrl.value, { is_confirmed: true, status: 'CHECKED-IN' })
     // Refresh appointment info to update status
     if (appointmentInfo.value?.id) {
       await fetchAppointmentInfo(appointmentInfo.value.id)
