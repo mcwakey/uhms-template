@@ -57,20 +57,20 @@ const routes = [
       {
         path: 'appointments',
         name: 'AppointmentList',
-        component: () => import('@/views/pages/admin/clinic/appointments/appointments-index.vue'),
+        component: () => import(/* webpackChunkName: "appointments" */ '@/views/pages/admin/clinic/appointments/appointments-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/calendar',
         name: 'AppointmentCalendar',
         component: () =>
-          import('@/views/pages/admin/clinic/appointments/appointments-calendar.vue'),
+          import(/* webpackChunkName: "appointments" */ '@/views/pages/admin/clinic/appointments/appointments-calendar.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/:id',
         name: 'ViewAppointment',
-        component: () => import('@/views/pages/admin/clinic/appointments/appointment-view.vue'),
+        component: () => import(/* webpackChunkName: "appointments" */ '@/views/pages/admin/clinic/appointments/appointment-view.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
 
@@ -108,52 +108,52 @@ const routes = [
         path: 'appointments/:id/consultation',
         name: 'PatientConsultation',
         component: () =>
-          import('@/views/pages/admin/clinic/appointments/consultation/inperson-consultation.vue'),
+          import(/* webpackChunkName: "consultation" */ '@/views/pages/admin/clinic/appointments/consultation/inperson-consultation.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/:id/telehealth',
         name: 'PatientTelehealth',
         component: () =>
-          import('@/views/pages/admin/clinic/appointments/consultation/online-consultation.vue'),
+          import(/* webpackChunkName: "consultation" */ '@/views/pages/admin/clinic/appointments/consultation/online-consultation.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/:id/vitals',
         name: 'PatientVitals',
-        component: () => import('@/views/pages/admin/clinic/appointments/vitals/vitals-index.vue'),
+        component: () => import(/* webpackChunkName: "consultation" */ '@/views/pages/admin/clinic/appointments/vitals/vitals-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
 
       {
         path: 'doctors',
         name: 'Doctors',
-        component: () => import('@/views/pages/admin/clinic/doctors/doctors-index.vue'),
+        component: () => import(/* webpackChunkName: "clinic-mgmt" */ '@/views/pages/admin/clinic/doctors/doctors-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'specializations',
         name: 'Specializations',
         component: () =>
-          import('@/views/pages/admin/clinic/specializations/specializations-index.vue'),
+          import(/* webpackChunkName: "clinic-mgmt" */ '@/views/pages/admin/clinic/specializations/specializations-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'locations',
         name: 'Locations',
-        component: () => import('@/views/pages/admin/clinic/locations/locations-index.vue'),
+        component: () => import(/* webpackChunkName: "clinic-mgmt" */ '@/views/pages/admin/clinic/locations/locations-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'services',
         name: 'Services',
-        component: () => import('@/views/pages/admin/clinic/services/services-index.vue'),
+        component: () => import(/* webpackChunkName: "clinic-mgmt" */ '@/views/pages/admin/clinic/services/services-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'assets',
         name: 'Assets',
-        component: () => import('@/views/pages/admin/clinic/assets/assets-index.vue'),
+        component: () => import(/* webpackChunkName: "clinic-mgmt" */ '@/views/pages/admin/clinic/assets/assets-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
     ],

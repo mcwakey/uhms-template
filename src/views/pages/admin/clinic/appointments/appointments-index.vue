@@ -435,6 +435,13 @@ import { useAppointmentStore } from '@/stores/appointmentStore'
 import { usePatientStore } from '@/stores/patientStore'
 import { useStaffStore } from '@/stores/staffStore'
 import type { Appointment, AppointmentStatus, Service, TableColumn } from '@/types'
+
+// Layout components (required after optimization)
+import LayoutsHeader from '@/views/layouts/layouts-header.vue'
+import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
+import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
+
+// Common components
 import FilterIndex from '@/components/common-component/filter-index.vue'
 import AppointmentFilter from '../../../../../components/common-component/AppointmentFilter.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
@@ -443,9 +450,6 @@ import RescheduleModal from '@/components/modal/RescheduleModal.vue'
 import ChangeDoctorModal from '@/components/modal/ChangeDoctorModal.vue'
 import DateRangePicker from '@/components/common-component/DateRangePicker.vue'
 import axiosInstance from '@/utils/axios'
-import LayoutsHeader from '@/views/layouts/layouts-header.vue'
-import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
-import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
 
 // Static imports for default avatars
 import doctorDefaultAvatar from '@/assets/img/doctors/doctor-03.jpg'

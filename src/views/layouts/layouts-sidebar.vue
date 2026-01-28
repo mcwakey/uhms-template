@@ -160,10 +160,12 @@
 <script>
 import simplebar from "simplebar-vue";
 import "simplebar-vue/dist/simplebar.min.css";
+import SidebarMenu from "@/views/layouts/sidebar-menu.vue";
 
 export default {
   components: {
     simplebar,
+    SidebarMenu,
   },
   data() {
     return {};
