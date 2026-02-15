@@ -3,7 +3,7 @@
 //
 
 @use "../variables" as *;
-@use "../utils/mixins" as *;
+@use "@/assets/scss/utils/mixins" as *;
 
 .flotTip {
     padding: 8px 12px;

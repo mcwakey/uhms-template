@@ -110,7 +110,7 @@ export const useAuthStore = defineStore('authStore', {
       this.error = null
 
       try {
-        const { data } = await axiosInstance.post<AuthResponse>('auth/token/', credentials)
+        const { data } = await axiosInstance.post<AuthResponse>('auth/token', credentials)
         if (data.access) {
           // Decode JWT to extract user information
           const decoded = jwtDecode<DecodedToken>(data.access)
@@ -119,7 +119,6 @@ export const useAuthStore = defineStore('authStore', {
           this.isAuthenticated = true
           this.user = {
             uuid: decoded.uuid,
-            name: decoded.name,
             email: decoded.email,
             role: decoded.role,
             is_superuser: decoded.is_superuser,
@@ -168,7 +167,7 @@ export const useAuthStore = defineStore('authStore', {
      * @returns Promise with response or error
      */
     async forgotPassword(email: string) {
-      const response = await axiosInstance.post('auth/password-reset-token/', { email })
+      const response = await axiosInstance.post('auth/password-reset-token', { email })
       return response
     },
 
@@ -197,7 +196,7 @@ export const useAuthStore = defineStore('authStore', {
      */
     async newPassword(uuid: string, password: string) {
       try {
-        const response = await axiosInstance.patch(`auth/${uuid}/password/`, {
+        const response = await axiosInstance.patch(`auth/${uuid}/password`, {
           password,
           password2: password,
           token: this.userToken,
@@ -217,7 +216,7 @@ export const useAuthStore = defineStore('authStore', {
      */
     async refreshAccessToken() {
       try {
-        const { data } = await axiosInstance.post<AuthResponse>('auth/token/refresh/', {
+        const { data } = await axiosInstance.post<AuthResponse>('auth/token/refresh', {
           refresh: this.refreshToken,
         })
         if (data.access) {

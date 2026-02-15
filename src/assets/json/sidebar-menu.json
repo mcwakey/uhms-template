@@ -111,18 +111,30 @@
         {
             "menuValue": "Services",
             "Icon": "ti ti-user-cog",
-            "active_link": "/admin/clinic/services",
-            "route": "/admin/clinic/services",
-            "hasSubRoute": false,
-            "showSubRoute": false
+            "active_link": "services",
+            "hasSubRoute": true,
+            "showSubRoute": false,
+            "subMenus": [
+                {
+                    "menuValue": "Services",
+                    "route": "/admin/clinic/services",
+                    "active_link": "/admin/clinic/services"
+                }
+            ]
         },
         {
             "menuValue": "Specializations",
             "Icon": "ti ti-user-shield",
-            "active_link" : "/admin/clinic/specializations",
-            "route": "/admin/clinic/specializations",
-            "hasSubRoute": false,
-            "showSubRoute": false
+            "active_link" : "specializations",
+            "hasSubRoute": true,
+            "showSubRoute": false,
+            "subMenus": [
+                {
+                    "menuValue": "Specializations",
+                    "route": "/admin/clinic/specializations",
+                    "active_link": "/admin/clinic/specializations"
+                }
+            ]
         },
         {
             "menuValue": "Locations",
@@ -142,18 +154,35 @@
             {
                 "menuValue": "Staffs",
                 "Icon": "ti ti-users-group",
-                "active_link" : "/hrm/staffs",
-                "route": "/hrm/staffs",
-                "hasSubRoute": false,
-                "showSubRoute": false
+                "active_link" : "staffs",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "subMenus": [
+                    {
+                        "menuValue": "Staffs",
+                        "route": "/admin/hrm/staffs",
+                        "active_link": "/admin/hrm/staffs"
+                    },
+                    {
+                        "menuValue": "Add Staff",
+                        "route": "/admin/hrm/staffs/create",
+                        "active_link": "/admin/hrm/staffs/create"
+                    }
+                ]
             },
             {
                 "menuValue": "Departments",
                 "Icon": "ti ti-building-bank",
-                "active_link" : "/hrm/hrm-departments",
-                "route": "/hrm/hrm-departments",
-                "hasSubRoute": false,
-                "showSubRoute": false
+                "active_link" : "departments",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "subMenus": [
+                    {
+                        "menuValue": "Departments",
+                        "route": "/admin/hrm/departments",
+                        "active_link": "/admin/hrm/departments"
+                    }
+                ]
             },
             {
                 "menuValue": "Designation",

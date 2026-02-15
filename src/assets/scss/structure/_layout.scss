@@ -1,5 +1,5 @@
 @use "../variables" as *;
-@use "../utils/mixins" as *;
+@use "@/assets/scss/utils/mixins" as *;
 
 .page-wrapper {
     @include transition(all 0.5s ease);

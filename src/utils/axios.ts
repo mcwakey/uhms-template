@@ -3,7 +3,7 @@ import axios from 'axios'
 // Create axios instance with base configuration
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',
-  timeout: 10000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -46,7 +46,7 @@ axiosInstance.interceptors.response.use(
           const { refreshToken } = JSON.parse(authData)
           if (refreshToken) {
             const response = await axios.post(
-              `${axiosInstance.defaults.baseURL}/auth/token/refresh/`,
+              `${axiosInstance.defaults.baseURL}/auth/token/refresh`,
               { refresh: refreshToken }
             )
 

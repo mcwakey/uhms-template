@@ -31,46 +31,46 @@ if (import.meta.env.VITE_DEBUG_MODE !== 'true') {
 }
 
 /********** Common components **********/
-import FilterIndex from '@/components/common-component/filter-index.vue';
-import DataTablePagination from '@/components/common-component/DataTablePagination.vue';
+import FilterIndex from '@/components/common/filter-index.vue';
+import DataTablePagination from '@/components/common/DataTablePagination.vue';
 
 /********** Layouts components **********/
-import LayoutsHeader from '@/views/layouts/layouts-header.vue';
-import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue';
-import PatientsHeader from '@/views/layouts/patients-header.vue';
-import PatientsSidebar from '@/views/layouts/patients-sidebar.vue';
-import SidebarMenu from '@/views/layouts/sidebar-menu.vue'
-import DoctorHeader from '@/views/layouts/doctor-header.vue';
-import DoctorSidebar from '@/views/layouts/doctor-sidebar.vue';
-import LayoutHiddenSidebar from '@/views/layouts/layout-hidden-sidebar.vue';
-import ThemeSettings from '@/views/layouts/theme-settings.vue';
+import LayoutsHeader from '@/layouts/layouts-header.vue';
+import LayoutsSidebar from '@/layouts/layouts-sidebar.vue';
+import PatientsHeader from '@/layouts/patients-header.vue';
+import PatientsSidebar from '@/layouts/patients-sidebar.vue';
+import SidebarMenu from '@/layouts/sidebar-menu.vue'
+import DoctorHeader from '@/layouts/doctor-header.vue';
+import DoctorSidebar from '@/layouts/doctor-sidebar.vue';
+import LayoutHiddenSidebar from '@/layouts/layout-hidden-sidebar.vue';
+import ThemeSettings from '@/layouts/theme-settings.vue';
 
 
-import AppointmentDetailsTable from '@/views/pages/doctor/appointment-details-table.vue';
-import TransactionsDetailsTable from '@/views/pages/doctor/transactions-details-table.vue';
+import AppointmentDetailsTable from '@/views/doctor/appointment-details-table.vue';
+import TransactionsDetailsTable from '@/views/doctor/transactions-details-table.vue';
 
-import NotesCarousel from '@/views/pages/applications/notes-carousel.vue';
-import SocialCarousel from '@/views/pages/applications/social-carousel.vue';
-import RecentFolders from '@/views/pages/applications/recent-folders.vue';
-import RecentFiles from '@/views/pages/applications/recent-files.vue';
-import AllKanban from '@/views/pages/applications/kanban/all-kanban.vue';
-import HighKanban from '@/views/pages/applications/kanban/high-kanban.vue';
-import MediumKanban from '@/views/pages/applications/kanban/medium-kanban.vue';
-import LowKanban from '@/views/pages/applications/kanban/low-kanban.vue';
-import ContactsTable from '@/views/pages/applications/contacts/contacts-table.vue';
+import NotesCarousel from '@/views/apps/notes-carousel.vue';
+import SocialCarousel from '@/views/apps/social-carousel.vue';
+import RecentFolders from '@/views/apps/recent-folders.vue';
+import RecentFiles from '@/views/apps/recent-files.vue';
+import AllKanban from '@/views/apps/kanban/all-kanban.vue';
+import HighKanban from '@/views/apps/kanban/high-kanban.vue';
+import MediumKanban from '@/views/apps/kanban/medium-kanban.vue';
+import LowKanban from '@/views/apps/kanban/low-kanban.vue';
+import ContactsTable from '@/views/apps/contacts/contacts-table.vue';
 
-import LightBoxOne from "@/views/pages/uiinterface/advancedui/lightbox-one.vue";
-import LightBoxTwo from "@/views/pages/uiinterface/advancedui/lightbox-two.vue";
-import FormValidationOne from  "@//views/pages/uiinterface/form/form-validation-one.vue"
+import LightBoxOne from "@/views/ui/advancedui/lightbox-one.vue";
+import LightBoxTwo from "@/views/ui/advancedui/lightbox-two.vue";
+import FormValidationOne from  "@/views/ui/form/form-validation-one.vue"
 
 
-import SettingsSidebar from '@/views/pages/settings/settings-sidebar.vue';
-import DoctorAppointmentModal from '@/components/modal/doctor-appointment-modal.vue';
-import DoctorsLeavesModal from '@/components/modal/doctors-leaves-modal.vue';
-import ContactsModal from '@/components/modal/contacts-modal.vue';
-import calendarModal from '@/components/modal/calendar-modal.vue';
-import appointmentsModal from '@/components/modal/doctor-appointment-modal.vue';
-import DoctorsListModal from '@/components/modal/doctors-list-modal.vue';
+import SettingsSidebar from '@/views/settings/settings-sidebar.vue';
+import DoctorAppointmentModal from '@/components/modals/appointment/doctor-appointment-modal.vue';
+import DoctorsLeavesModal from '@/components/modals/doctor/doctors-leaves-modal.vue';
+import ContactsModal from '@/components/modals/general/contacts-modal.vue';
+import calendarModal from '@/components/modals/appointment/calendar-modal.vue';
+import appointmentsModal from '@/components/modals/appointment/doctor-appointment-modal.vue';
+import DoctorsListModal from '@/components/modals/doctor/doctors-list-modal.vue';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'
