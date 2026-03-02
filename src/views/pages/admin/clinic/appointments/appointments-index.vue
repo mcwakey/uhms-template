@@ -263,10 +263,10 @@
                   record.status === 'SCHEDULED' || record.status === 'RESCHEDULED'
                     ? 'badge-soft-primary text-primary'
                     : record.status === 'CHECKED-IN'
-                      ? 'badge-soft-success text-success'
+                      ? 'badge-soft-secondary text-secondary'
                       : record.status === 'IN-PROGRESS'
                         ? 'badge-soft-warning text-warning'
-                        : record.status === 'COMPLETED'
+                        : record.status === 'COMPLETED' || record.status === 'DONE'
                           ? 'badge-soft-success text-success'
                           : record.status === 'CANCELLED'
                             ? 'badge-soft-danger text-danger'
@@ -290,7 +290,7 @@
                 <a
                   v-else-if="record.status === 'CHECKED-IN'"
                   href="javascript:void(0);"
-                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-success"
+                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-secondary"
                   @click="startAppointment(record)"
                   title="Start Appointment"
                 >

@@ -1,6 +1,6 @@
 <template>
-  <LayoutsHeader></LayoutsHeader>
-  <LayoutsSidebar></LayoutsSidebar>
+  <layouts-header></layouts-header>
+  <layouts-sidebar></layouts-sidebar>
   <!-- ========================
 	   Start Page Content
 	========================= -->
@@ -49,6 +49,12 @@
           >
             <i class="ti ti-plus me-1"></i>Add New Services
           </a>
+          <!-- <RouterLink
+            to="/hrm/staff/add"
+            class="btn btn-primary ms-2 fs-13 btn-md"
+          >
+            <i class="ti ti-plus me-1"></i>Add New Services
+          </RouterLink> -->
         </div>
       </div>
       <!-- End Page Header -->
@@ -88,47 +94,14 @@
               <div
                 class="d-flex align-items-center justify-content-between border-bottom filter-header"
               >
-                <h4 class="mb-0">Filter Services</h4>
+                <h4 class="mb-0">Filter</h4>
                 <div class="d-flex align-items-center">
-                  <a href="javascript:void(0);" class="link-danger text-decoration-underline" @click="clearFilters"
+                  <a href="javascript:void(0);" class="link-danger text-decoration-underline"
                     >Clear All</a
                   >
                 </div>
               </div>
-              <div class="filter-body pb-0 p-3">
-                <!-- Specialization Filter -->
-                <div class="mb-3">
-                  <label class="form-label fw-semibold">Specialization</label>
-                  <select class="form-select" v-model="filters.specialization">
-                    <option value="">All Specializations</option>
-                    <option v-for="spec in specializations" :key="spec.id || spec.value" :value="spec.id || spec.value">
-                      {{ spec.name || spec.label }}
-                    </option>
-                  </select>
-                </div>
-                <!-- Status Filter -->
-                <div class="mb-3">
-                  <label class="form-label fw-semibold">Status</label>
-                  <select class="form-select" v-model="filters.status">
-                    <option value="">All Status</option>
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
-                  </select>
-                </div>
-                <!-- Pricing Filter -->
-                <div class="mb-3">
-                  <label class="form-label fw-semibold">Pricing Status</label>
-                  <select class="form-select" v-model="filters.hasPricing">
-                    <option value="">All</option>
-                    <option value="true">Has Pricing</option>
-                    <option value="false">No Pricing</option>
-                  </select>
-                </div>
-              </div>
-              <div class="filter-footer d-flex align-items-center justify-content-end border-top p-3">
-                <a href="javascript:void(0);" class="btn btn-light btn-md me-2 fw-medium" @click="clearFilters">Reset</a>
-                <button type="button" class="btn btn-primary btn-md fw-medium" @click="applyFilters">Apply Filters</button>
-              </div>
+              <FilterIndex></FilterIndex>
             </div>
           </div>
           <div class="dropdown">
@@ -175,8 +148,17 @@
                       data-bs-target="#view_service"
                       class="text-primary rounded-circle d-flex align-items-center justify-content-center"
                     >
+                      <!-- <i class="ti ti-eye"></i> -->
                       {{ record.name }}
                     </a>
+                    <!-- <a
+                      href="javascript:void(0);"
+                      @click="openModal(record)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#view_staff"
+                      title="View Service"
+                    >
+                    </a> -->
                   </h6>
                   <span class="text-body fs-13 fw-normal d-block"> SID-{{ record.id }}</span>
                 </div>
@@ -186,7 +168,15 @@
               <div class="d-flex align-items-center ms-2">
                 <div>
                   <h6 class="mb-1 fs-14 fw-semibold">
+                    <!-- <a
+                      href="javascript:void(0);"
+                      @click="openModal(record)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#view_staff"
+                      title="View Service"
+                      > -->
                     {{ record.specialization.name }}
+                    <!-- </a> -->
                   </h6>
                   <span class="fs-10 d-block text-primary"
                     >{{ record.specialization.department }}
@@ -196,19 +186,10 @@
             </template>
             <template v-else-if="column.key === 'pricing'">
               <div class="d-flex align-items-center justify-content-center">
-                <span 
-                  v-if="hasPrices(record)" 
-                  class="badge badge-soft-success border border-success fs-12 fw-medium"
-                >
-                  <i class="ti ti-check me-1"></i>
-                  {{ getPriceCount(record) }} price{{ getPriceCount(record) > 1 ? 's' : '' }}
-                </span>
-                <span 
-                  v-else 
-                  class="badge badge-soft-warning border border-warning fs-12 fw-medium"
-                >
-                  <i class="ti ti-alert-circle me-1"></i>
-                  No prices
+                <span class="badge badge-soft-info border border-info fs-12 fw-medium">
+                  <i class="ti ti-currency-dollar me-1"></i>
+                  <span v-if="record.pricing_count">{{ record.pricing_count }} plans</span>
+                  <span v-else>Not set</span>
                 </span>
               </div>
             </template>
@@ -225,6 +206,17 @@
             </template>
             <template v-else-if="column.key === 'actions'">
               <div class="d-flex align-items-center">
+                <!-- <div class="action-item me-2">
+                  <a
+                    href="javascript:void(0);"
+                    @click="openViewServiceModal(record)"
+                    title="View Service"
+                    data-bs-toggle="modal" data-bs-target="#view_service"
+                    class="text-primary fs-18 rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="ti ti-eye"></i>
+                  </a>
+                </div> -->
                 <div class="action-item me-2">
                   <a
                     href="javascript:void(0);"
@@ -262,7 +254,7 @@
   </div>
 
   <!-- Footer Start -->
-  <LayoutsFooter></LayoutsFooter>
+  <layouts-footer></layouts-footer>
   <!-- Footer End -->
 
   <!-- ========================
@@ -272,7 +264,6 @@
   <!-- Add Service Modal -->
   <AddServiceModal
     ref="addServiceModalRef"
-    modal-id="add_service"
     :specializations="specializations"
     :is-loading-specializations="isLoadingSpecializations"
     @service-created="handleServiceCreated"
@@ -281,7 +272,6 @@
   <!-- Edit Service Modal -->
   <EditServiceModal
     ref="editServiceModalRef"
-    modal-id="edit_service"
     :specializations="specializations"
     :is-loading-specializations="isLoadingSpecializations"
     @service-updated="handleServiceUpdated"
@@ -290,7 +280,6 @@
   <!-- View Service Modal -->
   <ViewServiceModal
     ref="viewServiceModalRef"
-    modal-id="view_service"
     :service-data="viewServiceData"
     :service-pricing="servicePricing"
     :insurance-company-pricing="insuranceCompanyPricing"
@@ -326,27 +315,19 @@
   </div>
 </template>
 <script>
-import { useTableStore } from '@/stores/dataTableStore'
-import { onMounted, computed, ref, watch } from 'vue'
+import { useTableStore } from '@/stores/dataTable'
+import { onMounted, computed, ref } from 'vue'
 import { message } from 'ant-design-vue'
-
-// Layout components
-import LayoutsHeader from '@/views/layouts/layouts-header.vue'
-import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
-import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
-
-// Common components
+import FilterIndex from '@/components/common-component/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import AddServiceModal from '@/components/modal/service-modals/AddServiceModal.vue'
 import EditServiceModal from '@/components/modal/service-modals/EditServiceModal.vue'
 import ViewServiceModal from '@/components/modal/service-modals/ViewServiceModal.vue'
-import axiosInstance from '@/utils/axios'
+import axiosInstance from '@/utils/axios.js'
 
 export default {
   components: {
-    LayoutsHeader,
-    LayoutsSidebar,
-    LayoutsFooter,
+    FilterIndex,
     DeleteModal,
     AddServiceModal,
     EditServiceModal,
@@ -365,16 +346,6 @@ export default {
 
     // Search functionality
     const searchQuery = ref('')
-
-    // Filters
-    const filters = ref({
-      specialization: '',
-      status: '',
-      hasPricing: ''
-    })
-
-    // Pricing counts map - stores pricing count for each service ID
-    const pricingCounts = ref({})
 
     // View service data for ViewServiceModal
     const viewServiceData = ref({
@@ -451,16 +422,38 @@ export default {
     const columns = [
       {
         title: 'Service Name',
+        // dataIndex: 'name',
         key: 'service_name',
+        // width: 150,
+        // className: "name"
       },
+      // {
+      //   title: 'SID',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   // width: 50,
+      //   // className: "staff_id"
+
+      // },
       {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
+        // width: 70,
+        // className: 'phone'
       },
+      // {
+      //   title: 'Department',
+      //   dataIndex: 'department',
+      //   key: 'department',
+      //   // width: 150,
+      //   // className: "email",
+      // },
       {
         title: 'Specialization',
+        // dataIndex: 'specialization',
         key: 'specialization',
+        // width: 150,
       },
       {
         title: 'Pricing',
@@ -472,11 +465,13 @@ export default {
         dataIndex: 'status',
         key: 'status',
         width: 100,
+        // className: "status"
       },
       {
         title: '',
         key: 'actions',
         width: 30,
+        // className: "actions"
       },
     ]
 
@@ -488,13 +483,16 @@ export default {
       isLoadingSpecializations.value = true
       try {
         const response = await axiosInstance.get('/specializations/')
+        // Assuming the API returns an array of specializations
         specializations.value = response.data.results || response.data || []
+        // If the data is not in the expected format, transform it
         if (specializations.value.length > 0 && typeof specializations.value[0] === 'string') {
           specializations.value = specializations.value.map((spec) => ({
             label: spec,
             value: spec,
           }))
         } else if (specializations.value.length > 0 && !specializations.value[0].label) {
+          // If objects but no label/value structure, assume name property
           specializations.value = specializations.value.map((spec) => ({
             label: spec.name || spec.title || spec,
             value: spec.id || spec.name || spec.title || spec,
@@ -511,23 +509,25 @@ export default {
       isLoadingInsuranceTypes.value = true
       try {
         const response = await axiosInstance.get('/insurance/types/')
+        // Transform the API response to the format needed for dropdowns
         insuranceTypes.value = (response.data.results || response.data || []).map((type) => ({
           id: type.id,
           label: type.description || type.name || type.display_name || type.label || type,
-          value: type.id,
+          value: type.id, // Use ID as the value
           display_name: type.description || type.name || type.display_name || type.label || type,
           name: type.name,
           description: type.description,
         }))
 
+        // If the API returns simple strings, convert them
         if (insuranceTypes.value.length === 0 && Array.isArray(response.data)) {
           insuranceTypes.value = response.data.map((type, index) => ({
-            id: index + 1,
+            id: index + 1, // Generate ID for fallback
             label:
               typeof type === 'string'
                 ? type.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())
                 : type.name,
-            value: index + 1,
+            value: index + 1, // Use index-based ID as value
             display_name:
               typeof type === 'string'
                 ? type.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())
@@ -540,19 +540,70 @@ export default {
           }))
         }
 
+        // Ensure we have at least the basic types as fallback
         if (insuranceTypes.value.length === 0) {
           throw new Error('No insurance types returned from API')
         }
       } catch (error) {
         console.error('Failed to load insurance types:', error)
+        // Fallback to default insurance types
         insuranceTypes.value = [
-          { id: 1, label: 'Private Pay', value: 1, display_name: 'Private Pay', name: 'Private Pay', description: 'Private Pay - Direct payment without insurance' },
-          { id: 2, label: 'Medicare', value: 2, display_name: 'Medicare', name: 'Medicare', description: 'Medicare - Federal health insurance for 65+ or disabled' },
-          { id: 3, label: 'Medicaid', value: 3, display_name: 'Medicaid', name: 'Medicaid', description: 'Medicaid - State and federal program for low-income individuals' },
-          { id: 4, label: 'Commercial Insurance', value: 4, display_name: 'Commercial Insurance', name: 'Commercial', description: 'Commercial Insurance - Private insurance plans' },
-          { id: 5, label: 'HMO', value: 5, display_name: 'HMO', name: 'HMO', description: 'HMO - Health Maintenance Organization' },
-          { id: 6, label: 'PPO', value: 6, display_name: 'PPO', name: 'PPO', description: 'PPO - Preferred Provider Organization' },
-          { id: 7, label: 'Other', value: 7, display_name: 'Other', name: 'Other', description: 'Other - Other insurance types' },
+          {
+            id: 1,
+            label: 'Private Pay',
+            value: 1,
+            display_name: 'Private Pay',
+            name: 'Private Pay',
+            description: 'Private Pay - Direct payment without insurance',
+          },
+          {
+            id: 2,
+            label: 'Medicare',
+            value: 2,
+            display_name: 'Medicare',
+            name: 'Medicare',
+            description: 'Medicare - Federal health insurance for 65+ or disabled',
+          },
+          {
+            id: 3,
+            label: 'Medicaid',
+            value: 3,
+            display_name: 'Medicaid',
+            name: 'Medicaid',
+            description: 'Medicaid - State and federal program for low-income individuals',
+          },
+          {
+            id: 4,
+            label: 'Commercial Insurance',
+            value: 4,
+            display_name: 'Commercial Insurance',
+            name: 'Commercial',
+            description: 'Commercial Insurance - Private insurance plans',
+          },
+          {
+            id: 5,
+            label: 'HMO',
+            value: 5,
+            display_name: 'HMO',
+            name: 'HMO',
+            description: 'HMO - Health Maintenance Organization',
+          },
+          {
+            id: 6,
+            label: 'PPO',
+            value: 6,
+            display_name: 'PPO',
+            name: 'PPO',
+            description: 'PPO - Preferred Provider Organization',
+          },
+          {
+            id: 7,
+            label: 'Other',
+            value: 7,
+            display_name: 'Other',
+            name: 'Other',
+            description: 'Other - Other insurance types',
+          },
         ]
         console.warn('Using fallback insurance types')
       } finally {
@@ -564,17 +615,25 @@ export default {
       isLoadingInsuranceCompanies.value = true
       try {
         const response = await axiosInstance.get('/insurance/companies', {
-          params: { has_prices: true, has_list: true },
+          params: {
+            has_prices: true,
+            has_list: true,
+          },
         })
-        insuranceCompanies.value = (response.data.results || response.data || []).map((company) => ({
-          id: company.id,
-          name: company.name || company.company_name || company.title,
-          code: company.code || company.value,
-          has_prices: company.has_prices,
-          has_list: company.has_list,
-        }))
+
+        // Transform the API response to the format needed for dropdowns
+        insuranceCompanies.value = (response.data.results || response.data || []).map(
+          (company) => ({
+            id: company.id,
+            name: company.name || company.company_name || company.title,
+            code: company.code || company.value,
+            has_prices: company.has_prices,
+            has_list: company.has_list,
+          })
+        )
       } catch (error) {
         console.error('Failed to load insurance companies:', error)
+        // Empty array as fallback since this is optional
         insuranceCompanies.value = []
       } finally {
         isLoadingInsuranceCompanies.value = false
@@ -582,27 +641,35 @@ export default {
     }
 
     const openAddServiceModal = async () => {
+      // Ensure specializations are loaded when opening the modal
       if (specializations.value.length === 0 && !isLoadingSpecializations.value) {
         await fetchSpecializations()
       }
+
+      // Open the Add Service Modal
       if (addServiceModalRef.value) {
         addServiceModalRef.value.open()
       }
     }
 
     const openEditServiceModal = async (service) => {
+      // Ensure specializations are loaded
       if (specializations.value.length === 0 && !isLoadingSpecializations.value) {
         await fetchSpecializations()
       }
+
+      // Open the edit modal with the service data
       if (editServiceModalRef.value) {
         editServiceModalRef.value.open(service, specializations.value)
       }
     }
 
     const openViewServiceModal = async (service) => {
+      // Load insurance types and companies if needed
       await fetchInsuranceTypes()
       await fetchInsuranceCompanies()
 
+      // Populate the view data
       viewServiceData.value = {
         id: service.id,
         name: service.name || '',
@@ -614,29 +681,31 @@ export default {
         has_stock: service.has_stock || false,
       }
 
+      // Load pricing data for this service
       await fetchServicePricing(service.id)
       await fetchInsuranceCompanyPricing(service.id)
 
+      // Open the view modal
       if (viewServiceModalRef.value) {
         viewServiceModalRef.value.open()
       }
     }
 
+    // Event handlers for reusable modal components
     const handleServiceCreated = async () => {
       message.success('Service created successfully')
+      // Refresh the services table
       await ServicesTable.fetchData()
-      // Refetch pricing counts after service created
-      await fetchAllServicePrices()
     }
 
     const handleServiceUpdated = async () => {
       message.success('Service updated successfully')
+      // Refresh the services table
       await ServicesTable.fetchData()
-      // Refetch pricing counts after service updated
-      await fetchAllServicePrices()
     }
 
     const handleEditFromView = (service) => {
+      // Handle opening edit modal from view modal
       if (editServiceModalRef.value) {
         editServiceModalRef.value.open(service, specializations.value)
       }
@@ -651,6 +720,7 @@ export default {
         }))
       } catch (error) {
         console.error('Failed to load service pricing:', error)
+        // Initialize with default pricing if none exists
         servicePricing.value = []
       }
     }
@@ -671,140 +741,50 @@ export default {
     }
 
     onMounted(async () => {
+      // Fetch services data when the component is mounted
       try {
         await ServicesTable.fetchData()
-        // Fetch pricing counts after services are loaded
-        await fetchAllServicePrices()
       } catch (error) {
         console.error('Failed to load services data:', error)
         message.error('Failed to load services data')
       }
+
+      // Load specializations and insurance types
       await fetchSpecializations()
       await fetchInsuranceTypes()
     })
 
-    // Watch for search query changes - debounced
-    let searchTimeout = null
-    watch(searchQuery, (newValue) => {
-      if (searchTimeout) clearTimeout(searchTimeout)
-      searchTimeout = setTimeout(async () => {
-        await ServicesTable.fetchData({ search: newValue })
-        // Refetch pricing counts after search
-        await fetchAllServicePrices()
-      }, 300)
-    })
-
-    // Filter methods
-    const applyFilters = async () => {
-      const filterParams = {}
-      if (filters.value.specialization) {
-        filterParams.specialization = filters.value.specialization
-      }
-      if (filters.value.status !== '') {
-        filterParams.status = filters.value.status === 'true'
-      }
-      if (filters.value.hasPricing !== '') {
-        filterParams.has_pricing = filters.value.hasPricing === 'true'
-      }
-      if (searchQuery.value) {
-        filterParams.search = searchQuery.value
-      }
-      await ServicesTable.fetchData(filterParams)
-      // Refetch pricing counts after filter
-      await fetchAllServicePrices()
-    }
-
-    const clearFilters = async () => {
-      filters.value = {
-        specialization: '',
-        status: '',
-        hasPricing: ''
-      }
-      searchQuery.value = ''
-      await ServicesTable.fetchData()
-      // Refetch pricing counts after clear
-      await fetchAllServicePrices()
-    }
-
-    // Helper functions to check pricing status
-    // Uses data from /api/v1/services/{id}/prices/ endpoint
-    const hasPrices = (service) => {
-      // Check pricingCounts map first
-      if (pricingCounts.value[service.id] !== undefined) {
-        return pricingCounts.value[service.id] > 0
-      }
-      // Check if service has prices field (from API response)
-      if (service.prices && Array.isArray(service.prices)) {
-        return service.prices.length > 0
-      }
-      // Fallback to pricing_count if available
-      if (service.pricing_count !== undefined && service.pricing_count !== null) {
-        return service.pricing_count > 0
-      }
-      // Check has_prices field if available
-      if (service.has_prices !== undefined) {
-        return service.has_prices
-      }
-      return false
-    }
-
-    const getPriceCount = (service) => {
-      // Get from pricingCounts map first
-      if (pricingCounts.value[service.id] !== undefined) {
-        return pricingCounts.value[service.id]
-      }
-      // Get count from prices array if available
-      if (service.prices && Array.isArray(service.prices)) {
-        return service.prices.length
-      }
-      // Fallback to pricing_count
-      if (service.pricing_count !== undefined && service.pricing_count !== null) {
-        return service.pricing_count
-      }
-      return 0
-    }
-
-    // Fetch pricing counts for all services
-    const fetchAllServicePrices = async () => {
-      const services = ServicesTable.data.value
-      if (!services || services.length === 0) return
-
-      try {
-        // Fetch prices for each service in parallel
-        const pricePromises = services.map(async (service) => {
-          try {
-            const response = await axiosInstance.get(`/services/${service.id}/prices/`)
-            const prices = response.data.results || response.data || []
-            return { id: service.id, count: prices.length }
-          } catch (error) {
-            console.error(`Failed to fetch prices for service ${service.id}:`, error)
-            return { id: service.id, count: 0 }
-          }
-        })
-
-        const results = await Promise.all(pricePromises)
-        
-        // Update pricingCounts map
-        const newPricingCounts = {}
-        results.forEach(result => {
-          newPricingCounts[result.id] = result.count
-        })
-        pricingCounts.value = newPricingCounts
-      } catch (error) {
-        console.error('Failed to fetch service prices:', error)
-      }
-    }
-
     // Default pricing methods
     const initializeDefaultPricing = () => {
+      // Use the first 4 insurance types from the fetched list, or fallback to basic types
       const typesToUse =
         insuranceTypes.value.length > 0
           ? insuranceTypes.value.slice(0, 4)
           : [
-              { id: 1, value: 1, display_name: 'Private Pay', description: 'Private Pay - Direct payment without insurance' },
-              { id: 2, value: 2, display_name: 'Medicare', description: 'Medicare - Federal health insurance for 65+ or disabled' },
-              { id: 3, value: 3, display_name: 'Medicaid', description: 'Medicaid - State and federal program for low-income individuals' },
-              { id: 4, value: 4, display_name: 'Commercial Insurance', description: 'Commercial Insurance - Private insurance plans' },
+              {
+                id: 1,
+                value: 1,
+                display_name: 'Private Pay',
+                description: 'Private Pay - Direct payment without insurance',
+              },
+              {
+                id: 2,
+                value: 2,
+                display_name: 'Medicare',
+                description: 'Medicare - Federal health insurance for 65+ or disabled',
+              },
+              {
+                id: 3,
+                value: 3,
+                display_name: 'Medicaid',
+                description: 'Medicaid - State and federal program for low-income individuals',
+              },
+              {
+                id: 4,
+                value: 4,
+                display_name: 'Commercial Insurance',
+                description: 'Commercial Insurance - Private insurance plans',
+              },
             ]
 
       servicePricing.value = typesToUse.map((type) => ({
@@ -837,20 +817,24 @@ export default {
     }
 
     const editDefaultPricing = (index) => {
+      // Backup original data
       pricingBackup.value[index] = { ...servicePricing.value[index] }
       servicePricing.value[index].isEditing = true
     }
 
     const cancelEditDefaultPricing = (index) => {
       if (servicePricing.value[index].isNew) {
+        // Remove new unsaved pricing
         servicePricing.value.splice(index, 1)
       } else {
+        // Restore from backup
         servicePricing.value[index] = { ...pricingBackup.value[index] }
         delete pricingBackup.value[index]
       }
     }
 
     const updateDefaultPricing = (index) => {
+      // This method can be used for real-time validation or auto-save if needed
       console.log('Default pricing updated:', servicePricing.value[index])
     }
 
@@ -867,6 +851,7 @@ export default {
         return
       }
 
+      // Check for duplicate insurance types
       if (hasDuplicateInsuranceType(pricing.price_type, index)) {
         message.error('A pricing entry for this insurance type already exists')
         return
@@ -884,11 +869,17 @@ export default {
 
         let response
         if (pricing.id) {
+          // Update existing pricing
           response = await axiosInstance.patch(`/services/prices/${pricing.id}/`, pricingData)
         } else {
-          response = await axiosInstance.post(`/services/${viewServiceData.value.id}/prices/`, pricingData)
+          // Create new pricing
+          response = await axiosInstance.post(
+            `/services/${viewServiceData.value.id}/prices/`,
+            pricingData
+          )
         }
 
+        // Update local data with response
         servicePricing.value[index] = {
           ...response.data,
           isEditing: false,
@@ -898,13 +889,17 @@ export default {
         message.success('Default pricing saved successfully')
         delete pricingBackup.value[index]
 
+        // Auto-refresh the pricing data to ensure consistency
         setTimeout(() => {
           fetchServicePricing(viewServiceData.value.id)
         }, 1000)
       } catch (error) {
         console.error('Failed to save pricing:', error)
+
+        // Provide more specific error messages
         if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to save pricing'
+          const errorMessage =
+            error.response.data.message || error.response.data.error || 'Failed to save pricing'
           message.error(errorMessage)
         } else {
           message.error('Failed to save pricing. Please check your connection and try again.')
@@ -918,6 +913,7 @@ export default {
       const pricing = servicePricing.value[index]
 
       if (pricing.isNew) {
+        // Just remove from array if it's a new unsaved pricing
         servicePricing.value.splice(index, 1)
         return
       }
@@ -932,17 +928,25 @@ export default {
         message.success('Default pricing deleted successfully')
       } catch (error) {
         console.error('Failed to delete default pricing:', error)
+
+        // Provide more specific error messages
         if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to delete default pricing'
+          const errorMessage =
+            error.response.data.message ||
+            error.response.data.error ||
+            'Failed to delete default pricing'
           message.error(errorMessage)
         } else {
-          message.error('Failed to delete default pricing. Please check your connection and try again.')
+          message.error(
+            'Failed to delete default pricing. Please check your connection and try again.'
+          )
         }
       }
     }
 
     // Bulk Operations for Default Pricing
     const editAllDefaultPricing = () => {
+      // Backup all pricing data
       servicePricing.value.forEach((pricing, index) => {
         if (!pricing.isEditing) {
           pricingBackup.value[index] = { ...pricing }
@@ -952,6 +956,7 @@ export default {
     }
 
     const saveAllDefaultPricing = async () => {
+      // Validate all pricing entries first
       const invalidEntries = []
       servicePricing.value.forEach((pricing, index) => {
         if (pricing.isEditing) {
@@ -961,6 +966,7 @@ export default {
           if (!pricing.price || isNaN(parseFloat(pricing.price)) || parseFloat(pricing.price) < 0) {
             invalidEntries.push(`Row ${index + 1}: Please enter a valid price`)
           }
+          // Check for duplicate insurance types
           if (hasDuplicateInsuranceType(pricing.price_type, index)) {
             invalidEntries.push(`Row ${index + 1}: Duplicate insurance type detected`)
           }
@@ -989,6 +995,7 @@ export default {
           }
 
           if (pricing.id) {
+            // Update existing pricing
             savingPromises.push(
               axiosInstance
                 .patch(`/services/prices/${pricing.id}/`, pricingData)
@@ -999,6 +1006,7 @@ export default {
                 }))
             )
           } else {
+            // Create new pricing
             savingPromises.push(
               axiosInstance
                 .post(`/services/${viewServiceData.value.id}/prices/`, pricingData)
@@ -1011,8 +1019,10 @@ export default {
           }
         }
 
+        // Execute all save operations
         const results = await Promise.all(savingPromises)
 
+        // Update local data with responses
         results.forEach((result) => {
           servicePricing.value[result.index] = {
             ...result.data,
@@ -1021,19 +1031,29 @@ export default {
           }
         })
 
+        // Clear all backups
         pricingBackup.value = {}
+
         message.success(`Successfully saved ${results.length} pricing entries`)
 
+        // Auto-refresh the pricing data to ensure consistency
         setTimeout(() => {
           fetchServicePricing(viewServiceData.value.id)
         }, 1000)
       } catch (error) {
         console.error('Failed to save pricing:', error)
+
+        // Provide specific error messages
         if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to save some pricing entries'
+          const errorMessage =
+            error.response.data.message ||
+            error.response.data.error ||
+            'Failed to save some pricing entries'
           message.error(errorMessage)
         } else {
-          message.error('Failed to save pricing entries. Please check your connection and try again.')
+          message.error(
+            'Failed to save pricing entries. Please check your connection and try again.'
+          )
         }
       } finally {
         isBulkSaving.value = false
@@ -1044,8 +1064,10 @@ export default {
       servicePricing.value.forEach((pricing, index) => {
         if (pricing.isEditing) {
           if (pricing.isNew) {
+            // Remove new unsaved pricing entries
             servicePricing.value.splice(index, 1)
           } else {
+            // Restore from backup
             if (pricingBackup.value[index]) {
               Object.assign(pricing, pricingBackup.value[index])
               delete pricingBackup.value[index]
@@ -1054,7 +1076,10 @@ export default {
         }
       })
 
+      // Remove any new pricing entries
       servicePricing.value = servicePricing.value.filter((pricing) => !pricing.isNew)
+
+      // Clear all backups
       pricingBackup.value = {}
     }
 
@@ -1073,20 +1098,24 @@ export default {
     }
 
     const editInsurancePricing = (index) => {
+      // Backup original data
       insurancePricingBackup.value[index] = { ...insuranceCompanyPricing.value[index] }
       insuranceCompanyPricing.value[index].isEditing = true
     }
 
     const cancelEditInsurancePricing = (index) => {
       if (insuranceCompanyPricing.value[index].isNew) {
+        // Remove new unsaved pricing
         insuranceCompanyPricing.value.splice(index, 1)
       } else {
+        // Restore from backup
         insuranceCompanyPricing.value[index] = { ...insurancePricingBackup.value[index] }
         delete insurancePricingBackup.value[index]
       }
     }
 
     const updateInsurancePricing = (index) => {
+      // This method can be used for real-time validation or auto-save if needed
       console.log('Insurance pricing updated:', insuranceCompanyPricing.value[index])
     }
 
@@ -1103,6 +1132,7 @@ export default {
         return
       }
 
+      // Check for duplicate insurance companies
       if (hasDuplicateInsuranceCompany(pricing.insurance_company_id, index)) {
         message.error('A pricing entry for this insurance company already exists')
         return
@@ -1121,11 +1151,17 @@ export default {
 
         let response
         if (pricing.id) {
+          // Update existing pricing
           response = await axiosInstance.patch(`/services/custom/${pricing.id}/`, pricingData)
         } else {
-          response = await axiosInstance.post(`/services/${viewServiceData.value.id}/custom/`, pricingData)
+          // Create new pricing
+          response = await axiosInstance.post(
+            `/services/${viewServiceData.value.id}/custom/`,
+            pricingData
+          )
         }
 
+        // Update local data with response
         insuranceCompanyPricing.value[index] = {
           ...response.data,
           isEditing: false,
@@ -1135,16 +1171,24 @@ export default {
         message.success('Insurance company pricing saved successfully')
         delete insurancePricingBackup.value[index]
 
+        // Auto-refresh the pricing data to ensure consistency
         setTimeout(() => {
           fetchInsuranceCompanyPricing(viewServiceData.value.id)
         }, 1000)
       } catch (error) {
         console.error('Failed to save insurance pricing:', error)
+
+        // Provide more specific error messages
         if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to save insurance pricing'
+          const errorMessage =
+            error.response.data.message ||
+            error.response.data.error ||
+            'Failed to save insurance pricing'
           message.error(errorMessage)
         } else {
-          message.error('Failed to save insurance pricing. Please check your connection and try again.')
+          message.error(
+            'Failed to save insurance pricing. Please check your connection and try again.'
+          )
         }
       } finally {
         isInsurancePricingSaving.value = false
@@ -1155,6 +1199,7 @@ export default {
       const pricing = insuranceCompanyPricing.value[index]
 
       if (pricing.isNew) {
+        // Just remove from array if it's a new unsaved pricing
         insuranceCompanyPricing.value.splice(index, 1)
         return
       }
@@ -1169,11 +1214,18 @@ export default {
         message.success('Insurance company pricing deleted successfully')
       } catch (error) {
         console.error('Failed to delete insurance pricing:', error)
+
+        // Provide more specific error messages
         if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to delete insurance pricing'
+          const errorMessage =
+            error.response.data.message ||
+            error.response.data.error ||
+            'Failed to delete insurance pricing'
           message.error(errorMessage)
         } else {
-          message.error('Failed to delete insurance pricing. Please check your connection and try again.')
+          message.error(
+            'Failed to delete insurance pricing. Please check your connection and try again.'
+          )
         }
       }
     }
@@ -1184,12 +1236,6 @@ export default {
       paginationConfig,
       columns,
       searchQuery,
-      filters,
-      applyFilters,
-      clearFilters,
-      hasPrices,
-      getPriceCount,
-      fetchAllServicePrices,
       openModal,
       addServiceModalRef,
       editServiceModalRef,
@@ -1311,10 +1357,10 @@ export default {
 .info-item {
   transition: all 0.3s ease;
   border-left-width: 4px !important;
-  padding-left: 0.75rem !important;
-  padding-right: 0.25rem !important;
-  padding-top: 0.75rem !important;
-  padding-bottom: 0.05rem !important;
+  padding-left: 0.75rem !important; /* Reduced from default p-3 (1rem) */
+  padding-right: 0.25rem !important; /* Reduced from default p-3 (1rem) */
+  padding-top: 0.75rem !important; /* Reduced from default p-3 (1rem) */
+  padding-bottom: 0.05rem !important; /* Reduced from default p-3 (1rem) */
 }
 
 .info-item:hover {
@@ -1323,19 +1369,19 @@ export default {
 }
 
 .info-item .d-flex.align-items-center {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem; /* Reduced spacing between icon/title and content */
 }
 
 .info-item i {
-  font-size: 16px !important;
+  font-size: 16px !important; /* Slightly smaller icons */
 }
 
 .info-item span {
-  font-size: 13px !important;
+  font-size: 13px !important; /* Smaller text */
 }
 
 .info-item p {
-  font-size: 13px !important;
+  font-size: 13px !important; /* Smaller content text */
   margin-bottom: 0 !important;
 }
 
@@ -1636,4 +1682,21 @@ export default {
   border-color: #cbd5e1;
   color: #475569;
 }
+
+/* Center alignment fixes */
+/* td.actions,
+td.staff_id,
+th {
+  text-align: center !important;
+}
+
+th {
+  font-size: 1.2em;
+  font-weight: 200;
+}
+
+td.email,
+td.phone {
+  text-align: center !important;
+} */
 </style>

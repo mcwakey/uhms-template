@@ -379,7 +379,7 @@ export default {
   ],
   setup(props, { emit }) {
     const isActiveAppointment = (status) => {
-      return ['SCHEDULED', 'RESCHEDULED', 'IN-PROGRESS'].includes(status)
+      return ['SCHEDULED', 'RESCHEDULED', 'CHECKED-IN', 'IN-PROGRESS'].includes(status)
     }
 
     // const auth = useAuthStore();
@@ -389,9 +389,11 @@ export default {
     const getStatusColorClass = (status) => {
       const statusClasses = {
         SCHEDULED: 'bg-primary',
-        RESCHEDULED: 'bg-secondary',
+        RESCHEDULED: 'bg-primary',
+        'CHECKED-IN': 'bg-secondary',
         'IN-PROGRESS': 'bg-warning',
         COMPLETED: 'bg-success',
+        DONE: 'bg-success',
         CANCELLED: 'bg-danger',
       }
       return statusClasses[status] || 'bg-primary'
@@ -411,6 +413,7 @@ export default {
     const getStatusAlertClass = (status) => {
       const alertClasses = {
         COMPLETED: 'alert-success',
+        DONE: 'alert-success',
         CANCELLED: 'alert-danger',
         'IN-PROGRESS': 'alert-warning',
       }
@@ -423,6 +426,7 @@ export default {
         RESCHEDULED: 'ti ti-calendar-time',
         'IN-PROGRESS': 'ti ti-clock',
         COMPLETED: 'ti ti-check-circle',
+        DONE: 'ti ti-check-circle',
         CANCELLED: 'ti ti-x-circle',
       }
       return iconClasses[status] || 'ti ti-calendar-event'
@@ -431,6 +435,7 @@ export default {
     const getStatusMessage = (status) => {
       const messages = {
         COMPLETED: 'This appointment has been completed successfully.',
+        DONE: 'This appointment has been completed successfully.',
         CANCELLED: 'This appointment has been cancelled.',
         'IN-PROGRESS': 'This appointment is currently in progress.',
       }
@@ -562,11 +567,7 @@ export default {
 }
 
 .status-header.bg-secondary {
-  background: linear-gradient(
-    135deg,
-    var(--bs-secondary) 0%,
-    var(--bs-secondary-dark, #545862) 100%
-  );
+  background: linear-gradient(135deg, var(--bs-secondary) 0%, var(--bs-secondary-dark, #545862) 100%);
 }
 
 .status-header.bg-warning {

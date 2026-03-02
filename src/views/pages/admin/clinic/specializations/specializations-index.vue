@@ -1,6 +1,6 @@
 <template>
-  <layouts-header></layouts-header>
-  <layouts-sidebar></layouts-sidebar>
+  <LayoutsHeader></LayoutsHeader>
+  <LayoutsSidebar></LayoutsSidebar>
   <!-- ========================
 	   Start Page Content
 	========================= -->
@@ -88,14 +88,38 @@
               <div
                 class="d-flex align-items-center justify-content-between border-bottom filter-header"
               >
-                <h4 class="mb-0">Filter</h4>
+                <h4 class="mb-0">Filter Specializations</h4>
                 <div class="d-flex align-items-center">
-                  <a href="javascript:void(0);" class="link-danger text-decoration-underline"
+                  <a href="javascript:void(0);" class="link-danger text-decoration-underline" @click="clearFilters"
                     >Clear All</a
                   >
                 </div>
               </div>
-              <FilterIndex></FilterIndex>
+              <div class="filter-body pb-0 p-3">
+                <!-- Department Filter -->
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Department</label>
+                  <select class="form-select" v-model="filters.department">
+                    <option value="">All Departments</option>
+                    <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                      {{ dept.name }}
+                    </option>
+                  </select>
+                </div>
+                <!-- Status Filter -->
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Status</label>
+                  <select class="form-select" v-model="filters.status">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-footer d-flex align-items-center justify-content-end border-top p-3">
+                <a href="javascript:void(0);" class="btn btn-light btn-md me-2 fw-medium" @click="clearFilters">Reset</a>
+                <button type="button" class="btn btn-primary btn-md fw-medium" @click="applyFilters">Apply Filters</button>
+              </div>
             </div>
           </div>
           <div class="dropdown">
@@ -130,103 +154,68 @@
           :pagination-class="pagination - rounded"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'full_name'">
+            <template v-if="column.key === 'name'">
+              <a
+                href="javascript:void(0);"
+                @click="openViewSpecializationModal(record)"
+                data-bs-toggle="modal"
+                data-bs-target="#view_specialization"
+                class="text-dark fw-semibold"
+                title="View Details"
+              >
+                {{ record.name }}
+              </a>
+            </template>
+            <template v-if="column.key === 'department'">
               <div class="d-flex align-items-center ms-2">
-                <a
-                  href="javascript:void(0);"
-                  class="avatar me-2 fs-14"
-                  @click="openModal(record)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#view_specializations"
-                >
-                  <img
-                    width="16"
-                    height="16"
-                    src="@/assets/img/users/user-08.jpg"
-                    alt="Specializations"
-                    class="rounded-circle m-r-5"
-                  />
-                </a>
                 <div>
-                  <h6 class="mb-1 fs-14 fw-semibold">
+                  <h6 class="mb-1 fs-14">
+                    {{ record.department?.name || '-' }}
+                  </h6>
+                </div>
+              </div>
+            </template>
+            <template v-else-if="column.key === 'status'">
+              <span
+                :class="[
+                  'badge border',
+                  record.status
+                    ? 'badge-soft-success border-success fw-medium fs-13'
+                    : 'badge-soft-danger border-danger fw-medium fs-13',
+                ]"
+                >{{ record.status ? 'Active' : 'Inactive' }}</span
+              >
+            </template>
+            <template v-else-if="column.key === 'actions'">
+              <div class="d-flex align-items-center gap-1">
+                <a href="javascript:void(0);" class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1" data-bs-toggle="dropdown">
+                  <i class="ti ti-dots-vertical"></i>
+                </a>
+                <ul class="dropdown-menu p-2">
+                  <li>
+                    <a
+                      href="javascript:void(0);"
+                      @click="openEditSpecializationModal(record)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#edit_specialization"
+                      class="dropdown-item d-flex align-items-center"
+                    >
+                      Edit
+                    </a>
+                  </li>
+                  <li>
                     <a
                       href="javascript:void(0);"
                       @click="openModal(record)"
                       data-bs-toggle="modal"
-                      data-bs-target="#view_specializations"
-                      >{{ record.full_name }}</a
+                      data-bs-target="#delete_specializations"
+                      title="Delete Specialization"
+                      class="dropdown-item d-flex align-items-center"
                     >
-                  </h6>
-                </div>
-              </div>
-            </template>
-            <template v-if="column.key === 'department'">
-              <div class="d-flex align-items-center ms-2">
-                <!-- <a
-                  href="javascript:void(0);"
-                  class="avatar me-2 fs-14"
-                  @click="openModal(record)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#view_specializations"
-                >
-                  <img width="16" height="16"
-                    src="@/assets/img/users/user-08.jpg"
-                    alt="Specializations"
-                    class="rounded-circle m-r-5"
-                  />
-                </a> -->
-                <div>
-                  <h6 class="mb-1 fs-14">
-                    <!-- <a
-                      href="javascript:void(0);"
-                      @click="openModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#view_specializations"
-                      > -->
-                    {{ record.department?.name }}
-                    <!-- </a> -->
-                  </h6>
-                </div>
-              </div>
-            </template>
-            <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center">
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openViewSpecializationModal(record)"
-                    title="View Specialization"
-                    data-bs-toggle="modal"
-                    data-bs-target="#view_specialization"
-                    class="text-primary fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-eye"></i>
-                  </a>
-                </div>
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openEditSpecializationModal(record)"
-                    title="Edit Specialization"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_specialization"
-                    class="text-warning fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </a>
-                </div>
-                <div class="action-item">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    title="Delete Specialization"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_specializations"
-                    class="text-danger fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div>
+                      Delete
+                    </a>
+                  </li>
+                </ul>
               </div>
             </template>
           </template>
@@ -236,12 +225,7 @@
     <!-- End Content -->
 
     <!-- Footer Start -->
-    <div class="footer text-center bg-white p-2 border-top">
-      <p class="text-dark mb-0">
-        2025 &copy; <a href="javascript:void(0);" class="link-primary">Preclinic</a>, All Rights
-        Reserved
-      </p>
-    </div>
+    <LayoutsFooter></LayoutsFooter>
     <!-- Footer End -->
   </div>
 
@@ -250,23 +234,29 @@
 	========================= -->
 
   <!-- Add Specialization Modal -->
-  <div id="add_specialization" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="fw-bold modal-title">Add New Specialization</h5>
-          <button
-            type="button"
-            class="btn-close btn-close-modal custom-btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="ti ti-x"></i>
-          </button>
+  <div id="add_specialization" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <!-- Header -->
+        <div class="modal-header border-0 pb-2 bg-gradient-primary text-white">
+          <div class="d-flex align-items-center">
+            <div class="me-2">
+              <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
+                <i class="ti ti-stethoscope fs-5 text-white"></i>
+              </div>
+            </div>
+            <div>
+              <h5 class="fw-bold modal-title mb-0 text-white fs-16">Add New Specialization</h5>
+              <p class="mb-0 fs-12 text-white opacity-75">Create a new medical specialization</p>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <form @submit.prevent="handleAddSpecialization">
-            <div class="mb-3">
+
+        <!-- Body -->
+        <div class="modal-body p-3">
+          <form @submit.prevent="handleAddSpecialization" class="row g-3">
+            <div class="col-md-6">
               <label class="form-label fw-medium"
                 >Specialization Name<span class="text-danger ms-1">*</span></label
               >
@@ -274,19 +264,11 @@
                 v-model="addSpecializationForm.name"
                 type="text"
                 class="form-control"
+                placeholder="Enter specialization name"
                 required
               />
             </div>
-            <div class="mb-3">
-              <label class="form-label fw-medium">Description</label>
-              <textarea
-                v-model="addSpecializationForm.description"
-                class="form-control"
-                rows="3"
-                placeholder="Enter specialization description..."
-              ></textarea>
-            </div>
-            <div class="mb-3">
+            <div class="col-md-6">
               <label class="form-label fw-medium"
                 >Department<span class="text-danger ms-1">*</span></label
               >
@@ -301,7 +283,7 @@
                 </option>
               </select>
             </div>
-            <div class="mb-3">
+            <div class="col-md-6">
               <label class="form-label fw-medium"
                 >Status<span class="text-danger ms-1">*</span></label
               >
@@ -310,49 +292,57 @@
                 <option value="inactive">Inactive</option>
               </select>
             </div>
-            <div class="d-flex justify-content-end">
-              <button
-                type="button"
-                class="btn btn-light me-2"
-                data-bs-dismiss="modal"
-                :disabled="isSubmitting"
-              >
-                Cancel
-              </button>
-              <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
-                <span
-                  v-if="isSubmitting"
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                {{ isSubmitting ? 'Creating...' : 'Add Specialization' }}
-              </button>
+            <div class="col-12">
+              <label class="form-label fw-medium">Description</label>
+              <textarea
+                v-model="addSpecializationForm.description"
+                class="form-control"
+                rows="3"
+                placeholder="Enter specialization description..."
+              ></textarea>
             </div>
           </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0 pt-0 pb-3 px-3">
+          <button type="button" class="btn btn-white border fw-medium px-3 py-2 fs-13" data-bs-dismiss="modal" :disabled="isSubmitting">
+            <i class="ti ti-x me-1"></i>Cancel
+          </button>
+          <button type="button" class="btn btn-primary fw-medium px-3 py-2 fs-13" @click="handleAddSpecialization" :disabled="isSubmitting">
+            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i v-else class="ti ti-check me-1"></i>
+            {{ isSubmitting ? 'Creating...' : 'Add Specialization' }}
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Edit Specialization Modal -->
-  <div id="edit_specialization" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="fw-bold modal-title">Edit Specialization</h5>
-          <button
-            type="button"
-            class="btn-close btn-close-modal custom-btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="ti ti-x"></i>
-          </button>
+  <div id="edit_specialization" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <!-- Header -->
+        <div class="modal-header border-0 pb-2 bg-gradient-warning text-white">
+          <div class="d-flex align-items-center">
+            <div class="me-2">
+              <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
+                <i class="ti ti-edit fs-5 text-white"></i>
+              </div>
+            </div>
+            <div>
+              <h5 class="fw-bold modal-title mb-0 text-white fs-16">Edit Specialization</h5>
+              <p class="mb-0 fs-12 text-white opacity-75">Update specialization details</p>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <form @submit.prevent="handleEditSpecialization">
-            <div class="mb-3">
+
+        <!-- Body -->
+        <div class="modal-body p-3">
+          <form @submit.prevent="handleEditSpecialization" class="row g-3">
+            <div class="col-md-6">
               <label class="form-label fw-medium"
                 >Specialization Name<span class="text-danger ms-1">*</span></label
               >
@@ -360,19 +350,11 @@
                 v-model="editSpecializationForm.name"
                 type="text"
                 class="form-control"
+                placeholder="Enter specialization name"
                 required
               />
             </div>
-            <div class="mb-3">
-              <label class="form-label fw-medium">Description</label>
-              <textarea
-                v-model="editSpecializationForm.description"
-                class="form-control"
-                rows="3"
-                placeholder="Enter specialization description..."
-              ></textarea>
-            </div>
-            <div class="mb-3">
+            <div class="col-md-6">
               <label class="form-label fw-medium"
                 >Department<span class="text-danger ms-1">*</span></label
               >
@@ -387,7 +369,7 @@
                 </option>
               </select>
             </div>
-            <div class="mb-3">
+            <div class="col-md-6">
               <label class="form-label fw-medium"
                 >Status<span class="text-danger ms-1">*</span></label
               >
@@ -396,111 +378,114 @@
                 <option value="inactive">Inactive</option>
               </select>
             </div>
-            <div class="d-flex justify-content-end">
-              <button
-                type="button"
-                class="btn btn-light me-2"
-                data-bs-dismiss="modal"
-                :disabled="isEditSubmitting"
-              >
-                Cancel
-              </button>
-              <button type="submit" class="btn btn-primary" :disabled="isEditSubmitting">
-                <span
-                  v-if="isEditSubmitting"
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                {{ isEditSubmitting ? 'Updating...' : 'Update Specialization' }}
-              </button>
+            <div class="col-12">
+              <label class="form-label fw-medium">Description</label>
+              <textarea
+                v-model="editSpecializationForm.description"
+                class="form-control"
+                rows="3"
+                placeholder="Enter specialization description..."
+              ></textarea>
             </div>
           </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0 pt-0 pb-3 px-3">
+          <button type="button" class="btn btn-white border fw-medium px-3 py-2 fs-13" data-bs-dismiss="modal" :disabled="isEditSubmitting">
+            <i class="ti ti-x me-1"></i>Cancel
+          </button>
+          <button type="button" class="btn btn-primary fw-medium px-3 py-2 fs-13" @click="handleEditSpecialization" :disabled="isEditSubmitting">
+            <span v-if="isEditSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i v-else class="ti ti-check me-1"></i>
+            {{ isEditSubmitting ? 'Updating...' : 'Update Specialization' }}
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- View Specialization Modal -->
-  <div id="view_specialization" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="fw-bold modal-title">Specialization Details</h5>
-          <button
-            type="button"
-            class="btn-close btn-close-modal custom-btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="ti ti-x"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="card bg-light">
-            <div class="card-body">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <div>
-                  <h5 class="fw-bold mb-1">{{ viewSpecializationData.name }}</h5>
-                  <span class="text-primary fs-14 fw-medium"
-                    >ID: {{ viewSpecializationData.id }}</span
-                  >
-                </div>
-                <span
-                  :class="[
-                    'badge fw-medium fs-13',
-                    viewSpecializationData.status === 'active'
-                      ? 'badge-soft-success border border-success'
-                      : 'badge-soft-danger border border-danger',
-                  ]"
-                >
-                  {{ viewSpecializationData.status === 'active' ? 'Active' : 'Inactive' }}
-                </span>
+  <div id="view_specialization" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <!-- Header -->
+        <div class="modal-header border-0 pb-2 bg-gradient-secondary text-white">
+          <div class="d-flex align-items-center">
+            <div class="me-2">
+              <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
+                <i class="ti ti-eye fs-5 text-white"></i>
               </div>
-              <p class="text-muted mb-0" v-if="viewSpecializationData.description">
-                {{ viewSpecializationData.description }}
-              </p>
+            </div>
+            <div>
+              <h5 class="fw-bold modal-title mb-0 text-white fs-16">Specialization Details</h5>
+              <p class="mb-0 fs-12 text-white opacity-75">View specialization information</p>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body p-3">
+          <!-- Info Card -->
+          <div class="card bg-light border-0 mb-3">
+            <div class="card-body p-2">
+              <div class="d-flex align-items-center">
+                <div class="me-2">
+                  <div class="avatar avatar-xs bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="ti ti-stethoscope text-primary fs-6"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-0 fw-bold text-dark fs-14">{{ viewSpecializationData.name }}</h6>
+                  <div class="d-flex align-items-center gap-2 text-muted fs-11">
+                    <span>ID: {{ viewSpecializationData.id }}</span>
+                    <span v-if="viewSpecializationData.department">• {{ viewSpecializationData.department.name }}</span>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <span :class="[
+                    'badge fs-10 px-2 py-1',
+                    viewSpecializationData.status
+                      ? 'bg-success bg-opacity-10 text-success'
+                      : 'bg-danger bg-opacity-10 text-danger'
+                  ]">
+                    {{ viewSpecializationData.status ? 'Active' : 'Inactive' }}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="row mt-4">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <p class="text-dark fs-13 fw-medium mb-1">Type</p>
-                <span :class="['badge fs-13 fw-medium', 'badge-soft-primary']">
-                  {{
-                    viewSpecializationData.type
-                      ? viewSpecializationData.type.charAt(0).toUpperCase() +
-                        viewSpecializationData.type.slice(1)
-                      : 'Not specified'
-                  }}
-                </span>
+          <!-- Details -->
+          <div class="row g-3">
+            <div class="col-md-6" v-if="viewSpecializationData.department">
+              <div class="p-2 bg-light rounded">
+                <p class="text-muted fs-12 mb-1 fw-medium">Department</p>
+                <p class="fs-13 text-dark mb-0 fw-semibold">{{ viewSpecializationData.department.name }}</p>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="mb-3">
-                <p class="text-dark fs-13 fw-medium mb-1">Doctor Count</p>
-                <p class="fs-13 text-muted">
-                  {{ viewSpecializationData.doctor_count || 0 }} doctors
-                </p>
+              <div class="p-2 bg-light rounded">
+                <p class="text-muted fs-12 mb-1 fw-medium">Doctor Count</p>
+                <p class="fs-13 text-dark mb-0 fw-semibold">{{ viewSpecializationData.doctor_count || 0 }} doctors</p>
               </div>
             </div>
             <div class="col-12" v-if="viewSpecializationData.description">
-              <div class="mb-3">
-                <p class="text-dark fs-13 fw-medium mb-1">Description</p>
-                <p class="fs-13 text-muted">{{ viewSpecializationData.description }}</p>
+              <div class="p-2 bg-light rounded">
+                <p class="text-muted fs-12 mb-1 fw-medium">Description</p>
+                <p class="fs-13 text-dark mb-0">{{ viewSpecializationData.description }}</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="openEditFromView"
-            data-bs-dismiss="modal"
-          >
+
+        <!-- Footer -->
+        <div class="modal-footer border-0 pt-0 pb-3 px-3">
+          <button type="button" class="btn btn-white border fw-medium px-3 py-2 fs-13" data-bs-dismiss="modal">
+            <i class="ti ti-x me-1"></i>Close
+          </button>
+          <button type="button" class="btn btn-primary fw-medium px-3 py-2 fs-13" @click="openEditFromView" data-bs-dismiss="modal">
             <i class="ti ti-edit me-1"></i>Edit Specialization
           </button>
         </div>
@@ -512,334 +497,445 @@
     <DeleteModal></DeleteModal>
   </div>
 </template>
-<script>
-import { useTableStore } from '@/stores/dataTable'
-import { onMounted, computed, ref } from 'vue'
+
+<style scoped>
+/* Modal header gradients */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+}
+
+/* Close button for white text */
+.btn-close-white {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
+.btn-close-white:hover {
+  opacity: 1;
+}
+
+/* Form label styling */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* Card styling */
+.card {
+  border-radius: 10px;
+}
+
+/* Info card styling */
+.card.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+/* Avatar styling */
+.avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar-sm {
+  width: 36px;
+  height: 36px;
+}
+
+.avatar-xs {
+  width: 24px;
+  height: 24px;
+}
+
+/* Button styling */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-white {
+  background: #fff;
+  color: #6c757d;
+}
+
+.btn-white:hover {
+  background: #f8f9fa;
+  color: #495057;
+}
+
+/* Modal shadow */
+.modal-content {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+</style>
+<script setup lang="ts">
+import { onMounted, computed, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import { useTableStore } from '@/stores/dataTableStore'
+import LayoutsHeader from '@/views/layouts/layouts-header.vue'
+import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
+import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
-import axiosInstance from '@/utils/axios.js'
+import axiosInstance from '@/utils/axios'
 
-export default {
-  components: { FilterIndex, DeleteModal },
-  name: 'SpecializationsTable',
+interface Department {
+  id: number
+  name: string
+}
 
-  setup() {
-    const specializationsTable = useTableStore('specializations')
-    const detailedItem = computed(() => specializationsTable.detailedItem.value || {})
+interface Specialization {
+  id: number
+  name: string
+  description?: string
+  department?: Department
+  status: boolean
+  doctor_count?: number
+  uuid?: string
+}
 
-    // Add departments state
-    const departments = ref([])
+interface SpecializationForm {
+  id?: number | null
+  name: string
+  description: string
+  department_id: string | number
+  status: string
+}
 
-    const paginationConfig = computed(() => ({
-      current: specializationsTable.currentPage.value,
-      pageSize: specializationsTable.perPage.value,
-      total: specializationsTable.totalCount.value,
-      showSizeChanger: false,
-      showQuickJumper: false,
-    }))
+const specializationsTable = useTableStore('specializations')
+const detailedItem = computed(() => specializationsTable.detailedItem.value || {})
 
-    // Form state - update to use department_id instead of type
-    const addSpecializationForm = ref({
+// Search and filter state
+const searchQuery = ref<string>('')
+const filters = ref({
+  department: '',
+  status: ''
+})
+
+// Departments state
+const departments = ref<Department[]>([])
+
+const paginationConfig = computed(() => ({
+  current: specializationsTable.currentPage.value,
+  pageSize: specializationsTable.perPage.value,
+  total: specializationsTable.totalCount.value,
+  showSizeChanger: false,
+  showQuickJumper: false,
+}))
+
+// Form state
+const addSpecializationForm = ref<SpecializationForm>({
+  name: '',
+  description: '',
+  department_id: '',
+  status: 'active',
+})
+
+const editSpecializationForm = ref<SpecializationForm>({
+  id: null,
+  name: '',
+  description: '',
+  department_id: '',
+  status: 'active',
+})
+
+const viewSpecializationData = ref<Specialization>({
+  id: 0,
+  name: '',
+  description: '',
+  department: undefined,
+  status: false,
+  doctor_count: 0,
+})
+
+const isSubmitting = ref<boolean>(false)
+const isEditSubmitting = ref<boolean>(false)
+
+// Fetch departments
+const fetchDepartments = async () => {
+  try {
+    const response = await axiosInstance.get('/departments/')
+    departments.value = response.data.results || response.data
+  } catch (error) {
+    console.error('Failed to fetch departments:', error)
+    message.error('Failed to load departments')
+  }
+}
+
+// Search and filter methods
+let searchTimeout: ReturnType<typeof setTimeout> | null = null
+watch(searchQuery, (newValue) => {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(async () => {
+    await specializationsTable.fetchData({ search: newValue })
+  }, 300)
+})
+
+const applyFilters = async () => {
+  const filterParams: Record<string, any> = {}
+  if (filters.value.department) {
+    filterParams.department = filters.value.department
+  }
+  if (filters.value.status) {
+    filterParams.status = filters.value.status === 'active'
+  }
+  if (searchQuery.value) {
+    filterParams.search = searchQuery.value
+  }
+  await specializationsTable.fetchData(filterParams)
+}
+
+const clearFilters = async () => {
+  filters.value = {
+    department: '',
+    status: ''
+  }
+  searchQuery.value = ''
+  await specializationsTable.fetchData()
+}
+
+// Form validation
+const validateForm = (): string[] => {
+  const errors: string[] = []
+  if (!addSpecializationForm.value.name?.trim()) {
+    errors.push('Specialization name is required')
+  }
+  if (!addSpecializationForm.value.department_id) {
+    errors.push('Department is required')
+  }
+  return errors
+}
+
+const validateEditForm = (): string[] => {
+  const errors: string[] = []
+  if (!editSpecializationForm.value.name?.trim()) {
+    errors.push('Specialization name is required')
+  }
+  if (!editSpecializationForm.value.department_id) {
+    errors.push('Department is required')
+  }
+  return errors
+}
+
+// Modal handlers
+const openAddSpecializationModal = () => {
+  addSpecializationForm.value = {
+    name: '',
+    description: '',
+    department_id: '',
+    status: 'active',
+  }
+}
+
+const openEditSpecializationModal = (specialization: Specialization) => {
+  editSpecializationForm.value = {
+    id: specialization.id,
+    name: specialization.name || '',
+    description: specialization.description || '',
+    department_id: specialization.department?.id || '',
+    status: specialization.status ? 'active' : 'inactive',
+  }
+}
+
+const openViewSpecializationModal = (specialization: Specialization) => {
+  viewSpecializationData.value = {
+    id: specialization.id,
+    name: specialization.name || '',
+    description: specialization.description || '',
+    department: specialization.department,
+    status: specialization.status,
+    doctor_count: specialization.doctor_count || 0,
+  }
+}
+
+// API handlers
+const handleAddSpecialization = async () => {
+  const validationErrors = validateForm()
+  if (validationErrors.length > 0) {
+    message.error(validationErrors[0])
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    const specializationData = {
+      name: addSpecializationForm.value.name.trim(),
+      department: addSpecializationForm.value.department_id,
+      status: addSpecializationForm.value.status === 'active',
+      description: addSpecializationForm.value.description.trim(),
+    }
+
+    await axiosInstance.post('/specializations/', specializationData)
+    message.success('Specialization created successfully')
+
+    // Reset form
+    addSpecializationForm.value = {
       name: '',
       description: '',
-      department_id: '', // Changed from type to department_id
+      department_id: '',
       status: 'active',
-    })
+    }
 
-    const editSpecializationForm = ref({
-      id: null,
-      name: '',
-      description: '',
-      department_id: '', // Changed from type to department_id
-      status: 'active',
-    })
+    // Close modal
+    const modalEl = document.getElementById('add_specialization')
+    const Bootstrap = window.bootstrap ?? window.Bootstrap
+    if (Bootstrap && modalEl) {
+      const modal = Bootstrap.Modal.getInstance(modalEl)
+      if (modal) modal.hide()
+    }
 
-    const viewSpecializationData = ref({
+    // Refresh the table
+    await specializationsTable.fetchData()
+  } catch (error) {
+    console.error('Failed to create specialization:', error)
+    message.error('Failed to create specialization. Please try again.')
+  } finally {
+    isSubmitting.value = false
+  }
+}
+
+const handleEditSpecialization = async () => {
+  const validationErrors = validateEditForm()
+  if (validationErrors.length > 0) {
+    message.error(validationErrors[0])
+    return
+  }
+
+  isEditSubmitting.value = true
+
+  try {
+    const specializationData = {
+      name: editSpecializationForm.value.name.trim(),
+      department: editSpecializationForm.value.department_id,
+      status: editSpecializationForm.value.status === 'active',
+      description: editSpecializationForm.value.description.trim(),
+    }
+
+    await axiosInstance.patch(
+      `/specializations/${editSpecializationForm.value.id}/`,
+      specializationData
+    )
+
+    message.success('Specialization updated successfully')
+
+    // Reset form
+    editSpecializationForm.value = {
       id: null,
       name: '',
       description: '',
       department_id: '',
-      department_name: '',
-      status: '',
-      doctor_count: 0,
-    })
-
-    // Fetch departments
-    const fetchDepartments = async () => {
-      try {
-        const response = await axiosInstance.get('/departments/')
-        departments.value = response.data.results || response.data
-        console.log('Departments loaded:', departments.value)
-      } catch (error) {
-        console.error('Failed to fetch departments:', error)
-        message.error('Failed to load departments')
-      }
+      status: 'active',
     }
 
-    // Form validation - updated
-    const validateForm = () => {
-      const errors = []
-
-      if (!addSpecializationForm.value.name?.trim()) {
-        errors.push('Specialization name is required')
-      }
-
-      if (!addSpecializationForm.value.department_id) {
-        errors.push('Department is required')
-      }
-
-      return errors
+    // Close modal
+    const modalEl = document.getElementById('edit_specialization')
+    const Bootstrap = window.bootstrap ?? window.Bootstrap
+    if (Bootstrap && modalEl) {
+      const modal = Bootstrap.Modal.getInstance?.(modalEl) || null
+      if (modal) modal.hide()
     }
 
-    const validateEditForm = () => {
-      const errors = []
-
-      if (!editSpecializationForm.value.name?.trim()) {
-        errors.push('Specialization name is required')
-      }
-
-      if (!editSpecializationForm.value.department_id) {
-        errors.push('Department is required')
-      }
-
-      return errors
-    }
-
-    // Modal handlers - updated
-    const openAddSpecializationModal = () => {
-      addSpecializationForm.value = {
-        name: '',
-        description: '',
-        department_id: '',
-        status: 'active',
-      }
-    }
-
-    const openEditSpecializationModal = (specialization) => {
-      editSpecializationForm.value = {
-        id: specialization.id,
-        name: specialization.name || '',
-        description: specialization.description || '',
-        department_id: specialization.department?.id || '',
-        status: specialization.status ? 'active' : 'inactive',
-      }
-    }
-
-    const openViewSpecializationModal = (specialization) => {
-      viewSpecializationData.value = {
-        id: specialization.id,
-        name: specialization.name || '',
-        description: specialization.description || '',
-        department_id: specialization.department?.id || '',
-        department_name: specialization.department?.name || '',
-        status: specialization.status ? 'active' : 'inactive',
-        doctor_count: specialization.doctor_count || 0,
-      }
-    }
-
-    // API handlers - updated
-    const handleAddSpecialization = async () => {
-      const validationErrors = validateForm()
-      if (validationErrors.length > 0) {
-        message.error(validationErrors[0])
-        return
-      }
-
-      isSubmitting.value = true
-
-      try {
-        const specializationData = {
-          name: addSpecializationForm.value.name.trim(),
-          department: addSpecializationForm.value.department_id,
-          status: addSpecializationForm.value.status === 'active',
-          description: addSpecializationForm.value.description.trim(),
-        }
-
-        if (addSpecializationForm.value.description?.trim()) {
-          specializationData.description = addSpecializationForm.value.description.trim()
-        }
-
-        console.log('Creating specialization with data:', specializationData)
-
-        const response = await axiosInstance.post('/specializations/', specializationData)
-
-        console.log('Specialization created successfully:', response.data)
-        message.success('Specialization created successfully')
-
-        // Reset form
-        addSpecializationForm.value = {
-          name: '',
-          description: '',
-          department_id: '',
-          status: 'active',
-        }
-
-        // Close modal
-        const modalEl = document.getElementById('add_specialization')
-        if (window.bootstrap && modalEl) {
-          const modal = window.bootstrap.Modal.getInstance(modalEl)
-          modal.hide()
-        }
-
-        // Refresh the table
-        await specializationsTable.fetchData()
-      } catch (error) {
-        console.error('Failed to create specialization:', error)
-        message.error('Failed to create specialization. Please try again.')
-      } finally {
-        isSubmitting.value = false
-      }
-    }
-
-    const handleEditSpecialization = async () => {
-      const validationErrors = validateEditForm()
-      if (validationErrors.length > 0) {
-        message.error(validationErrors[0])
-        return
-      }
-
-      isEditSubmitting.value = true
-
-      try {
-        const specializationData = {
-          name: editSpecializationForm.value.name.trim(),
-          department: editSpecializationForm.value.department_id,
-          status: editSpecializationForm.value.status === 'active',
-          description: editSpecializationForm.value.description.trim(),
-        }
-
-        // if (editSpecializationForm.value.description?.trim()) {
-        // }
-
-        console.log('Updating specialization with data:', specializationData)
-
-        const response = await axiosInstance.patch(
-          `/specializations/${editSpecializationForm.value.id}/`,
-          specializationData
-        )
-
-        console.log('Specialization updated successfully:', response.data)
-        message.success('Specialization updated successfully')
-
-        // Reset form
-        editSpecializationForm.value = {
-          id: null,
-          name: '',
-          description: '',
-          department_id: '',
-          status: 'active',
-        }
-
-        // Close modal
-        const modalEl = document.getElementById('edit_specialization')
-        const Bootstrap = window.bootstrap ?? window.Bootstrap
-        if (Bootstrap && modalEl) {
-          const modal = Bootstrap.Modal.getInstance?.(modalEl) || null
-          if (modal) {
-            modal.hide()
-          }
-        }
-
-        // Refresh the table
-        await specializationsTable.fetchData()
-      } catch (error) {
-        console.error('Failed to update specialization:', error)
-        message.error('Failed to update specialization. Please try again.')
-      } finally {
-        isEditSubmitting.value = false
-      }
-    }
-
-    // Rest of your existing code...
-    const openModal = async (record) => {
-      try {
-        specializationsTable.selectItem(record)
-        await specializationsTable.fetchItemDetails(record.uuid)
-      } catch (error) {
-        message.error(error)
-      }
-    }
-
-    const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
-        title: 'Specializations',
-        dataIndex: 'name',
-        key: 'name',
-      },
-      {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-      },
-      {
-        title: 'Department',
-        key: 'department',
-      },
-      {
-        title: 'Status',
-        key: 'status',
-      },
-      {
-        title: '',
-        key: 'actions',
-        width: 30,
-        className: 'actions',
-      },
-    ]
-
-    const isSubmitting = ref(false)
-    const isEditSubmitting = ref(false)
-
-    const openEditFromView = () => {
-      openEditSpecializationModal(viewSpecializationData.value)
-
-      setTimeout(() => {
-        const editModalEl = document.getElementById('edit_specialization')
-        const Bootstrap = window.bootstrap ?? window.Bootstrap
-        if (Bootstrap && editModalEl) {
-          const editModal = new Bootstrap.Modal(editModalEl)
-          editModal.show()
-        }
-      }, 100)
-    }
-
-    onMounted(async () => {
-      // Fetch both specializations and departments data when the component is mounted
-      await fetchDepartments() // Fetch departments first
-      specializationsTable.fetchData().catch(() => {
-        message.error('Failed to load specializations data')
-      })
-    })
-
-    return {
-      specializationsTable,
-      detailedItem,
-      paginationConfig,
-      columns,
-      openModal,
-      departments, // Add departments to return
-      addSpecializationForm,
-      editSpecializationForm,
-      viewSpecializationData,
-      isSubmitting,
-      isEditSubmitting,
-      openAddSpecializationModal,
-      openEditSpecializationModal,
-      openViewSpecializationModal,
-      openEditFromView,
-      handleAddSpecialization,
-      handleEditSpecialization,
-      validateForm,
-      validateEditForm,
-    }
-  },
+    // Refresh the table
+    await specializationsTable.fetchData()
+  } catch (error) {
+    console.error('Failed to update specialization:', error)
+    message.error('Failed to update specialization. Please try again.')
+  } finally {
+    isEditSubmitting.value = false
+  }
 }
+
+// Other methods
+const openModal = async (record: Specialization) => {
+  try {
+    specializationsTable.selectItem(record)
+    if (record.uuid) {
+      await specializationsTable.fetchItemDetails(record.uuid)
+    }
+  } catch (error: any) {
+    message.error(error?.message || 'Failed to load details')
+  }
+}
+
+const columns = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+  },
+  {
+    title: 'Specializations',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+  },
+  {
+    title: 'Department',
+    key: 'department',
+  },
+  {
+    title: 'Status',
+    key: 'status',
+  },
+  {
+    title: '',
+    key: 'actions',
+    width: 30,
+    className: 'actions',
+  },
+]
+
+const openEditFromView = () => {
+  openEditSpecializationModal(viewSpecializationData.value)
+
+  setTimeout(() => {
+    const editModalEl = document.getElementById('edit_specialization')
+    const Bootstrap = window.bootstrap ?? window.Bootstrap
+    if (Bootstrap && editModalEl) {
+      const editModal = new Bootstrap.Modal(editModalEl)
+      editModal.show()
+    }
+  }, 100)
+}
+
+onMounted(async () => {
+  await fetchDepartments()
+  specializationsTable.fetchData().catch(() => {
+    message.error('Failed to load specializations data')
+  })
+})
 </script>
 
 <!-- <style>

@@ -724,7 +724,9 @@ All modals must follow the **SetAppointmentModal** design pattern for consistenc
 #### Required Components:
 
 1. **Header with Gradient Background**
-   - Gradient primary background (`bg-gradient-primary`)
+   - **Add Modal:** Blue gradient (`bg-gradient-primary`) - For creating new records
+   - **Edit Modal:** Orange gradient (`bg-gradient-warning`) - For updating existing records
+   - **View Modal:** Green gradient (`bg-gradient-secondary`) - For viewing record details
    - White text with close button
    - Icon in avatar circle
    - Modal title and optional subtitle
@@ -747,7 +749,8 @@ All modals must follow the **SetAppointmentModal** design pattern for consistenc
 
 ```vue
 <template>
-  <div :id="modalId" class="modal fade" tabindex="-1" aria-hidden="true">
+  <!-- Add Modal Example (Blue/Primary) -->
+  <div :id="addModalId" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow">
         <!-- Header -->
@@ -755,7 +758,7 @@ All modals must follow the **SetAppointmentModal** design pattern for consistenc
           <div class="d-flex align-items-center">
             <div class="me-2">
               <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
-                <i class="ti ti-[icon-name] fs-5 text-white"></i>
+                <i class="ti ti-plus fs-5 text-white"></i>
               </div>
             </div>
             <div>
@@ -778,13 +781,6 @@ All modals must follow the **SetAppointmentModal** design pattern for consistenc
 
           <!-- Content -->
           <div v-else>
-            <!-- Info Card (optional) -->
-            <div class="card bg-light border-0 mb-3" v-if="showInfoCard">
-              <div class="card-body p-2">
-                <!-- Info content -->
-              </div>
-            </div>
-
             <!-- Form/Content -->
             <form class="row g-3">
               <!-- Form fields -->
@@ -804,6 +800,71 @@ All modals must follow the **SetAppointmentModal** design pattern for consistenc
       </div>
     </div>
   </div>
+
+  <!-- Edit Modal Example (Orange/Warning) -->
+  <div :id="editModalId" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <!-- Header -->
+        <div class="modal-header border-0 pb-2 bg-gradient-warning text-white">
+          <div class="d-flex align-items-center">
+            <div class="me-2">
+              <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
+                <i class="ti ti-edit fs-5 text-white"></i>
+              </div>
+            </div>
+            <div>
+              <h5 class="fw-bold modal-title mb-0 text-white fs-16">Edit {{ entityName }}</h5>
+              <p class="mb-0 fs-12 text-white opacity-75">Update {{ entityName }} details</p>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Body & Footer same as Add Modal -->
+      </div>
+    </div>
+  </div>
+
+  <!-- View Modal Example (Green/Secondary) -->
+  <div :id="viewModalId" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <!-- Header -->
+        <div class="modal-header border-0 pb-2 bg-gradient-secondary text-white">
+          <div class="d-flex align-items-center">
+            <div class="me-2">
+              <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
+                <i class="ti ti-eye fs-5 text-white"></i>
+              </div>
+            </div>
+            <div>
+              <h5 class="fw-bold modal-title mb-0 text-white fs-16">{{ entityName }} Details</h5>
+              <p class="mb-0 fs-12 text-white opacity-75">View {{ entityName }} information</p>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Body with read-only content -->
+        <div class="modal-body p-3">
+          <!-- Info Card -->
+          <div class="card bg-light border-0 mb-3">
+            <div class="card-body p-2">
+              <!-- Entity details -->
+            </div>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer border-0 pt-0 pb-3 px-3">
+          <button type="button" class="btn btn-white border fw-medium px-3 py-2 fs-13" data-bs-dismiss="modal">
+            <i class="ti ti-x me-1"></i>Close
+          </button>
+          <button type="button" class="btn btn-primary fw-medium px-3 py-2 fs-13" @click="openEditModal">
+            <i class="ti ti-edit me-1"></i>Edit {{ entityName }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 ```
 
@@ -811,9 +872,17 @@ All modals must follow the **SetAppointmentModal** design pattern for consistenc
 
 ```vue
 <style scoped>
-/* Modal header gradient */
+/* Modal header gradients - Consistent color scheme */
 .bg-gradient-primary {
   background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
 }
 
 /* Close button for white text */
@@ -905,14 +974,156 @@ All modals must follow the **SetAppointmentModal** design pattern for consistenc
 
 Use Tabler Icons with appropriate context:
 
-- **Create/Add:** `ti-plus`, `ti-file-plus`, `ti-calendar-plus`
-- **Edit:** `ti-edit`, `ti-pencil`
-- **Delete:** `ti-trash`, `ti-x`
-- **View:** `ti-eye`, `ti-file-text`
+**Add Modals (Blue/Primary):**
+- **Create/Add:** `ti-plus`, `ti-file-plus`, `ti-calendar-plus`, `ti-user-plus`
+
+**Edit Modals (Orange/Warning):**
+- **Edit:** `ti-edit`, `ti-pencil`, `ti-edit-circle`
+
+**View Modals (Green/Secondary):**
+- **View:** `ti-eye`, `ti-file-text`, `ti-eye-check`
+
+**General Purpose Icons:**
 - **Settings:** `ti-settings`, `ti-adjustments`
 - **User:** `ti-user`, `ti-users`
 - **Calendar:** `ti-calendar`, `ti-calendar-event`
 - **Medical:** `ti-stethoscope`, `ti-pill`, `ti-heart`
+- **Delete:** `ti-trash`, `ti-x` (use in separate delete confirmation modals)
+
+### Status Color System
+
+**Standard:** All status-based UI elements (badges, buttons, headers, icons) must use the following consistent color scheme:
+
+#### Appointment Status Colors
+
+| Status | Color Class | Badge Class | Text Class | Icon Color | Usage |
+|--------|------------|-------------|------------|------------|-------|
+| **SCHEDULED** | `bg-primary` | `badge-soft-primary` | `text-primary` | `text-primary` | Initial appointment booking |
+| **RESCHEDULED** | `bg-primary` | `badge-soft-primary` | `text-primary` | `text-primary` | Appointment has been rescheduled |
+| **CHECKED-IN** | `bg-secondary` | `badge-soft-secondary` | `text-secondary` | `text-secondary` | Patient has arrived |
+| **IN-PROGRESS** | `bg-warning` | `badge-soft-warning` | `text-warning` | `text-warning` | Consultation ongoing |
+| **COMPLETED** | `bg-success` | `badge-soft-success` | `text-success` | `text-success` | Appointment finished |
+| **DONE** | `bg-success` | `badge-soft-success` | `text-success` | `text-success` | Same as COMPLETED |
+| **CANCELLED** | `bg-danger` | `badge-soft-danger` | `text-danger` | `text-danger` | Appointment cancelled |
+
+#### Color Gradient Classes (for headers/cards)
+
+```css
+/* Primary - Blue (SCHEDULED, RESCHEDULED) */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+/* Secondary - Gray (CHECKED-IN) */
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+}
+
+/* Warning - Orange (IN-PROGRESS) */
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
+}
+
+/* Success - Green (COMPLETED, DONE) */
+.bg-gradient-success {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+}
+
+/* Danger - Red (CANCELLED) */
+.bg-gradient-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+```
+
+#### Action Button Color Guidelines
+
+Action buttons in tables should use colors matching the appointment status:
+
+```vue
+<!-- SCHEDULED/CONFIRMED - Primary (Blue) -->
+<router-link
+  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-primary"
+  title="Enter Vitals"
+>
+  <i class="ti ti-activity"></i>
+</router-link>
+
+<!-- CHECKED-IN - Secondary (Gray) -->
+<a
+  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-secondary"
+  title="Start Appointment"
+>
+  <i class="ti ti-stethoscope"></i>
+</a>
+
+<!-- IN-PROGRESS - Warning (Orange) -->
+<router-link
+  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-warning"
+  title="Continue Consultation"
+>
+  <i class="ti ti-player-play"></i>
+</router-link>
+
+<!-- Other statuses - Secondary (Gray) -->
+<router-link
+  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-secondary"
+  title="View Details"
+>
+  <i class="ti ti-eye"></i>
+</router-link>
+```
+
+#### Status Badge Implementation
+
+```vue
+<template>
+  <span
+    :class="[
+      'badge',
+      'fs-10',
+      'fw-medium',
+      record.status === 'SCHEDULED' || record.status === 'RESCHEDULED'
+        ? 'badge-soft-primary text-primary'
+        : record.status === 'CHECKED-IN'
+          ? 'badge-soft-secondary text-secondary'
+          : record.status === 'IN-PROGRESS'
+            ? 'badge-soft-warning text-warning'
+            : record.status === 'COMPLETED' || record.status === 'DONE'
+              ? 'badge-soft-success text-success'
+              : record.status === 'CANCELLED'
+                ? 'badge-soft-danger text-danger'
+                : 'badge-soft-secondary text-secondary',
+    ]"
+  >
+    {{ record.status }}
+  </span>
+</template>
+```
+
+#### Consistency Rules
+
+1. **All UI elements** displaying the same status must use the same color
+2. **Action buttons** should reflect the status-appropriate color for the next action
+3. **Icons** in status-related actions must match the status color
+4. **Canvas/Offcanvas headers** must use gradient backgrounds matching status colors
+5. **Dropdown items** use default styling except for destructive actions (text-danger)
+
+#### Examples Across Components
+
+**Table Badge + Action Button:**
+- Status: CHECKED-IN
+- Badge: `badge-soft-secondary text-secondary`
+- Action Button: `text-secondary` (Start Appointment)
+
+**Canvas Header:**
+- Status: IN-PROGRESS  
+- Header Class: `bg-gradient-warning text-white`
+- Status Badge: `badge-soft-warning text-warning`
+
+**Modal Header:**
+- Action: Add (Create new)
+- Header Class: `bg-gradient-primary text-white`
+- Icon: White on primary background
 
 ### Info Card Pattern
 
