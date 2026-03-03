@@ -35,6 +35,7 @@ import DataTablePagination from '@/components/common-component/DataTablePaginati
 import LayoutsHeader from '@/views/layouts/layouts-header.vue';
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue';
 import SidebarMenu from '@/views/layouts/sidebar-menu.vue'
+import ThemeSettings from '@/views/layouts/theme-settings.vue'
 
 
 
@@ -84,6 +85,7 @@ app.component('data-table-pagination', DataTablePagination)
 app.component('layouts-header', LayoutsHeader )
 app.component('layouts-sidebar', LayoutsSidebar)
 app.component('sidebar-menu', SidebarMenu)
+app.component('theme-settings', ThemeSettings)
 
 app.use(VueApexCharts)
 app.use(Antd)

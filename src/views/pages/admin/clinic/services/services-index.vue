@@ -155,12 +155,11 @@
         <a-table
           class="table table-nowrap datatable pagination-rounded"
           :columns="columns"
-          :table-layout="fixed"
+          table-layout="fixed"
           :data-source="ServicesTable.data.value"
           :pagination="paginationConfig"
           @change="ServicesTable.handleTableChange"
           row-key="id"
-          :pagination-class="pagination - rounded"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'service_name'">
