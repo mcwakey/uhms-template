@@ -581,7 +581,7 @@
   </div>
 </template>
 <script>
-import { useTableStore } from '@/stores/dataTable'
+import { useTableStore } from '@/stores/dataTableStore'
 import { onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
 import FilterIndex from '@/components/common-component/filter-index.vue'

@@ -393,7 +393,7 @@
   </div>
 </template>
 <script>
-import { useTableStore } from '@/stores/dataTable'
+import { useTableStore } from '@/stores/dataTableStore'
 import { useAppointmentStore } from '@/stores/appointmentStore'
 import { usePatientStore } from '@/stores/patientStore'
 import { useStaffStore } from '@/stores/staffStore'

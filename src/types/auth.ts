@@ -1,5 +1,6 @@
 export interface User {
   uuid: string
+  name?: string
   email: string
   first_name?: string
   last_name?: string
@@ -38,6 +39,7 @@ export interface AuthState {
 
 export interface DecodedToken {
   uuid: string
+  name: string
   email: string
   role: string
   is_superuser: boolean
