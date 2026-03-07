@@ -29,7 +29,7 @@ export const usePatientStore = defineStore('patient', {
       this.error = null
       
       try {
-        const response = await axiosInstance.get(`/patients/${id}/`)
+        const response = await axiosInstance.get(`/patients/${id}`)
         this.patient = response.data.data || response.data
       } catch (error: any) {
         console.error('Error fetching patient:', error)
@@ -56,7 +56,7 @@ export const usePatientStore = defineStore('patient', {
       this.loading = true
       this.error = null
       try {
-        const response = await axiosInstance.post('/patients/', patientData, {
+        const response = await axiosInstance.post('/patients', patientData, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -80,7 +80,7 @@ export const usePatientStore = defineStore('patient', {
       this.loading = true
       this.error = null
       try {
-        const response = await axiosInstance.put(`/patients/${id}/`, patientData, {
+        const response = await axiosInstance.put(`/patients/${id}`, patientData, {
           headers: {
             'Content-Type': 'application/json',
           },

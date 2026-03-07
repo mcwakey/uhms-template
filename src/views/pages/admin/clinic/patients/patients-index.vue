@@ -378,7 +378,7 @@ const searchQuery: Ref<string> = ref('')
 const currentSortLabel = ref(t('patients.recent'))
 
 // Store
-const PatientsTable = useTableStore('patients/')
+const PatientsTable = useTableStore('patients')
 
 // Computed
 // const detailedItem: ComputedRef<Patient> = computed(() => PatientsTable.detailedItem.value || {})
