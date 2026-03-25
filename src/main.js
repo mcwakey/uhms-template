@@ -31,8 +31,8 @@ if (import.meta.env.VITE_DEBUG_MODE !== 'true') {
 }
 
 /********** Common components **********/
-import FilterIndex from '@/components/common-component/filter-index.vue';
-import DataTablePagination from '@/components/common-component/DataTablePagination.vue';
+import FilterIndex from '@/components/common/filter-index.vue';
+import DataTablePagination from '@/components/common/DataTablePagination.vue';
 
 /********** Layouts components **********/
 import LayoutsHeader from '@/views/layouts/layouts-header.vue';
@@ -46,25 +46,25 @@ import LayoutHiddenSidebar from '@/views/layouts/layout-hidden-sidebar.vue';
 import ThemeSettings from '@/views/layouts/theme-settings.vue';
 
 
-import AppointmentDetailsTable from '@/views/pages/doctor/appointment-details-table.vue';
-import TransactionsDetailsTable from '@/views/pages/doctor/transactions-details-table.vue';
+import AppointmentDetailsTable from '@/views/doctor/appointment-details-table.vue';
+import TransactionsDetailsTable from '@/views/doctor/transactions-details-table.vue';
 
-import NotesCarousel from '@/views/pages/applications/notes-carousel.vue';
-import SocialCarousel from '@/views/pages/applications/social-carousel.vue';
-import RecentFolders from '@/views/pages/applications/recent-folders.vue';
-import RecentFiles from '@/views/pages/applications/recent-files.vue';
-import AllKanban from '@/views/pages/applications/kanban/all-kanban.vue';
-import HighKanban from '@/views/pages/applications/kanban/high-kanban.vue';
-import MediumKanban from '@/views/pages/applications/kanban/medium-kanban.vue';
-import LowKanban from '@/views/pages/applications/kanban/low-kanban.vue';
-import ContactsTable from '@/views/pages/applications/contacts/contacts-table.vue';
+import NotesCarousel from '@/views/applications/notes-carousel.vue';
+import SocialCarousel from '@/views/applications/social-carousel.vue';
+import RecentFolders from '@/views/applications/recent-folders.vue';
+import RecentFiles from '@/views/applications/recent-files.vue';
+import AllKanban from '@/views/applications/kanban/all-kanban.vue';
+import HighKanban from '@/views/applications/kanban/high-kanban.vue';
+import MediumKanban from '@/views/applications/kanban/medium-kanban.vue';
+import LowKanban from '@/views/applications/kanban/low-kanban.vue';
+import ContactsTable from '@/views/applications/contacts/contacts-table.vue';
 
-import LightBoxOne from "@/views/pages/uiinterface/advancedui/lightbox-one.vue";
-import LightBoxTwo from "@/views/pages/uiinterface/advancedui/lightbox-two.vue";
-import FormValidationOne from  "@//views/pages/uiinterface/form/form-validation-one.vue"
+import LightBoxOne from "@/views/uiinterface/advancedui/lightbox-one.vue";
+import LightBoxTwo from "@/views/uiinterface/advancedui/lightbox-two.vue";
+import FormValidationOne from  "@/views/uiinterface/form/form-validation-one.vue"
 
 
-import SettingsSidebar from '@/views/pages/settings/settings-sidebar.vue';
+import SettingsSidebar from '@/views/settings/settings-sidebar.vue';
 import DoctorAppointmentModal from '@/components/modal/doctor-appointment-modal.vue';
 import DoctorsLeavesModal from '@/components/modal/doctors-leaves-modal.vue';
 import ContactsModal from '@/components/modal/contacts-modal.vue';
@@ -174,4 +174,3 @@ app.component('vue3-select', Vue3Select);
 app.component('vue-multiselect', Multiselect);
 app.component('date-picker', DatePicker);
 app.use(router).mount('#app'); 
-

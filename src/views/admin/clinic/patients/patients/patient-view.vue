@@ -841,37 +841,14 @@
                   </span>
                 </template>
                 <template v-else-if="column.key === 'actions'">
-                  <div class="action-item d-flex justify-content-center">
-                    <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                      <i class="ti ti-dots-vertical"></i>
-                    </a>
-                    <ul class="dropdown-menu p-2">
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="javascript:void(0);"
-                          @click="viewAppointment(record)"
-                          >{{ $t('patient_view.view') }}</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="javascript:void(0);"
-                          @click="editAppointment(record)"
-                          >{{ $t('patient_view.edit') }}</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="javascript:void(0);"
-                          @click="deleteAppointment(record)"
-                          >{{ $t('patient_view.delete') }}</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
+                  <ActionIcons
+                    :viewTitle="$t('patient_view.view')"
+                    :editTitle="$t('patient_view.edit')"
+                    :deleteTitle="$t('patient_view.delete')"
+                    @view="viewAppointment(record)"
+                    @edit="editAppointment(record)"
+                    @delete="deleteAppointment(record)"
+                  />
                 </template>
               </template>
             </a-table>
@@ -1115,9 +1092,11 @@ import AddInsuranceModal from '@/components/modal/AddInsuranceModal.vue'
 import EditInsuranceModal from '@/components/modal/EditInsuranceModal.vue'
 import EditNextOfKinModal from '@/components/modal/EditNextOfKinModal.vue'
 import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
-import DateRangePicker from '@/components/common-component/DateRangePicker.vue'
-import DataTablePagination from '@/components/common-component/DataTablePagination.vue'
+import DateRangePicker from '@/components/common/DateRangePicker.vue'
+import DataTablePagination from '@/components/common/DataTablePagination.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 import type { TableColumn } from '@/types/common'
+import { showModalById } from '@/utils/bootstrap'
 
 // Types
 interface Appointment {
@@ -1462,89 +1441,9 @@ function editCurrentInsurance(): void {
 }
 
 function openCreateInsuranceModal(): void {
-  console.log('Opening create insurance modal - patient-view.vue')
-  console.log('Bootstrap available:', !!window.bootstrap)
-  console.log('Patient data:', patientStore.patient)
-
   nextTick(() => {
-    const modalEl = document.getElementById('create_insurance')
-    console.log('Modal element found:', !!modalEl)
-
-    const Bootstrap = window.bootstrap || (window as any).Bootstrap || ((window as any).$ && (window as any).$.fn.modal)
-
-    if (Bootstrap && modalEl) {
-      try {
-        let modal: any
-        if (window.bootstrap) {
-          modal = new window.bootstrap.Modal(modalEl)
-        } else if ((window as any).Bootstrap) {
-          modal = new (window as any).Bootstrap.Modal(modalEl)
-        } else if ((window as any).$ && (window as any).$.fn.modal) {
-          (window as any).$(modalEl).modal('show')
-          console.log('Modal opened using jQuery Bootstrap')
-          return
-        }
-
-        if (modal) {
-          modal.show()
-          console.log('Modal show() called using Bootstrap')
-        }
-      } catch (error) {
-        console.error('Error opening modal with Bootstrap:', error)
-        fallbackShowModal(modalEl)
-      }
-    } else {
-      console.warn('Bootstrap not found, using fallback method')
-      if (modalEl) fallbackShowModal(modalEl)
-    }
+    showModalById('create_insurance')
   })
-}
-
-const fallbackShowModal = (modalEl: HTMLElement): void => {
-  if (!modalEl) return
-
-  console.log('Using fallback modal display method')
-
-  modalEl.style.display = 'block'
-  modalEl.classList.add('show')
-  modalEl.setAttribute('aria-hidden', 'false')
-
-  const backdrop = document.createElement('div')
-  backdrop.className = 'modal-backdrop fade show'
-  backdrop.id = 'fallback-modal-backdrop'
-  document.body.appendChild(backdrop)
-  document.body.classList.add('modal-open')
-
-  const setupCloseHandlers = (): void => {
-    const closeModal = (): void => {
-      modalEl.style.display = 'none'
-      modalEl.classList.remove('show')
-      modalEl.setAttribute('aria-hidden', 'true')
-      document.body.classList.remove('modal-open')
-
-      const existingBackdrop = document.getElementById('fallback-modal-backdrop')
-      if (existingBackdrop) {
-        existingBackdrop.remove()
-      }
-    }
-
-    backdrop.addEventListener('click', closeModal)
-
-    const closeBtn = modalEl.querySelector('[data-bs-dismiss="modal"], .btn-close')
-    if (closeBtn) {
-      closeBtn.addEventListener('click', closeModal)
-    }
-
-    const handleEscape = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape') {
-        closeModal()
-        document.removeEventListener('keydown', handleEscape)
-      }
-    }
-    document.addEventListener('keydown', handleEscape)
-  }
-
-  setupCloseHandlers()
 }
 
 const handleInsuranceAdded = async (): Promise<void> => {
@@ -1553,35 +1452,8 @@ const handleInsuranceAdded = async (): Promise<void> => {
 }
 
 const openSetAppointmentModal = (): void => {
-  console.log('Opening set appointment modal - patient-view.vue')
-  console.log('Patient data for appointment:', patientStore.patient)
-
   nextTick(() => {
-    setTimeout(() => {
-      const modalEl = document.getElementById('set_appointment')
-      console.log('Appointment modal element found:', !!modalEl)
-
-      if (!modalEl) {
-        console.error('Set appointment modal element not found in DOM')
-        return
-      }
-
-      if (window.bootstrap) {
-        console.log('Using Bootstrap 5 modal')
-        const modal = new window.bootstrap.Modal(modalEl)
-        modal.show()
-      } else if ((window as any).Bootstrap) {
-        console.log('Using Bootstrap (capital B) modal')
-        const modal = new (window as any).Bootstrap.Modal(modalEl)
-        modal.show()
-      } else if ((window as any).jQuery && (window as any).jQuery.fn && (window as any).jQuery.fn.modal) {
-        console.log('Using jQuery/Bootstrap 4 modal')
-        ;(window as any).jQuery(modalEl).modal('show')
-      } else {
-        console.warn('Bootstrap not found, using fallback method')
-        fallbackShowModal(modalEl)
-      }
-    }, 50)
+    setTimeout(() => showModalById('set_appointment'), 50)
   })
 }
 
@@ -1621,15 +1493,6 @@ onMounted(() => {
   patientStore.fetchPatient(uuid)
   fetchInsurances()
   fetchAppointments()
-
-  setTimeout(() => {
-    const insuranceModal = document.getElementById('create_insurance')
-    const appointmentModal = document.getElementById('set_appointment')
-    console.log('After mount - Insurance modal in DOM:', !!insuranceModal)
-    console.log('After mount - Appointment modal in DOM:', !!appointmentModal)
-    console.log('After mount - Bootstrap available:', !!window.bootstrap)
-    console.log('Patient store state:', patientStore.patient)
-  }, 1000)
 })
 </script>
 

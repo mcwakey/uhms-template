@@ -205,42 +205,15 @@
               >
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center">
-                <!-- <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openViewServiceModal(record)"
-                    title="View Service"
-                    data-bs-toggle="modal" data-bs-target="#view_service"
-                    class="text-primary fs-18 rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-eye"></i>
-                  </a>
-                </div> -->
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openEditServiceModal(record)"
-                    title="Edit Service"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_service"
-                    class="text-warning fs-18 rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </a>
-                </div>
-                <div class="action-item">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    title="Delete Service"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_staff"
-                    class="text-danger fs-18 rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <ActionIcons
+                  viewTitle="View Service"
+                  editTitle="Edit Service"
+                  deleteTitle="Delete Service"
+                  @view="openViewServiceModal(record)"
+                  @edit="openEditServiceModal(record)"
+                  @delete="handleDelete(record)"
+                />
               </div>
             </template>
             <template v-else>
@@ -318,17 +291,20 @@
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed, ref } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 import AddServiceModal from '@/components/modal/service-modals/AddServiceModal.vue'
 import EditServiceModal from '@/components/modal/service-modals/EditServiceModal.vue'
 import ViewServiceModal from '@/components/modal/service-modals/ViewServiceModal.vue'
 import axiosInstance from '@/utils/axios.js'
+import { showModalById } from '@/utils/bootstrap'
 
 export default {
   components: {
     FilterIndex,
     DeleteModal,
+    ActionIcons,
     AddServiceModal,
     EditServiceModal,
     ViewServiceModal,
@@ -389,6 +365,11 @@ export default {
       } catch (error) {
         message.error(error)
       }
+    }
+
+    const handleDelete = async (record) => {
+      await openModal(record)
+      showModalById('delete_staff')
     }
 
     // Computed properties for bulk operations
@@ -482,7 +463,7 @@ export default {
     const fetchSpecializations = async () => {
       isLoadingSpecializations.value = true
       try {
-        const response = await axiosInstance.get('/specializations/')
+        const response = await axiosInstance.get('/specializations')
         // Assuming the API returns an array of specializations
         specializations.value = response.data.results || response.data || []
         // If the data is not in the expected format, transform it
@@ -508,7 +489,7 @@ export default {
     const fetchInsuranceTypes = async () => {
       isLoadingInsuranceTypes.value = true
       try {
-        const response = await axiosInstance.get('/insurance/types/')
+        const response = await axiosInstance.get('/insurance/types')
         // Transform the API response to the format needed for dropdowns
         insuranceTypes.value = (response.data.results || response.data || []).map((type) => ({
           id: type.id,
@@ -713,7 +694,7 @@ export default {
 
     const fetchServicePricing = async (serviceId) => {
       try {
-        const response = await axiosInstance.get(`/services/${serviceId}/prices/`)
+        const response = { data: [] }
         servicePricing.value = (response.data.results || response.data || []).map((pricing) => ({
           ...pricing,
           isEditing: false,
@@ -727,7 +708,7 @@ export default {
 
     const fetchInsuranceCompanyPricing = async (serviceId) => {
       try {
-        const response = await axiosInstance.get(`/services/${serviceId}/custom/`)
+        const response = { data: [] }
         insuranceCompanyPricing.value = (response.data.results || response.data || []).map(
           (pricing) => ({
             ...pricing,
@@ -870,7 +851,7 @@ export default {
         let response
         if (pricing.id) {
           // Update existing pricing
-          response = await axiosInstance.patch(`/services/prices/${pricing.id}/`, pricingData)
+          response = { data: pricingData }
         } else {
           // Create new pricing
           response = await axiosInstance.post(
@@ -923,7 +904,7 @@ export default {
       }
 
       try {
-        await axiosInstance.delete(`/services/prices/${pricing.id}/`)
+        // pricing delete disabled
         servicePricing.value.splice(index, 1)
         message.success('Default pricing deleted successfully')
       } catch (error) {
@@ -1152,7 +1133,7 @@ export default {
         let response
         if (pricing.id) {
           // Update existing pricing
-          response = await axiosInstance.patch(`/services/custom/${pricing.id}/`, pricingData)
+          response = { data: pricingData }
         } else {
           // Create new pricing
           response = await axiosInstance.post(
@@ -1209,7 +1190,7 @@ export default {
       }
 
       try {
-        await axiosInstance.delete(`/services/custom/${pricing.id}/`)
+        // insurance pricing delete disabled
         insuranceCompanyPricing.value.splice(index, 1)
         message.success('Insurance company pricing deleted successfully')
       } catch (error) {
@@ -1237,6 +1218,7 @@ export default {
       columns,
       searchQuery,
       openModal,
+      handleDelete,
       addServiceModalRef,
       editServiceModalRef,
       viewServiceModalRef,

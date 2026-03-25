@@ -187,35 +187,15 @@
               >
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center gap-1">
-                <a href="javascript:void(0);" class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1" data-bs-toggle="dropdown">
-                  <i class="ti ti-dots-vertical"></i>
-                </a>
-                <ul class="dropdown-menu p-2">
-                  <li>
-                    <a
-                      href="javascript:void(0);"
-                      @click="openEditSpecializationModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#edit_specialization"
-                      class="dropdown-item d-flex align-items-center"
-                    >
-                      Edit
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="javascript:void(0);"
-                      @click="openModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#delete_specializations"
-                      title="Delete Specialization"
-                      class="dropdown-item d-flex align-items-center"
-                    >
-                      Delete
-                    </a>
-                  </li>
-                </ul>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <ActionIcons
+                  viewTitle="View Specialization"
+                  editTitle="Edit Specialization"
+                  deleteTitle="Delete Specialization"
+                  @view="openViewSpecializationModal(record)"
+                  @edit="openEditSpecializationModal(record)"
+                  @delete="openModal(record)"
+                />
               </div>
             </template>
           </template>
@@ -238,7 +218,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow">
         <!-- Header -->
-        <div class="modal-header border-0 pb-2 bg-gradient-primary text-white">
+        <div class="modal-header border-0 pb-2 bg-primary text-white">
           <div class="d-flex align-items-center">
             <div class="me-2">
               <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
@@ -324,7 +304,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow">
         <!-- Header -->
-        <div class="modal-header border-0 pb-2 bg-gradient-warning text-white">
+        <div class="modal-header border-0 pb-2 bg-primary text-white">
           <div class="d-flex align-items-center">
             <div class="me-2">
               <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
@@ -410,7 +390,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow">
         <!-- Header -->
-        <div class="modal-header border-0 pb-2 bg-gradient-secondary text-white">
+        <div class="modal-header border-0 pb-2 bg-primary text-white">
           <div class="d-flex align-items-center">
             <div class="me-2">
               <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
@@ -499,37 +479,6 @@
 </template>
 
 <style scoped>
-/* Modal header gradients */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.bg-gradient-warning {
-  background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
-}
-
-.bg-gradient-secondary {
-  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-}
-
-.bg-gradient-warning {
-  background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
-}
-
-.bg-gradient-secondary {
-  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-}
-
-/* Close button for white text */
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-
-.btn-close-white:hover {
-  opacity: 1;
-}
-
 /* Form label styling */
 .form-label {
   font-weight: 500;
@@ -604,7 +553,9 @@ import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 import axiosInstance from '@/utils/axios'
+import { hideModalById, showModalById } from '@/utils/bootstrap'
 
 interface Department {
   id: number
@@ -681,7 +632,7 @@ const isEditSubmitting = ref<boolean>(false)
 // Fetch departments
 const fetchDepartments = async () => {
   try {
-    const response = await axiosInstance.get('/departments/')
+    const response = await axiosInstance.get('/departments')
     departments.value = response.data.results || response.data
   } catch (error) {
     console.error('Failed to fetch departments:', error)
@@ -793,7 +744,7 @@ const handleAddSpecialization = async () => {
       description: addSpecializationForm.value.description.trim(),
     }
 
-    await axiosInstance.post('/specializations/', specializationData)
+    await axiosInstance.post('/specializations', specializationData)
     message.success('Specialization created successfully')
 
     // Reset form
@@ -805,12 +756,7 @@ const handleAddSpecialization = async () => {
     }
 
     // Close modal
-    const modalEl = document.getElementById('add_specialization')
-    const Bootstrap = window.bootstrap ?? window.Bootstrap
-    if (Bootstrap && modalEl) {
-      const modal = Bootstrap.Modal.getInstance(modalEl)
-      if (modal) modal.hide()
-    }
+    hideModalById('add_specialization')
 
     // Refresh the table
     await specializationsTable.fetchData()
@@ -856,12 +802,7 @@ const handleEditSpecialization = async () => {
     }
 
     // Close modal
-    const modalEl = document.getElementById('edit_specialization')
-    const Bootstrap = window.bootstrap ?? window.Bootstrap
-    if (Bootstrap && modalEl) {
-      const modal = Bootstrap.Modal.getInstance?.(modalEl) || null
-      if (modal) modal.hide()
-    }
+    hideModalById('edit_specialization')
 
     // Refresh the table
     await specializationsTable.fetchData()
@@ -921,12 +862,7 @@ const openEditFromView = () => {
   openEditSpecializationModal(viewSpecializationData.value)
 
   setTimeout(() => {
-    const editModalEl = document.getElementById('edit_specialization')
-    const Bootstrap = window.bootstrap ?? window.Bootstrap
-    if (Bootstrap && editModalEl) {
-      const editModal = new Bootstrap.Modal(editModalEl)
-      editModal.show()
-    }
+    showModalById('edit_specialization')
   }, 100)
 }
 

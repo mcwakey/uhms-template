@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow-lg rounded-3">
         <!-- Header -->
-        <div class="modal-header bg-gradient-primary text-white border-0 py-3 px-4">
+        <div class="modal-header bg-primary text-white border-0 py-3 px-4">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="modal-title fw-bold text-white mb-1">{{ displayTitle }}</h5>
@@ -228,6 +228,7 @@ import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import { hideModalById } from '@/utils/bootstrap'
 
 const props = defineProps({
   modalId: { type: String, default: 'edit_insurance_modal' },
@@ -312,7 +313,7 @@ const resetForm = () => {
 const loadInsuranceTypes = async () => {
   try {
     loadingInsuranceTypes.value = true
-    const response = await axiosInstance.get('/insurance/types/')
+    const response = await axiosInstance.get('/insurance/types')
     insuranceTypes.value = response.data.results || response.data || []
   } catch (error) {
     console.error('Error loading insurance types:', error)
@@ -326,7 +327,7 @@ const loadInsuranceTypes = async () => {
 const loadInsuranceCompanies = async (typeId) => {
   try {
     loadingInsuranceCompanies.value = true
-    const response = await axiosInstance.get(`/insurance/companies/?type=${typeId}`)
+    const response = await axiosInstance.get(`/insurance/companies?type=${typeId}`)
     insuranceCompanies.value = response.data.results || response.data || []
   } catch (error) {
     console.error('Error loading insurance companies:', error)
@@ -476,7 +477,7 @@ const updateInsurance = async () => {
     }
 
     const response = await axiosInstance.put(
-      `/patients/${props.selectedPatient.uuid}/insurances/${props.insuranceData.id}/`,
+      `/patients/${props.selectedPatient.uuid}/insurances/${props.insuranceData.id}`,
       payload
     )
 
@@ -487,13 +488,7 @@ const updateInsurance = async () => {
     emit('update:visible', false)
 
     // Close modal
-    const modalElement = document.getElementById(props.modalId)
-    if (modalElement && window.bootstrap) {
-      const modal = window.bootstrap.Modal.getInstance(modalElement)
-      if (modal) {
-        modal.hide()
-      }
-    }
+    hideModalById(props.modalId)
   } catch (error) {
     console.error('Error updating insurance:', error)
     message.error(t('insurance_modal.update_fail'))
@@ -520,18 +515,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover {
-  opacity: 1;
-}
-
 .custom-multiselect :deep(.multiselect__tags) {
   border: 1px solid #dee2e6;
   border-radius: 0.375rem;

@@ -277,100 +277,45 @@
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center justify-content-end gap-1">
-                <!-- Main Action Button -->
-                <router-link
-                  v-if="['SCHEDULED', 'CONFIRMED'].includes(record.status)"
-                  :to="{ name: 'PatientVitals', params: { id: record.id } }"
-                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-primary"
-                  title="Enter Vitals"
-                >
-                  <i class="ti ti-activity"></i>
-                </router-link>
-                <a
-                  v-else-if="record.status === 'CHECKED-IN'"
-                  href="javascript:void(0);"
-                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-secondary"
-                  @click="startAppointment(record)"
-                  title="Start Appointment"
-                >
-                  <i class="ti ti-stethoscope"></i>
-                </a>
-                <router-link
-                  v-else-if="record.status === 'IN-PROGRESS'"
-                  :to="{ name: 'ViewAppointment', params: { id: record.id } }"
-                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-warning"
-                  title="Continue Consultation"
-                >
-                  <i class="ti ti-player-play"></i>
-                </router-link>
-                <router-link
-                  v-else
-                  :to="{ name: 'ViewAppointment', params: { id: record.id } }"
-                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1 text-secondary"
-                  title="View Details"
-                >
-                  <i class="ti ti-eye"></i>
-                </router-link>
-
-                <!-- Dropdown Actions -->
-                <a
-                  href="javascript:void(0);"
-                  class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="ti ti-dots-vertical"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-2">
-                  <!-- Reschedule / Cancel for active appointments -->
-                  <template
-                    v-if="['SCHEDULED', 'CONFIRMED', 'CHECKED-IN'].includes(record.status)"
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <template v-if="['SCHEDULED', 'CONFIRMED'].includes(record.status)">
+                  <a
+                    href="javascript:void(0);"
+                    class="action-icon text-primary"
+                    title="Enter Vitals"
+                    @click.prevent="$router.push({ name: 'PatientVitals', params: { id: record.id } })"
                   >
-                    <li>
-                      <a
-                        class="dropdown-item d-flex align-items-center"
-                        href="javascript:void(0);"
-                        @click="openRescheduleModal(record)"
-                      >
-                        <i class="ti ti-calendar-time me-2"></i> Reschedule
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item d-flex align-items-center text-danger"
-                        href="javascript:void(0);"
-                        @click="cancelAppointment(record)"
-                      >
-                        <i class="ti ti-x me-2"></i> Cancel
-                      </a>
-                    </li>
-                  </template>
-
-                  <!-- Edit / Delete for others -->
-                  <template v-else>
-                    <li>
-                      <a
-                        class="dropdown-item d-flex align-items-center"
-                        href="javascript:void(0);"
-                        @click="openModal(record)"
-                      >
-                        <i class="ti ti-edit me-2"></i> Edit
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item d-flex align-items-center text-danger"
-                        href="javascript:void(0);"
-                        @click="openModal(record)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#delete_staff"
-                      >
-                        <i class="ti ti-trash me-2"></i> Delete
-                      </a>
-                    </li>
-                  </template>
-                </ul>
+                    <i class="ti ti-activity"></i>
+                  </a>
+                </template>
+                <template v-else-if="record.status === 'CHECKED-IN'">
+                  <a
+                    href="javascript:void(0);"
+                    class="action-icon text-secondary"
+                    title="Start Appointment"
+                    @click.prevent="startAppointment(record)"
+                  >
+                    <i class="ti ti-stethoscope"></i>
+                  </a>
+                </template>
+                <template v-else-if="record.status === 'IN-PROGRESS'">
+                  <a
+                    href="javascript:void(0);"
+                    class="action-icon text-warning"
+                    title="Continue Consultation"
+                    @click.prevent="$router.push({ name: 'ViewAppointment', params: { id: record.id } })"
+                  >
+                    <i class="ti ti-player-play"></i>
+                  </a>
+                </template>
+                <ActionIcons
+                  viewTitle="View Appointment"
+                  editTitle="Edit Appointment"
+                  deleteTitle="Delete Appointment"
+                  @view="$router.push({ name: 'ViewAppointment', params: { id: record.id } })"
+                  @edit="openModal(record)"
+                  @delete="() => { openModal(record); }"
+                />
               </div>
             </template>
           </template>
@@ -435,14 +380,16 @@ import { useAppointmentStore } from '@/stores/appointmentStore'
 import { usePatientStore } from '@/stores/patientStore'
 import { useStaffStore } from '@/stores/staffStore'
 import type { Appointment, AppointmentStatus, Service, TableColumn } from '@/types'
-import FilterIndex from '@/components/common-component/filter-index.vue'
-import AppointmentFilter from '../../../../../components/common-component/AppointmentFilter.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
+import AppointmentFilter from '@/components/common/AppointmentFilter.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
-import AppointmentDetailsCanvas from '@/components/common-component/AppointmentDetailsCanvas.vue'
+import AppointmentDetailsCanvas from '@/components/common/AppointmentDetailsCanvas.vue'
 import RescheduleModal from '@/components/modal/RescheduleModal.vue'
 import ChangeDoctorModal from '@/components/modal/ChangeDoctorModal.vue'
-import DateRangePicker from '@/components/common-component/DateRangePicker.vue'
+import DateRangePicker from '@/components/common/DateRangePicker.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 import axiosInstance from '@/utils/axios'
+import { getOffcanvasInstance } from '@/utils/bootstrap'
 import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
@@ -814,35 +761,25 @@ const closeOffcanvas = (): Promise<void> => {
       resolve()
     }
 
-    // Try using Bootstrap API first
-    if (window.bootstrap) {
-      try {
-        const offcanvasInstance = window.bootstrap.Offcanvas.getInstance(offcanvasElement)
-        console.log('🔍 Bootstrap offcanvas instance:', offcanvasInstance)
+    try {
+      const offcanvasInstance = getOffcanvasInstance(offcanvasElement)
+      console.log('🔍 Bootstrap offcanvas instance:', offcanvasInstance)
 
-        if (offcanvasInstance) {
-          console.log('🔄 Using existing Bootstrap instance')
-          // Listen for the hidden event
-          offcanvasElement.addEventListener('hidden.bs.offcanvas', cleanup, { once: true })
-          offcanvasInstance.hide()
-        } else {
-          console.log('🔄 No Bootstrap instance found, using manual cleanup')
-          // Manual cleanup without destroying the element
-          cleanup()
-        }
-
-        // Fallback timeout in case the event doesn't fire
-        setTimeout(() => {
-          console.log('⏰ Fallback timeout triggered')
-          cleanup()
-        }, 500)
-      } catch (error) {
-        console.warn('❌ Bootstrap offcanvas API failed, using manual cleanup:', error)
+      if (offcanvasInstance) {
+        console.log('🔄 Using existing Bootstrap instance')
+        offcanvasElement.addEventListener('hidden.bs.offcanvas', cleanup, { once: true })
+        offcanvasInstance.hide()
+      } else {
+        console.log('🔄 No Bootstrap instance found, using manual cleanup')
         cleanup()
       }
-    } else {
-      console.log('🔄 No Bootstrap available, using manual cleanup')
-      // Fallback: manual cleanup
+
+      setTimeout(() => {
+        console.log('⏰ Fallback timeout triggered')
+        cleanup()
+      }, 500)
+    } catch (error) {
+      console.warn('❌ Bootstrap offcanvas API failed, using manual cleanup:', error)
       cleanup()
     }
   })
@@ -859,15 +796,13 @@ const forceCloseAllOverlays = () => {
     element.classList.remove('show')
 
     // Try Bootstrap API to properly close
-    if (window.bootstrap) {
-      try {
-        const instance = window.bootstrap.Offcanvas.getInstance(element)
-        if (instance) {
-          instance.hide()
-        }
-      } catch (error) {
-        console.warn('Failed to close offcanvas via Bootstrap:', error)
+    try {
+      const instance = getOffcanvasInstance(element)
+      if (instance) {
+        instance.hide()
       }
+    } catch (error) {
+      console.warn('Failed to close offcanvas via Bootstrap:', error)
     }
   })
 
@@ -1103,7 +1038,7 @@ const handleDoctorChangeSave = async (transferData: any) => {
 const fetchServices = async () => {
   try {
     servicesLoading.value = true
-    const response = await axiosInstance.get('/services/')
+    const response = await axiosInstance.get('/services')
     availableServices.value = response.data.results || response.data || []
   } catch (error: any) {
     console.error('Error fetching services:', error)
@@ -1312,7 +1247,7 @@ const fetchDoctors = async () => {
   try {
     // Fetch doctors (staff with role 'doctor' or similar logic)
     // Assuming /staff/ endpoint supports filtering or returns all staff
-    const response = await axiosInstance.get('/staff/', { params: { page_size: 100 } })
+    const response = await axiosInstance.get('/staff', { params: { page_size: 100 } })
     doctorsList.value = response.data.results || response.data || []
   } catch (error: any) {
     console.error('Error fetching doctors:', error)

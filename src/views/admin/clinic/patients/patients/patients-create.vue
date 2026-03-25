@@ -641,7 +641,7 @@ const loadingInsurancePlans = ref(false)
 const loadInsuranceTypes = async () => {
   try {
     loadingInsuranceTypes.value = true
-    const response = await axiosInstance.get('/insurance/types/')
+    const response = await axiosInstance.get('/insurance/types')
     insuranceTypes.value = response.data.results || response.data || []
   } catch (error) {
     console.error('Error loading insurance types:', error)
@@ -1615,4 +1615,3 @@ async function onSubmit(): Promise<void> {
   color: white;
 }
 </style>
-

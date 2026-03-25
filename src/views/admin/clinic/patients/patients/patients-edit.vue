@@ -634,7 +634,7 @@ const loadInsuranceTypes = async () => {
   
   try {
     loadingInsuranceTypes.value = true
-    const response = await axiosInstance.get('/insurance/types/')
+    const response = await axiosInstance.get('/insurance/types')
     if (!isMounted.value) return // Check after async operation
     insuranceTypes.value = response.data.results || response.data || []
   } catch (error) {

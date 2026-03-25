@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg rounded-3">
         <!-- Header -->
-        <div class="modal-header bg-gradient-primary text-white border-0 py-3 px-4">
+        <div class="modal-header bg-primary text-white border-0 py-3 px-4">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="modal-title fw-bold text-white mb-1">{{ displayTitle }}</h5>
@@ -107,6 +107,7 @@ import { useI18n } from 'vue-i18n'
 import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
+import { hideModalById } from '@/utils/bootstrap'
 
 const props = defineProps({
   modalId: { type: String, default: 'edit_next_of_kin_modal' },
@@ -193,13 +194,7 @@ const updateNextOfKin = async () => {
     emit('updated', response.data)
 
     // Close modal
-    const modalElement = document.getElementById(props.modalId)
-    if (modalElement && window.bootstrap) {
-      const modal = window.bootstrap.Modal.getInstance(modalElement)
-      if (modal) {
-        modal.hide()
-      }
-    }
+    hideModalById(props.modalId)
   } catch (error) {
     console.error('Error updating next of kin:', error)
     message.error(t('next_of_kin_modal.update_fail'))
@@ -219,18 +214,6 @@ watch(
 </script>
 
 <style scoped>
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover {
-  opacity: 1;
-}
-
 .custom-multiselect :deep(.multiselect__tags) {
   border: 1px solid #dee2e6;
   border-radius: 0.375rem;

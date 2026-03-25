@@ -197,47 +197,22 @@
               >
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center">
-                <div class="action-item me-2">
-                  <router-link
-                    class="text-primary fs-18"
-                    :to="{ name: 'StaffAppointments', params: { id: record.uuid } }"
-                  >
-                    <i class="ti ti-calendar-cog"></i>
-                  </router-link>
-                </div>
-                <div class="action-item me-2">
-                  <!-- <router-link to="javascript:void(0);"
-                     @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#delete_staff">
-                     Delete
-                    </router-link> -->
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_staff"
-                    title="{{$t('set_appointment')}}"
-                    class="text-danger fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div>
-                <!-- <div class="action-item">
-                  <router-link to="javascript:void(0);" data-bs-toggle="dropdown">
-                    <i class="ti ti-dots-vertical"></i>
-                  </router-link>
-                  <ul class="dropdown-menu p-2">
-                    <li>
-                    <router-link class="dropdown-item" :to="{ name: 'ViewStaff', params: { id: record.uuid } }" title="View Staff">{{$t('view')}}</router-link>
-                    </li>
-                    <li>
-                    <router-link class="dropdown-item" :to="{ name: 'EditStaff', params: { id: record.uuid } }" title="Edit Staff" >{{$t('edit')}}</router-link>
-                  </li>
-                    <li>
-                    <router-link class="dropdown-item" to="javascript:void(0);" @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#delete_staff">Delete</router-link>
-                    </li>
-                  </ul>
-                </div> -->
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <router-link
+                  class="action-icon text-primary"
+                  :to="{ name: 'StaffAppointments', params: { id: record.uuid } }"
+                  title="Appointments"
+                >
+                  <i class="ti ti-calendar-cog"></i>
+                </router-link>
+                <ActionIcons
+                  viewTitle="View Staff"
+                  editTitle="Edit Staff"
+                  deleteTitle="Delete Staff"
+                  @view="$router.push({ name: 'ViewStaff', params: { id: record.uuid } })"
+                  @edit="$router.push({ name: 'EditStaff', params: { id: record.uuid } })"
+                  @delete="handleDelete(record)"
+                />
               </div>
             </template>
           </template>
@@ -263,11 +238,13 @@
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
+import { showModalById } from '@/utils/bootstrap'
 
 export default {
-  components: { FilterIndex, DeleteModal },
+  components: { FilterIndex, DeleteModal, ActionIcons },
   name: 'StaffTable',
 
   setup() {
@@ -354,11 +331,27 @@ export default {
       })
     })
 
+    const openModal = async (record) => {
+      try {
+        StaffTable.selectItem(record)
+        await StaffTable.fetchItemDetails(record.uuid)
+      } catch (error) {
+        message.error(error)
+      }
+    }
+
+    const handleDelete = async (record) => {
+      await openModal(record)
+      showModalById('delete_staff')
+    }
+
     return {
       StaffTable,
       detailedItem,
       paginationConfig,
       columns,
+      openModal,
+      handleDelete,
     }
   },
 }

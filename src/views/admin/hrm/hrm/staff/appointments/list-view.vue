@@ -259,77 +259,15 @@
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-end justify-content-end">
-                <!-- <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openSetAppointmentModal(record)"
-                    title="{{$t('set_appointment')}}"
-                    data-bs-toggle="modal" data-bs-target="#set_appointment"
-                    class="text-success fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-player-play"></i>
-                  </a>
-                </div> -->
-                <div
-                  v-if="record.status === 'IN-PROGRESS' || record.status === 'COMPLETED'"
-                  class="action-item me-2"
-                >
-                  <RouterLink
-                    :to="{ name: 'ViewAppointment', params: { id: record.id } }"
-                    class="text-primary fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-eye"></i>
-                  </RouterLink>
-                  <!-- <a
-                    href="javascript:void(0);"
-                    @click="openSetAppointmentModal(record)"
-                    title="{{$t('set_appointment')}}"
-                    data-bs-toggle="modal" data-bs-target="#set_appointment"
-                    class="text-primary fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-eye"></i>
-                  </a> -->
-                </div>
-                <div class="action-item me-2">
-                  <!-- <a
-                    href="javascript:void(0);"
-                    @click="openSetAppointmentModal(record)"
-                    title="{{$t('set_appointment')}}"
-                    data-bs-toggle="modal" data-bs-target="#set_appointment"
-                    class="text-warning fs-18 rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </a> -->
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_staff"
-                    title="{{$t('set_appointment')}}"
-                    class="text-danger fs-18 d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div>
-                <!-- <div class="action-item">
-                  <a href="javascript:void(0);" data-bs-toggle="dropdown" title="More Actions"><i class="ti ti-dots-vertical"></i></a>
-                  <ul class="dropdown-menu p-2">
-                    <li>
-                    <router-link
-                      class="dropdown-item"
-                      :to="{ name: 'ViewPatient', params: { id: record.uuid } }"
-                      title="View Patient"
-                    >{{$t('view')}}</router-link>
-                    </li>
-                    <li>
-                    <a class="dropdown-item" href="javascript:void(0);" @click="openModal(record)" title="Edit Patient">{{$t('edit')}}</a>
-                    </li>
-                    <li>
-                    <a class="dropdown-item" href="javascript:void(0);" @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#delete_staff" title="Delete Patient">{{$t('delete')}}</a>
-                    </li>
-                  </ul>
-                </div> -->
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <ActionIcons
+                  :show-view="record.status === 'IN-PROGRESS' || record.status === 'COMPLETED'"
+                  :show-edit="false"
+                  viewTitle="View Appointment"
+                  deleteTitle="Delete Appointment"
+                  @view="$router.push({ name: 'ViewAppointment', params: { id: record.id } })"
+                  @delete="handleDelete(record)"
+                />
               </div>
             </template>
           </template>
@@ -399,20 +337,22 @@ import { usePatientStore } from '@/stores/patientStore'
 import { useStaffStore } from '@/stores/staffStore'
 import { onMounted, computed, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
-import AppointmentDetailsCanvas from '@/components/common-component/AppointmentDetailsCanvas.vue'
+import AppointmentDetailsCanvas from '@/components/common/AppointmentDetailsCanvas.vue'
 import RescheduleModal from '@/components/modal/RescheduleModal.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 import { useRoute } from 'vue-router'
 // import { useRouter } from 'vue-router'; // TODO: Uncomment when needed for navigation
 import axiosInstance from '@/utils/axios'
+import { showModalById } from '@/utils/bootstrap'
 
 // Static imports for default avatars
 import doctorDefaultAvatar from '@/assets/img/doctors/doctor-03.jpg'
 import patientDefaultAvatar from '@/assets/img/users/avatar-2.jpg'
 
 export default {
-  components: { FilterIndex, DeleteModal, AppointmentDetailsCanvas, RescheduleModal },
+  components: { FilterIndex, DeleteModal, AppointmentDetailsCanvas, RescheduleModal, ActionIcons },
   name: 'StaffAppointmentsList',
 
   setup() {
@@ -606,6 +546,11 @@ export default {
       } catch (error) {
         message.error(error)
       }
+    }
+
+    const handleDelete = async (record) => {
+      await openModal(record)
+      showModalById('delete_staff')
     }
 
     // async function fetchAppointments() {
@@ -916,6 +861,7 @@ export default {
       openModalPatient,
       openModalStaff,
       openModal,
+      handleDelete,
       openSideBar,
       updateAppointmentStatus,
       refreshAppointmentData,

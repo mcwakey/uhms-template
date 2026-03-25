@@ -193,41 +193,15 @@
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center justify-content-center">
-                <div class="dropdown">
-                  <a
-                    href="javascript:void(0);"
-                    class="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-dots-vertical fs-18"></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end p-2">
-                    <li>
-                      <a
-                        href="javascript:void(0);"
-                        @click="openEditLocationModal(record)"
-                        class="dropdown-item rounded-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#edit_location"
-                      >
-                        <i class="ti ti-edit me-2"></i>Edit
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="javascript:void(0);"
-                        @click="openDeleteModal(record)"
-                        class="dropdown-item rounded-1 text-danger"
-                        data-bs-toggle="modal"
-                        data-bs-target="#delete_location"
-                      >
-                        <i class="ti ti-trash me-2"></i>Delete
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <ActionIcons
+                  viewTitle="View Location"
+                  editTitle="Edit Location"
+                  deleteTitle="Delete Location"
+                  @view="openViewLocationModal(record)"
+                  @edit="openEditLocationModal(record)"
+                  @delete="openDeleteModal(record)"
+                />
               </div>
             </template>
           </template>
@@ -247,7 +221,7 @@
   <div id="add_location" class="modal fade">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow">
-        <div class="modal-header border-0 pb-2 bg-gradient-primary text-white">
+        <div class="modal-header border-0 pb-2 bg-primary text-white">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="fw-bold modal-title mb-0 text-white fs-16">Add New Location</h5>
@@ -337,7 +311,7 @@
   <div id="edit_location" class="modal fade">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow">
-        <div class="modal-header border-0 pb-2 bg-gradient-warning text-white">
+        <div class="modal-header border-0 pb-2 bg-primary text-white">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="fw-bold modal-title mb-0 text-white fs-16">Edit Location</h5>
@@ -427,7 +401,7 @@
   <div id="view_location" class="modal fade">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow">
-        <div class="modal-header border-0 pb-2 bg-gradient-secondary text-white">
+        <div class="modal-header border-0 pb-2 bg-primary text-white">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="fw-bold modal-title mb-0 text-white fs-16">Location Details</h5>
@@ -517,6 +491,8 @@ import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import axiosInstance from '@/utils/axios'
+import { hideModalById, showModalById } from '@/utils/bootstrap'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 
 // Types
 interface Department {
@@ -625,7 +601,7 @@ const columns = [
 // Methods
 const fetchDepartments = async () => {
   try {
-    const response = await axiosInstance.get('/departments/')
+    const response = await axiosInstance.get('/departments')
     departments.value = response.data.results || response.data
   } catch (error) {
     console.error('Failed to fetch departments:', error)
@@ -704,7 +680,7 @@ const handleAddLocation = async () => {
       description: addLocationForm.value.description.trim(),
     }
 
-    await axiosInstance.post('/locations/', locationData)
+    await axiosInstance.post('/locations', locationData)
     message.success('Location created successfully')
 
     // Reset form
@@ -716,11 +692,7 @@ const handleAddLocation = async () => {
     }
 
     // Close modal
-    const modalEl = document.getElementById('add_location')
-    if (window.bootstrap && modalEl) {
-      const modal = window.bootstrap.Modal.getInstance(modalEl)
-      modal?.hide()
-    }
+    hideModalById('add_location')
 
     // Refresh the table
     await locationsTable.fetchData()
@@ -766,11 +738,7 @@ const handleEditLocation = async () => {
     }
 
     // Close modal
-    const modalEl = document.getElementById('edit_location')
-    if (window.bootstrap && modalEl) {
-      const modal = window.bootstrap.Modal.getInstance(modalEl)
-      modal?.hide()
-    }
+    hideModalById('edit_location')
 
     // Refresh the table
     await locationsTable.fetchData()
@@ -786,11 +754,7 @@ const openEditFromView = () => {
   openEditLocationModal(viewLocationData.value)
 
   setTimeout(() => {
-    const editModalEl = document.getElementById('edit_location')
-    if (window.bootstrap && editModalEl) {
-      const editModal = new window.bootstrap.Modal(editModalEl)
-      editModal.show()
-    }
+    showModalById('edit_location')
   }, 100)
 }
 
@@ -811,29 +775,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Modal header gradients - Consistent color scheme */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.bg-gradient-warning {
-  background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
-}
-
-.bg-gradient-secondary {
-  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-}
-
-/* Close button for white text */
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-
-.btn-close-white:hover {
-  opacity: 1;
-}
-
 /* Form label styling */
 .form-label {
   font-weight: 500;

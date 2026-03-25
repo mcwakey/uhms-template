@@ -154,42 +154,14 @@
               </div>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="action-item d-flex justify-content-center">
-                <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <i class="ti ti-dots-vertical"></i>
-                </a>
-                <ul class="dropdown-menu p-2">
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      href="javascript:void(0);"
-                      @click="openModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#view_staff"
-                      >View</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      href="javascript:void(0);"
-                      @click="openModal(record)"
-                      data-bs-target="#edit_staff"
-                      >Edit</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      href="javascript:void(0);"
-                      @click="openModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#delete_staff"
-                      >Delete</a
-                    >
-                  </li>
-                </ul>
-              </div>
+              <ActionIcons
+                viewTitle="View Transaction"
+                editTitle="Edit Transaction"
+                deleteTitle="Delete Transaction"
+                @view="handleView(record)"
+                @edit="handleEdit(record)"
+                @delete="handleDelete(record)"
+              />
             </template>
           </template>
         </a-table>
@@ -553,11 +525,13 @@
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
+import { showModalById } from '@/utils/bootstrap'
 
 export default {
-  components: { FilterIndex, DeleteModal },
+  components: { FilterIndex, DeleteModal, ActionIcons },
   name: 'TransactionsTable',
 
   setup() {
@@ -579,6 +553,21 @@ export default {
       } catch (error) {
         message.error(error)
       }
+    }
+
+    const handleView = async (record) => {
+      await openModal(record)
+      showModalById('view_staff')
+    }
+
+    const handleEdit = async (record) => {
+      await openModal(record)
+      showModalById('edit_staff')
+    }
+
+    const handleDelete = async (record) => {
+      await openModal(record)
+      showModalById('delete_staff')
     }
 
     // Custom image formatter
@@ -640,6 +629,9 @@ export default {
       paginationConfig,
       columns,
       openModal,
+      handleView,
+      handleEdit,
+      handleDelete,
     }
   },
 }

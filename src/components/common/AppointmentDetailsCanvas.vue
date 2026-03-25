@@ -22,7 +22,6 @@
     </div>
 
     <div class="offcanvas-body p-0">
-      <!-- Loading State -->
       <div v-if="loading" class="d-flex justify-content-center align-items-center h-100">
         <div class="text-center">
           <div class="spinner-border text-primary mb-3" role="status">
@@ -32,16 +31,13 @@
         </div>
       </div>
 
-      <!-- Appointment Content -->
       <div v-else-if="appointment?.id" class="h-100 d-flex flex-column">
-        <!-- Status Header -->
         <div
           :class="[
             'status-header text-white p-3 position-relative overflow-hidden',
             getStatusColorClass(appointment.status),
           ]"
         >
-          <!-- Animated background pattern -->
           <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10">
             <div class="animated-pattern"></div>
           </div>
@@ -70,17 +66,12 @@
               <i class="ti ti-calendar-event"></i>
               <span>{{ formatDate(appointment.start_date) }}</span>
               <i class="ti ti-clock ms-2"></i>
-              <span
-                >{{ formatTime(appointment.start_time) }} -
-                {{ formatTime(appointment.end_time) }}</span
-              >
+              <span>{{ formatTime(appointment.start_time) }} - {{ formatTime(appointment.end_time) }}</span>
             </div>
           </div>
         </div>
 
-        <!-- Main Content -->
         <div class="flex-grow-1 overflow-auto">
-          <!-- Patient Information -->
           <div class="p-3 border-bottom">
             <h6 class="fw-bold mb-2 text-primary fs-15">
               <i class="ti ti-user me-1"></i>Patient Information
@@ -115,7 +106,6 @@
             </div>
           </div>
 
-          <!-- Doctor Information -->
           <div class="p-3 border-bottom">
             <h6 class="fw-bold mb-2 text-success fs-15">
               <i class="ti ti-user-check me-1"></i>Doctor / Staff Information
@@ -141,14 +131,6 @@
               </div>
             </div>
             <div class="mt-2 d-flex gap-1 justify-content-center">
-              <!-- <button
-                type="button"
-                class="btn btn-xs btn-outline-secondary"
-                @click="handleViewHistory"
-                title="View Patient History"
-              >
-                <i class="ti ti-history"></i>
-              </button> -->
               <button
                 type="button"
                 class="btn btn-sm btn-outline-secondary"
@@ -169,7 +151,6 @@
             </div>
           </div>
 
-          <!-- Appointment Details -->
           <div class="p-3 border-bottom">
             <h6 class="fw-bold mb-2 text-info fs-15">
               <i class="ti ti-info-circle me-1"></i>Appointment Details
@@ -187,9 +168,7 @@
                           : 'ti ti-building-hospital text-success',
                       ]"
                     ></i>
-                    <span class="fw-medium fs-14">{{
-                      appointment.mode || (appointment.type ? 'Online' : 'In-Person')
-                    }}</span>
+                    <span class="fw-medium fs-14">{{ appointment.mode || (appointment.type ? 'Online' : 'In-Person') }}</span>
                   </div>
                 </div>
               </div>
@@ -213,7 +192,6 @@
             </div>
           </div>
 
-          <!-- Status Message -->
           <div class="p-3" v-if="!isActiveAppointment(appointment.status)">
             <div
               :class="[
@@ -227,19 +205,14 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
         <div v-if="isConsultation">
           <div v-if="isActiveAppointment(appointment.status)" class="border-top p-3 bg-light">
             <div class="d-flex flex-column gap-2">
-              <!-- Primary Action -->
               <div class="text-center">
-                <!-- :disabled="appointment.status === 'IN-PROGRESS'"
-                :to="{ name: isTelehealthEnabled ? 'PatientTelehealth' : 'PatientConsultation', params: { id: appointment.patient.uuid } }" -->
                 <RouterLink
                   :to="{
                     name: isTelehealthEnabled ? 'PatientTelehealth' : 'PatientConsultation',
                     params: { id: appointment.id },
-                    // query: { patient: appointment.patient?.uuid }
                   }"
                   :class="[
                     'btn fw-medium fs-16 w-100 position-relative overflow-hidden',
@@ -267,10 +240,6 @@
                 </RouterLink>
               </div>
 
-              <!-- Secondary Actions -->
-              <!-- <script setup>
-            </script> -->
-
               <div class="row g-2">
                 <div class="col-6">
                   <button
@@ -297,40 +266,11 @@
                   </button>
                 </div>
               </div>
-
-              <!-- Additional Actions -->
-              <!-- <div class="d-flex gap-1 justify-content-center">
-              <button
-                type="button"
-                class="btn btn-xs btn-outline-secondary"
-                @click="handleViewHistory"
-                title="View Patient History"
-              >
-                <i class="ti ti-history"></i>
-              </button>
-              <button
-                type="button"
-                class="btn btn-xs btn-outline-secondary"
-                @click="handleSendMessage"
-                title="Send Message"
-              >
-                <i class="ti ti-message"></i>
-              </button>
-              <button
-                type="button"
-                class="btn btn-xs btn-outline-secondary"
-                @click="handlePrintDetails"
-                title="Print Details"
-              >
-                <i class="ti ti-printer"></i>
-              </button>
-            </div> -->
             </div>
           </div>
         </div>
       </div>
 
-      <!-- No Appointment Selected -->
       <div v-else class="d-flex justify-content-center align-items-center h-100">
         <div class="text-center">
           <div class="mb-4">
@@ -347,6 +287,7 @@
 <script>
 import dayjs from 'dayjs'
 import { useAuthStore } from '@/stores/authStore.js'
+import { hideOffcanvasById } from '@/utils/bootstrap'
 
 export default {
   name: 'AppointmentDetailsCanvas',
@@ -382,9 +323,7 @@ export default {
       return ['SCHEDULED', 'RESCHEDULED', 'CHECKED-IN', 'IN-PROGRESS'].includes(status)
     }
 
-    // const auth = useAuthStore();
     const isConsultation = useAuthStore().isConsultation
-    // console.log('isConsultation', isConsultation);
 
     const getStatusColorClass = (status) => {
       const statusClasses = {
@@ -461,35 +400,17 @@ export default {
     }
 
     const handleRouterNavigation = () => {
-      // Close the offcanvas before navigation
-      console.log('Navigating to appointment details...')
-      const offcanvasElement = document.getElementById(props.canvasId)
-      if (offcanvasElement) {
-        console.log('Closing offcanvas:', props.canvasId)
-        const offcanvasInstance = window.bootstrap?.Offcanvas?.getInstance(offcanvasElement)
-        if (offcanvasInstance) {
-          console.log('Hiding offcanvas instance:', offcanvasInstance)
-          offcanvasInstance.hide()
-        }
-      }
+      hideOffcanvasById(props.canvasId)
     }
 
     const handleImageError = (event) => {
-      // Set a default placeholder or hide the image
       event.target.style.display = 'none'
-      // Or use a data URL for a simple placeholder
       event.target.src =
         'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMzAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB4PSIyMCIgeT0iMjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2QjcyODAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KPHBhdGggZD0iTTIwIDIxdi0yYTQgNCAwIDAgMC00LTRIOGE0IDQgMCAwIDAtNCA0djIiLz4KPGNpcmNsZSBjeD0iMTIiIGN5PSI3IiByPSI0Ii8+Cjwvc3ZnPgo8L3N2Zz4K'
     }
 
     const handleStartAppointment = () => {
       emit('update-status', 'SCHEDULED')
-
-      // if (isTelehealthEnabled) {
-      //   emit('toggle-telehealth', true);
-      // } else {
-      //   emit('toggle-telehealth', false);
-      // }
     }
 
     const handleReschedule = () => {
@@ -507,22 +428,18 @@ export default {
     }
 
     const handleViewHistory = () => {
-      // Emit event for viewing patient history
       emit('view-history', props.appointment)
     }
 
     const handleSendMessage = () => {
-      // Emit event for sending message to patient
       emit('send-message', props.appointment)
     }
 
     const handlePrintDetails = () => {
-      // Trigger print functionality
       window.print()
     }
 
     const handleTransferDoctor = () => {
-      // Emit event to parent to open the transfer modal
       emit('transfer-doctor', props.appointment)
     }
 
@@ -636,26 +553,22 @@ export default {
   font-size: 1rem;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .appointment-details-canvas {
     width: 100%;
   }
 }
 
-/* Form switch styling */
 .form-check-input:checked {
   background-color: var(--bs-primary);
   border-color: var(--bs-primary);
 }
 
-/* Loading animation */
 .spinner-border {
   width: 3rem;
   height: 3rem;
 }
 
-/* Hover effects */
 .btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -665,7 +578,6 @@ export default {
   transform: translateY(0);
 }
 
-/* Transition effects */
 .btn {
   transition: all 0.2s ease-in-out;
 }
@@ -678,7 +590,6 @@ export default {
   background-color: #e9ecef;
 }
 
-/* Animated background pattern */
 .animated-pattern {
   width: 100%;
   height: 100%;
@@ -702,7 +613,6 @@ export default {
   }
 }
 
-/* Enhanced card styling */
 .detail-item {
   transition: all 0.3s ease;
   border: 1px solid transparent;
@@ -715,7 +625,6 @@ export default {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Profile images with hover effect */
 .rounded-circle {
   transition: transform 0.2s ease;
   border: 2px solid rgba(255, 255, 255, 0.2);
@@ -725,7 +634,6 @@ export default {
   transform: scale(1.05);
 }
 
-/* Status badge pulse effect */
 .badge {
   animation: pulse 2s infinite;
 }
@@ -742,7 +650,6 @@ export default {
   }
 }
 
-/* Custom scrollbar */
 .overflow-auto::-webkit-scrollbar {
   width: 6px;
 }
@@ -761,7 +668,6 @@ export default {
   background: #a8a8a8;
 }
 
-/* Enhanced alert styling */
 .alert {
   border-left: 4px solid;
   backdrop-filter: blur(10px);
@@ -780,7 +686,6 @@ export default {
   border-left-color: var(--bs-danger);
 }
 
-/* Improved form styling */
 .form-check-input {
   cursor: pointer;
   transition: all 0.2s ease;
@@ -795,7 +700,6 @@ export default {
   color: var(--bs-primary);
 }
 
-/* Loading spinner enhancement */
 .spinner-border {
   background: linear-gradient(45deg, var(--bs-primary), var(--bs-primary-dark, #0056b3));
   border-radius: 50%;
@@ -804,7 +708,6 @@ export default {
     pulse 2s ease-in-out infinite;
 }
 
-/* Responsive text sizing */
 @media (max-width: 576px) {
   .fs-12 {
     font-size: 0.7rem;

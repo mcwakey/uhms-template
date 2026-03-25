@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Amoxicillin 500mg", "sku": "AMX-500", "stock": 240, "price": 12.5 },
+  { "id": 2, "name": "Paracetamol 1g", "sku": "PAR-1000", "stock": 1200, "price": 4.2 },
+  { "id": 3, "name": "Ibuprofen 400mg", "sku": "IBU-400", "stock": 560, "price": 9.75 },
+  { "id": 4, "name": "Azithromycin 250mg", "sku": "AZI-250", "stock": 130, "price": 18.0 },
+  { "id": 5, "name": "Omeprazole 20mg", "sku": "OME-20", "stock": 420, "price": 7.9 }
+]

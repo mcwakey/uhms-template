@@ -3,7 +3,7 @@
     <div v-if="visible" class="modal-overlay" @click="handleOverlayClick">
       <div class="modal-dialog modal-dialog-centered modal-lg" @click.stop>
         <div class="modal-content border-0 shadow-lg">
-          <div class="modal-header border-0 px-4 py-3 bg-gradient-primary text-white">
+          <div class="modal-header border-0 px-4 py-3 bg-primary text-white">
             <div class="d-flex align-items-center">
               <div class="bg-white bg-opacity-25 rounded-circle p-2 me-3 d-flex align-items-center justify-content-center">
                 <i class="ti ti-user-switch text-white fs-18"></i>
@@ -367,18 +367,6 @@ export default {
 </script>
 
 <style>
-/* Modal header gradient */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-/* Close button for white header */
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover { opacity: 1; }
-
 /* Modal Overlay and Transition */
 .modal-overlay {
   position: fixed;

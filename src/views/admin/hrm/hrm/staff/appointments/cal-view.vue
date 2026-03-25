@@ -271,10 +271,11 @@ import { useAppointmentStore } from '@/stores/appointmentStore'
 import { useRoute } from 'vue-router'
 // import { useRouter } from 'vue-router'; // TODO: Uncomment when appointment details route is created
 import CalendarModal from '@/components/modal/calendar-modal.vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
-import AppointmentDetailsCanvas from '@/components/common-component/AppointmentDetailsCanvas.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
+import AppointmentDetailsCanvas from '@/components/common/AppointmentDetailsCanvas.vue'
 import RescheduleModal from '@/components/modal/RescheduleModal.vue'
 import axiosInstance from '@/utils/axios'
+import { showOffcanvasById } from '@/utils/bootstrap'
 
 // Static imports for default avatars
 import doctorDefaultAvatar from '@/assets/img/doctors/doctor-03.jpg'
@@ -642,12 +643,7 @@ export default {
 
       // Small delay to ensure data is set before opening offcanvas
       setTimeout(() => {
-        const offcanvasElement = document.getElementById('view_appointment_details')
-        const Bootstrap = window.bootstrap ?? window.Bootstrap
-        if (offcanvasElement && Bootstrap) {
-          const offcanvas = new Bootstrap.Offcanvas(offcanvasElement)
-          offcanvas.show()
-        }
+        showOffcanvasById('view_appointment_details')
       }, 50)
     }
 

@@ -267,10 +267,10 @@ import { useAppointmentStore } from '@/stores/appointmentStore'
 import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import CalendarModal from '@/components/modal/CalendarModal.vue'
-import AppointmentFilter from '@/components/common-component/AppointmentFilter.vue'
-import AppointmentDetailsCanvas from '@/components/common-component/AppointmentDetailsCanvas.vue'
+import AppointmentFilter from '@/components/common/AppointmentFilter.vue'
+import AppointmentDetailsCanvas from '@/components/common/AppointmentDetailsCanvas.vue'
 import RescheduleModal from '@/components/modal/RescheduleModal.vue'
-import DateRangePicker from '@/components/common-component/DateRangePicker.vue'
+import DateRangePicker from '@/components/common/DateRangePicker.vue'
 import axiosInstance from '@/utils/axios'
 
 // Static imports for default avatars
@@ -810,7 +810,7 @@ export default {
     const fetchServices = async () => {
       try {
         servicesLoading.value = true
-        const response = await axiosInstance.get('/services/')
+        const response = await axiosInstance.get('/services')
         availableServices.value = response.data.results || response.data || []
       } catch (error) {
         console.error('Error fetching services:', error)
@@ -822,7 +822,7 @@ export default {
 
     const fetchDoctors = async () => {
       try {
-        const response = await axiosInstance.get('/staff/', { params: { page_size: 100 } })
+        const response = await axiosInstance.get('/staff', { params: { page_size: 100 } })
         doctorsList.value = response.data.results || response.data || []
       } catch (error) {
         console.error('Error fetching doctors:', error)

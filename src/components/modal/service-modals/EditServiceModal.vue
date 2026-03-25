@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow-lg rounded-3">
         <!-- Header -->
-        <div class="modal-header bg-gradient-warning text-white border-0 py-3 px-4">
+        <div class="modal-header bg-primary text-white border-0 py-3 px-4">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="modal-title fw-bold text-white mb-1">Edit Service</h5>
@@ -130,9 +130,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { message } from 'ant-design-vue'
 import axiosInstance from '@/utils/axios'
+import { hideModalById, showModalById } from '@/utils/bootstrap'
 
 const props = defineProps({
   modalId: {
@@ -230,14 +231,7 @@ const submitForm = async () => {
     resetForm()
     
     // Close modal
-    const modalElement = document.getElementById(props.modalId)
-    const Bootstrap = window.bootstrap ?? window.Bootstrap
-    if (modalElement && Bootstrap) {
-      const modal = Bootstrap.Modal.getInstance(modalElement)
-      if (modal) {
-        modal.hide()
-      }
-    }
+    hideModalById(props.modalId)
   } catch (error) {
     console.error('Error updating service:', error)
     message.error('Failed to update service')
@@ -253,31 +247,10 @@ const open = (service) => {
     resetForm()
   }
   
-  const modalElement = document.getElementById(props.modalId)
-  const Bootstrap = window.bootstrap ?? window.Bootstrap
-  if (modalElement && Bootstrap) {
-    const modal = new Bootstrap.Modal(modalElement)
-    modal.show()
-  }
+  showModalById(props.modalId)
 }
-
-onMounted(() => {
-  // Component mounted
-})
 
 defineExpose({ open })
 </script>
 
-<style scoped>
-.bg-gradient-warning {
-  background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
-}
-
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover {
-  opacity: 1;
-}
-</style>
+<style scoped></style>

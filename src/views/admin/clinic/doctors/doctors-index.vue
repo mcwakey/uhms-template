@@ -178,48 +178,23 @@
               >
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center">
-                <div class="action-item me-2">
-                  <router-link to="/appointments/appointment-calendar">
-                    <i class="ti ti-calendar-cog"></i>
-                  </router-link>
-                </div>
-                <div class="action-item">
-                  <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <i class="ti ti-dots-vertical"></i>
-                  </a>
-                  <ul class="dropdown-menu p-2">
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="javascript:void(0);"
-                        @click="openModal(record)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#view_staff"
-                        >View</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="javascript:void(0);"
-                        @click="openModal(record)"
-                        data-bs-target="#edit_staff"
-                        >Edit</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="javascript:void(0);"
-                        @click="openModal(record)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#delete_staff"
-                        >Delete</a
-                      >
-                    </li>
-                  </ul>
-                </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <a
+                  href="javascript:void(0);"
+                  class="action-icon text-success"
+                  title="Calendar"
+                  @click.prevent="$router.push('/appointments/appointment-calendar')"
+                >
+                  <i class="ti ti-calendar-cog"></i>
+                </a>
+                <ActionIcons
+                  viewTitle="View Doctor"
+                  editTitle="Edit Doctor"
+                  deleteTitle="Delete Doctor"
+                  @view="() => { openModal(record); }"
+                  @edit="() => { openModal(record); }"
+                  @delete="() => { openModal(record); }"
+                />
               </div>
             </template>
           </template>
@@ -584,11 +559,12 @@
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 
 export default {
-  components: { FilterIndex, DeleteModal },
+  components: { FilterIndex, DeleteModal, ActionIcons },
   name: 'DoctorsTable',
 
   setup() {

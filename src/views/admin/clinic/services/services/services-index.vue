@@ -16,7 +16,7 @@
           <h4 class="fw-bold mb-0">
             Services<span
               class="badge badge-soft-primary border border-primary fs-13 fw-medium ms-2"
-              >Total: {{ ServicesTable.totalCount }}</span
+              >Total: {{ ServicesTable.totalCount.value }}</span
             >
           </h4>
         </div>
@@ -155,12 +155,11 @@
         <a-table
           class="table table-nowrap datatable pagination-rounded"
           :columns="columns"
-          :table-layout="fixed"
+          table-layout="fixed"
           :data-source="ServicesTable.data.value"
           :pagination="paginationConfig"
           @change="ServicesTable.handleTableChange"
           row-key="id"
-          :pagination-class="pagination - rounded"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'service_name'">
@@ -186,10 +185,10 @@
               <div class="d-flex align-items-center ms-2">
                 <div>
                   <h6 class="mb-1 fs-14 fw-semibold">
-                    {{ record.specialization.name }}
+                    {{ record.specialization?.name || '-' }}
                   </h6>
                   <span class="fs-10 d-block text-primary"
-                    >{{ record.specialization.department }}
+                    >{{ record.specialization?.department || '-' }}
                   </span>
                 </div>
               </div>
@@ -216,40 +215,22 @@
               <span
                 :class="[
                   'badge border',
-                  record.status
+                  record.is_active
                     ? 'badge badge-soft-success border border-success fw-medium fs-13'
                     : 'badge badge-soft-danger border border-danger fw-medium  fs-13',
                 ]"
-                >{{ record.status ? 'Active' : 'Inactive' }}</span
+                >{{ record.is_active ? 'Active' : 'Inactive' }}</span
               >
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center">
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openEditServiceModal(record)"
-                    title="Edit Service"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_service"
-                    class="text-warning fs-18 rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </a>
-                </div>
-                <div class="action-item">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    title="Delete Service"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_staff"
-                    class="text-danger fs-18 rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div>
-              </div>
+              <ActionIcons
+                viewTitle="View Service"
+                editTitle="Edit Service"
+                deleteTitle="Delete Service"
+                @view="openViewServiceModal(record)"
+                @edit="openEditServiceModal(record)"
+                @delete="openModal(record)"
+              />
             </template>
             <template v-else>
               {{ record[column.dataIndex || column.key] }}
@@ -340,6 +321,7 @@ import DeleteModal from '@/components/modal/DeleteModal.vue'
 import AddServiceModal from '@/components/modal/service-modals/AddServiceModal.vue'
 import EditServiceModal from '@/components/modal/service-modals/EditServiceModal.vue'
 import ViewServiceModal from '@/components/modal/service-modals/ViewServiceModal.vue'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 import axiosInstance from '@/utils/axios'
 
 export default {
@@ -351,6 +333,7 @@ export default {
     AddServiceModal,
     EditServiceModal,
     ViewServiceModal,
+    ActionIcons,
   },
   name: 'ServicesTable',
 
@@ -452,31 +435,38 @@ export default {
       {
         title: 'Service Name',
         key: 'service_name',
+        ellipsis: true,
+        width: 240,
       },
       {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
+        ellipsis: true,
+        width: 260,
       },
       {
         title: 'Specialization',
         key: 'specialization',
+        width: 180,
       },
       {
         title: 'Pricing',
         key: 'pricing',
-        width: 100,
+        width: 140,
       },
       {
         title: 'Status',
-        dataIndex: 'status',
+        dataIndex: 'is_active',
         key: 'status',
-        width: 100,
+        width: 120,
       },
       {
-        title: '',
+        title: 'Actions',
         key: 'actions',
-        width: 30,
+        width: 140,
+        align: 'right',
+        fixed: 'right',
       },
     ]
 
@@ -487,7 +477,7 @@ export default {
     const fetchSpecializations = async () => {
       isLoadingSpecializations.value = true
       try {
-        const response = await axiosInstance.get('/specializations/')
+        const response = await axiosInstance.get('/specializations')
         specializations.value = response.data.results || response.data || []
         if (specializations.value.length > 0 && typeof specializations.value[0] === 'string') {
           specializations.value = specializations.value.map((spec) => ({
@@ -510,7 +500,7 @@ export default {
     const fetchInsuranceTypes = async () => {
       isLoadingInsuranceTypes.value = true
       try {
-        const response = await axiosInstance.get('/insurance/types/')
+        const response = await axiosInstance.get('/insurance/types')
         insuranceTypes.value = (response.data.results || response.data || []).map((type) => ({
           id: type.id,
           label: type.description || type.name || type.display_name || type.label || type,
@@ -545,16 +535,7 @@ export default {
         }
       } catch (error) {
         console.error('Failed to load insurance types:', error)
-        insuranceTypes.value = [
-          { id: 1, label: 'Private Pay', value: 1, display_name: 'Private Pay', name: 'Private Pay', description: 'Private Pay - Direct payment without insurance' },
-          { id: 2, label: 'Medicare', value: 2, display_name: 'Medicare', name: 'Medicare', description: 'Medicare - Federal health insurance for 65+ or disabled' },
-          { id: 3, label: 'Medicaid', value: 3, display_name: 'Medicaid', name: 'Medicaid', description: 'Medicaid - State and federal program for low-income individuals' },
-          { id: 4, label: 'Commercial Insurance', value: 4, display_name: 'Commercial Insurance', name: 'Commercial', description: 'Commercial Insurance - Private insurance plans' },
-          { id: 5, label: 'HMO', value: 5, display_name: 'HMO', name: 'HMO', description: 'HMO - Health Maintenance Organization' },
-          { id: 6, label: 'PPO', value: 6, display_name: 'PPO', name: 'PPO', description: 'PPO - Preferred Provider Organization' },
-          { id: 7, label: 'Other', value: 7, display_name: 'Other', name: 'Other', description: 'Other - Other insurance types' },
-        ]
-        console.warn('Using fallback insurance types')
+        insuranceTypes.value = []
       } finally {
         isLoadingInsuranceTypes.value = false
       }
@@ -609,7 +590,7 @@ export default {
         code: service.code || '',
         description: service.description || '',
         specialization: service.specialization || null,
-        status: service.status ? 'active' : 'inactive',
+        status: service.is_active ? 'active' : 'inactive',
         has_result: service.has_result || false,
         has_stock: service.has_stock || false,
       }
@@ -643,31 +624,11 @@ export default {
     }
 
     const fetchServicePricing = async (serviceId) => {
-      try {
-        const response = await axiosInstance.get(`/services/${serviceId}/prices/`)
-        servicePricing.value = (response.data.results || response.data || []).map((pricing) => ({
-          ...pricing,
-          isEditing: false,
-        }))
-      } catch (error) {
-        console.error('Failed to load service pricing:', error)
-        servicePricing.value = []
-      }
+      servicePricing.value = []
     }
 
     const fetchInsuranceCompanyPricing = async (serviceId) => {
-      try {
-        const response = await axiosInstance.get(`/services/${serviceId}/custom/`)
-        insuranceCompanyPricing.value = (response.data.results || response.data || []).map(
-          (pricing) => ({
-            ...pricing,
-            isEditing: false,
-          })
-        )
-      } catch (error) {
-        console.error('Failed to load insurance company pricing:', error)
-        insuranceCompanyPricing.value = []
-      }
+      insuranceCompanyPricing.value = []
     }
 
     onMounted(async () => {
@@ -727,7 +688,6 @@ export default {
     }
 
     // Helper functions to check pricing status
-    // Uses data from /api/v1/services/{id}/prices/ endpoint
     const hasPrices = (service) => {
       // Check pricingCounts map first
       if (pricingCounts.value[service.id] !== undefined) {
@@ -768,31 +728,19 @@ export default {
     const fetchAllServicePrices = async () => {
       const services = ServicesTable.data.value
       if (!services || services.length === 0) return
-
-      try {
-        // Fetch prices for each service in parallel
-        const pricePromises = services.map(async (service) => {
-          try {
-            const response = await axiosInstance.get(`/services/${service.id}/prices/`)
-            const prices = response.data.results || response.data || []
-            return { id: service.id, count: prices.length }
-          } catch (error) {
-            console.error(`Failed to fetch prices for service ${service.id}:`, error)
-            return { id: service.id, count: 0 }
-          }
-        })
-
-        const results = await Promise.all(pricePromises)
-        
-        // Update pricingCounts map
-        const newPricingCounts = {}
-        results.forEach(result => {
-          newPricingCounts[result.id] = result.count
-        })
-        pricingCounts.value = newPricingCounts
-      } catch (error) {
-        console.error('Failed to fetch service prices:', error)
-      }
+      const newPricingCounts = {}
+      services.forEach((service) => {
+        let count = 0
+        if (service.prices && Array.isArray(service.prices)) {
+          count = service.prices.length
+        } else if (service.pricing_count !== undefined && service.pricing_count !== null) {
+          count = service.pricing_count
+        } else if (service.has_prices === true) {
+          count = 1
+        }
+        newPricingCounts[service.id] = count
+      })
+      pricingCounts.value = newPricingCounts
     }
 
     // Default pricing methods
@@ -873,45 +821,14 @@ export default {
       }
 
       isPricingSaving.value = true
-
-      try {
-        const pricingData = {
-          service: pricing.service || viewServiceData.value.id,
-          price_type: pricing.price_type,
-          price: parseFloat(pricing.price),
-          insurance_company: pricing.insurance_company || '',
-        }
-
-        let response
-        if (pricing.id) {
-          response = await axiosInstance.patch(`/services/prices/${pricing.id}/`, pricingData)
-        } else {
-          response = await axiosInstance.post(`/services/${viewServiceData.value.id}/prices/`, pricingData)
-        }
-
-        servicePricing.value[index] = {
-          ...response.data,
-          isEditing: false,
-          isNew: false,
-        }
-
-        message.success('Default pricing saved successfully')
-        delete pricingBackup.value[index]
-
-        setTimeout(() => {
-          fetchServicePricing(viewServiceData.value.id)
-        }, 1000)
-      } catch (error) {
-        console.error('Failed to save pricing:', error)
-        if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to save pricing'
-          message.error(errorMessage)
-        } else {
-          message.error('Failed to save pricing. Please check your connection and try again.')
-        }
-      } finally {
-        isPricingSaving.value = false
+      servicePricing.value[index] = {
+        ...pricing,
+        isEditing: false,
+        isNew: false,
       }
+      delete pricingBackup.value[index]
+      message.info('Pricing endpoints disabled; updated locally')
+      isPricingSaving.value = false
     }
 
     const deleteDefaultPricing = async (index) => {
@@ -926,19 +843,8 @@ export default {
         return
       }
 
-      try {
-        await axiosInstance.delete(`/services/prices/${pricing.id}/`)
-        servicePricing.value.splice(index, 1)
-        message.success('Default pricing deleted successfully')
-      } catch (error) {
-        console.error('Failed to delete default pricing:', error)
-        if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to delete default pricing'
-          message.error(errorMessage)
-        } else {
-          message.error('Failed to delete default pricing. Please check your connection and try again.')
-        }
-      }
+      servicePricing.value.splice(index, 1)
+      message.info('Pricing endpoints disabled; deletion applied locally')
     }
 
     // Bulk Operations for Default Pricing
@@ -973,71 +879,20 @@ export default {
       }
 
       isBulkSaving.value = true
-
-      try {
-        const savingPromises = []
-        const editingPricing = servicePricing.value.filter((pricing) => pricing.isEditing)
-
-        for (const pricing of editingPricing) {
-          const pricingData = {
-            service: pricing.service || viewServiceData.value.id,
-            price_type: pricing.price_type,
-            price: parseFloat(pricing.price),
-            insurance_company: pricing.insurance_company || '',
-            notes: pricing.notes || '',
-            is_active: pricing.is_active,
-          }
-
-          if (pricing.id) {
-            savingPromises.push(
-              axiosInstance
-                .patch(`/services/prices/${pricing.id}/`, pricingData)
-                .then((response) => ({
-                  index: servicePricing.value.indexOf(pricing),
-                  data: response.data,
-                  type: 'update',
-                }))
-            )
-          } else {
-            savingPromises.push(
-              axiosInstance
-                .post(`/services/${viewServiceData.value.id}/prices/`, pricingData)
-                .then((response) => ({
-                  index: servicePricing.value.indexOf(pricing),
-                  data: response.data,
-                  type: 'create',
-                }))
-            )
-          }
+      const editingPricing = servicePricing.value
+        .map((p, idx) => ({ p, idx }))
+        .filter(({ p }) => p.isEditing)
+      editingPricing.forEach(({ idx }) => {
+        const pricing = servicePricing.value[idx]
+        servicePricing.value[idx] = {
+          ...pricing,
+          isEditing: false,
+          isNew: false,
         }
-
-        const results = await Promise.all(savingPromises)
-
-        results.forEach((result) => {
-          servicePricing.value[result.index] = {
-            ...result.data,
-            isEditing: false,
-            isNew: false,
-          }
-        })
-
-        pricingBackup.value = {}
-        message.success(`Successfully saved ${results.length} pricing entries`)
-
-        setTimeout(() => {
-          fetchServicePricing(viewServiceData.value.id)
-        }, 1000)
-      } catch (error) {
-        console.error('Failed to save pricing:', error)
-        if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to save some pricing entries'
-          message.error(errorMessage)
-        } else {
-          message.error('Failed to save pricing entries. Please check your connection and try again.')
-        }
-      } finally {
-        isBulkSaving.value = false
-      }
+      })
+      pricingBackup.value = {}
+      message.info(`Pricing endpoints disabled; ${editingPricing.length} entries updated locally`)
+      isBulkSaving.value = false
     }
 
     const cancelAllDefaultPricing = () => {
@@ -1109,46 +964,14 @@ export default {
       }
 
       isInsurancePricingSaving.value = true
-
-      try {
-        const pricingData = {
-          service: pricing.service,
-          insurance_company_id: pricing.insurance_company_id,
-          price: parseFloat(pricing.price),
-          notes: pricing.notes || '',
-          is_active: pricing.is_active,
-        }
-
-        let response
-        if (pricing.id) {
-          response = await axiosInstance.patch(`/services/custom/${pricing.id}/`, pricingData)
-        } else {
-          response = await axiosInstance.post(`/services/${viewServiceData.value.id}/custom/`, pricingData)
-        }
-
-        insuranceCompanyPricing.value[index] = {
-          ...response.data,
-          isEditing: false,
-          isNew: false,
-        }
-
-        message.success('Insurance company pricing saved successfully')
-        delete insurancePricingBackup.value[index]
-
-        setTimeout(() => {
-          fetchInsuranceCompanyPricing(viewServiceData.value.id)
-        }, 1000)
-      } catch (error) {
-        console.error('Failed to save insurance pricing:', error)
-        if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to save insurance pricing'
-          message.error(errorMessage)
-        } else {
-          message.error('Failed to save insurance pricing. Please check your connection and try again.')
-        }
-      } finally {
-        isInsurancePricingSaving.value = false
+      insuranceCompanyPricing.value[index] = {
+        ...pricing,
+        isEditing: false,
+        isNew: false,
       }
+      delete insurancePricingBackup.value[index]
+      message.info('Insurance pricing endpoints disabled; updated locally')
+      isInsurancePricingSaving.value = false
     }
 
     const deleteInsurancePricing = async (index) => {
@@ -1163,19 +986,8 @@ export default {
         return
       }
 
-      try {
-        await axiosInstance.delete(`/services/custom/${pricing.id}/`)
-        insuranceCompanyPricing.value.splice(index, 1)
-        message.success('Insurance company pricing deleted successfully')
-      } catch (error) {
-        console.error('Failed to delete insurance pricing:', error)
-        if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message || error.response.data.error || 'Failed to delete insurance pricing'
-          message.error(errorMessage)
-        } else {
-          message.error('Failed to delete insurance pricing. Please check your connection and try again.')
-        }
-      }
+      insuranceCompanyPricing.value.splice(index, 1)
+      message.info('Insurance pricing endpoints disabled; deletion applied locally')
     }
 
     return {
@@ -1248,6 +1060,24 @@ export default {
 </script>
 
 <style scoped>
+/* Table enhancements */
+.table thead th {
+  background-color: #f8fafc;
+  font-weight: 600;
+}
+.table tbody tr:hover {
+  background-color: #f9fbff;
+}
+.btn.btn-sm {
+  padding: 0.25rem 0.5rem;
+}
+.ant-table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ant-table-cell {
+  vertical-align: middle;
+}
 /* Vue Multiselect styling */
 .multiselect {
   min-height: 38px;

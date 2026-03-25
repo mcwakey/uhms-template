@@ -166,43 +166,15 @@
               </div>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center">
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openViewModal(record)"
-                    title="View Department"
-                    data-bs-toggle="modal"
-                    data-bs-target="#view_department"
-                    class="text-primary fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-eye"></i>
-                  </a>
-                </div>
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openEditModal(record)"
-                    title="Edit Department"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_department"
-                    class="text-warning fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </a>
-                </div>
-                <div class="action-item">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    title="Delete Department"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_staff"
-                    class="text-danger fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <ActionIcons
+                  viewTitle="View Department"
+                  editTitle="Edit Department"
+                  deleteTitle="Delete Department"
+                  @view="openViewModal(record)"
+                  @edit="openEditModal(record)"
+                  @delete="openModal(record)"
+                />
               </div>
             </template>
           </template>
@@ -592,13 +564,15 @@
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed, ref } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common-component/filter-index.vue'
+import FilterIndex from '@/components/common/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import axiosInstance from '@/utils/axios.js'
 import constants from '@/assets/json/constants.json'
+import { hideModalById, showModalById } from '@/utils/bootstrap'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 
 export default {
-  components: { FilterIndex, DeleteModal },
+  components: { FilterIndex, DeleteModal, ActionIcons },
   name: 'DepartmentsTable',
 
   setup() {
@@ -732,17 +706,10 @@ export default {
       }
 
       // Close view modal and open edit modal
-      const viewModal = document.getElementById('view_department')
-      const Bootstrap = window.bootstrap ?? window.Bootstrap
-      const viewModalInstance = Bootstrap?.Modal.getInstance?.(viewModal) || null
-      viewModalInstance?.hide()
+      hideModalById('view_department')
 
       setTimeout(() => {
-        const editModal = document.getElementById('edit_department')
-        if (Bootstrap) {
-          const editModalInstance = new Bootstrap.Modal(editModal)
-          editModalInstance.show()
-        }
+        showModalById('edit_department')
       }, 300)
     }
 
@@ -750,7 +717,7 @@ export default {
     const saveDepartment = async () => {
       try {
         isSubmitting.value = true
-        await axiosInstance.post('/departments/', departmentForm.value)
+        await axiosInstance.post('/departments', departmentForm.value)
         message.success('Department added successfully!')
         resetForm()
 
@@ -758,10 +725,7 @@ export default {
         await DepartmentsTable.fetchData()
 
         // Close modal
-        const modal = document.getElementById('add_department')
-        const Bootstrap = window.bootstrap ?? window.Bootstrap
-        const modalInstance = Bootstrap?.Modal.getInstance?.(modal) || null
-        modalInstance?.hide()
+        hideModalById('add_department')
       } catch (error) {
         console.error('Error saving department:', error)
 
@@ -792,10 +756,7 @@ export default {
         resetEditForm()
 
         // Close modal
-        const modal = document.getElementById('edit_department')
-        const Bootstrap = window.bootstrap ?? window.Bootstrap
-        const modalInstance = Bootstrap?.Modal.getInstance?.(modal) || null
-        modalInstance?.hide()
+        hideModalById('edit_department')
 
         // Refresh table data
         await DepartmentsTable.fetchData()

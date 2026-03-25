@@ -257,6 +257,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { hideModalById, showModalById } from '@/utils/bootstrap'
 
 const props = defineProps({
   modalId: {
@@ -354,24 +355,12 @@ const getInsuranceCompanyName = (companyId) => {
 }
 
 const editService = () => {
-  const modalElement = document.getElementById(props.modalId)
-  const Bootstrap = window.bootstrap ?? window.Bootstrap
-  if (modalElement && Bootstrap) {
-    const modal = Bootstrap.Modal.getInstance(modalElement)
-    if (modal) {
-      modal.hide()
-    }
-  }
+  hideModalById(props.modalId)
   emit('edit-service', props.serviceData)
 }
 
 const open = () => {
-  const modalElement = document.getElementById(props.modalId)
-  const Bootstrap = window.bootstrap ?? window.Bootstrap
-  if (modalElement && Bootstrap) {
-    const modal = new Bootstrap.Modal(modalElement)
-    modal.show()
-  }
+  showModalById(props.modalId)
 }
 
 defineExpose({ open })

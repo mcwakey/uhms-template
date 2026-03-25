@@ -1095,7 +1095,7 @@ onMounted(async () => {
     loadingDepartments.value = true
     // specialization.value = await useGetStore().getObjects('specializations/');
     roles.value = await useGetStore().getObjects('auth/roles/')
-    // roles.value = await axiosInstance.get('auth/roles/');
+    // roles.value = await axiosInstance.get('auth/roles');
     console.log('Roles:', roles.value)
     departments.value = await useGetStore().getObjects('departments/')
 

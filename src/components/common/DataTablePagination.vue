@@ -1,10 +1,9 @@
 <template>
   <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mt-3">
-    <!-- Page size selector -->
     <div class="d-flex align-items-center gap-2">
       <span class="text-muted fs-13">Show</span>
-      <select 
-        class="form-select form-select-sm" 
+      <select
+        class="form-select form-select-sm"
         style="width: auto;"
         :value="pageSize"
         @change="onPageSizeChange($event)"
@@ -14,70 +13,62 @@
       <span class="text-muted fs-13">entries</span>
     </div>
 
-    <!-- Info and pagination -->
     <div class="d-flex align-items-center gap-3">
-      <!-- Info text -->
       <span class="text-muted fs-13">
         Showing {{ startItem }} to {{ endItem }} of {{ total }} entries
       </span>
 
-      <!-- Pagination -->
       <nav v-if="totalPages > 1" aria-label="Table pagination">
         <ul class="pagination pagination-sm mb-0">
-          <!-- First page -->
           <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a 
-              class="page-link" 
-              href="javascript:void(0);" 
+            <a
+              class="page-link"
+              href="javascript:void(0);"
               @click.prevent="goToPage(1)"
             >
               <i class="ti ti-chevrons-left"></i>
             </a>
           </li>
-          
-          <!-- Previous page -->
+
           <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a 
-              class="page-link" 
-              href="javascript:void(0);" 
+            <a
+              class="page-link"
+              href="javascript:void(0);"
               @click.prevent="goToPage(currentPage - 1)"
             >
               <i class="ti ti-chevron-left"></i>
             </a>
           </li>
 
-          <!-- Page numbers -->
-          <li 
-            v-for="page in visiblePages" 
+          <li
+            v-for="page in visiblePages"
             :key="page"
-            class="page-item" 
+            class="page-item"
             :class="{ active: page === currentPage }"
           >
-            <a 
-              class="page-link" 
-              href="javascript:void(0);" 
+            <a
+              class="page-link"
+              href="javascript:void(0);"
               @click.prevent="goToPage(page)"
             >
               {{ page }}
             </a>
           </li>
 
-          <!-- Next page -->
           <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <a 
-              class="page-link" 
-              href="javascript:void(0);" 
+            <a
+              class="page-link"
+              href="javascript:void(0);"
               @click.prevent="goToPage(currentPage + 1)"
             >
               <i class="ti ti-chevron-right"></i>
             </a>
           </li>
 
-          <!-- Last page -->
           <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <a 
-              class="page-link" 
-              href="javascript:void(0);" 
+            <a
+              class="page-link"
+              href="javascript:void(0);"
               @click.prevent="goToPage(totalPages)"
             >
               <i class="ti ti-chevrons-right"></i>
@@ -95,24 +86,24 @@ import { computed } from 'vue'
 const props = defineProps({
   total: {
     type: Number,
-    required: true
+    required: true,
   },
   currentPage: {
     type: Number,
-    required: true
+    required: true,
   },
   pageSize: {
     type: Number,
-    required: true
+    required: true,
   },
   pageSizeOptions: {
     type: Array,
-    default: () => [5, 10, 20, 50]
+    default: () => [5, 10, 20, 50],
   },
   maxVisiblePages: {
     type: Number,
-    default: 5
-  }
+    default: 5,
+  },
 })
 
 const emit = defineEmits(['update:currentPage', 'update:pageSize'])
@@ -165,7 +156,6 @@ const visiblePages = computed(() => {
 function onPageSizeChange(event) {
   const newSize = Number(event.target.value)
   emit('update:pageSize', newSize)
-  // Reset to page 1 when page size changes
   emit('update:currentPage', 1)
 }
 

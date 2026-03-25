@@ -11,28 +11,28 @@
     </div>
     <div class="mb-3">
       <label class="form-label">{{ $t('patients.dob') }}</label>
-      <input 
-        type="text" 
-        class="form-control" 
-        v-model="filters.dobRange" 
+      <input
+        type="text"
+        class="form-control"
+        v-model="filters.dobRange"
         placeholder="Select date range"
       />
     </div>
     <div class="mb-3">
       <label class="form-label">{{ $t('patients.address') }}</label>
-      <input 
-        type="text" 
-        class="form-control" 
-        v-model="filters.address" 
+      <input
+        type="text"
+        class="form-control"
+        v-model="filters.address"
         placeholder="enter a locality or city"
       />
     </div>
     <div class="mb-3">
       <label class="form-label">{{ $t('patients.last_visit') }}</label>
-      <input 
-        type="text" 
-        class="form-control" 
-        v-model="filters.lvdRange" 
+      <input
+        type="text"
+        class="form-control"
+        v-model="filters.lvdRange"
         placeholder="Select date range"
       />
     </div>
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

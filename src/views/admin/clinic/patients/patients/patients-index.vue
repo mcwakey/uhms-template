@@ -209,66 +209,25 @@
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center">
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openSetAppointmentModal(record)"
-                    :title="t('patients.set_appointment')"
-                    data-bs-toggle="modal"
-                    data-bs-target="#set_appointment"
-                    class="text-success fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-brand-telegram"></i>
-                  </a>
-                </div>
-                <!-- <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    :title="t('patients.view_details')"
-                    data-bs-toggle="modal"
-                    data-bs-target="#view_staff"
-                    class="text-primary fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </a>
-                </div>
-                <div class="action-item me-2">
-                  <a
-                    href="javascript:void(0);"
-                    @click="openModal(record)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_staff"
-                    :title="t('patients.delete')"
-                    class="text-danger fs-18 rounded d-flex align-items-center justify-content-center"
-                  >
-                    <i class="ti ti-trash"></i>
-                  </a>
-                </div> -->
-                <div class="d-flex align-items-center gap-1">
-                    <!-- <router-link to="/appointments/appointments-list" class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1">
-                        <i class="ti ti-calendar-cog"></i>
-                    </router-link> -->
-                    <a href="javascript:void(0);" class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1" data-bs-toggle="dropdown">
-                        <i class="ti ti-dots-vertical"></i>
-                    </a>
-                    <ul class="dropdown-menu p-2">
-                        <li>
-                            <router-link :to="{ name: 'EditPatient', params: { id: record.uuid } }" class="dropdown-item d-flex align-items-center">Edit</router-link>
-                        </li>
-                        <li>
-                            <!-- <router-link to="/patients/patient-details" class="dropdown-item d-flex align-items-center">View</router-link> -->
-                            <a
-                              href="javascript:void(0);" @click="openModal(record)" data-bs-toggle="modal" data-bs-target="#delete_staff"
-                              :title="t('patients.delete')" class="dropdown-item d-flex align-items-center"
-                            >Delete</a>
-                        </li>
-                        <!-- <li>
-                            <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                        </li> -->
-                    </ul>
-                </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <a
+                  href="javascript:void(0);"
+                  class="action-icon text-success"
+                  :title="t('patients.set_appointment')"
+                  data-bs-toggle="modal"
+                  data-bs-target="#set_appointment"
+                  @click.prevent="openSetAppointmentModal(record)"
+                >
+                  <i class="ti ti-calendar-cog"></i>
+                </a>
+                <ActionIcons
+                  :viewTitle="t('patients.view_details')"
+                  :editTitle="t('patients.edit')"
+                  :deleteTitle="t('patients.delete')"
+                  @view="$router.push({ name: 'ViewPatient', params: { id: record.uuid } })"
+                  @edit="$router.push({ name: 'EditPatient', params: { id: record.uuid } })"
+                  @delete="() => { selectedPatient = record; showModalById('delete_staff') }"
+                />
               </div>
             </template>
             <template v-else-if="column.key === 'action'">
@@ -356,7 +315,7 @@ import { message } from 'ant-design-vue'
 import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
-import PatientsFilter from '@/components/common-component/PatientsFilter.vue'
+import PatientsFilter from '@/components/common/PatientsFilter.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
 // import PatientDetailsModal from '@/components/modal/PatientDetailsModal.vue'
@@ -365,6 +324,8 @@ import { useI18n } from 'vue-i18n'
 // import constants from '@/assets/json/constants.json'
 import type { Patient } from '@/types/patient'
 import type { TableColumn, PaginationConfig, SelectOption } from '@/types/common'
+import { showModalById } from '@/utils/bootstrap'
+import ActionIcons from '@/components/common/ActionIcons.vue'
 
 dayjs.extend(relativeTime)
 
@@ -378,7 +339,7 @@ const searchQuery: Ref<string> = ref('')
 const currentSortLabel = ref(t('patients.recent'))
 
 // Store
-const PatientsTable = useTableStore('patients/')
+const PatientsTable = useTableStore('patients')
 
 // Computed
 // const detailedItem: ComputedRef<Patient> = computed(() => PatientsTable.detailedItem.value || {})
@@ -483,12 +444,7 @@ const openSetAppointmentModal = async (patient: Patient): Promise<void> => {
   selectedPatient.value = patient
 
   await nextTick()
-  const modalEl = document.getElementById('set_appointment')
-  const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
-  if (Bootstrap && modalEl) {
-    const modal = new Bootstrap.Modal(modalEl)
-    modal.show()
-  }
+  showModalById('set_appointment')
 }
 
 const handleAppointmentCreated = (): void => {
@@ -668,15 +624,6 @@ onMounted(async () => {
 })
 </script>
 <style scoped>
-/* Set Appointment Modal Styles */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.bg-gradient-light {
-  background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
-}
-
 .appointment-type-toggle .btn-group .btn {
   border-radius: 0.375rem !important;
   padding: 0.5rem 0.75rem;
@@ -689,8 +636,8 @@ onMounted(async () => {
 }
 
 .appointment-type-toggle .btn-group .btn-check:checked + .btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: #667eea;
+  background: var(--bs-primary);
+  border-color: var(--bs-primary);
   color: white;
 }
 

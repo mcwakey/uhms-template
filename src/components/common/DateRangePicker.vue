@@ -1,55 +1,3 @@
-<!--
-  Reusable DateRangePicker Component
-
-  A Vue 3 component that wraps the bootstrap-daterangepicker library with
-  modern Vue 3 composition API and provides a clean interface for date range selection.
-
-  Features:
-  - Dynamic loading of dependencies (moment.js, jQuery, daterangepicker)
-  - Fully customizable appearance and behavior
-  - Built-in range presets (Today, Yesterday, Last 7 Days, etc.)
-  - Event-driven architecture with v-model support
-  - Error handling and fallback support
-  - Responsive design with Bootstrap integration
-
-  Usage Example:
-  ```vue
-  <template>
-    <DateRangePicker
-      v-model="dateRange"
-      placeholder="Select date range"
-      :show-ranges="true"
-      @apply="handleDateRangeApply"
-      @error="handleError"
-    />
-  </template>
-
-  <script>
-  import DateRangePicker from '@/components/common-component/DateRangePicker.vue';
-
-  export default {
-    components: { DateRangePicker },
-    setup() {
-      const dateRange = ref({
-        startDate: null,
-        endDate: null
-      });
-
-      const handleDateRangeApply = (data) => {
-        console.log('Date range selected:', data);
-        // data.startDate, data.endDate (YYYY-MM-DD format)
-        // data.startMoment, data.endMoment (moment objects)
-      };
-
-      const handleError = (error) => {
-        console.error('DateRangePicker error:', error);
-      };
-
-      return { dateRange, handleDateRangeApply, handleError };
-    }
-  };
-  ```
--->
 <template>
   <div class="date-range-picker-wrapper">
     <div class="input-icon-start position-relative">
@@ -78,11 +26,8 @@ import moment from 'moment'
 import 'daterangepicker'
 import 'daterangepicker/daterangepicker.css'
 
-// Set up globals for daterangepicker
-// Ensure moment is properly exposed as a function
 if (typeof window !== 'undefined') {
   window.$ = window.jQuery = $
-  // moment might be a module with a default export, so we need to handle both cases
   window.moment = moment.default || moment
 }
 
@@ -150,7 +95,6 @@ export default {
     const displayValue = ref('')
     const isInitialized = ref(false)
 
-    // Default ranges function
     const getDefaultRanges = () => {
       const momentFn = window.moment || moment.default || moment
       return {
@@ -166,17 +110,14 @@ export default {
       }
     }
 
-    // Initialize the daterangepicker
     const initializeDateRangePicker = async () => {
       if (!dateRangeInput.value || isInitialized.value) {
         return
       }
 
       try {
-        // Wait for next tick to ensure DOM is ready
         await nextTick()
 
-        // Verify moment is available and is a function
         const momentFn = window.moment || moment.default || moment
         if (typeof momentFn !== 'function') {
           console.error('❌ moment is not a function:', typeof momentFn, momentFn)
@@ -184,11 +125,9 @@ export default {
           return
         }
 
-        // Set default start and end dates using the verified moment function
         const defaultStart = momentFn().subtract(6, 'days')
         const defaultEnd = momentFn()
 
-        // Create locale configuration
         const locale = {
           format: props.format,
           separator: props.separator,
@@ -216,7 +155,6 @@ export default {
           firstDay: 1,
         }
 
-        // Create daterangepicker configuration
         const config = {
           startDate: defaultStart,
           endDate: defaultEnd,
@@ -233,22 +171,18 @@ export default {
           buttonClasses: 'btn btn-sm',
           applyClass: 'btn-success',
           cancelClass: 'btn-secondary',
-          // Don't specify parentEl, let daterangepicker handle it automatically
         }
 
-        // Add ranges if enabled
         if (props.showRanges) {
           config.ranges = getDefaultRanges()
         }
 
-        // Validate jQuery and daterangepicker availability
         if (!$ || !$.fn || !$.fn.daterangepicker) {
           console.error('❌ jQuery daterangepicker not available')
           emit('error', 'jQuery daterangepicker not available')
           return
         }
 
-        // Initialize with jQuery
         const $input = $(dateRangeInput.value)
 
         if (!$input.length) {
@@ -257,19 +191,15 @@ export default {
           return
         }
 
-        // Ensure the input is visible and properly attached to DOM
         if (!$input.is(':visible')) {
           console.warn('⚠️ Input element is not visible')
         }
 
-        // Add a small delay to ensure everything is ready
         await new Promise((resolve) => setTimeout(resolve, 100))
 
         try {
-          // Initialize the daterangepicker first
           $input.daterangepicker(config)
 
-          // Get the instance
           dateRangeInstance.value = $input.data('daterangepicker')
 
           if (!dateRangeInstance.value) {
@@ -278,7 +208,6 @@ export default {
             return
           }
 
-          // Event handlers - attach after successful initialization
           $input.on('apply.daterangepicker', (ev, picker) => {
             handleApply(picker.startDate, picker.endDate, picker.chosenLabel)
           })
@@ -302,10 +231,8 @@ export default {
           return
         }
 
-        // Set initial display value
         updateDisplayValue(defaultStart, defaultEnd)
 
-        // Emit initial value
         emit('update:modelValue', {
           startDate: defaultStart.format('YYYY-MM-DD'),
           endDate: defaultEnd.format('YYYY-MM-DD'),
@@ -321,7 +248,6 @@ export default {
       }
     }
 
-    // Event handlers
     const handleApply = (startDate, endDate, label) => {
       updateDisplayValue(startDate, endDate)
 
@@ -349,34 +275,24 @@ export default {
       emit('hide', picker)
     }
 
-    // Update display value
     const updateDisplayValue = (startDate, endDate) => {
       if (startDate && endDate) {
         displayValue.value = `${startDate.format(props.format)}${props.separator}${endDate.format(props.format)}`
       }
     }
 
-    // Focus and blur handlers
     const onFocus = () => {
       if (dateRangeInstance.value && dateRangeInstance.value.show) {
         dateRangeInstance.value.show()
       }
     }
 
-    const onBlur = () => {
-      // Optional: Handle blur event if needed
-    }
+    const onBlur = () => {}
 
-    // Watch for prop changes
     watch(
       () => props.modelValue,
       (newValue) => {
-        if (
-          newValue &&
-          dateRangeInstance.value &&
-          newValue.startDate &&
-          newValue.endDate
-        ) {
+        if (newValue && dateRangeInstance.value && newValue.startDate && newValue.endDate) {
           const momentFn = window.moment || moment.default || moment
           const startDate = momentFn(newValue.startDate)
           const endDate = momentFn(newValue.endDate)
@@ -392,7 +308,6 @@ export default {
       { deep: true }
     )
 
-    // Public methods
     const setDateRange = (startDate, endDate) => {
       if (dateRangeInstance.value) {
         const momentFn = window.moment || moment.default || moment
@@ -437,17 +352,14 @@ export default {
       })
     }
 
-    // Lifecycle hooks
     onMounted(async () => {
       await nextTick()
-      // Add a small delay to ensure DOM is ready
       setTimeout(() => {
         initializeDateRangePicker()
       }, 100)
     })
 
     onUnmounted(() => {
-      // Cleanup
       if (dateRangeInstance.value && $) {
         try {
           const $input = $(dateRangeInput.value)
@@ -472,7 +384,6 @@ export default {
       displayValue,
       onFocus,
       onBlur,
-      // Public methods
       setDateRange,
       show,
       hide,
@@ -493,7 +404,6 @@ export default {
 
 .input-icon-addon {
   position: absolute;
-  /* left: 4px; */
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;

@@ -131,6 +131,46 @@
             "route": "/admin/clinic/locations",
             "hasSubRoute": false,
             "showSubRoute": false
+        },
+        {
+            "menuValue": "Laboratory",
+            "Icon": "ti ti-flask",
+            "active_link" : "/admin/clinic/laboratory",
+            "route": "/admin/clinic/laboratory",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Prescriptions",
+            "Icon": "ti ti-prescription",
+            "active_link" : "/admin/clinic/prescriptions",
+            "route": "/admin/clinic/prescriptions",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Consultations",
+            "Icon": "ti ti-stethoscope",
+            "active_link" : "/admin/clinic/consultations",
+            "route": "/admin/clinic/consultations",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Medical Notes",
+            "Icon": "ti ti-notes",
+            "active_link" : "/admin/clinic/medical-notes",
+            "route": "/admin/clinic/medical-notes",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Pharmacy",
+            "Icon": "ti ti-building-store",
+            "active_link" : "/admin/clinic/pharmacy",
+            "route": "/admin/clinic/pharmacy",
+            "hasSubRoute": false,
+            "showSubRoute": false
         }
       ]
     },
@@ -272,6 +312,14 @@
                 "Icon": "ti ti-transition-right",
                 "active_link" : "/finance/transactions",
                 "route": "/finance/transactions",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Insurance",
+                "Icon": "ti ti-shield-check",
+                "active_link" : "/finance/insurance",
+                "route": "/finance/insurance",
                 "hasSubRoute": false,
                 "showSubRoute": false
             },

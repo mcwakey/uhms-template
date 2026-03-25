@@ -1,0 +1,5 @@
+[
+  { "id": 1, "provider": "NHIS", "policy_no": "NH-2024-0001", "coverage": "Basic", "active": true },
+  { "id": 2, "provider": "PrivateCare", "policy_no": "PC-99341", "coverage": "Comprehensive", "active": true },
+  { "id": 3, "provider": "MedShield", "policy_no": "MS-88112", "coverage": "Basic", "active": false }
+]

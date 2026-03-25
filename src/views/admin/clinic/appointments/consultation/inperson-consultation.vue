@@ -92,7 +92,7 @@
                     ><i class="ti ti-shield me-2"></i>AUMS Insurance - Gold</a
                   > -->
                   <div
-                    class="fw-medium d-flex align-items-center bg-gradient-danger text-white rounded py-2 px-2 mb-1"
+                    class="fw-medium d-flex align-items-center bg-primary text-white rounded py-2 px-2 mb-1"
                   >
                     <div class="d-flex align-items-center w-100 justify-content-center">
                       <div class="d-flex align-items-center">
@@ -4320,22 +4320,6 @@ export default defineComponent({
 .vital-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-}
-
-.bg-gradient-danger {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
-}
-
-.bg-gradient-warning {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%) !important;
-}
-
-.bg-gradient-success {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%) !important;
 }
 
 .text-white-50 {

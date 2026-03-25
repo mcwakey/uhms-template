@@ -45,10 +45,9 @@ axiosInstance.interceptors.response.use(
         if (authData) {
           const { refreshToken } = JSON.parse(authData)
           if (refreshToken) {
-            const response = await axios.post(
-              `${axiosInstance.defaults.baseURL}/auth/token/refresh/`,
-              { refresh: refreshToken }
-            )
+            const response = await axios.post(`${axiosInstance.defaults.baseURL}/auth/token/refresh`, {
+              refresh: refreshToken,
+            })
 
             const { access } = response.data
             

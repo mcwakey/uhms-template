@@ -1,0 +1,6 @@
+[
+  { "id": 1, "patient_name": "John Doe", "items": 3, "status": "Issued" },
+  { "id": 2, "patient_name": "Ama K.", "items": 2, "status": "Dispensed" },
+  { "id": 3, "patient_name": "Kojo M.", "items": 1, "status": "Pending" },
+  { "id": 4, "patient_name": "Yaw B.", "items": 4, "status": "Issued" }
+]

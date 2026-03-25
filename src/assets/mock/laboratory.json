@@ -1,0 +1,6 @@
+[
+  { "id": 1, "test_name": "Complete Blood Count", "status": "Pending", "requested_by": "Dr. Mensah" },
+  { "id": 2, "test_name": "Liver Function Test", "status": "Processing", "requested_by": "Dr. Adjei" },
+  { "id": 3, "test_name": "Kidney Function Test", "status": "Completed", "requested_by": "Dr. Sarpong" },
+  { "id": 4, "test_name": "Malaria Parasite Test", "status": "Completed", "requested_by": "Dr. Boateng" }
+]
