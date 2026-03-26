@@ -25,7 +25,7 @@
               </p>
               <div class="d-flex justify-content-center pb-3">
                 <router-link
-                  to="/dashboard/admin-dashboard"
+                  to="/admin/dashboard"
                   class="btn btn-primary d-flex align-items-center"
                   ><i class="ti ti-chevron-left me-1"></i>Back to Dashboard</router-link
                 >

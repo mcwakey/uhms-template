@@ -49,19 +49,29 @@ export const authGuard = (to, from, next) => {
     next({ name: 'Login' })
   }
   // 4. Department-based permission checks (super admin bypasses these)
-  else if (to.meta.isConsultation && !authStore.isConsultation && !authStore.isSuperAdmin) {
+  else if (
+    to.meta.isConsultation &&
+    !authStore.isConsultation &&
+    !authStore.isAdmin &&
+    !authStore.isSuperAdmin
+  ) {
     console.log('User does not have consultation department access')
     const targetRoute = authStore.userDepartment
       ? authStore.routes[authStore.userDepartment]
       : 'AdminDashboard'
     next({ name: targetRoute })
-  } else if (to.meta.isInvestigation && !authStore.isInvestigation && !authStore.isSuperAdmin) {
+  } else if (
+    to.meta.isInvestigation &&
+    !authStore.isInvestigation &&
+    !authStore.isAdmin &&
+    !authStore.isSuperAdmin
+  ) {
     console.log('User does not have investigation department access')
     const targetRoute = authStore.userDepartment
       ? authStore.routes[authStore.userDepartment]
       : 'AdminDashboard'
     next({ name: targetRoute })
-  } else if (to.meta.isNursing && !authStore.isNursing && !authStore.isSuperAdmin) {
+  } else if (to.meta.isNursing && !authStore.isNursing && !authStore.isAdmin && !authStore.isSuperAdmin) {
     console.log('User does not have nursing department access')
     const targetRoute = authStore.userDepartment
       ? authStore.routes[authStore.userDepartment]

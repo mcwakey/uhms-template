@@ -110,6 +110,16 @@ export default {
           multilevel: [false, false, false],
       }
   },
+  mounted() {
+      this.syncMenuStateToRoute()
+      this.scrollActiveIntoView()
+  },
+  watch: {
+      '$route.path'() {
+          this.syncMenuStateToRoute()
+          this.scrollActiveIntoView()
+      },
+  },
   computed: {
       isMenuActive() {
           return (menu) => {
@@ -140,6 +150,60 @@ export default {
       }
   },
   methods: {
+      normalizePath(path) {
+          if (!path || typeof path !== 'string') return ''
+          return path.endsWith('/') ? path.slice(0, -1) : path
+      },
+      isPathMatch(currentPath, targetPath) {
+          if (!targetPath) return false
+          const current = this.normalizePath(currentPath)
+          const target = this.normalizePath(targetPath)
+          return current === target || current.startsWith(target + '/')
+      },
+      syncMenuStateToRoute() {
+          const currentPath = this.$route?.path || ''
+          let nextOpenMenuItem = null
+          let nextOpenSubmenuOneItem = null
+
+          this.side_bar_data.forEach((item) => {
+              item.menu.forEach((menu) => {
+                  if (menu.hasSubRoute && Array.isArray(menu.subMenus)) {
+                      const shouldOpen = menu.subMenus.some((subMenu) =>
+                          this.isPathMatch(currentPath, subMenu?.route || subMenu?.active_link)
+                      )
+                      menu.showSubRoute = shouldOpen
+                  }
+
+                  if (menu.hasSubRouteTwo && Array.isArray(menu.subMenus)) {
+                      const shouldOpenMenu = menu.subMenus.some((subMenus) => {
+                          if (subMenus?.customSubmenuTwo && Array.isArray(subMenus.subMenusTwo)) {
+                              const shouldOpenSub = subMenus.subMenusTwo.some((subMenuTwo) =>
+                                  this.isPathMatch(currentPath, subMenuTwo?.route)
+                              )
+                              if (shouldOpenSub) nextOpenSubmenuOneItem = subMenus
+                              return shouldOpenSub
+                          }
+                          return this.isPathMatch(currentPath, subMenus?.route)
+                      })
+
+                      if (shouldOpenMenu) nextOpenMenuItem = menu
+                  }
+              })
+          })
+
+          this.openMenuItem = nextOpenMenuItem
+          this.openSubmenuOneItem = nextOpenSubmenuOneItem
+      },
+      scrollActiveIntoView() {
+          this.$nextTick(() => {
+              const activeLink =
+                  this.$el?.querySelector?.('a.router-link-active') ||
+                  this.$el?.querySelector?.('li.active a')
+              if (activeLink && typeof activeLink.scrollIntoView === 'function') {
+                  activeLink.scrollIntoView({ block: 'center' })
+              }
+          })
+      },
       expandSubMenus(menu) {
           this.side_bar_data.forEach((item) => {
               item.menu.forEach((subMenu) => {

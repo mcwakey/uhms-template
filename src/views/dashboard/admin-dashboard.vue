@@ -119,31 +119,24 @@
             />
             <div class="card-body">
               <div class="d-flex align-items-center mb-2 justify-content-between">
-                <span class="avatar bg-info rounded-circle"
-                  ><i class="ti ti-calendar-heart fs-24"></i
+                <span class="avatar bg-warning rounded-circle text-white"
+                  ><i class="ti ti-receipt fs-24"></i
                 ></span>
                 <div class="text-end">
                   <span
                     class="badge px-2 py-1 fs-12 fw-medium d-inline-flex mb-1 bg-danger"
-                    >-15%</span
+                    >-5%</span
                   >
-                  <p class="fs-13 mb-0">in last 7 Days</p>
+                  <p class="fs-13 mb-0">vs last month</p>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-between">
                 <div>
-                  <p class="mb-1">Appointment</p>
-                  <h3 class="fw-bold mb-0">12178</h3>
+                  <p class="mb-1">Outstanding</p>
+                  <h3 class="fw-bold mb-0">$12,450</h3>
                 </div>
                 <div>
-                  <div id="s-col-3" class="chart-set"></div>
-                  <apexchart
-                    type="bar"
-                    height="54"
-                    width="80"
-                    :options="adminColChart3.sChart3"
-                    :series="adminColChart3.series"
-                  ></apexchart>
+                   <span class="text-muted fs-12">14 Unpaid</span>
                 </div>
               </div>
             </div>
@@ -174,8 +167,8 @@
                 class="d-flex align-items-center justify-content-between overflow-hidden"
               >
                 <div>
-                  <p class="mb-1">Revenue</p>
-                  <h3 class="fw-bold mb-0 text-truncate">$55,1240</h3>
+                  <p class="mb-1">Today's Revenue</p>
+                  <h3 class="fw-bold mb-0 text-truncate">$5,124.00</h3>
                 </div>
                 <div>
                   <div id="s-col-4" class="chart-set">

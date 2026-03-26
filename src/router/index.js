@@ -43,6 +43,11 @@ const routes = [
     component: () => import('@/views/error/error-404.vue'),
   },
   {
+    path: '/under-maintenance',
+    name: 'UnderMaintenance',
+    component: () => import('@/views/misc-pages/under-maintenance.vue'),
+  },
+  {
     path: '/admin',
     // component: () => import('@/views/admin/admin-layout.vue'),
     children: [
@@ -64,7 +69,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'ConsultationDashboard',
-        component: () => import('@/views/admin/dashboard-index.vue'),
+        component: () => import('@/views/consultation/consultation-dashboard.vue'),
         meta: { requiresAuth: true, isConsultation: true },
       },
     ],
@@ -76,7 +81,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'InvestigationDashboard',
-        component: () => import('@/views/admin/dashboard-index.vue'),
+        component: () => import('@/views/investigation/investigation-dashboard.vue'),
         meta: { requiresAuth: true, isInvestigation: true },
       },
     ],
@@ -88,8 +93,80 @@ const routes = [
       {
         path: 'dashboard',
         name: 'NursingDashboard',
-        component: () => import('@/views/admin/dashboard-index.vue'),
+        component: () => import('@/views/nursing/nursing-dashboard.vue'),
         meta: { requiresAuth: true, isNursing: true },
+      },
+    ],
+  },
+  {
+    path: '/treatment',
+    children: [
+      { path: '', redirect: '/treatment/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'TreatmentDashboard',
+        component: () => import('@/views/treatment/treatment-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/procedure',
+    children: [
+      { path: '', redirect: '/procedure/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'ProcedureDashboard',
+        component: () => import('@/views/procedure/procedure-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/medication',
+    children: [
+      { path: '', redirect: '/medication/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'MedicationDashboard',
+        component: () => import('@/views/medication/medication-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/emergency',
+    children: [
+      { path: '', redirect: '/emergency/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'EmergencyDashboard',
+        component: () => import('@/views/emergency/emergency-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/support',
+    children: [
+      { path: '', redirect: '/support/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'SupportDashboard',
+        component: () => import('@/views/support/support-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/patient',
+    children: [
+      { path: '', redirect: '/patient/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'PatientDashboard',
+        component: () => import('@/views/patient/patient-dashboard.vue'),
+        meta: { requiresAuth: true },
       },
     ],
   },
@@ -1074,6 +1151,10 @@ const routes = [
 //       { path: "maps-vector", component: () => import('@/views/pages/uiinterface/maps/maps-vector.vue') },
 //     ],
 //   },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/not-found',
+  },
 ];
 
 export const router = createRouter({

@@ -1,641 +1,243 @@
 <template>
   <layouts-header></layouts-header>
   <layouts-sidebar></layouts-sidebar>
-  <!-- ========================
-	   Start Page Content
-	========================= -->
-
   <div class="page-wrapper">
-    <!-- Start Content -->
-    <div class="content" id="profilePage">
-      <!-- Start Page Header -->
-      <div
-        class="d-flex align-items-sm-center flex-sm-row flex-column gap-2 mb-3 pb-3 border-bottom"
-      >
-        <div class="flex-grow-1">
+    <div class="content">
+      <div class="d-flex align-items-sm-center justify-content-between flex-sm-row flex-column gap-2 pb-3 mb-3 border-bottom">
+        <div>
           <h4 class="fw-bold mb-0">
-            Invoices<span
-              class="badge badge-soft-primary border border-primary fs-13 fw-medium ms-2"
-              >Total: {{ InvoicesTable.totalCount }}</span
+            Invoices Management
+            <span class="badge badge-soft-primary border border-primary fs-13 fw-medium ms-2"
+              >Total: {{ totalCount }}</span
             >
           </h4>
         </div>
-        <div class="text-end d-flex">
-          <!-- dropdown-->
-          <div class="dropdown me-1">
-            <a
-              href="javascript:void(0);"
-              class="btn btn-md fs-14 fw-normal border bg-white rounded text-dark d-inline-flex align-items-center"
-              data-bs-toggle="dropdown"
-            >
+        <div class="d-flex align-items-center gap-2">
+           <div class="dropdown me-1">
+            <a href="javascript:void(0);" class="btn btn-outline-secondary d-inline-flex align-items-center" data-bs-toggle="dropdown">
               Export<i class="ti ti-chevron-down ms-2"></i>
             </a>
             <ul class="dropdown-menu p-2">
-              <li>
-                <a class="dropdown-item" href="#">Download as PDF</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Download as Excel</a>
-              </li>
+              <li><a class="dropdown-item" href="javascript:void(0);">Download as PDF</a></li>
+              <li><a class="dropdown-item" href="javascript:void(0);">Download as Excel</a></li>
             </ul>
           </div>
-          <RouterLink to="/hrm/staff/add" class="btn btn-primary ms-2 fs-13 btn-md">
-            <i class="ti ti-plus me-1"></i>Add New Invoice
-          </RouterLink>
+          <button class="btn btn-primary d-flex align-items-center">
+            <i class="ti ti-plus me-1"></i> Create Invoice
+          </button>
         </div>
       </div>
-      <!-- End Page Header -->
-
-      <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-        <div class="search-set mb-3">
-          <div class="d-flex align-items-center flex-wrap gap-2">
-            <div class="table-search d-flex align-items-center mb-0">
-              <div class="search-input">
-                <a href="javascript:void(0);" class="btn-searchset"></a>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search"
-                  v-model="searchQuery"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="d-flex table-dropdown mb-3 pb-1 right-content align-items-center flex-wrap row-gap-3"
-        >
-          <div class="dropdown me-2">
-            <a
-              href="javascript:void(0);"
-              class="btn btn-white bg-white fs-14 py-1 border d-inline-flex text-dark align-items-center"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="outside"
-            >
-              <i class="ti ti-filter text-gray-5 me-1"></i>Filters
-            </a>
-            <div
-              class="dropdown-menu dropdown-lg dropdown-menu-end filter-dropdown p-0"
-              id="filter-dropdown"
-            >
-              <div
-                class="d-flex align-items-center justify-content-between border-bottom filter-header"
-              >
-                <h4 class="mb-0">Filter</h4>
-                <div class="d-flex align-items-center">
-                  <a href="javascript:void(0);" class="link-danger text-decoration-underline"
-                    >Clear All</a
-                  >
-                </div>
-              </div>
-              <FilterIndex></FilterIndex>
-            </div>
-          </div>
-          <div class="dropdown">
-            <a
-              href="javascript:void(0);"
-              class="dropdown-toggle btn bg-white btn-md d-inline-flex align-items-center fw-normal rounded border text-dark px-2 py-1 fs-14"
-              data-bs-toggle="dropdown"
-            >
-              <span class="me-1"> Sort By : </span> Recent
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end p-2">
-              <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Recent</a>
-              </li>
-              <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1">Oldest</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
+      
       <div class="table-responsive">
         <a-table
           class="table table-nowrap datatable pagination-rounded"
           :columns="columns"
-          :table-layout="fixed"
-          :data-source="InvoicesTable.data.value"
+          :data-source="data"
           :pagination="paginationConfig"
-          @change="InvoicesTable.handleTableChange"
+          :loading="loading"
+          @change="invoicesStore.handleTableChange"
           row-key="id"
-          :pagination-class="pagination - rounded"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'full_name'">
-              <div class="d-flex align-items-center ms-2">
-                <a
-                  href="javascript:void(0);"
-                  class="avatar me-2 fs-14"
-                  @click="openModal(record)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#view_staff"
-                >
-                  <img
-                    width="16"
-                    height="16"
-                    src="@/assets/img/users/user-08.jpg"
-                    alt="Staff"
-                    class="rounded-circle m-r-5"
-                  />
-                </a>
-                <div>
-                  <h6 class="mb-1 fs-14 fw-semibold">
-                    <a
-                      href="javascript:void(0);"
-                      @click="openModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#view_staff"
-                      >{{ record.full_name }}</a
-                    >
-                  </h6>
-                </div>
-              </div>
+            <template v-if="column.key === 'id'">
+               <span class="fw-bold text-primary">{{ record.id }}</span>
             </template>
+
+            <template v-else-if="column.key === 'patient_name'">
+               <div class="fw-medium text-dark">{{ record.patient_name }}</div>
+            </template>
+
+            <template v-else-if="column.key === 'amount'">
+               <div class="fw-bold">{{ formatCurrency(record.amount) }}</div>
+            </template>
+
+            <template v-else-if="column.key === 'balance'">
+               <div :class="{'text-danger': (record.amount - (record.amount_paid || 0)) > 0}">
+                  {{ formatCurrency(record.amount - (record.amount_paid || 0)) }}
+               </div>
+            </template>
+
+            <template v-else-if="column.key === 'created_at'">
+              {{ formatDate(record.created_at) }}
+            </template>
+
+            <template v-else-if="column.key === 'status'">
+              <span :class="['badge px-2 py-1', getStatusClass(record.status)]">
+                {{ record.status }}
+              </span>
+            </template>
+
             <template v-else-if="column.key === 'actions'">
-              <ActionIcons
-                viewTitle="View Invoice"
-                editTitle="Edit Invoice"
-                deleteTitle="Delete Invoice"
-                @view="handleView(record)"
-                @edit="handleEdit(record)"
-                @delete="handleDelete(record)"
-              />
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                 <button 
+                  class="btn btn-sm btn-icon btn-soft-primary" 
+                  title="View Invoice"
+                  @click="handleView(record)"
+                >
+                  <i class="ti ti-eye"></i>
+                </button>
+                 <button 
+                  class="btn btn-sm btn-icon btn-soft-success" 
+                  title="Record Payment"
+                  @click="handleRecordPayment(record)"
+                  :disabled="record.status === 'Paid'"
+                >
+                  <i class="ti ti-cash"></i>
+                </button>
+                <button 
+                  class="btn btn-sm btn-icon btn-soft-secondary" 
+                  title="Print"
+                  @click="handlePrint(record)"
+                >
+                  <i class="ti ti-printer"></i>
+                </button>
+              </div>
             </template>
           </template>
         </a-table>
       </div>
     </div>
-    <!-- End Content -->
   </div>
 
-  <!-- Footer Start -->
-  <layouts-footer></layouts-footer>
-  <!-- Footer End -->
-
-  <!-- ========================
-		End Page Content
-	========================= -->
-
-  <div id="view_staff" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="fw-bold modal-title">Staff Details</h5>
-          <button
-            type="button"
-            class="btn-close btn-close-modal custom-btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="ti ti-x"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="card bg-light">
-            <div class="card-body">
-              <div class="d-flex align-items-center">
-                <div class="me-2">
-                  <img
-                    src="@/assets/img/users/user-08.jpg"
-                    alt="img"
-                    class="img-fluid avatar avatar-xxl rounded"
-                  />
-                </div>
-                <div>
-                  <span class="text-primary mb-1">{{ detailedItem.staff_id }}</span>
-                  <div class="d-flex align-items-center mb-1">
-                    <h5 class="fw-bold mb-0 me-2">{{ detailedItem.full_name }}</h5>
-                    <span class="badge badge-soft-success border border-success fw-medium fs-13"
-                      >Available</span
-                    >
-                  </div>
-                  <p>{{ detailedItem.specialization }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end card -->
-
-          <ul class="nav nav-tabs nav-bordered mb-3">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                href="javascript:void(0);"
-                data-bs-toggle="tab"
-                data-bs-target="#tab1"
-                >Basic Info</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="javascript:void(0);"
-                data-bs-toggle="tab"
-                data-bs-target="#tab2"
-                >Salary Info</a
-              >
-            </li>
-          </ul>
-
-          <div class="tab-content">
-            <div class="tab-pane active" id="tab1" role="tabpanel" tabindex="0">
-              <div class="row row-gap-2">
-                <div class="col-md-4">
-                  <p class="text-dark fs-13 fw-medium mb-0">Gender</p>
-                  <p class="fs-13">{{ detailedItem.gender }}</p>
-                </div>
-                <div class="col-md-4">
-                  <p class="text-dark fs-13 fw-medium mb-0">Phone Number</p>
-                  <p class="fs-13">{{ detailedItem.phone }}</p>
-                </div>
-                <div class="col-md-4">
-                  <p class="text-dark fs-13 fw-medium mb-0">Email</p>
-                  <p class="fs-13">{{ detailedItem.email }}</p>
-                </div>
-                <div class="col-md-4">
-                  <p class="text-dark fs-13 fw-medium mb-0">Date of Joining</p>
-                  <p class="fs-13">{{ detailedItem.date_of_birth }}</p>
-                </div>
-                <div class="col-md-4">
-                  <p class="text-dark fs-13 fw-medium mb-0">Role</p>
-                  <p class="fs-13">{{ detailedItem.role }}</p>
-                </div>
-                <div class="col-md-12">
-                  <p class="text-dark fs-13 fw-medium mb-0">Address</p>
-                  <p class="fs-13">{{ detailedItem.address || 'No address available' }}</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tab-pane" id="tab2" role="tabpanel" tabindex="0">
-              <!-- Table List -->
-              <div class="table-responsive border bg-white">
-                <table class="table table-nowrap">
-                  <thead>
-                    <tr>
-                      <th>Credit Date</th>
-                      <th>Amount</th>
-                      <th>Salary for</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>13 Jul 2025</td>
-                      <td>$4800</td>
-                      <td>Jun 2025</td>
-                      <td>
-                        <div class="action-item">
-                          <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                          </a>
-                          <ul class="dropdown-menu p-2">
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                                >Edit</a
-                              >
-                            </li>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#delete"
-                                >Delete</a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>12 Jun 2025</td>
-                      <td>$4800</td>
-                      <td>May 2025</td>
-                      <td>
-                        <div class="action-item">
-                          <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                          </a>
-                          <ul class="dropdown-menu p-2">
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                                >Edit</a
-                              >
-                            </li>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#delete"
-                                >Delete</a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>15 May 2025</td>
-                      <td>$4800</td>
-                      <td>Apr 2025</td>
-                      <td>
-                        <div class="action-item">
-                          <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                          </a>
-                          <ul class="dropdown-menu p-2">
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                                >Edit</a
-                              >
-                            </li>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#delete"
-                                >Delete</a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>14 Apr 2025</td>
-                      <td>$4800</td>
-                      <td>Mar 2025</td>
-                      <td>
-                        <div class="action-item">
-                          <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                          </a>
-                          <ul class="dropdown-menu p-2">
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                                >Edit</a
-                              >
-                            </li>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#delete"
-                                >Delete</a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>13 Mar 2025</td>
-                      <td>$4800</td>
-                      <td>Feb 2025</td>
-                      <td>
-                        <div class="action-item">
-                          <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                          </a>
-                          <ul class="dropdown-menu p-2">
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                                >Edit</a
-                              >
-                            </li>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#delete"
-                                >Delete</a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>14 Feb 2025</td>
-                      <td>$4800</td>
-                      <td>Jan 2025</td>
-                      <td>
-                        <div class="action-item">
-                          <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                          </a>
-                          <ul class="dropdown-menu p-2">
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                                >Edit</a
-                              >
-                            </li>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#delete"
-                                >Delete</a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>12 Jan 2025</td>
-                      <td>$4800</td>
-                      <td>Dec 2024</td>
-                      <td>
-                        <div class="action-item">
-                          <a href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                          </a>
-                          <ul class="dropdown-menu p-2">
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                                >Edit</a
-                              >
-                            </li>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                class="dropdown-item d-flex align-items-center"
-                                data-bs-toggle="modal"
-                                data-bs-target="#delete"
-                                >Delete</a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /Table List -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="delete_staff">
-    <DeleteModal></DeleteModal>
-  </div>
+  <!-- Modals -->
+  <ViewInvoiceModal 
+    modal-id="view_invoice"
+    :invoice="detailedItem"
+    @record-payment="handleRecordPayment"
+  />
+  <RecordPaymentModal 
+    modal-id="record_payment"
+    :invoice="detailedItem"
+    @payment-recorded="invoicesStore.fetchData"
+  />
+  <DeleteModal 
+    modal-id="delete_invoice"
+    title="Delete Invoice"
+    :message="`Are you sure you want to delete the invoice for ${detailedItem?.patient_name}?`"
+    @confirm="handleDeleteConfirm"
+  />
 </template>
+
 <script>
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
-import FilterIndex from '@/components/common/filter-index.vue'
+import { showModalById, hideModalById } from '@/utils/bootstrap'
+
+// Import Modals
+import ViewInvoiceModal from '@/components/modal/billing-modals/ViewInvoiceModal.vue'
+import RecordPaymentModal from '@/components/modal/billing-modals/RecordPaymentModal.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
-import ActionIcons from '@/components/common/ActionIcons.vue'
-import { showModalById } from '@/utils/bootstrap'
 
 export default {
-  components: { FilterIndex, DeleteModal, ActionIcons },
-  name: 'InvoicesTable',
-
+  components: { 
+    ViewInvoiceModal, 
+    RecordPaymentModal, 
+    DeleteModal 
+  },
+  name: 'InvoicesIndex',
   setup() {
-    const InvoicesTable = useTableStore('invoices')
-    const detailedItem = computed(() => InvoicesTable.detailedItem.value || {})
+    const invoicesStore = useTableStore('invoices')
+    const { 
+      data, 
+      loading, 
+      totalCount, 
+      currentPage, 
+      perPage, 
+      detailedItem 
+    } = invoicesStore
 
     const paginationConfig = computed(() => ({
-      current: InvoicesTable.currentPage.value,
-      pageSize: InvoicesTable.perPage.value,
-      total: InvoicesTable.totalCount.value,
+      current: currentPage.value,
+      pageSize: perPage.value,
+      total: totalCount.value,
       showSizeChanger: false,
       showQuickJumper: false,
     }))
 
-    const openModal = async (record) => {
-      try {
-        InvoicesTable.selectItem(record)
-        await InvoicesTable.fetchItemDetails(record.uuid)
-      } catch (error) {
-        message.error(error)
+    const columns = [
+      { title: 'Invoice ID', key: 'id', sorter: true },
+      { title: 'Patient', key: 'patient_name', sorter: true },
+      { title: 'Total Amount', key: 'amount' },
+      { title: 'Balance', key: 'balance' },
+      { title: 'Date', key: 'created_at' },
+      { title: 'Status', key: 'status' },
+      { title: 'Actions', key: 'actions', align: 'right', width: 150 },
+    ]
+
+    const formatDate = (dateString) => {
+      if (!dateString) return 'N/A'
+      return new Date(dateString).toLocaleDateString()
+    }
+
+    const formatCurrency = (val) => {
+      if (val === undefined || val === null) return '$0.00'
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val)
+    }
+
+    const getStatusClass = (status) => {
+      switch (status?.toLowerCase()) {
+        case 'paid': return 'badge-soft-success'
+        case 'unpaid': return 'badge-soft-danger'
+        case 'partial': return 'badge-soft-warning'
+        case 'overdue': return 'badge-soft-dark'
+        default: return 'badge-soft-secondary'
       }
     }
 
-    const handleView = async (record) => {
-      await openModal(record)
-      showModalById('view_staff')
+    const handleView = (record) => {
+      invoicesStore.selectItem(record)
+      showModalById('view_invoice')
     }
 
-    const handleEdit = async (record) => {
-      await openModal(record)
-      showModalById('edit_staff')
+    const handleRecordPayment = (record) => {
+      invoicesStore.selectItem(record)
+      hideModalById('view_invoice')
+      setTimeout(() => {
+        showModalById('record_payment')
+      }, 300)
     }
 
-    const handleDelete = async (record) => {
-      await openModal(record)
-      showModalById('delete_staff')
+    const handlePrint = (record) => {
+       message.info(`Preparing print view for invoice ${record.id}`)
+       window.print()
     }
 
-    // Custom image formatter
-
-    // Table columns
-    const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-        // width: 50,
-        className: 'staff_id',
-      },
-      {
-        title: 'Invoice Name',
-        dataIndex: 'name',
-        key: 'name',
-        // width: 150,
-        className: 'name',
-      },
-      {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-        // width: 70,
-        className: 'phone',
-      },
-      {
-        title: 'Type',
-        dataIndex: 'type',
-        key: 'type',
-        // width: 150,
-        className: 'email',
-      },
-      {
-        title: 'Billable',
-        dataIndex: 'billable',
-        key: 'billable',
-        // width: 150,
-      },
-      {
-        title: 'Actions',
-        key: 'actions',
-        width: 30,
-        className: 'actions',
-      },
-    ]
+    const handleDeleteConfirm = async () => {
+      try {
+        message.success('Invoice deleted successfully')
+        invoicesStore.fetchData()
+      } catch (error) {
+        message.error('Failed to delete invoice')
+      }
+    }
 
     onMounted(() => {
-      // Fetch staff data when the component is mounted
-      InvoicesTable.fetchData().catch(() => {
-        message.error('Failed to load staff data')
+      invoicesStore.fetchData().catch(() => {
+        console.log('API failed or not ready, fallback to mock data enabled in store.')
       })
     })
 
     return {
-      InvoicesTable,
+      data,
+      loading,
+      totalCount,
       detailedItem,
+      invoicesStore,
       paginationConfig,
       columns,
-      openModal,
+      formatDate,
+      formatCurrency,
+      getStatusClass,
       handleView,
-      handleEdit,
-      handleDelete,
+      handleRecordPayment,
+      handlePrint,
+      handleDeleteConfirm
     }
   },
 }
 </script>
+
 
 <style>
 /* Center alignment fixes */

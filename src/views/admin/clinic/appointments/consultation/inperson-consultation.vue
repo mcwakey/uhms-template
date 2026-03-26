@@ -914,13 +914,27 @@
                   <li class="nav-item" role="presentation">
                     <button
                       class="nav-link active"
+                      id="summary-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#summary-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="summary-tab-pane"
+                      aria-selected="true"
+                    >
+                      <i class="ti ti-notes me-1"></i>Consultation Summary
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
                       id="channels-tab"
                       data-bs-toggle="tab"
                       data-bs-target="#channels-tab-pane"
                       type="button"
                       role="tab"
                       aria-controls="channels-tab-pane"
-                      aria-selected="true"
+                      aria-selected="false"
                     >
                       <i class="ti ti-apps me-1"></i>Presenting Of Complains
                     </button>
@@ -971,9 +985,59 @@
 
                 <!-- Tab Content -->
                 <div class="tab-content" id="consultationTabContent">
-                  <!-- Channels Tab -->
+                  <!-- Summary Tab -->
                   <div
                     class="tab-pane fade show active"
+                    id="summary-tab-pane"
+                    role="tabpanel"
+                    aria-labelledby="summary-tab"
+                  >
+                    <form @submit.prevent="saveSessionHistory('summary')">
+                      <div class="mb-3">
+                        <label class="form-label">Consultation Summary / General Notes</label>
+                        <div class="position-relative">
+                          <textarea
+                            v-model="summaryText"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Overall consultation summary..."
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div class="text-end mb-3">
+                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
+                          <i class="ti ti-circle-plus fs-16 me-2"></i>Save Summary
+                        </button>
+                      </div>
+                    </form>
+
+                    <!-- Previous Summary Records -->
+                    <div v-if="summaryHistories.length > 0" class="mb-1">
+                      <h6 class="fs-15 fw-semibold mb-2">
+                        <i class="ti ti-history me-2 text-info"></i>Previous Summaries
+                      </h6>
+                      <div class="row">
+                        <div v-for="history in summaryHistories" :key="history.id" class="col-12">
+                          <div class="card bg-light">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between align-items-start">
+                                <div class="history-content">
+                                  <p class="mb-0 text-dark">{{ history.history }}</p>
+                                </div>
+                                <small class="text-muted">
+                                  <i class="ti ti-calendar me-1"></i>{{ formatDateTime(history.created_at) }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Channels Tab -->
+                  <div
+                    class="tab-pane fade"
                     id="channels-tab-pane"
                     role="tabpanel"
                     aria-labelledby="channels-tab"
@@ -1031,6 +1095,38 @@
                         </div>
                       </div>
                     </form>
+
+                    <div class="mb-3 mt-4">
+                      <label class="form-label">History of Presenting Illness (HPI)</label>
+                      <form @submit.prevent="saveSessionHistory('hpi')">
+                        <div class="position-relative mb-2">
+                          <textarea
+                            v-model="hpiText"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Detailed description of complains..."
+                          ></textarea>
+                        </div>
+                        <div class="text-end">
+                          <button type="submit" class="btn btn-primary btn-sm d-inline-flex align-items-center">
+                            <i class="ti ti-circle-plus fs-14 me-1"></i> Save HPI
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+
+                    <!-- Previous HPI Records -->
+                    <div v-if="hpiHistories.length > 0" class="mb-4">
+                      <h6 class="fs-14 fw-semibold mb-2">Previous HPI Notes</h6>
+                      <div v-for="history in hpiHistories" :key="history.id" class="card bg-light mb-2">
+                        <div class="card-body p-2">
+                          <div class="d-flex justify-content-between align-items-start">
+                            <p class="mb-0 fs-13">{{ history.history }}</p>
+                            <small class="text-muted fs-11">{{ formatDateTime(history.created_at) }}</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <!-- Loading State -->
                     <LoadingIndicator
@@ -1304,6 +1400,38 @@
                     <!-- Todo Section -->
                     <div class="card shadow-none mb-0">
                       <div class="card-body">
+                        <div class="mb-4">
+                          <label class="form-label">Overall Treatment Plan</label>
+                          <form @submit.prevent="saveSessionHistory('treatment_plan')">
+                            <div class="position-relative mb-2">
+                              <textarea
+                                v-model="treatmentPlanText"
+                                class="form-control"
+                                rows="4"
+                                placeholder="General treatment plan and recommendations..."
+                              ></textarea>
+                            </div>
+                            <div class="text-end">
+                              <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
+                                <i class="ti ti-circle-plus fs-16 me-2"></i>Save Plan
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+
+                        <!-- Previous Treatment Plan Records -->
+                        <div v-if="treatmentPlanHistories.length > 0" class="mb-4 pt-3 border-top">
+                          <h6 class="fs-15 fw-semibold mb-3">Previous Treatment Plans</h6>
+                          <div v-for="history in treatmentPlanHistories" :key="history.id" class="card bg-light mb-2">
+                            <div class="card-body p-3">
+                              <div class="d-flex justify-content-between align-items-start">
+                                <p class="mb-0 text-dark">{{ history.history }}</p>
+                                <small class="text-muted">{{ formatDateTime(history.created_at) }}</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <div
                           class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2"
                         >
@@ -2356,7 +2484,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Add investigation name"
+                          placeholder="Add Diagnosis name"
                           v-model="newInvestigation"
                           @keyup.enter="addInvestigation"
                         />
@@ -3236,8 +3364,11 @@ export default defineComponent({
       appointmentRecords: [],
       consultationData: null,
       consultationOtherData: null,
+      summaryText: '',
+      hpiText: '',
       directQuestioningText: '',
       examinationText: '',
+      treatmentPlanText: '',
       // [
       //   // Sample data for testing - remove after API integration
       //   {
@@ -3274,8 +3405,11 @@ export default defineComponent({
 
       // Fetched complaints and session histories
       fetchedComplaints: [],
+      summaryHistories: [],
+      hpiHistories: [],
       directQuestioningHistories: [],
       examinationHistories: [],
+      treatmentPlanHistories: [],
 
       vitalSigns: {
         bloodPressure: {
@@ -3809,8 +3943,19 @@ export default defineComponent({
           (history) => history.type === 'examination'
         )
 
+        this.summaryHistories = sessionHistories.filter((history) => history.type === 'summary')
+
+        this.hpiHistories = sessionHistories.filter((history) => history.type === 'hpi')
+
+        this.treatmentPlanHistories = sessionHistories.filter(
+          (history) => history.type === 'treatment_plan'
+        )
+
         console.log('Direct questioning histories:', this.directQuestioningHistories)
         console.log('Examination histories:', this.examinationHistories)
+        console.log('Summary histories:', this.summaryHistories)
+        console.log('HPI histories:', this.hpiHistories)
+        console.log('Treatment plan histories:', this.treatmentPlanHistories)
       } catch (error) {
         console.error('Error fetching consultation data:', error)
         console.error('Error details:', error.response?.data || error.message)
@@ -3821,6 +3966,9 @@ export default defineComponent({
         this.fetchedComplaints = []
         this.directQuestioningHistories = []
         this.examinationHistories = []
+        this.summaryHistories = []
+        this.hpiHistories = []
+        this.treatmentPlanHistories = []
       }
     },
 
@@ -4111,7 +4259,25 @@ export default defineComponent({
 
     async saveSessionHistory(type) {
       if (!this.consultationData?.id) return
-      let history = type === 'direct' ? this.directQuestioningText : this.examinationText
+      let history = ''
+      switch (type) {
+        case 'direct':
+          history = this.directQuestioningText
+          break
+        case 'examination':
+          history = this.examinationText
+          break
+        case 'summary':
+          history = this.summaryText
+          break
+        case 'hpi':
+          history = this.hpiText
+          break
+        case 'treatment_plan':
+          history = this.treatmentPlanText
+          break
+      }
+
       if (!history) return
       try {
         const payload = {
@@ -4119,9 +4285,24 @@ export default defineComponent({
           history,
         }
         await axiosInstance.post(`/consultations/${this.consultationData.id}/sessions/`, payload)
-        this.$toast?.success(type === 'direct' ? 'Direct questioning saved!' : 'Examination saved!')
+
+        const successMessages = {
+          direct: 'Direct questioning saved!',
+          examination: 'Examination saved!',
+          summary: 'Consultation summary saved!',
+          hpi: 'HPI notes saved!',
+          treatment_plan: 'Treatment plan saved!',
+        }
+
+        this.$toast?.success(successMessages[type] || 'Saved successfully!')
+
+        // Clear only the current input
         if (type === 'direct') this.directQuestioningText = ''
         if (type === 'examination') this.examinationText = ''
+        if (type === 'summary') this.summaryText = ''
+        if (type === 'hpi') this.hpiText = ''
+        if (type === 'treatment_plan') this.treatmentPlanText = ''
+
         await this.fetchConsultationData()
       } catch (error) {
         this.$toast?.error('Failed to save session history')

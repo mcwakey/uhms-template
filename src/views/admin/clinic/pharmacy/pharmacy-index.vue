@@ -3,128 +3,181 @@
   <layouts-sidebar></layouts-sidebar>
   <div class="page-wrapper">
     <div class="content" id="pharmacyPage">
-      <div class="d-flex align-items-sm-center flex-sm-row flex-column gap-2 pb-3 mb-3 border-1 border-bottom">
-        <div class="flex-grow-1">
+      <div class="d-flex align-items-sm-center justify-content-between flex-sm-row flex-column gap-2 pb-3 mb-3 border-1 border-bottom">
+        <div>
           <h4 class="fw-bold mb-0">
-            Pharmacy
+            Pharmacy Dispensing Queue
             <span class="badge badge-soft-primary border border-primary fs-13 fw-medium ms-2"
-              >Total: {{ PharmacyTable.totalCount }}</span
+              >Total: {{ totalCount }}</span
             >
           </h4>
         </div>
       </div>
+      
       <div class="table-responsive">
         <a-table
           class="table table-nowrap datatable pagination-rounded"
           :columns="columns"
-          :table-layout="fixed"
-          :data-source="PharmacyTable.data.value"
+          :data-source="data"
           :pagination="paginationConfig"
-          @change="PharmacyTable.handleTableChange"
+          :loading="loading"
+          @change="pharmacyStore.handleTableChange"
           row-key="id"
-          :pagination-class="pagination - rounded"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'name'">
-              <div class="d-flex align-items-center ms-2">
+            <template v-if="column.key === 'patient_name'">
+              <div class="d-flex align-items-center">
+                <div class="avatar avatar-sm avatar-rounded flex-shrink-0 me-2 bg-soft-success text-success fw-bold">
+                  {{ record.patient_name?.charAt(0) }}
+                </div>
                 <div>
-                  <h6 class="mb-1 fs-14 fw-semibold">
-                    <a
-                      href="javascript:void(0);"
-                      @click="openModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#view_staff"
-                      >{{ record.name }}</a
-                    >
+                  <h6 class="mb-0 fs-14 fw-semibold">
+                    <a href="javascript:void(0);" @click="handleHistory(record)">{{ record.patient_name }}</a>
                   </h6>
-                  <div class="text-muted">SKU: {{ record.sku }}</div>
+                  <span class="text-muted fs-11">Presc. #{{ record.id }}</span>
                 </div>
               </div>
             </template>
+
+            <template v-else-if="column.key === 'medication'">
+               <div class="fw-medium text-dark">{{ record.medication }}</div>
+               <div class="text-muted fs-11">{{ record.dosage }}</div>
+            </template>
+
+            <template v-else-if="column.key === 'created_at'">
+              {{ formatDate(record.created_at) }}
+            </template>
+
+            <template v-else-if="column.key === 'status'">
+              <span :class="['badge', getStatusClass(record.status)]">
+                {{ record.status }}
+              </span>
+            </template>
+
             <template v-else-if="column.key === 'actions'">
-              <ActionIcons
-                viewTitle="View Item"
-                editTitle="Edit Item"
-                deleteTitle="Delete Item"
-                @view="handleView(record)"
-                @edit="handleEdit(record)"
-                @delete="handleDelete(record)"
-              />
+               <div class="d-flex align-items-center justify-content-end gap-2">
+                  <button 
+                    class="btn btn-sm btn-outline-success d-flex align-items-center" 
+                    @click="handleDispense(record)"
+                    :disabled="record.status === 'Dispensed'"
+                  >
+                    <i class="ti ti-pill me-1"></i> Dispense
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-soft-info btn-icon" 
+                    title="Medication History"
+                    @click="handleHistory(record)"
+                  >
+                    <i class="ti ti-history"></i>
+                  </button>
+               </div>
             </template>
           </template>
         </a-table>
       </div>
     </div>
   </div>
+
+  <!-- Modals -->
+  <DispenseMedicationModal 
+    modal-id="dispense_medication"
+    :prescription="detailedItem"
+    @dispensed="pharmacyStore.fetchData"
+  />
+  <MedicationHistoryModal 
+    modal-id="medication_history"
+    :patient-name="detailedItem?.patient_name"
+  />
 </template>
 
 <script>
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
-import ActionIcons from '@/components/common/ActionIcons.vue'
 import { showModalById } from '@/utils/bootstrap'
 
+// Import Modals
+import DispenseMedicationModal from '@/components/modal/pharmacy-modals/DispenseMedicationModal.vue'
+import MedicationHistoryModal from '@/components/modal/pharmacy-modals/MedicationHistoryModal.vue'
+
 export default {
-  components: { ActionIcons },
+  components: { 
+    DispenseMedicationModal, 
+    MedicationHistoryModal 
+  },
   name: 'PharmacyIndex',
   setup() {
-    const PharmacyTable = useTableStore('pharmacy')
-    const detailedItem = computed(() => PharmacyTable.detailedItem.value || {})
+    const pharmacyStore = useTableStore('pharmacy')
+    const { 
+      data, 
+      loading, 
+      totalCount, 
+      currentPage, 
+      perPage, 
+      detailedItem 
+    } = pharmacyStore
 
     const paginationConfig = computed(() => ({
-      current: PharmacyTable.currentPage.value,
-      pageSize: PharmacyTable.perPage.value,
-      total: PharmacyTable.totalCount.value,
+      current: currentPage.value,
+      pageSize: perPage.value,
+      total: totalCount.value,
       showSizeChanger: false,
       showQuickJumper: false,
     }))
 
-    const openModal = async (record) => {
-      try {
-        PharmacyTable.selectItem(record)
-        await PharmacyTable.fetchItemDetails(record.id)
-      } catch (error) {
-        message.error(error)
+    const columns = [
+      { title: 'Patient', key: 'patient_name', sorter: true },
+      { title: 'Medication Details', key: 'medication' },
+      { title: 'Requested', key: 'created_at' },
+      { title: 'Status', key: 'status' },
+      { title: 'Actions', key: 'actions', align: 'right', width: 220 },
+    ]
+
+    const formatDate = (dateString) => {
+      if (!dateString) return 'N/A'
+      return new Date(dateString).toLocaleDateString()
+    }
+
+    const getStatusClass = (status) => {
+      switch (status?.toLowerCase()) {
+        case 'dispensed': return 'badge-soft-success'
+        case 'partial': return 'badge-soft-info'
+        case 'unfilled': return 'badge-soft-warning'
+        case 'cancelled': return 'badge-soft-danger'
+        default: return 'badge-soft-secondary'
       }
     }
 
-    const columns = [
-      { title: 'Item', dataIndex: 'name', key: 'name', className: 'name' },
-      { title: 'Stock', dataIndex: 'stock', key: 'stock', className: 'stock' },
-      { title: 'Price', dataIndex: 'price', key: 'price', className: 'price' },
-      { title: '', key: 'actions', width: 30, className: 'actions' },
-    ]
+    const handleDispense = (record) => {
+      pharmacyStore.selectItem(record)
+      showModalById('dispense_medication')
+    }
 
-    const handleView = async (record) => {
-      await openModal(record)
-      showModalById('view_staff')
-    }
-    const handleEdit = async (record) => {
-      await openModal(record)
-      showModalById('edit_staff')
-    }
-    const handleDelete = async (record) => {
-      await openModal(record)
-      showModalById('delete_staff')
+    const handleHistory = (record) => {
+      pharmacyStore.selectItem(record)
+      showModalById('medication_history')
     }
 
     onMounted(() => {
-      PharmacyTable.fetchData().catch(() => {
-        message.error('Failed to load pharmacy data')
+      pharmacyStore.fetchData().catch(() => {
+        console.log('API failed or not ready, fallback to mock data enabled in store.')
       })
     })
 
     return {
-      PharmacyTable,
+      data,
+      loading,
+      totalCount,
       detailedItem,
+      pharmacyStore,
       paginationConfig,
       columns,
-      openModal,
-      handleView,
-      handleEdit,
-      handleDelete,
+      formatDate,
+      getStatusClass,
+      handleDispense,
+      handleHistory
     }
   },
 }
 </script>
+

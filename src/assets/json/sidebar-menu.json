@@ -13,8 +13,8 @@
                 "subMenus": [
                     {
                         "menuValue": "Admin Dashboard",
-                        "route": "/admin/dashboard/",
-                        "active_link": "/dashboard/admin-dashboard"
+                        "route": "/admin/dashboard",
+                        "active_link": "/admin/dashboard"
                     },
                     {
                         "menuValue": "Consultation Dashboard",

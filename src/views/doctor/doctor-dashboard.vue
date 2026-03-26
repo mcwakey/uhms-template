@@ -34,19 +34,17 @@
         <div class="col-xl-4 d-flex">
           <div class="card shadow-sm flex-fill w-100">
             <div class="card-body">
-              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span
+                  class="avatar border border-primary text-primary rounded-circle flex-shrink-0"
+                  ><i class="ti ti-stethoscope fs-20"></i
+                ></span>
                 <div>
-                  <p class="mb-1">Total Appointments</p>
-                  <div class="d-flex align-items-center gap-1">
-                    <h3 class="fw-bold mb-0">658</h3>
-                    <span class="badge fw-medium bg-success flex-shrink-0">+95%</span>
+                  <p class="mb-1 text-end">Pending Consultations</p>
+                  <div class="d-flex align-items-center justify-content-end gap-1">
+                    <h3 class="fw-bold mb-0">12</h3>
+                    <span class="badge fw-medium bg-soft-info text-info flex-shrink-0">Active</span>
                   </div>
                 </div>
-                <span
-                  class="avatar border border-primary text-primary rounded-2 flex-shrink-0"
-                  ><i class="ti ti-calendar-heart fs-20"></i
-                ></span>
-              </div>
               <div class="d-flex align-items-end">
                 <div id="s-col-5" class="chart-set">
                   <apexchart
@@ -71,19 +69,17 @@
         <div class="col-xl-4 d-flex">
           <div class="card shadow-sm flex-fill w-100">
             <div class="card-body">
-              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span
+                  class="avatar border border-danger text-danger rounded-circle flex-shrink-0"
+                  ><i class="ti ti-pill fs-20"></i
+                ></span>
                 <div>
-                  <p class="mb-1">Online Consultations</p>
-                  <div class="d-flex align-items-center gap-1">
-                    <h3 class="fw-bold mb-0">125</h3>
-                    <span class="badge fw-medium bg-danger flex-shrink-0">-15%</span>
+                  <p class="mb-1 text-end">Pending Prescriptions</p>
+                  <div class="d-flex align-items-center justify-content-end gap-1">
+                    <h3 class="fw-bold mb-0">8</h3>
+                    <span class="badge fw-medium bg-soft-warning text-warning flex-shrink-0">Action Required</span>
                   </div>
                 </div>
-                <span
-                  class="avatar border border-danger text-danger rounded-2 flex-shrink-0"
-                  ><i class="ti ti-users fs-20"></i
-                ></span>
-              </div>
               <div class="d-flex align-items-end">
                 <div id="s-col-6" class="chart-set">
                   <apexchart
@@ -108,19 +104,17 @@
         <div class="col-xl-4 d-flex">
           <div class="card shadow-sm flex-fill w-100">
             <div class="card-body">
-              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span
+                  class="avatar border border-success text-success rounded-circle flex-shrink-0"
+                  ><i class="ti ti-report-medical fs-20"></i
+                ></span>
                 <div>
-                  <p class="mb-1">Cancelled Appointments</p>
-                  <div class="d-flex align-items-center gap-1">
-                    <h3 class="fw-bold mb-0">35</h3>
-                    <span class="badge fw-medium bg-success flex-shrink-0">+45%</span>
+                  <p class="mb-1 text-end">Lab Results Ready</p>
+                  <div class="d-flex align-items-center justify-content-end gap-1">
+                    <h3 class="fw-bold mb-0">5</h3>
+                    <span class="badge fw-medium bg-soft-success text-success flex-shrink-0">New</span>
                   </div>
                 </div>
-                <span
-                  class="avatar border border-success text-success rounded-2 flex-shrink-0"
-                  ><i class="ti ti-versions fs-20"></i
-                ></span>
-              </div>
               <div class="d-flex align-items-end">
                 <div id="s-col-7" class="chart-set">
                   <apexchart
