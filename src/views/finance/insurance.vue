@@ -20,6 +20,7 @@
           :table-layout="fixed"
           :data-source="InsuranceTable.data.value"
           :pagination="paginationConfig"
+          :loading="InsuranceTable.loading.value"
           @change="InsuranceTable.handleTableChange"
           row-key="id"
           :pagination-class="pagination - rounded"
@@ -51,16 +52,67 @@
             </template>
             <template v-else-if="column.key === 'actions'">
               <ActionIcons
-                viewTitle="View Policy"
-                editTitle="Edit Policy"
-                deleteTitle="Delete Policy"
+                viewTitle="View Insurance"
+                editTitle="Edit Insurance"
+                :show-delete="false"
                 @view="handleView(record)"
                 @edit="handleEdit(record)"
-                @delete="handleDelete(record)"
               />
             </template>
           </template>
         </a-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Insurance Modal -->
+  <div id="view_insurance" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Insurance Company Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="text-muted fs-12 mb-1">Company Name</label>
+            <h6 class="fw-bold fs-15">{{ detailedItem.name || '-' }}</h6>
+          </div>
+          <div class="mb-0">
+            <label class="text-muted fs-12 mb-1">Status</label>
+            <div>
+              <span :class="detailedItem.is_active ? 'badge bg-success' : 'badge bg-danger'">
+                {{ detailedItem.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Insurance Modal (Placeholder) -->
+  <div id="edit_insurance" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Edit Insurance Company</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label fw-medium">Company Name</label>
+            <input type="text" class="form-control" :value="detailedItem.name" readonly />
+            <small class="text-muted mt-1 d-block">Editing is restricted in this view.</small>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+        </div>
       </div>
     </div>
   </div>
@@ -105,15 +157,11 @@ export default {
 
     const handleView = async (record) => {
       await openModal(record)
-      showModalById('view_staff')
+      showModalById('view_insurance')
     }
     const handleEdit = async (record) => {
       await openModal(record)
-      showModalById('edit_staff')
-    }
-    const handleDelete = async (record) => {
-      await openModal(record)
-      showModalById('delete_staff')
+      showModalById('edit_insurance')
     }
 
     onMounted(() => {
@@ -130,8 +178,17 @@ export default {
       openModal,
       handleView,
       handleEdit,
-      handleDelete,
     }
   },
 }
 </script>
+
+<style scoped>
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+.modal-title {
+  font-weight: 600;
+}
+</style>

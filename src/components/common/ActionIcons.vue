@@ -1,6 +1,16 @@
 <template>
   <div class="d-flex align-items-center justify-content-end gap-2">
     <a
+      v-if="showAppointment"
+      href="javascript:void(0);"
+      :title="appointmentTitle"
+      class="action-icon"
+      :class="appointmentClass"
+      @click.prevent="emit('appointment')"
+    >
+      <i class="ti ti-calendar-event"></i>
+    </a>
+    <a
       v-if="showView"
       href="javascript:void(0);"
       :title="viewTitle"
@@ -32,15 +42,18 @@
 
 <script setup>
 const props = defineProps({
+  showAppointment: { type: Boolean, default: false },
   showView: { type: Boolean, default: true },
   showEdit: { type: Boolean, default: true },
   showDelete: { type: Boolean, default: true },
+  appointmentTitle: { type: String, default: 'Appointments' },
   viewTitle: { type: String, default: 'View' },
   editTitle: { type: String, default: 'Edit' },
   deleteTitle: { type: String, default: 'Delete' },
+  appointmentClass: { type: String, default: 'text-primary' },
 })
 
-const emit = defineEmits(['view', 'edit', 'delete'])
+const emit = defineEmits(['appointment', 'view', 'edit', 'delete'])
 </script>
 
 <style>

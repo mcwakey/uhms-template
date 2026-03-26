@@ -131,6 +131,7 @@
     "issue_date": "Date d'émission",
     "expiry_date": "Date d'expiration",
     "add_new_patient": "Ajouter un nouveau patient",
+    "save_changes": "Enregistrer les modifications",
     "cancel": "Annuler",
     "select": "Sélectionner",
     "all_rights_reserved": "Tous droits réservés",
@@ -154,6 +155,7 @@
   },
   "patients": {
     "title": "Patients",
+    "edit_title": "Modifier le patient",
     "total": "Total",
     "export": "Exporter",
     "download_pdf": "Télécharger PDF",

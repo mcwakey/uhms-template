@@ -113,8 +113,8 @@
                       <i class="ti ti-edit me-1"></i> Edit All
                     </button>
                     <button v-if="hasEditingPricing" type="button" class="btn btn-sm btn-success" :disabled="isBulkSaving" @click="$emit('save-all-default-pricing')">
-                      <span v-if="isBulkSaving" class="spinner-border spinner-border-sm me-1"></span>
-                      <i v-else class="ti ti-check me-1"></i> Save All
+                      <LoadingIndicator :show="isBulkSaving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
+                      <i v-if="!isBulkSaving" class="ti ti-check me-1"></i> Save All
                     </button>
                     <button v-if="hasEditingPricing" type="button" class="btn btn-sm btn-outline-danger" @click="$emit('cancel-all-default-pricing')">
                       <i class="ti ti-x me-1"></i> Cancel
@@ -131,10 +131,13 @@
                 </button>
               </div>
 
-              <div v-else-if="isLoadingInsuranceTypes" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
-                <p class="text-muted mt-2">Loading pricing data...</p>
-              </div>
+              <LoadingIndicator
+                v-else-if="isLoadingInsuranceTypes"
+                :show="isLoadingInsuranceTypes"
+                variant="center"
+                wrapperClass="py-5 w-100"
+                message="Loading pricing data..."
+              />
 
               <div v-else class="pricing-list">
                 <div v-for="(pricing, index) in servicePricing" :key="index" class="card border mb-2" :class="{ 'border-primary': pricing.isEditing }">
@@ -159,8 +162,8 @@
                       <div class="col-md-5 text-end">
                         <template v-if="pricing.isEditing">
                           <button type="button" class="btn btn-sm btn-success me-1" :disabled="isPricingSaving" @click="$emit('save-default-pricing', index)">
-                            <span v-if="isPricingSaving" class="spinner-border spinner-border-sm"></span>
-                            <i v-else class="ti ti-check"></i>
+                            <LoadingIndicator :show="isPricingSaving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
+                            <i v-if="!isPricingSaving" class="ti ti-check"></i>
                           </button>
                           <button type="button" class="btn btn-sm btn-outline-secondary me-1" @click="$emit('cancel-edit-default-pricing', index)"><i class="ti ti-x"></i></button>
                         </template>
@@ -195,10 +198,13 @@
                 </button>
               </div>
 
-              <div v-else-if="isLoadingInsuranceCompanies" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
-                <p class="text-muted mt-2">Loading insurance companies...</p>
-              </div>
+              <LoadingIndicator
+                v-else-if="isLoadingInsuranceCompanies"
+                :show="isLoadingInsuranceCompanies"
+                variant="center"
+                wrapperClass="py-5 w-100"
+                message="Loading insurance companies..."
+              />
 
               <div v-else class="pricing-list">
                 <div v-for="(pricing, index) in insuranceCompanyPricing" :key="index" class="card border mb-2" :class="{ 'border-primary': pricing.isEditing }">
@@ -258,6 +264,7 @@
 <script setup>
 import { ref } from 'vue'
 import { hideModalById, showModalById } from '@/utils/bootstrap'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const props = defineProps({
   modalId: {

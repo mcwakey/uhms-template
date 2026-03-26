@@ -1,15 +1,16 @@
 <template>
   <LayoutsHeader />
   <LayoutsSidebar />
+  <LoadingIndicator :show="patientStore.loading" variant="overlay" message="Loading patient data..." />
   <div class="page-wrapper">
     <div class="content pb-0">
 <div class="row justify-content-center">
       <div class="col-lg-10">
         <div class="mb-4 d-flex align-items-center justify-content-between">
           <h6 class="fw-bold mb-0 d-flex align-items-center">
-            <router-link :to="{ name: 'PatientList' }" class="text-dark">
+            <a href="javascript:void(0);" class="text-dark" @click.prevent="goBackToPatients">
               <i class="ti ti-chevron-left me-1 fs-14"></i>{{ $t('patients.edit_title') || 'Edit Patient' }}
-            </router-link>
+            </a>
           </h6>
           <button type="button" class="btn btn-outline-secondary btn-sm" @click="fillRandomData">
             <i class="ti ti-wand me-1"></i> Fill Random Data (Test)
@@ -583,7 +584,7 @@
 
           <!-- Actions -->
           <div class="d-flex align-items-center justify-content-end mb-4">
-            <router-link :to="{ name: 'PatientList' }" class="btn btn-light me-2">{{ $t('patient_create.cancel') }}</router-link>
+            <a href="javascript:void(0);" class="btn btn-light me-2" @click.prevent="goBackToPatients">{{ $t('patient_create.cancel') }}</a>
             <button type="submit" class="btn btn-primary px-4">{{ $t('patient_create.save_changes') || 'Save Changes' }}</button>
           </div>
         </VeeForm>
@@ -602,6 +603,7 @@ import LayoutsHeader from '@/views/layouts/layouts-header.vue'
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue'
 import LayoutsFooter from '@/views/layouts/layouts-footer.vue'
 import { usePatientStore } from '@/stores/patientStore'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import constants from '@/assets/json/constants.json'
@@ -846,10 +848,11 @@ const loadPatientData = async () => {
   if (!id || !isMounted.value) return
 
   try {
-    const response = await axiosInstance.get(`/patients/${id}/`)
+    const response = await axiosInstance.get(`/patients/${id}`)
     if (!isMounted.value) return // Check again after async operation
-    
-    const data = response.data
+
+    const payload = (response as any)?.data
+    const data = payload?.data ?? payload
 
     const findOption = (options: any[], value: any) => {
       if (value === null || value === undefined) return ''
@@ -861,21 +864,21 @@ const loadPatientData = async () => {
       return value
     }
 
-    formData.value.first_name = data.first_name
-    formData.value.last_name = data.last_name
-    formData.value.other_names = data.other_names
-    formData.value.phone = data.phone
-    formData.value.other_phone = data.other_phone
-    formData.value.email = data.email
-    formData.value.date_of_birth = data.date_of_birth
+    formData.value.first_name = data?.first_name ?? ''
+    formData.value.last_name = data?.last_name ?? ''
+    formData.value.other_names = data?.other_names ?? ''
+    formData.value.phone = data?.phone ?? ''
+    formData.value.other_phone = data?.other_phone ?? ''
+    formData.value.email = data?.email ?? ''
+    formData.value.date_of_birth = data?.date_of_birth ? (dayjs(data.date_of_birth) as any) : null
     
-    formData.value.gender = findOption(GenderOptions.value, data.gender)
-    formData.value.marital_status = findOption(MaritalStatusOptions.value, data.marital_status)
-    formData.value.religion = findOption(ReligionOptions.value, data.religion)
+    formData.value.gender = findOption(GenderOptions.value, data?.gender)
+    formData.value.marital_status = findOption(MaritalStatusOptions.value, data?.marital_status)
+    formData.value.religion = findOption(ReligionOptions.value, data?.religion)
     
-    if (data.address) {
-        formData.value.address_line_1 = data.address.address_line_1
-        formData.value.address_line_2 = data.address.address_line_2
+    if (data?.address) {
+        formData.value.address_line_1 = data.address.address_line_1 ?? ''
+        formData.value.address_line_2 = data.address.address_line_2 ?? ''
         formData.value.country = findOption(CountryOptions.value, data.address.country)
         formData.value.state = findOption(StateOptions, data.address.state)
         
@@ -886,43 +889,47 @@ const loadPatientData = async () => {
         }
     }
 
-    if (data.emergency_contact) {
+    if (data?.emergency_contact) {
         const nokEntry = createEmptyNextOfKinEntry()
-        nokEntry.name = data.emergency_contact.name
-        nokEntry.relation = data.emergency_contact.relation
-        nokEntry.phone = data.emergency_contact.phone
-        nokEntry.other_phone = data.emergency_contact.other_phone
+        nokEntry.name = data.emergency_contact.name ?? ''
+        nokEntry.relation = data.emergency_contact.relation ?? ''
+        nokEntry.phone = data.emergency_contact.phone ?? ''
+        nokEntry.other_phone = data.emergency_contact.other_phone ?? ''
         nextOfKinEntries.value.push(nokEntry)
     }
     
-    if (data.insurance) {
-        const insuranceData = Array.isArray(data.insurance) ? data.insurance : [data.insurance]
+    const insurancesPayload = data?.insurances ?? data?.insurance
+    if (insurancesPayload) {
+        const insuranceData = Array.isArray(insurancesPayload) ? insurancesPayload : [insurancesPayload]
         
         for (const ins of insuranceData) {
             const entry = createEmptyInsuranceEntry()
-            entry.insurance_schema = ins.schema
-            entry.membership_number = ins.membership_number
-            entry.serial_number = ins.serial_number
-            entry.issue_date = ins.issue_date
-            entry.expiry_date = ins.expiry_date
+            entry.insurance_schema = ins?.schema ?? ''
+            entry.membership_number = ins?.membership_number ?? ''
+            entry.serial_number = ins?.serial_number ?? ''
+            entry.issue_date = ins?.issue_date ? (dayjs(ins.issue_date) as any) : null
+            entry.expiry_date = ins?.expiry_date ? (dayjs(ins.expiry_date) as any) : null
 
-            if (ins.type) {
-                const typeId = typeof ins.type === 'object' ? ins.type.id : ins.type
+            const insuranceType = ins?.type ?? ins?.insurance_type
+            if (insuranceType) {
+                const typeId = typeof insuranceType === 'object' ? insuranceType.id : insuranceType
                 const selectedType = insuranceTypes.value.find((t: any) => t.id === typeId)
-                entry.insurance_type = selectedType || ins.type
+                entry.insurance_type = selectedType || insuranceType
 
                 if (typeId) {
-                    await loadInsuranceCompaniesForEntry(typeId, insuranceEntries.value.length)
+                    const nextIndex = insuranceEntries.value.length
+                    await loadInsuranceCompaniesForEntry(typeId, nextIndex)
                     
-                    if (ins.company) {
-                        const companyId = typeof ins.company === 'object' ? ins.company.id : ins.company
+                    const insuranceCompany = ins?.company ?? ins?.insurance_company
+                    if (insuranceCompany) {
+                        const companyId = typeof insuranceCompany === 'object' ? insuranceCompany.id : insuranceCompany
                         const selectedCompany = entry.companiesOptions.find((c: any) => c.id === companyId)
-                        entry.company = selectedCompany || ins.company
+                        entry.company = selectedCompany || insuranceCompany
 
                         if (selectedCompany && selectedCompany._links?.plans) {
-                            await loadInsurancePlansForEntry(selectedCompany._links.plans, insuranceEntries.value.length)
+                            await loadInsurancePlansForEntry(selectedCompany._links.plans, nextIndex)
                             
-                            if (ins.plan) {
+                            if (ins?.plan) {
                                 const planId = typeof ins.plan === 'object' ? ins.plan.id : ins.plan
                                 const selectedPlan = entry.plansOptions.find((p: any) => p.id === planId)
                                 entry.insurance_plan = selectedPlan || ins.plan
@@ -936,7 +943,7 @@ const loadPatientData = async () => {
         }
     }
 
-    if (data.profile_image) {
+    if (data?.profile_image) {
         formData.value.profile_image_url = data.profile_image
     }
     
@@ -971,6 +978,10 @@ onBeforeUnmount(() => {
   insuranceEntries.value = []
   nextOfKinEntries.value = []
 })
+
+const goBackToPatients = () => {
+  router.push({ name: 'PatientList' })
+}
 
 // Validation schema - simplified for array-based NOK and Insurance
 const schema = computed(() => {

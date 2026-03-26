@@ -15,12 +15,14 @@
 
         <div class="modal-body p-4 bg-light bg-opacity-10">
           <!-- Loading State -->
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="text-muted fw-medium">{{ displayLoadingMessage }}</p>
-          </div>
+          <LoadingIndicator
+            v-if="loading"
+            :show="loading"
+            variant="center"
+            wrapperClass="py-5 w-100"
+            :message="displayLoadingMessage"
+            messageClass="text-muted fw-medium mt-3"
+          />
 
           <!-- Form Content -->
           <div v-else>
@@ -92,7 +94,13 @@
             @click="updateNextOfKin"
             :disabled="isSubmitting || !canSubmit"
           >
-            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+            <LoadingIndicator
+              :show="isSubmitting"
+              variant="inline"
+              size="sm"
+              message=""
+              ariaLabel="Saving..."
+            />
             {{ isSubmitting ? displaySubmittingText : displayPrimaryActionText }}
           </button>
         </div>
@@ -108,6 +116,7 @@ import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
 import { hideModalById } from '@/utils/bootstrap'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const props = defineProps({
   modalId: { type: String, default: 'edit_next_of_kin_modal' },

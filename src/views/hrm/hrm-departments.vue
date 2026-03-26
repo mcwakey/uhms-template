@@ -203,7 +203,7 @@
                       >Edit</a
                     >
                   </li>
-                  <li>
+                  <!-- <li>
                     <a
                       href="javascript:void(0);"
                       class="dropdown-item d-flex align-items-center"
@@ -211,7 +211,7 @@
                       data-bs-target="#delete_designation"
                       >Delete</a
                     >
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </template>

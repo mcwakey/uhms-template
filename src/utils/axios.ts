@@ -9,9 +9,14 @@ const axiosInstance = axios.create({
   },
 })
 
-// Request interceptor - Add auth token to requests
+// Request interceptor - Add auth token to requests and remove trailing slashes
 axiosInstance.interceptors.request.use(
   (config) => {
+    // Remove trailing slash from the URL if it exists (before query parameters)
+    if (config.url) {
+      config.url = config.url.replace(/\/(\?|$)/, '$1')
+    }
+
     const authData = localStorage.getItem('authStore')
     if (authData) {
       try {

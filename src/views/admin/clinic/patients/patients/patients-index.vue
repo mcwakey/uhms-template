@@ -16,7 +16,7 @@
           <h4 class="fw-bold mb-0">
             {{ $t('patients.title')
             }}<span class="badge badge-soft-primary border border-primary fs-13 fw-medium ms-2"
-              >{{ $t('patients.total') }}: {{ PatientsTable.totalCount }}</span
+              >{{ $t('patients.total') }}: {{ PatientsTable.totalCount.value }}</span
             >
           </h4>
         </div>
@@ -121,39 +121,27 @@
           :row-key="(record: any) => record.uuid || record.id"
           :loading="loading"
         >
-          <template #bodyCell="{ column, record }">
-          <!-- <template v-if="column.key === 'Patient'">
-              <div class="d-flex align-items-center">
-                  <router-link to="/patients/patient-details" class="avatar avatar-md me-2">
-                      <img :src="getImageUrl(record.Patient_Img)" alt="product" class="rounded-circle">
-                  </router-link>
-                  <router-link to="/patients/patient-details" class="text-dark fw-semibold">{{record.Patient}} <span class="text-body fs-13 fw-normal d-block"> {{record.Gender}} </span>  </router-link>
-              </div>
-          </template> -->
+          <template #bodyCell="{ column, record, text }">
             <template v-if="column.key === 'full_name'">
               <div class="d-flex align-items-center ms-2">
-                <router-link :to="{ name: 'ViewPatient', params: { id: record.uuid } }" class="avatar me-2 fs-14" :title="t('patients.view_details')" >
+                <router-link
+                  :to="{ name: 'ViewPatient', params: { id: getPatientId(record) } }"
+                  class="avatar me-2 fs-14"
+                  :title="t('patients.view_details')"
+                >
                   <img width="16" height="16" src="@/assets/img/users/user-08.jpg" :alt="t('patients.staff')" class="rounded-circle m-r-5" />
                 </router-link>
-                <!-- <router-link to="/patients/patient-details" class="avatar avatar-md me-2">
-                      <img :src="getImageUrl(record.Patient_Img)" alt="product" class="rounded-circle">
-                </router-link> -->
-                <!-- <div> -->
-                  <!-- <h6 class="mb-1 fs-14 fw-semibold"> -->
-                    <router-link
-                      :to="{ name: 'ViewPatient', params: { id: record.uuid } }"
-                      :title="t('patients.view_details')"  class="text-dark fw-semibold"
-                      >{{ record.full_name }}
-                      <span class="text-body fs-13 fw-normal d-block">{{record.age.value}}{{ record.age.unit ? record.age.unit.charAt(0) : '' }} {{ t('patients.age_unit') }}, {{record.gender}} </span>
-                      </router-link
-                    >
-                  <!-- </h6> -->
-                <!-- </div> -->
-                <!-- <router-link to="/patients/patient-details" class="text-dark fw-semibold"><span class="text-body fs-13 fw-normal d-block">{{record.age.value}}, {{record.gender}} </span>  </router-link> -->
-              
+                <router-link
+                  :to="{ name: 'ViewPatient', params: { id: getPatientId(record) } }"
+                  :title="t('patients.view_details')"
+                  class="text-dark fw-semibold"
+                >
+                  {{ record.full_name }}
+                  <span class="text-body fs-13 fw-normal d-block">{{ formatAgeGender(record) }}</span>
+                </router-link>
               </div>
             </template>
-            <template v-if="column.key === 'phone'">
+            <template v-else-if="column.key === 'phone'">
               <div class="d-flex align-items-center ms-2">
                 <div>
                   {{ record.phone || '-' }}
@@ -161,27 +149,11 @@
                 </div>
               </div>
             </template>
-            <template v-if="column.key === 'date_of_birth'">
-              {{ dayjs(record.date_of_birth).format('DD MMM, YYYY') }}
-              <!-- <span
-                v-if="record.age && typeof record.age === 'object'"
-                :class="[
-                  'badge border',
-                  record.age.value > 12
-                    ? 'position-absolute top-10 start-5 ms-4 translate-middle badge rounded-pill bg-secondary fw-medium fs-13'
-                    : 'position-absolute top-10 start-50 ms-4 translate-middle badge rounded-pill bg-primary fw-medium fs-13',
-                ]"
-                >{{ record.age.value
-                }}{{ record.age.unit ? record.age.unit.charAt(0) : '' }} {{ t('patients.age_unit') }}</span
-              > -->
+            <template v-else-if="column.key === 'date_of_birth'">
+              {{ record.date_of_birth ? dayjs(record.date_of_birth).format('DD MMM, YYYY') : '-' }}
             </template>
-            <template v-if="column.key === 'address'">
-              <template v-if="typeof record.address === 'object' && record.address">
-                {{ record.address.address_line_1 }}, {{ record.address.city }}
-              </template>
-              <template v-else>
-                {{ record.address || '-' }}
-              </template>
+            <template v-else-if="column.key === 'address'">
+              {{ formatAddress(record.address) || '-' }}
             </template>
             <template v-else-if="column.key === 'status'">
               <span
@@ -209,47 +181,22 @@
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center justify-content-end gap-2">
-                <a
-                  href="javascript:void(0);"
-                  class="action-icon text-success"
-                  :title="t('patients.set_appointment')"
-                  data-bs-toggle="modal"
-                  data-bs-target="#set_appointment"
-                  @click.prevent="openSetAppointmentModal(record)"
-                >
-                  <i class="ti ti-calendar-cog"></i>
-                </a>
-                <ActionIcons
-                  :viewTitle="t('patients.view_details')"
-                  :editTitle="t('patients.edit')"
-                  :deleteTitle="t('patients.delete')"
-                  @view="$router.push({ name: 'ViewPatient', params: { id: record.uuid } })"
-                  @edit="$router.push({ name: 'EditPatient', params: { id: record.uuid } })"
-                  @delete="() => { selectedPatient = record; showModalById('delete_staff') }"
-                />
-              </div>
+              <ActionIcons
+                :show-appointment="true"
+                :appointmentTitle="t('patients.set_appointment')"
+                appointmentClass="text-success"
+                :viewTitle="t('patients.view_details')"
+                :editTitle="t('patients.edit')"
+                :deleteTitle="t('patients.delete')"
+                :show-delete="false"
+                @appointment="openSetAppointmentModal(record)"
+                @view="$router.push({ name: 'ViewPatient', params: { id: getPatientId(record) } })"
+                @edit="$router.push({ name: 'EditPatient', params: { id: getPatientId(record) } })"
+                @delete="() => { selectedPatient = record; showModalById('delete_staff') }"
+              />
             </template>
-            <template v-else-if="column.key === 'action'">
-                <div class="d-flex align-items-center gap-1">
-                    <router-link to="/appointments/appointments-list" class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1">
-                        <i class="ti ti-calendar-cog"></i>
-                    </router-link>
-                    <a href="javascript:void(0);" class="shadow-sm fs-14 d-inline-flex border rounded-2 p-1 me-1" data-bs-toggle="dropdown">
-                        <i class="ti ti-dots-vertical"></i>
-                    </a>
-                    <ul class="dropdown-menu p-2">
-                        <li>
-                            <router-link :to="{ name: 'EditPatient', params: { id: record.uuid } }" class="dropdown-item d-flex align-items-center">Edit</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/patients/patient-details" class="dropdown-item d-flex align-items-center">View</router-link>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                        </li>
-                    </ul>
-                </div>
+            <template v-else>
+              {{ text ?? '-' }}
             </template>
           </template>
         </a-table>
@@ -294,9 +241,9 @@
     @insurance-added="handleInsuranceAdded"
   /> -->
 
-  <div class="modal fade" id="delete_staff">
+  <!-- <div class="modal fade" id="delete_staff">
     <DeleteModal></DeleteModal>
-  </div>
+  </div> -->
 
   <!-- Reusable Set Appointment Modal -->
   <SetAppointmentModal
@@ -333,13 +280,13 @@ const { t } = useI18n()
 
 // Refs
 // const insurances: Ref<any[]> = ref([])
-const loading: Ref<boolean> = ref(false)
 const selectedPatient: Ref<Patient | null> = ref(null)
 const searchQuery: Ref<string> = ref('')
 const currentSortLabel = ref(t('patients.recent'))
 
 // Store
 const PatientsTable = useTableStore('patients')
+const loading = PatientsTable.loading
 
 // Computed
 // const detailedItem: ComputedRef<Patient> = computed(() => PatientsTable.detailedItem.value || {})
@@ -554,9 +501,23 @@ const formatAddress = (address: any): string | null => {
 
 const tableData = computed(() => {
   const data = PatientsTable.data.value
-  console.log('Table data computed:', data?.length || 0, 'items', data)
   return data || []
 })
+
+const getPatientId = (record: any): string | number | undefined => record?.uuid || record?.id
+
+const formatAgeGender = (record: any): string => {
+  const ageValue = record?.age?.value
+  const ageUnit = record?.age?.unit
+  const agePart =
+    ageValue === undefined || ageValue === null
+      ? ''
+      : `${ageValue}${ageUnit ? String(ageUnit).charAt(0) : ''} ${t('patients.age_unit')}`
+
+  const genderPart = record?.gender ? String(record.gender) : ''
+
+  return [agePart, genderPart].filter(Boolean).join(', ') || '-'
+}
 
 const columns: ComputedRef<TableColumn[]> = computed(() => [
   {
@@ -600,27 +561,12 @@ const columns: ComputedRef<TableColumn[]> = computed(() => [
 
 // Lifecycle
 onMounted(async () => {
-  console.log('Patients index mounted')
-  loading.value = true
   try {
     await PatientsTable.fetchData()
-    console.log('Patients data fetched:', PatientsTable.data.value?.length || 0, 'records')
-    console.log('Total count:', PatientsTable.totalCount.value)
   } catch (error) {
     console.error('Error loading patients:', error)
     message.error(t('patients.load_failed'))
-  } finally {
-    loading.value = false
   }
-
-  // Enable Bootstrap tooltips
-  // const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
-  // tooltipTriggerList.forEach(function (tooltipTriggerEl: HTMLElement) {
-  //   const Bootstrap = (window as any).bootstrap ?? (window as any).Bootstrap
-  //   if (Bootstrap?.Tooltip) {
-  //     new Bootstrap.Tooltip(tooltipTriggerEl)
-  //   }
-  // })
 })
 </script>
 <style scoped>

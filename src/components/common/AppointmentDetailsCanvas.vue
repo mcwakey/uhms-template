@@ -22,14 +22,13 @@
     </div>
 
     <div class="offcanvas-body p-0">
-      <div v-if="loading" class="d-flex justify-content-center align-items-center h-100">
-        <div class="text-center">
-          <div class="spinner-border text-primary mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <p class="text-muted">Loading appointment details...</p>
-        </div>
-      </div>
+      <LoadingIndicator
+        v-if="loading"
+        :show="loading"
+        variant="center"
+        wrapperClass="align-items-center h-100 w-100"
+        message="Loading appointment details..."
+      />
 
       <div v-else-if="appointment?.id" class="h-100 d-flex flex-column">
         <div
@@ -288,9 +287,11 @@
 import dayjs from 'dayjs'
 import { useAuthStore } from '@/stores/authStore.js'
 import { hideOffcanvasById } from '@/utils/bootstrap'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 export default {
   name: 'AppointmentDetailsCanvas',
+  components: { LoadingIndicator },
   props: {
     appointment: {
       type: Object,

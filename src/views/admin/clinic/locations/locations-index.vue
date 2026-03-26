@@ -293,12 +293,7 @@
             @click="handleAddLocation"
             :disabled="isSubmitting"
           >
-            <span
-              v-if="isSubmitting"
-              class="spinner-border spinner-border-sm me-2"
-              role="status"
-              aria-hidden="true"
-            ></span>
+            <LoadingIndicator v-if="isSubmitting" :show="true" variant="inline" size="sm" message="" ariaLabel="Creating..." />
             <i v-else class="ti ti-check me-1"></i>
             {{ isSubmitting ? 'Creating...' : 'Add Location' }}
           </button>
@@ -383,12 +378,7 @@
             @click="handleEditLocation"
             :disabled="isEditSubmitting"
           >
-            <span
-              v-if="isEditSubmitting"
-              class="spinner-border spinner-border-sm me-2"
-              role="status"
-              aria-hidden="true"
-            ></span>
+            <LoadingIndicator v-if="isEditSubmitting" :show="true" variant="inline" size="sm" message="" ariaLabel="Updating..." />
             <i v-else class="ti ti-check me-1"></i>
             {{ isEditSubmitting ? 'Updating...' : 'Update Location' }}
           </button>
@@ -493,6 +483,7 @@ import DeleteModal from '@/components/modal/DeleteModal.vue'
 import axiosInstance from '@/utils/axios'
 import { hideModalById, showModalById } from '@/utils/bootstrap'
 import ActionIcons from '@/components/common/ActionIcons.vue'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 // Types
 interface Department {

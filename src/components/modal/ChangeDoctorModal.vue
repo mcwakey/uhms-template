@@ -150,12 +150,14 @@
                 @click="handleTransfer"
                 :disabled="!selectedDoctorId || loading"
               >
-                <span
-                  v-if="loading"
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-                ></span>
-                <i v-else class="ti ti-check me-2"></i>
+                <LoadingIndicator
+                  :show="loading"
+                  variant="inline"
+                  size="sm"
+                  message=""
+                  ariaLabel="Transferring..."
+                />
+                <i v-if="!loading" class="ti ti-check me-2"></i>
                 {{ loading ? 'Transferring...' : 'Transfer Appointment' }}
               </button>
             </div>
@@ -170,12 +172,14 @@
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { useStaffStore } from '@/stores/staffStore'
 import { message } from 'ant-design-vue'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 // Static imports for default avatars
 import patientDefaultAvatar from '@/assets/img/users/avatar-2.jpg'
 
 export default {
   name: 'ChangeDoctorModal',
+  components: { LoadingIndicator },
   props: {
     title: {
       type: String,

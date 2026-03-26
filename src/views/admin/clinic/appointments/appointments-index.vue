@@ -1094,7 +1094,7 @@ const testAppointmentAPI = async (appointmentId: any) => {
 
     // Test GET request first
     console.log('1️⃣ Testing GET request...')
-    const getResponse = await axiosInstance.get(`/appointments/${appointmentId}/`)
+    const getResponse = await axiosInstance.get(`/appointments/${appointmentId}`)
     console.log('✅ GET /appointments/:id response:', getResponse.data)
     console.log('📋 Available appointment fields:', Object.keys(getResponse.data))
 

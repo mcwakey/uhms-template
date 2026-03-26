@@ -23,12 +23,13 @@
         </div>
         <div class="modal-body pt-2">
           <!-- Loading State -->
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="text-muted">Loading patient details...</p>
-          </div>
+          <LoadingIndicator
+            v-if="loading"
+            :show="loading"
+            variant="center"
+            wrapperClass="py-5 w-100"
+            message="Loading patient details..."
+          />
 
           <!-- Modal Content -->
           <div v-else-if="patientDetails">
@@ -427,11 +428,13 @@
 <script>
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 dayjs.extend(relativeTime)
 
 export default {
   name: 'PatientDetailsModal',
+  components: { LoadingIndicator },
   props: {
     modalId: {
       type: String,

@@ -120,7 +120,7 @@
             @click="submitForm"
             :disabled="isSubmitting || !canSubmit"
           >
-            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+            <LoadingIndicator :show="isSubmitting" variant="inline" size="sm" message="" ariaLabel="Updating..." />
             {{ isSubmitting ? 'Updating...' : 'Update Service' }}
           </button>
         </div>
@@ -134,6 +134,7 @@ import { ref, computed } from 'vue'
 import { message } from 'ant-design-vue'
 import axiosInstance from '@/utils/axios'
 import { hideModalById, showModalById } from '@/utils/bootstrap'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const props = defineProps({
   modalId: {

@@ -149,6 +149,7 @@
           :table-layout="fixed"
           :data-source="specializationsTable.data.value"
           :pagination="paginationConfig"
+          :loading="specializationsTable.loading.value"
           @change="specializationsTable.handleTableChange"
           row-key="id"
           :pagination-class="pagination - rounded"
@@ -191,10 +192,9 @@
                 <ActionIcons
                   viewTitle="View Specialization"
                   editTitle="Edit Specialization"
-                  deleteTitle="Delete Specialization"
+                  :show-delete="false"
                   @view="openViewSpecializationModal(record)"
                   @edit="openEditSpecializationModal(record)"
-                  @delete="openModal(record)"
                 />
               </div>
             </template>
@@ -290,7 +290,7 @@
             <i class="ti ti-x me-1"></i>Cancel
           </button>
           <button type="button" class="btn btn-primary fw-medium px-3 py-2 fs-13" @click="handleAddSpecialization" :disabled="isSubmitting">
-            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <LoadingIndicator v-if="isSubmitting" :show="true" variant="inline" size="sm" message="" ariaLabel="Creating..." />
             <i v-else class="ti ti-check me-1"></i>
             {{ isSubmitting ? 'Creating...' : 'Add Specialization' }}
           </button>
@@ -376,7 +376,7 @@
             <i class="ti ti-x me-1"></i>Cancel
           </button>
           <button type="button" class="btn btn-primary fw-medium px-3 py-2 fs-13" @click="handleEditSpecialization" :disabled="isEditSubmitting">
-            <span v-if="isEditSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <LoadingIndicator v-if="isEditSubmitting" :show="true" variant="inline" size="sm" message="" ariaLabel="Updating..." />
             <i v-else class="ti ti-check me-1"></i>
             {{ isEditSubmitting ? 'Updating...' : 'Update Specialization' }}
           </button>
@@ -473,9 +473,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="delete_specializations">
-    <DeleteModal></DeleteModal>
-  </div>
+  <!-- No delete modal as backend does not support it -->
 </template>
 
 <style scoped>
@@ -556,9 +554,10 @@ import DeleteModal from '@/components/modal/DeleteModal.vue'
 import ActionIcons from '@/components/common/ActionIcons.vue'
 import axiosInstance from '@/utils/axios'
 import { hideModalById, showModalById } from '@/utils/bootstrap'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 interface Department {
-  id: number
+  id: number | string
   name: string
 }
 
@@ -632,8 +631,28 @@ const isEditSubmitting = ref<boolean>(false)
 // Fetch departments
 const fetchDepartments = async () => {
   try {
-    const response = await axiosInstance.get('/departments')
-    departments.value = response.data.results || response.data
+    const response = await axiosInstance.get('/departments', {
+      params: { page: 1, page_size: 200 },
+    })
+
+    const payload = (response as any)?.data
+    const rawItems: any[] =
+      (payload && Array.isArray(payload.data) && payload.data) ||
+      (payload && payload.data && Array.isArray(payload.data.data) && payload.data.data) ||
+      (payload && Array.isArray(payload.results) && payload.results) ||
+      (Array.isArray(payload) && payload) ||
+      []
+
+    departments.value = rawItems
+      .map((d: any) => {
+        const id = d?.id ?? d?.uuid ?? d?.value
+        const name = d?.name ?? d?.department_name ?? d?.label
+        return {
+          id,
+          name: name ?? (id !== undefined && id !== null ? String(id) : ''),
+        }
+      })
+      .filter((d: any) => d.id !== undefined && d.id !== null && String(d.name).trim().length > 0)
   } catch (error) {
     console.error('Failed to fetch departments:', error)
     message.error('Failed to load departments')
@@ -713,6 +732,7 @@ const openEditSpecializationModal = (specialization: Specialization) => {
     department_id: specialization.department?.id || '',
     status: specialization.status ? 'active' : 'inactive',
   }
+  showModalById('edit_specialization')
 }
 
 const openViewSpecializationModal = (specialization: Specialization) => {
@@ -724,6 +744,7 @@ const openViewSpecializationModal = (specialization: Specialization) => {
     status: specialization.status,
     doctor_count: specialization.doctor_count || 0,
   }
+  showModalById('view_specialization')
 }
 
 // API handlers
@@ -815,23 +836,7 @@ const handleEditSpecialization = async () => {
 }
 
 // Other methods
-const openModal = async (record: Specialization) => {
-  try {
-    specializationsTable.selectItem(record)
-    if (record.uuid) {
-      await specializationsTable.fetchItemDetails(record.uuid)
-    }
-  } catch (error: any) {
-    message.error(error?.message || 'Failed to load details')
-  }
-}
-
 const columns = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
-  },
   {
     title: 'Specializations',
     dataIndex: 'name',

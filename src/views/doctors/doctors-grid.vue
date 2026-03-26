@@ -529,7 +529,10 @@
             </div>
 
             <div class="text-center">
-                <a href="#" class="btn btn-white bg-white text-dark fs-13">Load More<span class="spinner-border spinner-border-sm ms-1"></span></a>
+                <a href="#" class="btn btn-white bg-white text-dark fs-13">
+                  Load More
+                  <LoadingIndicator :show="true" variant="inline" size="sm" message="" wrapperClass="ms-1" ariaLabel="Loading..." />
+                </a>
             </div>
                             
         </div>
@@ -591,7 +594,10 @@
 </template>
 
 <script>
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
+
 export default {
+    components: { LoadingIndicator },
     data(){
         return{
 

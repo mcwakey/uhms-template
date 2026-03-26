@@ -1,6 +1,7 @@
 <template>
   <layouts-header></layouts-header>
   <layouts-sidebar></layouts-sidebar>
+  <LoadingIndicator :show="pageLoading" variant="overlay" message="Loading staff form..." />
   <div class="page-wrapper">
     <!-- Start Content -->
     <div class="content pb-0">
@@ -929,7 +930,7 @@
 import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import * as yup from 'yup'
 import { Form as VeeForm, Field, ErrorMessage } from 'vee-validate'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
 import { useCreateStore } from '@/stores/createStore'
 import { notifyError } from '@/utils/notifications/toast'
 import { router } from '@/router'
@@ -937,6 +938,7 @@ import { useGetStore } from '@/stores/getStore'
 import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios.js'
 import constants from '@/assets/json/constants.json'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const currentStep = ref(0)
 const prevDisabled = ref(true)
@@ -1042,6 +1044,19 @@ const loadingDepartments = ref(false)
 const loadingSpecializations = ref(false)
 const loadingStates = ref(false)
 const loadingCities = ref(false)
+
+const auth = useAuthStore()
+const store = useCreateStore()
+
+const pageLoading = computed(() => {
+  return (
+    store.loading ||
+    loadingDepartments.value ||
+    loadingSpecializations.value ||
+    loadingStates.value ||
+    loadingCities.value
+  )
+})
 const specializationKey = ref(0) // Force re-render key
 
 // Form data - must be declared before computed properties that depend on it
@@ -1211,9 +1226,6 @@ watch(
     }
   }
 )
-
-const auth = useAuthStore()
-const store = useCreateStore()
 
 const formCount = 2
 const onSubmit = async () => {

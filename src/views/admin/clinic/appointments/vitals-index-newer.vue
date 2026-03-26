@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <nursing-header />
   <nursing-sidebar />
 
@@ -7,9 +7,14 @@
       ========================= -->
 
   <div class="page-wrapper">
-    <div v-if="loading" class="text-center py-3">
-      <span class="spinner-border text-primary" role="status"></span>
-    </div>
+    <LoadingIndicator
+      v-if="loading"
+      :show="loading"
+      variant="center"
+      wrapperClass="py-3 w-100"
+      message="Loading vitals..."
+      messageClass="text-muted mb-0 mt-2"
+    />
 
     <div v-else>
       <!-- Start Content -->
@@ -35,13 +40,6 @@
           <div class="col-xl-3 theiaStickySidebar">
             <div class="stickysidebar">
               <div class="card">
-                <!-- Loading State -->
-
-                <!-- <div v-if="loading" class="text-center py-3">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div>
-
-                   <div v-else > -->
                 <div class="card-body">
                   <div class="bg-light rounded p-2 mb-2 position-relative">
                     <!-- Status Badge at Top Right -->
@@ -155,15 +153,6 @@
 
               <!-- Doctor/Staff Information Card -->
               <div class="card">
-                <!-- <div v-if="loading" class="position-absolute top-50 start-50 translate-middle">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div> -->
-                <!-- <div v-if="loading" class="text-center py-3">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div>
-
-
-                   <div v-else > -->
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between mb-3">
                     <h6 class="fs-16 mb-0 d-flex align-items-center">
@@ -402,11 +391,6 @@
           <div class="col-xl-6">
             <div>
               <div class="card">
-                <!-- <div v-if="loading" class="text-center py-3">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div>
-
-                   <div v-else > -->
                 <!-- <div class="card-header py-1">
                 <h6 class="card-title mb-0 d-flex align-items-center fs-14">
                   <i class="ti ti-heart-rate-monitor me-2 text-danger fs-16"></i>
@@ -864,11 +848,6 @@
               <!-- </div> -->
 
               <div class="card">
-                <!-- <div v-if="loading" class="text-center py-3">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div>
-
-                   <div v-else > -->
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between mb-3">
                     <h6 class="card-title mb-0 d-flex align-items-center fs-16">
@@ -884,7 +863,8 @@
                         @click="saveVitals"
                         :disabled="isSaving"
                       >
-                        <i class="ti ti-device-floppy fs-12"></i>
+                        <LoadingIndicator :show="isSaving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
+                        <i v-if="!isSaving" class="ti ti-device-floppy fs-12"></i>
                         {{ isSaving ? 'Saving...' : 'Save Vitals' }}
                       </button>
                     </div>
@@ -1126,11 +1106,6 @@
               <!-- end card -->
 
               <div class="card">
-                <!-- <div v-if="loading" class="text-center py-3">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div>
-
-                   <div v-else > -->
                 <div class="card-body">
                   <form>
                     <div class="mb-3">
@@ -1400,11 +1375,6 @@
           <div class="col-xl-3 theiaStickySidebar">
             <div class="stickysidebar">
               <div class="card">
-                <!-- <div v-if="loading" class="text-center py-3">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div>
-
-                   <div v-else > -->
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between mb-3">
                     <h6 class="fs-16 mb-0 d-flex align-items-center">
@@ -1612,11 +1582,6 @@
               <!-- </div> -->
               <!-- end card -->
               <div class="card mt-3">
-                <!-- <div v-if="loading" class="text-center py-3">
-                  <span class="spinner-border text-primary" role="status"></span>
-                </div>
-
-                   <div v-else > -->
                 <div class="card-body position-relative">
                   <div class="d-flex align-items-center justify-content-between mb-3">
                     <h6 class="fs-16 mb-0 d-flex align-items-center">
@@ -1758,11 +1723,13 @@
 // import TodoDeleteModal from '@/components/modal/TodoDeleteModal.vue';
 // import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue';
 import axiosInstance from '@/utils/axios.js'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 // import { get } from 'jquery';
 // import constants from '@assets/json/constants.json';
 
 export default {
   // name: "SocialLinks",
+  components: { LoadingIndicator },
   // components: {
   // TodoAddModal,
   // TodoViewModal,
@@ -2084,7 +2051,7 @@ export default {
       try {
         this.loading = true
         console.log(`Fetching appointment info for appointment ID: ${this.appointmentId}`)
-        const response = await axiosInstance.get(`/appointments/${this.appointmentId}/`)
+        const response = await axiosInstance.get(`/appointments/${this.appointmentId}`)
         this.appointmentInfo = response.data
 
         // this.patientUrl = this.appointmentInfo._links.patient; // Set patientUrl from appointment info
@@ -2117,7 +2084,7 @@ export default {
         //   return;
         // }
 
-        const response = await axiosInstance.get(`/appointments/${Number(this.appointmentId) + 1}/`)
+        const response = await axiosInstance.get(`/appointments/${Number(this.appointmentId) + 1}`)
         this.nextAppointmentInfo = response.data
 
         // this.patientUrl = this.appointmentInfo._links.patient; // Set patientUrl from appointment info
@@ -2230,7 +2197,7 @@ export default {
       try {
         console.log(`Fetching vital signs data for record with url: ${this.recordUrl}`)
 
-        const response = await axiosInstance.get(`${this.recordUrl}vitals/`)
+        const response = await axiosInstance.get(`${this.recordUrl}vitals`)
         this.vitalSignsInfo = response.data
 
         console.log('Vital signs info response:', this.vitalSignsInfo)

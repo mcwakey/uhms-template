@@ -21,12 +21,14 @@
             <div class="card">
               <div class="card-header border-bottom border-dashed d-flex align-items-center">
                 <h4 class="header-title">Edit Staff Member</h4>
-                <div class="ms-auto" v-if="loading">
-                  <div class="spinner-border spinner-border-sm" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                  <span class="ms-2">Loading staff data...</span>
-                </div>
+                <LoadingIndicator
+                  :show="loading"
+                  variant="inline"
+                  size="sm"
+                  wrapperClass="ms-auto"
+                  message="Loading staff data..."
+                  messageClass="ms-2"
+                />
               </div>
 
               <div class="card-body" v-if="!loading">
@@ -605,10 +607,7 @@
                 </VeeForm>
               </div>
               <div class="card-body text-center" v-else>
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                <p class="mt-3">Loading staff data...</p>
+                <LoadingIndicator :show="loading" variant="center" message="Loading staff data..." />
               </div>
             </div>
           </div>
@@ -623,9 +622,10 @@ import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as yup from 'yup'
 import { Form as VeeForm, Field, ErrorMessage } from 'vee-validate'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
 import { notifyError, notifySuccess } from '@/utils/notifications/toast'
 import { useGetStore } from '@/stores/getStore'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios.js'
 import constants from '@/assets/json/constants.json'
@@ -825,7 +825,7 @@ watch(
 const loadStaffData = async () => {
   try {
     loading.value = true
-    const response = await axiosInstance.get(`/staff/${staffId.value}/`)
+    const response = await axiosInstance.get(`/staff/${staffId.value}`)
     const staff = response.data
 
     // Set selected state for city options FIRST to trigger city computation
@@ -933,7 +933,7 @@ onMounted(async () => {
       // Try to find department that contains this specialization
       for (const dept of departments.value) {
         try {
-          const response = await axiosInstance.get(`/departments/${dept.id}/specializations/`)
+          const response = await axiosInstance.get(`/departments/${dept.id}/specializations`)
           const deptSpecializations = response.data.results || response.data || []
 
           const foundSpecialization = deptSpecializations.find(

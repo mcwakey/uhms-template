@@ -7,9 +7,14 @@
       ========================= -->
 
   <div class="page-wrapper">
-    <div v-if="loading && !appointmentInfo" class="text-center py-3">
-      <span class="spinner-border text-primary" role="status"></span>
-    </div>
+    <LoadingIndicator
+      v-if="loading && !appointmentInfo"
+      :show="loading && !appointmentInfo"
+      variant="center"
+      wrapperClass="py-3 w-100"
+      message="Loading vitals..."
+      messageClass="text-muted mb-0 mt-2"
+    />
 
     <div v-else>
       <!-- Start Content -->
@@ -1165,6 +1170,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axiosInstance from '@/utils/axios'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const route = useRoute()
 const router = useRouter()

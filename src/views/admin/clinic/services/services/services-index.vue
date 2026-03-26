@@ -158,6 +158,7 @@
           table-layout="fixed"
           :data-source="ServicesTable.data.value"
           :pagination="paginationConfig"
+          :loading="ServicesTable.loading.value"
           @change="ServicesTable.handleTableChange"
           row-key="id"
         >
@@ -226,10 +227,9 @@
               <ActionIcons
                 viewTitle="View Service"
                 editTitle="Edit Service"
-                deleteTitle="Delete Service"
+                :show-delete="false"
                 @view="openViewServiceModal(record)"
                 @edit="openEditServiceModal(record)"
-                @delete="openModal(record)"
               />
             </template>
             <template v-else>
@@ -302,9 +302,7 @@
     @update-insurance-pricing="updateInsurancePricing"
   />
 
-  <div class="modal fade" id="delete_staff">
-    <DeleteModal></DeleteModal>
-  </div>
+  <!-- No delete modal as backend does not support it -->
 </template>
 <script>
 import { useTableStore } from '@/stores/dataTableStore'
@@ -393,15 +391,6 @@ export default {
       showSizeChanger: false,
       showQuickJumper: false,
     }))
-
-    const openModal = async (record) => {
-      try {
-        ServicesTable.selectItem(record)
-        await ServicesTable.fetchItemDetails(record.uuid)
-      } catch (error) {
-        message.error(error)
-      }
-    }
 
     // Computed properties for bulk operations
     const hasEditingPricing = computed(() => {
@@ -1002,7 +991,6 @@ export default {
       hasPrices,
       getPriceCount,
       fetchAllServicePrices,
-      openModal,
       addServiceModalRef,
       editServiceModalRef,
       viewServiceModalRef,

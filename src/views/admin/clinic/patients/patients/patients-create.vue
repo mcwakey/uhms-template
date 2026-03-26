@@ -1,6 +1,7 @@
 <template>
   <layouts-header></layouts-header>
   <layouts-sidebar></layouts-sidebar>
+  <LoadingIndicator :show="pageLoading" variant="overlay" message="Loading patient form..." />
   <div class="page-wrapper">
     <div class="content pb-0">
       <!-- <div class="d-flex align-items-sm-center flex-sm-row flex-column gap-2 mb-3">
@@ -619,6 +620,7 @@ import type { SelectOption } from '@/types/common'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const { t } = useI18n()
 const patientStore = usePatientStore()
@@ -637,6 +639,19 @@ const insurancePlans = ref<any[]>([])
 const loadingInsuranceTypes = ref(false)
 const loadingInsuranceCompanies = ref(false)
 const loadingInsurancePlans = ref(false)
+const loadingStates = ref(false)
+const loadingCities = ref(false)
+
+const pageLoading = computed(() => {
+  return (
+    patientStore.loading ||
+    loadingInsuranceTypes.value ||
+    loadingInsuranceCompanies.value ||
+    loadingInsurancePlans.value ||
+    loadingStates.value ||
+    loadingCities.value
+  )
+})
 
 const loadInsuranceTypes = async () => {
   try {
@@ -952,10 +967,6 @@ const ReligionOptions = computed(() => [
 const CountryOptions = computed(() => [
   { label: t('patient_create.ghana'), value: 'Ghana' }
 ])
-
-// Loading states for location dropdowns
-const loadingStates = ref(false)
-const loadingCities = ref(false)
 
 // Computed properties for conditional required fields based on insurance type
 const insuranceTypeName = computed(() => {

@@ -38,12 +38,15 @@
                   </div>
 
                   <!-- Loading State -->
-                  <div v-if="loading && !patientInfo" class="text-center py-3">
-                    <div class="spinner-border spinner-border-sm text-primary mb-2" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="text-muted mb-0 fs-12">Loading patient info...</p>
-                  </div>
+                  <LoadingIndicator
+                    v-if="loading && !patientInfo"
+                    :show="loading && !patientInfo"
+                    variant="center"
+                    wrapperClass="py-3 w-100"
+                    message="Loading patient info..."
+                    messageClass="text-muted mb-0 fs-12 mt-2"
+                    size="sm"
+                  />
 
                   <!-- Patient Info Display -->
                   <div v-else>
@@ -875,12 +878,14 @@
                     </form>
 
                     <!-- Loading State -->
-                    <div v-if="loading" class="text-center py-4">
-                      <div class="spinner-border text-primary mb-2" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                      <p class="text-muted">Loading complaints...</p>
-                    </div>
+                    <LoadingIndicator
+                      v-if="loading"
+                      :show="loading"
+                      variant="center"
+                      wrapperClass="py-4 w-100"
+                      message="Loading complaints..."
+                      messageClass="text-muted mb-0 mt-2"
+                    />
 
                     <!-- Fetched Complaints Display -->
                     <div v-if="fetchedComplaints.length > 0" class="mb-1">
@@ -3069,6 +3074,7 @@ import TodoViewModal from '@/components/modal/TodoViewModal.vue'
 import TodoDeleteModal from '@/components/modal/TodoDeleteModal.vue'
 import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
 import axiosInstance from '@/utils/axios.js'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 export default {
   name: 'SocialLinks',
@@ -3078,6 +3084,7 @@ export default {
     TodoViewModal,
     TodoDeleteModal,
     SetAppointmentModal,
+    LoadingIndicator,
   },
   data() {
     return {

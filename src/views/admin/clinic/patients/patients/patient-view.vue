@@ -1,6 +1,11 @@
 <template>
   <layouts-header></layouts-header>
   <layouts-sidebar></layouts-sidebar>
+  <LoadingIndicator
+    :show="patientStore.loading"
+    variant="overlay"
+    message="Loading patient profile..."
+  />
 
   <!-- ========================
         Start Page Content
@@ -12,13 +17,7 @@
       <!-- Breadcrumb -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent p-0 mb-0">
-            <li class="breadcrumb-item">
-              <router-link :to="{ name: 'PatientList' }" class="text-muted text-decoration-none hover-primary d-flex align-items-center">
-                <i class="ti ti-arrow-left me-2"></i>{{ $t('patient_view.back_to_patients') }}
-              </router-link>
-            </li>
-          </ol>
+          <ol class="breadcrumb bg-transparent p-0 mb-0"></ol>
         </nav>
         <div class="d-flex align-items-center gap-2">
            <span class="badge bg-success-subtle text-success rounded-3 px-3 py-2">
@@ -1084,10 +1083,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick, watch, type Ref, type ComputedRef } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, isNavigationFailure } from 'vue-router'
 import axiosInstance from '@/utils/axios'
 import { usePatientStore } from '@/stores/patientStore'
 import { useI18n } from 'vue-i18n'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 import AddInsuranceModal from '@/components/modal/AddInsuranceModal.vue'
 import EditInsuranceModal from '@/components/modal/EditInsuranceModal.vue'
 import EditNextOfKinModal from '@/components/modal/EditNextOfKinModal.vue'
@@ -1154,6 +1154,20 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const uuid = route.params.id as string
+
+const goBackToPatients = async () => {
+  try {
+    const result = await router.push({ name: 'PatientList' })
+    if (result && isNavigationFailure(result)) {
+      const fallbackResult = await router.replace('/admin/clinic/patients')
+      if (fallbackResult && isNavigationFailure(fallbackResult)) {
+        window.location.assign('/admin/clinic/patients')
+      }
+    }
+  } catch {
+    window.location.assign('/admin/clinic/patients')
+  }
+}
 
 // Refs
 const appointments: Ref<Appointment[]> = ref([])
@@ -1401,7 +1415,7 @@ async function fetchAppointments(): Promise<void> {
 
 async function fetchInsurances(): Promise<void> {
   try {
-    const response = await axiosInstance.get(`/patients/${uuid}/insurances/`)
+    const response = await axiosInstance.get(`/patients/${uuid}/insurances`)
     // if (Array.isArray(response.data)) {
       insurances.value = response.data
     // } else if (response.data && Array.isArray(response.data.data)) {

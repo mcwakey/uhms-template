@@ -135,9 +135,7 @@
         <!-- Settings -->
         <div class="header-item">
           <div class="dropdown me-2">
-            <router-link to="/account-settings/profile-settings" class="btn topbar-link"
-              ><i class="ti ti-settings-2"></i
-            ></router-link>
+            <a href="javascript:void(0);" class="btn topbar-link"><i class="ti ti-settings-2"></i></a>
           </div>
         </div>
         <!-- Settings -->
@@ -375,12 +373,9 @@
 
               <!-- View All-->
               <div class="p-2 rounded-bottom border-top text-center">
-                <router-link
-                  to="/notifications"
-                  class="text-center text-decoration-underline fs-14 mb-0"
-                >
+                <a href="javascript:void(0);" class="text-center text-decoration-underline fs-14 mb-0">
                   {{ t('header.view_all_notifications') }}
-                </router-link>
+                </a>
               </div>
             </div>
           </div>
@@ -426,16 +421,16 @@
             </div>
 
             <!-- Item-->
-            <router-link to="/account-settings/profile-settings" class="dropdown-item">
+            <a href="javascript:void(0);" class="dropdown-item">
               <i class="ti ti-user-circle me-1 align-middle"></i>
               <span class="align-middle">{{ t('header.profile_settings') }}</span>
-            </router-link>
+            </a>
 
             <!-- Item-->
-            <router-link to="/account-settings/profile-settings" class="dropdown-item">
+            <a href="javascript:void(0);" class="dropdown-item">
               <i class="ti ti-settings me-1 align-middle"></i>
               <span class="align-middle">{{ t('header.account_settings') }}</span>
-            </router-link>
+            </a>
 
             <!-- item -->
             <div

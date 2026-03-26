@@ -140,9 +140,9 @@
                                     <li>
                                         <router-link to="/patients/patient-details" class="dropdown-item d-flex align-items-center">View</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                         </template>

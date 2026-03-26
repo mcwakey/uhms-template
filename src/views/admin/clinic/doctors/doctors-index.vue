@@ -161,7 +161,7 @@
                       >{{ record.full_name }}</a
                     >
                   </h6>
-                  <span class="fs-13 d-block"> {{ record.designation }} </span>
+                  <span class="fs-13 d-block"> {{ record.specialization?.department }} </span>
                 </div>
               </div>
             </template>
@@ -170,11 +170,11 @@
                 :class="[
                   'badge border',
                   {
-                    'badge-soft-success border-success': record.Status === 'Active',
-                    'badge-soft-danger border-danger': record.Status === 'Inactive',
+                    'badge-soft-success border-success': record.status !== false,
+                    'badge-soft-danger border-danger': record.status === false,
                   },
                 ]"
-                >{{ record.Status }}</span
+                >{{ record.status !== false ? 'Active' : 'Inactive' }}</span
               >
             </template>
             <template v-else-if="column.key === 'actions'">
@@ -245,7 +245,7 @@
                       >Available</span
                     >
                   </div>
-                  <p>{{ detailedItem.specialization }}</p>
+                  <p>{{ detailedItem.specialization?.name }}</p>
                 </div>
               </div>
             </div>
@@ -568,7 +568,7 @@ export default {
   name: 'DoctorsTable',
 
   setup() {
-    const DoctorsTable = useTableStore('staff')
+    const DoctorsTable = useTableStore('doctorsManagement', 'staff')
     const detailedItem = computed(() => DoctorsTable.detailedItem.value || {})
 
     const paginationConfig = computed(() => ({
@@ -582,7 +582,7 @@ export default {
     const openModal = async (record) => {
       try {
         DoctorsTable.selectItem(record)
-        await DoctorsTable.fetchItemDetails(record.uuid)
+        await DoctorsTable.fetchItemDetails(record.id)
       } catch (error) {
         message.error(error)
       }
@@ -597,7 +597,11 @@ export default {
         dataIndex: 'full_name',
         key: 'full_name',
         sorter: {
-          compare: (a, b) => (a.full_name.toLowerCase() > b.full_name.toLowerCase() ? -1 : 1),
+          compare: (a, b) => {
+            const nameA = a.full_name?.toLowerCase() || ''
+            const nameB = b.full_name?.toLowerCase() || ''
+            return nameA.localeCompare(nameB)
+          },
         },
       },
       {
@@ -606,7 +610,11 @@ export default {
         key: 'staff_id',
         className: 'staff_id',
         sorter: {
-          compare: (a, b) => (a.staff_id.toLowerCase() > b.staff_id.toLowerCase() ? -1 : 1),
+          compare: (a, b) => {
+            const idA = a.staff_id?.toLowerCase() || ''
+            const idB = b.staff_id?.toLowerCase() || ''
+            return idA.localeCompare(idB)
+          },
         },
       },
       {
@@ -630,11 +638,14 @@ export default {
       // },
       {
         title: 'Specialization',
-        dataIndex: 'specialization',
+        // dataIndex: 'specialization',
         key: 'specialization',
         sorter: {
-          compare: (a, b) =>
-            a.specialization.toLowerCase() > b.specialization.toLowerCase() ? -1 : 1,
+          compare: (a, b) => {
+            const nameA = a.specialization?.name || ''
+            const nameB = b.specialization?.name || ''
+            return nameA.localeCompare(nameB)
+          },
         },
       },
       {
@@ -642,7 +653,11 @@ export default {
         dataIndex: 'status',
         key: 'status',
         sorter: {
-          compare: (a, b) => (a.status.toLowerCase() > b.status.toLowerCase() ? -1 : 1),
+          compare: (a, b) => {
+            const statusA = (a.status !== false ? 'Active' : 'Inactive').toLowerCase()
+            const statusB = (b.status !== false ? 'Active' : 'Inactive').toLowerCase()
+            return statusA.localeCompare(statusB)
+          },
         },
       },
       {

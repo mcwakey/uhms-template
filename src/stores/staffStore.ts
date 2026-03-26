@@ -32,7 +32,7 @@ export const useStaffStore = defineStore('staff', {
       this.error = null
       
       try {
-        const response = await axiosInstance.get(`/staff/${id}/`)
+        const response = await axiosInstance.get(`/staff/${id}`)
         const staff = response.data?.data ?? response.data
         this.staff = staff
         return staff

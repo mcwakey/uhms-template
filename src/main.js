@@ -37,6 +37,7 @@ import DataTablePagination from '@/components/common/DataTablePagination.vue';
 /********** Layouts components **********/
 import LayoutsHeader from '@/views/layouts/layouts-header.vue';
 import LayoutsSidebar from '@/views/layouts/layouts-sidebar.vue';
+import LayoutsFooter from '@/views/layouts/layouts-footer.vue';
 import PatientsHeader from '@/views/layouts/patients-header.vue';
 import PatientsSidebar from '@/views/layouts/patients-sidebar.vue';
 import SidebarMenu from '@/views/layouts/sidebar-menu.vue'
@@ -127,6 +128,7 @@ app.component('data-table-pagination', DataTablePagination)
 /********** Layouts components **********/
 app.component('layouts-header', LayoutsHeader )
 app.component('layouts-sidebar', LayoutsSidebar)
+app.component('layouts-footer', LayoutsFooter)
 app.component('patients-header', PatientsHeader )
 app.component('patients-sidebar', PatientsSidebar)
 app.component('sidebar-menu', SidebarMenu)

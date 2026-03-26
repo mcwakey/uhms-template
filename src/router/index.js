@@ -343,6 +343,24 @@ const routes = [
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
+        path: 'staffs/create',
+        name: 'CreateStaff',
+        component: () => import('@/views/admin/hrm/hrm/staff/staff-create.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'staffs/:id/edit',
+        name: 'EditStaff',
+        component: () => import('@/views/admin/hrm/hrm/staff/staff-edit.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'staffs/:id',
+        name: 'ViewStaff',
+        component: () => import('@/views/admin/hrm/hrm/staff/staff-view.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
         path: 'hrm-departments',
         name: 'HrmDepartments',
         component: () => import('@/views/admin/hrm/hrm/departments/departments-index.vue'),

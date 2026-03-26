@@ -40,10 +40,7 @@
         <div class="col-12">
           <div class="card border-0 shadow-sm">
             <div class="card-body text-center py-5">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p class="mt-3 text-muted">Loading staff profile...</p>
+              <LoadingIndicator :show="loading" variant="center" message="Loading staff profile..." />
             </div>
           </div>
         </div>
@@ -755,7 +752,7 @@
             Cancel
           </button>
           <button type="button" class="btn btn-primary" @click="saveBio" :disabled="saving">
-            <span v-if="saving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            <LoadingIndicator :show="saving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
             Save Changes
           </button>
         </div>
@@ -884,7 +881,7 @@
             @click="savePersonalInfo"
             :disabled="saving"
           >
-            <span v-if="saving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            <LoadingIndicator :show="saving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
             Save Changes
           </button>
         </div>
@@ -962,7 +959,7 @@
             Cancel
           </button>
           <button type="button" class="btn btn-primary" @click="saveExperience" :disabled="saving">
-            <span v-if="saving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            <LoadingIndicator :show="saving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
             Save Changes
           </button>
         </div>
@@ -1040,7 +1037,7 @@
             Cancel
           </button>
           <button type="button" class="btn btn-primary" @click="saveEducation" :disabled="saving">
-            <span v-if="saving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            <LoadingIndicator :show="saving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
             Save Changes
           </button>
         </div>
@@ -1112,7 +1109,7 @@
             @click="saveAvailability"
             :disabled="saving"
           >
-            <span v-if="saving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            <LoadingIndicator :show="saving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
             Save Changes
           </button>
         </div>
@@ -1201,7 +1198,7 @@
             Cancel
           </button>
           <button type="button" class="btn btn-primary" @click="saveAddress" :disabled="saving">
-            <span v-if="saving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            <LoadingIndicator :show="saving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
             Save Changes
           </button>
         </div>
@@ -1285,7 +1282,7 @@
             @click="saveEmergencyContact"
             :disabled="saving"
           >
-            <span v-if="saving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            <LoadingIndicator :show="saving" variant="inline" size="sm" message="" ariaLabel="Saving..." />
             Save Changes
           </button>
         </div>
@@ -1300,6 +1297,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import axiosInstance from '@/utils/axios.js'
 import { notifyError, notifySuccess } from '@/utils/notifications/toast'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const route = useRoute()
 const loading = ref(true)
@@ -1386,7 +1384,7 @@ const staffData = ref({
 const loadStaffData = async () => {
   try {
     loading.value = true
-    const response = await axiosInstance.get(`/staff/${staffId.value}/`)
+    const response = await axiosInstance.get(`/staff/${staffId.value}`)
     staffData.value = response.data
   } catch (error) {
     console.error('Failed to load staff data:', error)

@@ -16,7 +16,7 @@
           <h4 class="fw-bold mb-0">
             Departments<span
               class="badge badge-soft-primary border border-primary fs-13 fw-medium ms-2"
-              >Total: {{ DepartmentsTable.totalCount }}</span
+              >Total: {{ totalCount }}</span
             >
           </h4>
         </div>
@@ -127,28 +127,29 @@
         <a-table
           class="table table-nowrap datatable pagination-rounded"
           :columns="columns"
-          :table-layout="fixed"
-          :data-source="DepartmentsTable.data.value"
+          table-layout="fixed"
+          :data-source="data"
           :pagination="paginationConfig"
-          @change="DepartmentsTable.handleTableChange"
+          :loading="loading"
+          @change="handleTableChange"
           row-key="id"
-          :pagination-class="pagination - rounded"
+          pagination-class="pagination-rounded"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'full_name'">
+            <template v-if="column.key === 'name'">
               <div class="d-flex align-items-center ms-2">
                 <a
                   href="javascript:void(0);"
                   class="avatar me-2 fs-14"
-                  @click="openModal(record)"
+                  @click="openViewModal(record)"
                   data-bs-toggle="modal"
-                  data-bs-target="#view_staff"
+                  data-bs-target="#view_department"
                 >
                   <img
                     width="16"
                     height="16"
                     src="@/assets/img/users/user-08.jpg"
-                    alt="Staff"
+                    alt="Department"
                     class="rounded-circle m-r-5"
                   />
                 </a>
@@ -156,24 +157,29 @@
                   <h6 class="mb-1 fs-14 fw-semibold">
                     <a
                       href="javascript:void(0);"
-                      @click="openModal(record)"
+                      @click="openViewModal(record)"
                       data-bs-toggle="modal"
-                      data-bs-target="#add_department"
-                      >{{ record.full_name }}</a
+                      data-bs-target="#view_department"
+                      >{{ record.name }}</a
                     >
                   </h6>
                 </div>
               </div>
+            </template>
+            <template v-else-if="column.key === 'billable'">
+              <span>{{ record.billable ? 'Yes' : 'No' }}</span>
+            </template>
+            <template v-else-if="column.key === 'status'">
+              <span class="badge bg-success">Active</span>
             </template>
             <template v-else-if="column.key === 'actions'">
               <div class="d-flex align-items-center justify-content-end gap-2">
                 <ActionIcons
                   viewTitle="View Department"
                   editTitle="Edit Department"
-                  deleteTitle="Delete Department"
+                  :show-delete="false"
                   @view="openViewModal(record)"
                   @edit="openEditModal(record)"
-                  @delete="openModal(record)"
                 />
               </div>
             </template>
@@ -430,7 +436,7 @@
                 Cancel
               </button>
               <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
-                <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                <LoadingIndicator :show="isSubmitting" variant="inline" size="sm" message="" ariaLabel="Saving..." />
                 {{ isSubmitting ? 'Saving...' : 'Save Department' }}
               </button>
             </div>
@@ -546,7 +552,7 @@
                 Cancel
               </button>
               <button type="submit" class="btn btn-primary" :disabled="isEditSubmitting">
-                <span v-if="isEditSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                <LoadingIndicator :show="isEditSubmitting" variant="inline" size="sm" message="" ariaLabel="Updating..." />
                 {{ isEditSubmitting ? 'Updating...' : 'Update Department' }}
               </button>
             </div>
@@ -556,9 +562,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="delete_staff">
-    <DeleteModal></DeleteModal>
-  </div>
+  <!-- No delete modal as backend does not support it -->
 </template>
 <script>
 import { useTableStore } from '@/stores/dataTable'
@@ -570,14 +574,16 @@ import axiosInstance from '@/utils/axios.js'
 import constants from '@/assets/json/constants.json'
 import { hideModalById, showModalById } from '@/utils/bootstrap'
 import ActionIcons from '@/components/common/ActionIcons.vue'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 export default {
-  components: { FilterIndex, DeleteModal, ActionIcons },
+  components: { FilterIndex, DeleteModal, ActionIcons, LoadingIndicator },
   name: 'DepartmentsTable',
 
   setup() {
-    const DepartmentsTable = useTableStore('departments')
-    const detailedItem = computed(() => DepartmentsTable.detailedItem.value || {})
+    const departmentsTable = useTableStore('departments')
+    const { data, totalCount, currentPage, perPage, searchQuery, fetchData, selectItem, fetchItemDetails, handleTableChange } = departmentsTable
+    const detailedItem = computed(() => departmentsTable.detailedItem.value || {})
     const isSubmitting = ref(false)
     const isEditSubmitting = ref(false)
 
@@ -679,6 +685,7 @@ export default {
         is_active: department.is_active !== undefined ? department.is_active : true,
         created_at: department.created_at || '',
       }
+      showModalById('view_department')
     }
 
     const openEditModal = (department) => {
@@ -691,6 +698,7 @@ export default {
         location: department.location || '',
         is_active: department.is_active !== undefined ? department.is_active : true,
       }
+      showModalById('edit_department')
     }
 
     const openEditFromView = () => {
@@ -780,28 +788,13 @@ export default {
     }
 
     const paginationConfig = computed(() => ({
-      current: DepartmentsTable.currentPage.value,
-      pageSize: DepartmentsTable.perPage.value,
-      total: DepartmentsTable.totalCount.value,
+      current: currentPage.value,
+      pageSize: perPage.value,
+      total: totalCount.value,
     }))
-
-    const openModal = async (record) => {
-      try {
-        DepartmentsTable.selectItem(record)
-        await DepartmentsTable.fetchItemDetails(record.uuid)
-      } catch (error) {
-        message.error(error)
-      }
-    }
 
     // Table columns
     const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-        // className: "staff_id"
-      },
       {
         title: 'Department Name',
         dataIndex: 'name',
@@ -839,17 +832,18 @@ export default {
     ]
 
     onMounted(() => {
-      DepartmentsTable.fetchData().catch(() => {
+      fetchData().catch(() => {
         message.error('Failed to load department data')
       })
     })
 
     return {
-      DepartmentsTable,
-      detailedItem,
+      data,
+      totalCount,
+      searchQuery,
+      loading: departmentsTable.loading,
       paginationConfig,
       columns,
-      openModal,
       departmentForm,
       editDepartmentForm,
       viewDepartmentData,
@@ -865,6 +859,8 @@ export default {
       serviceTypeOptions,
       getTypeLabel,
       formatDate,
+      handleTableChange,
+      fetchData
     }
   },
 }

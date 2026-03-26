@@ -295,15 +295,15 @@
                       >Edit</a
                     >
                   </li>
-                  <li>
-                    <a
-                      href="javascript:void(0);"
-                      class="dropdown-item d-flex align-items-center"
-                      data-bs-toggle="modal"
-                      data-bs-target="#delete_staff"
-                      >Delete</a
-                    >
-                  </li>
+                    <!-- <li>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item d-flex align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#delete_staff"
+                        >Delete</a
+                      >
+                    </li> -->
                 </ul>
               </div>
             </template>
@@ -466,7 +466,7 @@
                                 >Edit</a
                               >
                             </li>
-                            <li>
+                            <!-- <li>
                               <a
                                 href="javascript:void(0);"
                                 class="dropdown-item d-flex align-items-center"
@@ -474,7 +474,7 @@
                                 data-bs-target="#delete"
                                 >Delete</a
                               >
-                            </li>
+                            </li> -->
                           </ul>
                         </div>
                       </td>
@@ -498,7 +498,7 @@
                                 >Edit</a
                               >
                             </li>
-                            <li>
+                            <!-- <li>
                               <a
                                 href="javascript:void(0);"
                                 class="dropdown-item d-flex align-items-center"
@@ -506,7 +506,7 @@
                                 data-bs-target="#delete"
                                 >Delete</a
                               >
-                            </li>
+                            </li> -->
                           </ul>
                         </div>
                       </td>
@@ -530,7 +530,7 @@
                                 >Edit</a
                               >
                             </li>
-                            <li>
+                            <!-- <li>
                               <a
                                 href="javascript:void(0);"
                                 class="dropdown-item d-flex align-items-center"
@@ -538,7 +538,7 @@
                                 data-bs-target="#delete"
                                 >Delete</a
                               >
-                            </li>
+                            </li> -->
                           </ul>
                         </div>
                       </td>
@@ -562,7 +562,7 @@
                                 >Edit</a
                               >
                             </li>
-                            <li>
+                            <!-- <li>
                               <a
                                 href="javascript:void(0);"
                                 class="dropdown-item d-flex align-items-center"
@@ -570,7 +570,7 @@
                                 data-bs-target="#delete"
                                 >Delete</a
                               >
-                            </li>
+                            </li> -->
                           </ul>
                         </div>
                       </td>
@@ -594,7 +594,7 @@
                                 >Edit</a
                               >
                             </li>
-                            <li>
+                            <!-- <li>
                               <a
                                 href="javascript:void(0);"
                                 class="dropdown-item d-flex align-items-center"
@@ -602,7 +602,7 @@
                                 data-bs-target="#delete"
                                 >Delete</a
                               >
-                            </li>
+                            </li> -->
                           </ul>
                         </div>
                       </td>
@@ -626,7 +626,7 @@
                                 >Edit</a
                               >
                             </li>
-                            <li>
+                            <!-- <li>
                               <a
                                 href="javascript:void(0);"
                                 class="dropdown-item d-flex align-items-center"
@@ -634,7 +634,7 @@
                                 data-bs-target="#delete"
                                 >Delete</a
                               >
-                            </li>
+                            </li> -->
                           </ul>
                         </div>
                       </td>
@@ -658,7 +658,7 @@
                                 >Edit</a
                               >
                             </li>
-                            <li>
+                            <!-- <li>
                               <a
                                 href="javascript:void(0);"
                                 class="dropdown-item d-flex align-items-center"
@@ -666,7 +666,7 @@
                                 data-bs-target="#delete"
                                 >Delete</a
                               >
-                            </li>
+                            </li> -->
                           </ul>
                         </div>
                       </td>
@@ -1097,7 +1097,7 @@
   <!-- End Edit Modal -->
 
   <!-- Start Delete Modal  -->
-  <div class="modal fade" id="delete_staff">
+  <!-- <div class="modal fade" id="delete_staff">
     <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
         <div class="modal-body text-center position-relative z-1">
@@ -1135,7 +1135,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- End Delete Modal  -->
 </template>
 <script>

@@ -323,9 +323,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -354,9 +354,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -385,9 +385,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -416,9 +416,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -447,9 +447,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -478,9 +478,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -509,9 +509,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -540,9 +540,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -571,9 +571,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -602,9 +602,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -633,9 +633,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -664,9 +664,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -695,9 +695,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -726,9 +726,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -757,9 +757,9 @@
                                     <li>
                                         <router-link to="/patients/edit-patient" class="dropdown-item d-flex align-items-center">Edit</router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal">Delete</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <router-link to="/appointments/appointments-list" class="dropdown-item d-flex align-items-center">Appointment</router-link>
                                     </li>
@@ -794,7 +794,7 @@
     ========================= -->
 
     <!-- Start Delete Modal  -->
-    <div class="modal fade" id="delete_modal">
+    <!-- <div class="modal fade" id="delete_modal">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-body text-center position-relative">
@@ -812,6 +812,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- End Delete Modal  -->
 </template>

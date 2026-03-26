@@ -20,12 +20,15 @@
 
         <div class="modal-body p-4 bg-light bg-opacity-10">
           <!-- Loading State -->
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">{{ t('appointment_modal.loading') }}</span>
-            </div>
-            <p class="text-muted fw-medium">{{ t('appointment_modal.loading') }}</p>
-          </div>
+          <LoadingIndicator
+            v-if="loading"
+            :show="loading"
+            variant="center"
+            wrapperClass="py-5 w-100"
+            :message="t('appointment_modal.loading')"
+            messageClass="text-muted fw-medium mt-3"
+            :ariaLabel="t('appointment_modal.loading')"
+          />
 
           <!-- Modal Content -->
           <div v-else>
@@ -271,7 +274,13 @@
             @click="createAppointment"
             :disabled="!canCreateAppointment || isSubmitting"
           >
-            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+            <LoadingIndicator
+              :show="isSubmitting"
+              variant="inline"
+              size="sm"
+              message=""
+              ariaLabel="Creating..."
+            />
             {{ t('appointment_modal.confirm') }}
           </button>
         </div>
@@ -287,6 +296,7 @@ import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const { t } = useI18n()
 
