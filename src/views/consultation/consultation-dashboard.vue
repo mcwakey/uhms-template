@@ -95,7 +95,7 @@
               <div class="d-flex align-items-center justify-content-between overflow-hidden">
                 <div>
                   <p class="mb-1">Revenue</p>
-                  <h3 class="fw-bold mb-0 text-truncate">$14,880</h3>
+                  <h3 class="fw-bold mb-0 text-truncate">₵14,880</h3>
                 </div>
                 <div>
                   <apexchart type="area" height="54" width="100" :options="adminColChart4.sChart4" :series="adminColChart4.series"></apexchart>

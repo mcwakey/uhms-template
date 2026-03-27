@@ -613,9 +613,9 @@ Dr.Mick Thompson is a compassionate and experienced internal medicine physician 
                       <div class="mb-3">
                         <label class="form-label">Consultation Charge</label>
                         <div class="input-group">
-                          <input type="text" class="form-control" value="$100" />
+                          <input type="text" class="form-control" value="₵100" />
                           <span class="input-group-text bg-transparent text-dark fs-14"
-                            >$</span
+                            >₵</span
                           >
                         </div>
                       </div>

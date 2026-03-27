@@ -43,7 +43,7 @@
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Total Income</p>
-                  <h6 class="mb-2 fw-bold">$125,150</h6>
+                  <h6 class="mb-2 fw-bold">₵125,150</h6>
                 </div>
                 <span
                   class="avatar avatar-lg bg-primary text-white rounded-circle border border-primary flex-shrink-0"
@@ -70,7 +70,7 @@
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Total Expenses</p>
-                  <h6 class="mb-2 fw-bold">$91,800</h6>
+                  <h6 class="mb-2 fw-bold">₵91,800</h6>
                 </div>
                 <span
                   class="avatar avatar-lg bg-success text-white rounded-circle border border-success flex-shrink-0"
@@ -97,7 +97,7 @@
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Net Profit</p>
-                  <h6 class="mb-2 fw-bold">$91,800</h6>
+                  <h6 class="mb-2 fw-bold">₵91,800</h6>
                 </div>
                 <span
                   class="avatar avatar-lg bg-warning text-white rounded-circle border border-warning flex-shrink-0"
@@ -171,39 +171,39 @@
             </tr>
             <tr>
               <td class="border-end">Consultation Fees</td>
-              <td>$50,125</td>
-              <td>$25,750</td>
-              <td>$25,750</td>
-              <td>$25,750</td>
-              <td>$25,750</td>
-              <td><p class="text-dark fw-medium">$25,750</p></td>
+              <td>₵50,125</td>
+              <td>₵25,750</td>
+              <td>₵25,750</td>
+              <td>₵25,750</td>
+              <td>₵25,750</td>
+              <td><p class="text-dark fw-medium">₵25,750</p></td>
             </tr>
             <tr>
               <td class="border-end">Lab Revenue</td>
-              <td>$75,900</td>
-              <td>$50,125</td>
-              <td>$50,125</td>
-              <td>$50,125</td>
-              <td>$50,125</td>
-              <td><p class="text-dark fw-medium">$50,125</p></td>
+              <td>₵75,900</td>
+              <td>₵50,125</td>
+              <td>₵50,125</td>
+              <td>₵50,125</td>
+              <td>₵50,125</td>
+              <td><p class="text-dark fw-medium">₵50,125</p></td>
             </tr>
             <tr>
               <td class="border-end">Pharmacy Sales</td>
-              <td>$151,775</td>
-              <td>$75,900</td>
-              <td>$75,900</td>
-              <td>$75,900</td>
-              <td>$75,900</td>
-              <td><p class="text-dark fw-medium">$75,900</p></td>
+              <td>₵151,775</td>
+              <td>₵75,900</td>
+              <td>₵75,900</td>
+              <td>₵75,900</td>
+              <td>₵75,900</td>
+              <td><p class="text-dark fw-medium">₵75,900</p></td>
             </tr>
             <tr>
               <td class="border-end"><p class="text-dark fw-medium">Gross Profit</p></td>
-              <td><p class="text-dark fw-medium">$25,750</p></td>
-              <td><p class="text-dark fw-medium">$151,775</p></td>
-              <td><p class="text-dark fw-medium">$151,775</p></td>
-              <td><p class="text-dark fw-medium">$151,775</p></td>
-              <td><p class="text-dark fw-medium">$151,775</p></td>
-              <td><p class="text-dark fw-medium">$151,775</p></td>
+              <td><p class="text-dark fw-medium">₵25,750</p></td>
+              <td><p class="text-dark fw-medium">₵151,775</p></td>
+              <td><p class="text-dark fw-medium">₵151,775</p></td>
+              <td><p class="text-dark fw-medium">₵151,775</p></td>
+              <td><p class="text-dark fw-medium">₵151,775</p></td>
+              <td><p class="text-dark fw-medium">₵151,775</p></td>
             </tr>
             <tr>
               <td class="border-end"><p class="text-dark fw-medium">Expense</p></td>
@@ -216,81 +216,81 @@
             </tr>
             <tr>
               <td class="border-end">Doctor Payouts</td>
-              <td>$50,125</td>
-              <td>$25,750</td>
-              <td>$25,750</td>
-              <td>$25,750</td>
-              <td>$25,750</td>
-              <td><p class="text-dark fw-medium">$25,750</p></td>
+              <td>₵50,125</td>
+              <td>₵25,750</td>
+              <td>₵25,750</td>
+              <td>₵25,750</td>
+              <td>₵25,750</td>
+              <td><p class="text-dark fw-medium">₵25,750</p></td>
             </tr>
             <tr>
               <td class="border-end">Staff Salaries</td>
-              <td>$75,900</td>
-              <td>$50,125</td>
-              <td>$50,125</td>
-              <td>$50,125</td>
-              <td>$50,125</td>
-              <td><p class="text-dark fw-medium">$50,125</p></td>
+              <td>₵75,900</td>
+              <td>₵50,125</td>
+              <td>₵50,125</td>
+              <td>₵50,125</td>
+              <td>₵50,125</td>
+              <td><p class="text-dark fw-medium">₵50,125</p></td>
             </tr>
             <tr>
               <td class="border-end">Rent & Utilities</td>
-              <td>$15,000</td>
-              <td>$75,900</td>
-              <td>$75,900</td>
-              <td>$75,900</td>
-              <td>$75,900</td>
-              <td><p class="text-dark fw-medium">$87,650</p></td>
+              <td>₵15,000</td>
+              <td>₵75,900</td>
+              <td>₵75,900</td>
+              <td>₵75,900</td>
+              <td>₵75,900</td>
+              <td><p class="text-dark fw-medium">₵87,650</p></td>
             </tr>
             <tr>
               <td class="border-end">Medical Supplies</td>
-              <td>$18,200</td>
-              <td>$15,000</td>
-              <td>$15,000</td>
-              <td>$15,000</td>
-              <td>$15,000</td>
-              <td><p class="text-dark fw-medium">$15,000</p></td>
+              <td>₵18,200</td>
+              <td>₵15,000</td>
+              <td>₵15,000</td>
+              <td>₵15,000</td>
+              <td>₵15,000</td>
+              <td><p class="text-dark fw-medium">₵15,000</p></td>
             </tr>
             <tr>
               <td class="border-end">Lab Consumables</td>
-              <td>$75,900</td>
-              <td>$18,200</td>
-              <td>$18,200</td>
-              <td>$18,200</td>
-              <td>$18,200</td>
-              <td><p class="text-dark fw-medium">$18,200</p></td>
+              <td>₵75,900</td>
+              <td>₵18,200</td>
+              <td>₵18,200</td>
+              <td>₵18,200</td>
+              <td>₵18,200</td>
+              <td><p class="text-dark fw-medium">₵18,200</p></td>
             </tr>
             <tr>
               <td class="border-end">Maintenance & Repair</td>
-              <td>$99,999</td>
-              <td>$20,800</td>
-              <td>$20,800</td>
-              <td>$20,800</td>
-              <td>$20,800</td>
-              <td><p class="text-dark fw-medium">$20,800</p></td>
+              <td>₵99,999</td>
+              <td>₵20,800</td>
+              <td>₵20,800</td>
+              <td>₵20,800</td>
+              <td>₵20,800</td>
+              <td><p class="text-dark fw-medium">₵20,800</p></td>
             </tr>
             <tr>
               <td class="border-end"><p class="text-dark fw-medium">Total Expense</p></td>
-              <td><p class="text-dark fw-medium">$2,69,276</p></td>
+              <td><p class="text-dark fw-medium">₵2,69,276</p></td>
               <td>
                 <p class="text-dark fw-medium"></p>
-                $99,999
+                ₵99,999
               </td>
               <td>
                 <p class="text-dark fw-medium"></p>
-                $99,999
+                ₵99,999
               </td>
-              <td><p class="text-dark fw-medium">$99,999</p></td>
-              <td><p class="text-dark fw-medium">$99,999</p></td>
-              <td><p class="text-dark fw-medium">$151,775</p></td>
+              <td><p class="text-dark fw-medium">₵99,999</p></td>
+              <td><p class="text-dark fw-medium">₵99,999</p></td>
+              <td><p class="text-dark fw-medium">₵151,775</p></td>
             </tr>
             <tr>
               <td class="border-end"><p class="text-dark fw-medium">Net Income</p></td>
-              <td><p class="text-dark fw-medium">$2,69,276</p></td>
-              <td><p class="text-dark fw-medium">$2,75,638</p></td>
-              <td><p class="text-dark fw-medium">$2,51,629</p></td>
-              <td><p class="text-dark fw-medium">$7,96,543</p></td>
-              <td><p class="text-dark fw-medium">$7,96,543</p></td>
-              <td><p class="text-dark fw-medium">$2,75,638</p></td>
+              <td><p class="text-dark fw-medium">₵2,69,276</p></td>
+              <td><p class="text-dark fw-medium">₵2,75,638</p></td>
+              <td><p class="text-dark fw-medium">₵2,51,629</p></td>
+              <td><p class="text-dark fw-medium">₵7,96,543</p></td>
+              <td><p class="text-dark fw-medium">₵7,96,543</p></td>
+              <td><p class="text-dark fw-medium">₵2,75,638</p></td>
             </tr>
           </tbody>
         </table>

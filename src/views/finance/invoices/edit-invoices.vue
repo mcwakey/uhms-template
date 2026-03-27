@@ -482,11 +482,11 @@
                 <div class="">
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <h6 class="fs-14 fw-normal text-dark">Amount</h6>
-                    <h6 class="fs-14 fw-semibold text-dark">$0</h6>
+                    <h6 class="fs-14 fw-semibold text-dark">₵0</h6>
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <h6 class="fs-14 fw-normal text-dark">Tax (0%)</h6>
-                    <h6 class="fs-14 fw-semibold text-dark">$0</h6>
+                    <h6 class="fs-14 fw-semibold text-dark">₵0</h6>
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <h6 class="fs-14 fw-normal text-dark">Discount</h6>
@@ -507,11 +507,11 @@
                       </label>
                       Round Off Total
                     </h6>
-                    <h6 class="fs-14 fw-semibold text-dark">$0</h6>
+                    <h6 class="fs-14 fw-semibold text-dark">₵0</h6>
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h6 class="fs-18 fw-bold">Total (USD)</h6>
-                    <h6 class="fs-18 fw-bold">$0</h6>
+                    <h6 class="fs-18 fw-bold">Total (GHS)</h6>
+                    <h6 class="fs-18 fw-bold">₵0</h6>
                   </div>
                 </div>
               </div>
@@ -591,7 +591,7 @@ export default {
           description: "Complete health screening covering all major systems",
           unitCost: "155",
           qty: "1",
-          Amount: "$150",
+          Amount: "₵150",
         },
       ],
     };

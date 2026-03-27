@@ -325,7 +325,7 @@ const data = [
     Description: "General Consultation",
     CreatedDate: "30 Apr 2025",
     DueDate: "30 Apr 2025",
-    Amount: "$800",
+    Amount: "₵800",
     Status: "Paid",
   },
   {
@@ -333,7 +333,7 @@ const data = [
     Description: "Dental Cleaning",
     CreatedDate: "15 Apr 2025",
     DueDate: "15 Apr 2025/td>",
-    Amount: "$930",
+    Amount: "₵930",
     Status: "Partially Paid",
   },
   {
@@ -341,7 +341,7 @@ const data = [
     Description: "Eye Checkup",
     CreatedDate: "02 Apr 2025",
     DueDate: "02 Apr 2025",
-    Amount: "$850",
+    Amount: "₵850",
     Status: "Paid",
   },
   {
@@ -349,7 +349,7 @@ const data = [
     Description: "X-Ray",
     CreatedDate: "27 Mar 2025",
     DueDate: "27 Mar 2025",
-    Amount: "$700",
+    Amount: "₵700",
     Status: "Paid",
   },
   {
@@ -357,7 +357,7 @@ const data = [
     Description: "Physiotherapy Session",
     CreatedDate: "12 Mar 2025",
     DueDate: "12 Mar 2025",
-    Amount: "$650",
+    Amount: "₵650",
     Status: "Partially Paid",
   },
   {
@@ -365,7 +365,7 @@ const data = [
     Description: "Cardiac Screening",
     CreatedDate: "05 Mar 2025",
     DueDate: "05 Mar 2025",
-    Amount: "$430",
+    Amount: "₵430",
     Status: "UnPaid",
   },
   {
@@ -373,7 +373,7 @@ const data = [
     Description: "Skin Allergy Test",
     CreatedDate: "24 Feb 2025",
     DueDate: "324 Feb 2025",
-    Amount: "$300",
+    Amount: "₵300",
     Status: "Paid",
   },
   {
@@ -381,7 +381,7 @@ const data = [
     Description: "Blood Test",
     CreatedDate: "16 Feb 2025",
     DueDate: "16 Feb 2025/td>",
-    Amount: "$450",
+    Amount: "₵450",
     Status: "Partially Paid",
   },
   {
@@ -389,7 +389,7 @@ const data = [
     Description: "ENT Consultation",
     CreatedDate: "01 Feb 2025",
     DueDate: "01 Feb 2025",
-    Amount: "$750",
+    Amount: "₵750",
     Status: "Paid",
   },
   {
@@ -397,7 +397,7 @@ const data = [
     Description: "Nutrition Counseling",
     CreatedDate: "25 Jan 2025",
     DueDate: "25 Jan 2025",
-    Amount: "$800",
+    Amount: "₵800",
     Status: "UnPaid",
   },
 ];

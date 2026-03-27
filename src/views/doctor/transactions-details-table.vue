@@ -243,7 +243,7 @@
                                     <div class="dropdown-menu shadow-lg w-100 dropdown-info p-3">							
                                         <div class="filter-range">
                                             <input type="text" id="range_03">
-                                            <p>Range : <span class="text-gray-9">$200 - $5695</span></p>
+                                            <p>Range : <span class="text-gray-9">₵200 - ₵5695</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -406,7 +406,7 @@ const data = [
    "Description": "General Consultation",
    "Paid_Date": "30 Apr 2025",
    "Payment_Method": "PayPal",
-   "Amount": "$800",
+   "Amount": "₵800",
    "Status": "Completed"
  },
  {
@@ -414,7 +414,7 @@ const data = [
    "Description": "Dental Cleaning",
    "Paid_Date": "15 Apr 2025",
    "Payment_Method": "Debit Card",
-   "Amount": "$930",
+   "Amount": "₵930",
    "Status": "Pending"
  },
  {
@@ -422,7 +422,7 @@ const data = [
    "Description": "Eye Checkup",
    "Paid_Date": "02 Apr 2025",
    "Payment_Method": "Cheque",
-   "Amount": "$850",
+   "Amount": "₵850",
    "Status": "Completed"
  },
  {
@@ -430,7 +430,7 @@ const data = [
    "Description": "X-Ray",
    "Paid_Date": "27 Mar 2025",
    "Payment_Method": "Debit Card",
-   "Amount": "$80",
+   "Amount": "₵80",
    "Status": "Completed"
  },
  {
@@ -438,7 +438,7 @@ const data = [
    "Description": "Physiotherapy Session",
    "Paid_Date": "12 Mar 2025",
    "Payment_Method": "PayPal",
-   "Amount": "$650",
+   "Amount": "₵650",
    "Status": "Completed"
  },
  {
@@ -446,7 +446,7 @@ const data = [
    "Description": "Cardiac Screening",
    "Paid_Date": "05 Mar 2025",
    "Payment_Method": "Cheque",
-   "Amount": "$430",
+   "Amount": "₵430",
    "Status": "Completed"
  },
  {
@@ -454,7 +454,7 @@ const data = [
    "Description": "Skin Allergy Test",
    "Paid_Date": "24 Feb 2025",
    "Payment_Method": "Debit Card",
-   "Amount": "$300",
+   "Amount": "₵300",
    "Status": "Pending"
  },
  {
@@ -462,7 +462,7 @@ const data = [
    "Description": "Blood Test",
    "Paid_Date": "16 Feb 2025",
    "Payment_Method": "Cheque",
-   "Amount": "$450",
+   "Amount": "₵450",
    "Status": "Completed"
  },
  {
@@ -470,7 +470,7 @@ const data = [
    "Description": "ENT Consultation",
    "Paid_Date": "01 Feb 2025",
    "Payment_Method": "Debit Card",
-   "Amount": "$570",
+   "Amount": "₵570",
    "Status": "completed"
  },
  {
@@ -478,7 +478,7 @@ const data = [
    "Description": "Nutrition Counseling",
    "Paid_Date": "25 Jan 2025",
    "Payment_Method": "PayPal",
-   "Amount": "$800",
+   "Amount": "₵800",
    "Status": "Completed"
  }
 ]

@@ -108,7 +108,7 @@
                 <!-- end row -->
 
                 <h6 class="fs-14 fw-semibold mb-2">
-                  Net Salary: $9698 (Nine Thousand Six Hundred and Ninety Eight Only)
+                  Net Salary: ₵9698 (Nine Thousand Six Hundred and Ninety Eight Only)
                 </h6>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed

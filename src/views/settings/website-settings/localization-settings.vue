@@ -160,7 +160,7 @@
                           <vue3-select
                             v-model="selectedFive"
                             :options="RupeSele"
-                            placeholder="USD"
+                            placeholder="GHS"
                           />
                         </div>
                         <!-- end col -->
@@ -179,7 +179,7 @@
                           <vue3-select
                             v-model="selectedSix"
                             :options="CurrSysel"
-                            placeholder="$"
+                            placeholder="₵"
                           />
                         </div>
                         <!-- end col -->
@@ -198,7 +198,7 @@
                           <vue3-select
                             v-model="selectedSeven"
                             :options="PosiSele"
-                            placeholder="$100"
+                            placeholder="₵100"
                           />
                         </div>
                         <!-- end col -->
@@ -296,20 +296,20 @@ export default {
         { label: ",", value: "," },
       ],
       PosiSele: [
-        { label: "$100", value: "$100" },
-        { label: "100$", value: "100$" },
-        { label: "$ 100", value: "$ 100" },
-        { label: "100 $", value: "100 $" },
+        { label: "₵100", value: "₵100" },
+        { label: "100₵", value: "100₵" },
+        { label: "₵ 100", value: "₵ 100" },
+        { label: "100 ₵", value: "100 ₵" },
       ],
       CurrSysel: [
-        { label: "$", value: "$" },
+        { label: "₵", value: "₵" },
         { label: "₹", value: "₹" },
         { label: "£", value: "£" },
         { label: "€", value: "€" },
       ],
       RupeSele: [
-        { label: "USD", value: "USD" },
-        { label: "Dollar", value: "Dollar" },
+        { label: "GHS", value: "GHS" },
+        { label: "Cedi", value: "Cedi" },
         { label: "Euro", value: "Euro" },
         { label: "Pound", value: "Pound" },
         { label: "Rupee", value: "Rupee" },

@@ -309,7 +309,7 @@ const data = [
     Department: "Cardiology",
     Phone: "+1 54554 54584",
     Email: "mick@example.com",
-    Fees: "$458",
+    Fees: "₵458",
     Status: "Available",
   },
   {
@@ -319,7 +319,7 @@ const data = [
     Department: "Orthopedics",
     Phone: "+1 43554 54584",
     Email: "sarah@example.com",
-    Fees: "$512",
+    Fees: "₵512",
     Status: "Available",
   },
   {
@@ -329,7 +329,7 @@ const data = [
     Department: "Pediatrics",
     Phone: "+1 47554 54585",
     Email: "emily@example.com",
-    Fees: "$635",
+    Fees: "₵635",
     Status: "Available",
   },
   {
@@ -339,7 +339,7 @@ const data = [
     Department: "Gynecology",
     Phone: "+1 54114 54586",
     Email: "david@example.com",
-    Fees: "$478",
+    Fees: "₵478",
     Status: "Available",
   },
   {
@@ -349,7 +349,7 @@ const data = [
     Department: "Psychiatry",
     Phone: "+1 51247 54587",
     Email: "anna@example.com",
-    Fees: "$550",
+    Fees: "₵550",
     Status: "Available",
   },
   {
@@ -359,7 +359,7 @@ const data = [
     Department: "Neurology",
     Phone: "+1 41452 54588",
     Email: "john@example.com",
-    Fees: "$703",
+    Fees: "₵703",
     Status: "Unavailable",
   },
   {
@@ -369,7 +369,7 @@ const data = [
     Department: "Oncologist",
     Phone: "+1 51425 54589",
     Email: "lisa@example.com",
-    Fees: "$420",
+    Fees: "₵420",
     Status: "Available",
   },
   {
@@ -379,7 +379,7 @@ const data = [
     Department: "Pulmonologist",
     Phone: "+1 42565 54590",
     Email: "patricia@example.com",
-    Fees: "$590",
+    Fees: "₵590",
     Status: "Available",
   },
   {
@@ -389,7 +389,7 @@ const data = [
     Department: "Urologist",
     Phone: "+1 45214 54591",
     Email: "racheal@example.com",
-    Fees: "$670",
+    Fees: "₵670",
     Status: "Available",
   },
   {
@@ -399,7 +399,7 @@ const data = [
     Department: "Cardiologist",
     Phone: "+1 41245 54592",
     Email: "micheal@example.com",
-    Fees: "$530",
+    Fees: "₵530",
     Status: "Available",
   },
 ];

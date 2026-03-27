@@ -48,7 +48,7 @@
               <div class="d-flex justify-content-between align-items-end">
                 <div>
                   <p class="mb-1 text-truncate">Total Expenses</p>
-                  <h6 class="mb-2 fw-bold">$13,500</h6>
+                  <h6 class="mb-2 fw-bold">₵13,500</h6>
                   <p class="mb-0 fs-13 text-truncate">
                     <span class="text-success"
                       ><i class="ti ti-arrow-up-right me-1"></i>5.62%</span
@@ -78,7 +78,7 @@
               <div class="d-flex justify-content-between align-items-end">
                 <div>
                   <p class="mb-1 text-truncate">Doctor Payouts</p>
-                  <h6 class="mb-2 fw-bold">$4,500</h6>
+                  <h6 class="mb-2 fw-bold">₵4,500</h6>
                   <p class="mb-0 fs-13 text-truncate">
                     <span class="text-success"
                       ><i class="ti ti-arrow-up-right me-1"></i>11.4%</span
@@ -108,7 +108,7 @@
               <div class="d-flex justify-content-between align-items-end">
                 <div>
                   <p class="mb-1 text-truncate">Staff Salaries</p>
-                  <h6 class="mb-2 fw-bold">$3,200</h6>
+                  <h6 class="mb-2 fw-bold">₵3,200</h6>
                   <p class="mb-0 fs-13 text-truncate">
                     <span class="text-success"
                       ><i class="ti ti-arrow-up-right me-1"></i>8.52%</span
@@ -138,7 +138,7 @@
               <div class="d-flex justify-content-between align-items-end">
                 <div>
                   <p class="mb-1 text-truncate">Utilities & Rent</p>
-                  <h6 class="mb-2 fw-bold">$2,000</h6>
+                  <h6 class="mb-2 fw-bold">₵2,000</h6>
                   <p class="mb-0 fs-13 text-truncate">
                     <span class="text-danger"
                       ><i class="ti ti-arrow-down-right me-1"></i>7.45%</span
@@ -342,7 +342,7 @@ const data = [
   {
     Expense: "Gloves & Masks",
     Category: "Medical Supplies",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "22 Apr 2025",
     PurchasedBy: "James Carter",
     Status: "Approved",
@@ -351,7 +351,7 @@ const data = [
   {
     Expense: "Microscope Parts",
     Category: "Laboratory",
-    Amount: "$930",
+    Amount: "₵930",
     Date: "12 Apr 2025",
     PurchasedBy: "Emily Johnson",
     Status: "Pending",
@@ -360,7 +360,7 @@ const data = [
   {
     Expense: "Thermometers",
     Category: "Medical Supplies",
-    Amount: "$850",
+    Amount: "₵850",
     Date: "01 Apr 2025",
     PurchasedBy: "Robert Mitchell",
     Status: "Approved",
@@ -369,7 +369,7 @@ const data = [
   {
     Expense: "Disinfectant Supplies",
     Category: "Cleaning Services",
-    Amount: "$700",
+    Amount: "₵700",
     Date: "05 Mar 2025",
     PurchasedBy: "Sophia Miller",
     Status: "Rejected",
@@ -378,7 +378,7 @@ const data = [
   {
     Expense: "IV Sets",
     Category: "Medical Supplies",
-    Amount: "$650",
+    Amount: "₵650",
     Date: "20 Mar 2025",
     PurchasedBy: "Daniel Anderson",
     Status: "New",
@@ -387,7 +387,7 @@ const data = [
   {
     Expense: "Reagent Refill",
     Category: "Laboratory",
-    Amount: "$430",
+    Amount: "₵430",
     Date: "01 Mar 2025",
     PurchasedBy: "Olivia Davis",
     Status: "Rejected",
@@ -396,7 +396,7 @@ const data = [
   {
     Expense: "Syringes & Gauze",
     Category: "Medical Supplies",
-    Amount: "$300",
+    Amount: "₵300",
     Date: "15 Feb 2025",
     PurchasedBy: "Michael Thompson",
     Status: "New",
@@ -405,7 +405,7 @@ const data = [
   {
     Expense: "Blood Collection Tubes",
     Category: "Laboratory",
-    Amount: "$450",
+    Amount: "₵450",
     Date: "09 Feb 2025",
     PurchasedBy: "Isabella Wilson",
     Status: "Approved",
@@ -414,7 +414,7 @@ const data = [
   {
     Expense: "Bandages & Tapes",
     Category: "Medical Supplies",
-    Amount: "$570",
+    Amount: "₵570",
     Date: "01 Feb 2025",
     PurchasedBy: "Michael Trade",
     Status: "New",
@@ -423,7 +423,7 @@ const data = [
   {
     Expense: "Tissue Slides",
     Category: "Laboratory",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "12 Jan 2025",
     PurchasedBy: "Ava Robinson",
     Status: "Approved",

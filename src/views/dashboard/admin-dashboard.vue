@@ -133,7 +133,7 @@
               <div class="d-flex align-items-center justify-content-between">
                 <div>
                   <p class="mb-1">Outstanding</p>
-                  <h3 class="fw-bold mb-0">$12,450</h3>
+                  <h3 class="fw-bold mb-0">₵12,450</h3>
                 </div>
                 <div>
                    <span class="text-muted fs-12">14 Unpaid</span>
@@ -168,7 +168,7 @@
               >
                 <div>
                   <p class="mb-1">Today's Revenue</p>
-                  <h3 class="fw-bold mb-0 text-truncate">$5,124.00</h3>
+                  <h3 class="fw-bold mb-0 text-truncate">₵5,124.00</h3>
                 </div>
                 <div>
                   <div id="s-col-4" class="chart-set">
@@ -752,35 +752,35 @@
                   <p class="fw-semibold mb-1 text-dark">Cardiology</p>
                   <p class="mb-0">4,556 Apointments</p>
                 </div>
-                <h6 class="fw-bold mb-0">$5,985</h6>
+                <h6 class="fw-bold mb-0">₵5,985</h6>
               </div>
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
                   <p class="fw-semibold mb-1 text-dark">Radiology</p>
                   <p class="mb-0">4,125 Apointments</p>
                 </div>
-                <h6 class="fw-bold mb-0">$5,194</h6>
+                <h6 class="fw-bold mb-0">₵5,194</h6>
               </div>
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
                   <p class="fw-semibold mb-1 text-dark">Dental Surgery</p>
                   <p class="mb-0">1,796 Apointments</p>
                 </div>
-                <h6 class="fw-bold mb-0">$2,716</h6>
+                <h6 class="fw-bold mb-0">₵2,716</h6>
               </div>
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
                   <p class="fw-semibold mb-1 text-dark">Orthopaedics</p>
                   <p class="mb-0">3,827 Apointments</p>
                 </div>
-                <h6 class="fw-bold mb-0">$4,682</h6>
+                <h6 class="fw-bold mb-0">₵4,682</h6>
               </div>
               <div class="d-flex align-items-center justify-content-between mb-0">
                 <div>
                   <p class="fw-semibold mb-1 text-dark">General Medicine</p>
                   <p class="mb-0">9,894 Apointments</p>
                 </div>
-                <h6 class="fw-bold mb-0">$9,450</h6>
+                <h6 class="fw-bold mb-0">₵9,450</h6>
               </div>
             </div>
           </div>
@@ -1117,7 +1117,7 @@
                         >Jesus Adams</router-link
                       >
                     </h6>
-                    <p class="mb-0 fs-13 text-truncate">Total Paid : $6589</p>
+                    <p class="mb-0 fs-13 text-truncate">Total Paid : ₵6589</p>
                   </div>
                 </div>
                 <span
@@ -1143,7 +1143,7 @@
                         >Ezra Belcher</router-link
                       >
                     </h6>
-                    <p class="mb-0 fs-13 text-truncate">Total Paid : $5632</p>
+                    <p class="mb-0 fs-13 text-truncate">Total Paid : ₵5632</p>
                   </div>
                 </div>
                 <span
@@ -1169,7 +1169,7 @@
                         >Glen Lentz</router-link
                       >
                     </h6>
-                    <p class="mb-0 fs-13 text-truncate">Total Paid : $4125</p>
+                    <p class="mb-0 fs-13 text-truncate">Total Paid : ₵4125</p>
                   </div>
                 </div>
                 <span
@@ -1195,7 +1195,7 @@
                         >Bernard Griffith</router-link
                       >
                     </h6>
-                    <p class="mb-0 fs-13 text-truncate">Total Paid : $3140</p>
+                    <p class="mb-0 fs-13 text-truncate">Total Paid : ₵3140</p>
                   </div>
                 </div>
                 <span
@@ -1221,7 +1221,7 @@
                         >John Elsass</router-link
                       >
                     </h6>
-                    <p class="mb-0 fs-13 text-truncate">Total Paid : $2654</p>
+                    <p class="mb-0 fs-13 text-truncate">Total Paid : ₵2654</p>
                   </div>
                 </div>
                 <span
@@ -1281,7 +1281,7 @@
                     </p>
                   </div>
                 </div>
-                <span class="badge fw-medium bg-success flex-shrink-0">+ $234</span>
+                <span class="badge fw-medium bg-success flex-shrink-0">+ ₵234</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
@@ -1303,7 +1303,7 @@
                     </p>
                   </div>
                 </div>
-                <span class="badge fw-medium bg-success flex-shrink-0">+ $234</span>
+                <span class="badge fw-medium bg-success flex-shrink-0">+ ₵234</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
@@ -1325,7 +1325,7 @@
                     </p>
                   </div>
                 </div>
-                <span class="badge fw-medium bg-danger flex-shrink-0">- $69</span>
+                <span class="badge fw-medium bg-danger flex-shrink-0">- ₵69</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
@@ -1347,7 +1347,7 @@
                     </p>
                   </div>
                 </div>
-                <span class="badge fw-medium bg-success flex-shrink-0">+ $234</span>
+                <span class="badge fw-medium bg-success flex-shrink-0">+ ₵234</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-0">
                 <div class="d-flex align-items-center">
@@ -1369,7 +1369,7 @@
                     </p>
                   </div>
                 </div>
-                <span class="badge fw-medium bg-success flex-shrink-0">+ $234</span>
+                <span class="badge fw-medium bg-success flex-shrink-0">+ ₵234</span>
               </div>
             </div>
           </div>

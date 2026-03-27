@@ -695,7 +695,7 @@
                     <div class="filter-range">
                       <input type="text" id="range_01" />
                       <p class="mt-2 fs-13">
-                        Range : <span class="text-dark">$200 - $5695</span>
+                        Range : <span class="text-dark">₵200 - ₵5695</span>
                       </p>
                     </div>
                   </div>
@@ -1244,13 +1244,13 @@
                     data-bs-auto-close="outside"
                     aria-expanded="true"
                   >
-                    $800
+                    ₵800
                   </a>
                   <div class="dropdown-menu shadow-lg w-100 dropdown-info p-2">
                     <div class="filter-range">
                       <input type="text" id="range_02" />
                       <p class="mt-2 fs-13">
-                        Range : <span class="text-dark">$200 - $5695</span>
+                        Range : <span class="text-dark">₵200 - ₵5695</span>
                       </p>
                     </div>
                   </div>
@@ -1532,7 +1532,7 @@ const data = [
     Description: "General Consultation",
     PaidDate: "30 Apr 2025",
     PaymentMethod: "PayPal",
-    Amount: "$800",
+    Amount: "₵800",
     Status: "Completed",
   },
   {
@@ -1542,7 +1542,7 @@ const data = [
     Description: "Dental Cleaning",
     PaidDate: "15 Apr 2025",
     PaymentMethod: "Debit Card",
-    Amount: "$930",
+    Amount: "₵930",
     Status: "Pending",
   },
   {
@@ -1552,7 +1552,7 @@ const data = [
     Description: "Eye Checkup",
     PaidDate: "02 Apr 2025",
     PaymentMethod: "Cheque",
-    Amount: "$850",
+    Amount: "₵850",
     Status: "Completed",
   },
   {
@@ -1562,7 +1562,7 @@ const data = [
     Description: "X-Ray",
     PaidDate: "27 Mar 2025",
     PaymentMethod: "Debit Card",
-    Amount: "$80",
+    Amount: "₵80",
     Status: "Completed",
   },
   {
@@ -1572,7 +1572,7 @@ const data = [
     Description: "Physiotherapy Session",
     PaidDate: "12 Mar 2025",
     PaymentMethod: "PayPal",
-    Amount: "$650",
+    Amount: "₵650",
     Status: "Completed",
   },
   {
@@ -1582,7 +1582,7 @@ const data = [
     Description: "Cardiac Screening",
     PaidDate: "05 Mar 2025",
     PaymentMethod: "Cheque",
-    Amount: "$430",
+    Amount: "₵430",
     Status: "Completed",
   },
   {
@@ -1592,7 +1592,7 @@ const data = [
     Description: "Skin Allergy Test",
     PaidDate: "24 Feb 2025",
     PaymentMethod: "Debit Card",
-    Amount: "$300",
+    Amount: "₵300",
     Status: "Pending",
   },
   {
@@ -1602,7 +1602,7 @@ const data = [
     Description: "Blood Test",
     PaidDate: "16 Feb 2025",
     PaymentMethod: "Cheque",
-    Amount: "$450",
+    Amount: "₵450",
     Status: "Completed",
   },
   {
@@ -1612,7 +1612,7 @@ const data = [
     Description: "ENT Consultation",
     PaidDate: "01 Feb 2025",
     PaymentMethod: "Debit Card",
-    Amount: "$570",
+    Amount: "₵570",
     Status: "Completed",
   },
   {
@@ -1622,7 +1622,7 @@ const data = [
     Description: "Nutrition Counseling",
     PaidDate: "25 Jan 2025",
     PaymentMethod: "PayPal",
-    Amount: "$800",
+    Amount: "₵800",
     Status: "Completed",
   },
 ];
@@ -1685,9 +1685,9 @@ export default {
         { id: 3, name: "Debit Card" },
       ],
       Amount: [
-        { id: 1, name: "$501 - $1000" },
-        { id: 2, name: "$501 - $1100" },
-        { id: 3, name: "$701 - $1200" },
+        { id: 1, name: "₵501 - ₵1000" },
+        { id: 2, name: "₵501 - ₵1100" },
+        { id: 3, name: "₵701 - ₵1200" },
       ],
       Status: [
         { id: 1, name: "Paid" },

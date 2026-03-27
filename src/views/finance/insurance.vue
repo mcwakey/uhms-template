@@ -23,6 +23,11 @@
                 <CompaniesTab />
               </div>
             </a-tab-pane>
+            <a-tab-pane key="plans" tab="Insurance Plans">
+              <div class="pt-3">
+                <PlansTab />
+              </div>
+            </a-tab-pane>
             <a-tab-pane key="types" tab="Insurance Types">
               <div class="pt-3">
                 <TypesTab />
@@ -38,6 +43,7 @@
 <script setup>
 import { ref } from 'vue'
 import CompaniesTab from '@/components/insurance/CompaniesTab.vue'
+import PlansTab from '@/components/insurance/PlansTab.vue'
 import TypesTab from '@/components/insurance/TypesTab.vue'
 
 const activeKey = ref('companies')

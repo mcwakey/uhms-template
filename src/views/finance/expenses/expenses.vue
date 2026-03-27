@@ -496,7 +496,7 @@
                     <div class="filter-range">
                       <input type="text" id="range_01" />
                       <p class="mt-2 fs-13">
-                        Range : <span class="text-dark">$200 - $5695</span>
+                        Range : <span class="text-dark">₵200 - ₵5695</span>
                       </p>
                     </div>
                   </div>
@@ -996,13 +996,13 @@
                     data-bs-auto-close="outside"
                     aria-expanded="true"
                   >
-                    $500
+                    ₵500
                   </a>
                   <div class="dropdown-menu shadow-lg w-100 dropdown-info p-2">
                     <div class="filter-range">
-                      <input type="text" id="range_02" value="$220 - $500" />
+                      <input type="text" id="range_02" value="₵220 - ₵500" />
                       <p class="mt-2 fs-13">
-                        Range : <span class="text-dark">$200 - $5695</span>
+                        Range : <span class="text-dark">₵200 - ₵5695</span>
                       </p>
                     </div>
                   </div>
@@ -1444,7 +1444,7 @@ const data = [
   {
     Expense: "Gloves & Masks",
     Category: "Medical Supplies",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "30 Apr 2025",
     Image: "user-01.jpg",
     PurchasedBy: "James Adair",
@@ -1454,7 +1454,7 @@ const data = [
   {
     Expense: "Microscope Parts",
     Category: "Laboratory",
-    Amount: "$930",
+    Amount: "₵930",
     Date: "15 Apr 2025",
     Image: "user-02.jpg",
     PurchasedBy: "Esther Schmidt",
@@ -1464,7 +1464,7 @@ const data = [
   {
     Expense: "Thermometers",
     Category: "Medical Supplies",
-    Amount: "$850",
+    Amount: "₵850",
     Date: "02 Apr 2025",
     Image: "user-03.jpg",
     PurchasedBy: "Judi Lenahan",
@@ -1474,7 +1474,7 @@ const data = [
   {
     Expense: "Disinfectant Supplies",
     Category: "Cleaning Services",
-    Amount: "$700",
+    Amount: "₵700",
     Date: "27 Mar 2025",
     Image: "user-04.jpg",
     PurchasedBy: "Robert Reid",
@@ -1484,7 +1484,7 @@ const data = [
   {
     Expense: "IV Sets",
     Category: "Medical Supplies",
-    Amount: "$650",
+    Amount: "₵650",
     Date: "12 Mar 2025",
     Image: "user-12.jpg",
     PurchasedBy: "Dottie Sellers",
@@ -1494,7 +1494,7 @@ const data = [
   {
     Expense: "Reagent Refill",
     Category: "Laboratory",
-    Amount: "$430",
+    Amount: "₵430",
     Date: "05 Mar 2025",
     Image: "user-02.jpg",
     PurchasedBy: "Cheryl Bilodeau",
@@ -1504,7 +1504,7 @@ const data = [
   {
     Expense: "Syringes & Gauze",
     Category: "Medical Supplies",
-    Amount: "$300",
+    Amount: "₵300",
     Date: "24 Feb 2025",
     Image: "user-07.jpg",
     PurchasedBy: "Valerie Padgett",
@@ -1514,7 +1514,7 @@ const data = [
   {
     Expense: "Blood Collection Tubes",
     Category: "Laboratory",
-    Amount: "$450",
+    Amount: "₵450",
     Date: "16 Feb 2025",
     Image: "user-05.jpg",
     PurchasedBy: "Diane Nash",
@@ -1524,7 +1524,7 @@ const data = [
   {
     Expense: "Bandages & Tapes",
     Category: "Medical Supplies",
-    Amount: "$570",
+    Amount: "₵570",
     Date: "01 Feb 2025",
     Image: "user-07.jpg",
     PurchasedBy: "Sally Cavazos",
@@ -1534,7 +1534,7 @@ const data = [
   {
     Expense: "Tissue Slides",
     Category: "Laboratory",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "25 Jan 2025",
     Image: "user-09.jpg",
     PurchasedBy: "Forest Heath",
@@ -1589,9 +1589,9 @@ export default {
         { id: 3, name: "Debit Card" },
       ],
       Amount: [
-        { id: 1, name: "$501 - $1000" },
-        { id: 2, name: "$501 - $1100" },
-        { id: 3, name: "$701 - $1200" },
+        { id: 1, name: "₵501 - ₵1000" },
+        { id: 2, name: "₵501 - ₵1100" },
+        { id: 3, name: "₵701 - ₵1200" },
       ],
       Status: [
         { id: 1, name: "Approved" },

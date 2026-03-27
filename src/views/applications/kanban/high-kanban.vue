@@ -64,7 +64,7 @@
                                 <div class="d-flex align-items-center border-bottom mb-3 pb-3">
                                     <div class="me-3 pe-3 border-end">
                                         <span class="fw-medium fs-12 d-block mb-1">Budget</span>
-                                        <p class="fs-12 text-dark">$24,000</p>
+                                        <p class="fs-12 text-dark">₵24,000</p>
                                     </div>
                                     <div class="me-3 pe-3 border-end">
                                         <span class="fw-medium fs-12 d-block mb-1">Tasks</span>

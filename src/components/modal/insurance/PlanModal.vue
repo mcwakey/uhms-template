@@ -182,6 +182,27 @@ const resetForm = () => {
   }
 }
 
+const humanizeFieldLabel = (raw) => {
+  const cleaned = String(raw ?? '').replace(/\[\d+\]/g, '')
+  const parts = cleaned.split('.').filter(Boolean)
+  let candidate = parts[parts.length - 1] ?? cleaned
+  if (candidate === 'name' && parts.length > 1) candidate = parts[parts.length - 2]
+  candidate = candidate.replace(/_id$/, '')
+
+  const words = candidate
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+
+  const dedupedWords = words.filter(
+    (word, index) => index === 0 || word.toLowerCase() !== words[index - 1].toLowerCase()
+  )
+
+  return dedupedWords.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+}
+
 watch(
   () => props.planData,
   (newData) => {
@@ -225,7 +246,7 @@ const handleSubmit = async () => {
     console.error('Error saving plan:', error)
     if (error.response?.data?.data) {
         const errorMessages = Object.entries(error.response.data.data)
-        .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+        .map(([field, errors]) => `${humanizeFieldLabel(field)}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
         .join(' | ')
         message.error(errorMessages)
     } else {

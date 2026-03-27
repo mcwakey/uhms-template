@@ -22,7 +22,7 @@
                 </div>
                 <div class="d-flex align-items-center mb-3 flex-wrap gap-2">
                   <h2 class="fs-32 fw-bold mb-0">
-                    $0<span class="fs-14 fw-normal">/Month</span>
+                    ₵0<span class="fs-14 fw-normal">/Month</span>
                   </h2>
                 </div>
                 <p class="mb-3 text-truncate line-clamb-2">
@@ -81,11 +81,11 @@
                 </div>
                 <div class="d-flex align-items-center mb-1 flex-wrap gap-2">
                   <h2 class="fs-32 fw-bold mb-0">
-                    $50<span class="fs-14 fw-normal">/Month</span>
+                    ₵50<span class="fs-14 fw-normal">/Month</span>
                   </h2>
                 </div>
                 <div class="d-flex">
-                  <p class="text-decoration-line-through">$45/</p>
+                  <p class="text-decoration-line-through">₵45/</p>
                   <span class="text-success fw-semibold">Save 5%</span>
                 </div>
                 <p class="mb-3 text-truncate line-clamb-2">
@@ -144,11 +144,11 @@
                 </div>
                 <div class="d-flex align-items-center mb-1 flex-wrap gap-2">
                   <h2 class="fs-32 fw-bold mb-0">
-                    $50<span class="fs-14 fw-normal">/Month</span>
+                    ₵50<span class="fs-14 fw-normal">/Month</span>
                   </h2>
                 </div>
                 <div class="d-flex">
-                  <p class="text-decoration-line-through">$45/</p>
+                  <p class="text-decoration-line-through">₵45/</p>
                   <span class="text-success fw-semibold">Save 5%</span>
                 </div>
                 <p class="mb-3 text-truncate line-clamb-2">

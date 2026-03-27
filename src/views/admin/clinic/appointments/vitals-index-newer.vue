@@ -273,7 +273,7 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                           <small class="text-muted">Duration: {{ serviceInfo.duration || '30 mins' }}</small>
-                          <small class="text-muted">Fee: {{ serviceInfo.fee || '$150' }}</small>
+                          <small class="text-muted">Fee: {{ serviceInfo.fee || '₵150' }}</small>
                         </div>
                       </div>
                     </div>

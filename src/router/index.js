@@ -293,7 +293,7 @@ const routes = [
         path: 'consultations',
         name: 'ClinicConsultations',
         component: () => import('@/views/admin/clinic/appointments/appointments-index.vue'),
-        meta: { requiresAuth: true, isAdmin: true },
+        meta: { requiresAuth: true, isAdmin: true, view: 'consultations' },
       },
       {
         path: 'medical-notes',
@@ -334,7 +334,7 @@ const routes = [
       {
         path: 'invoices-list',
         name: 'InvoicesList',
-        component: () => import('@/views/finance/invoices/invoices-index.vue'),
+        component: () => import('@/views/finance/invoices/invoices.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {

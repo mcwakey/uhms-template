@@ -436,7 +436,7 @@
                       <td>27 May 2025 - 09:30 AM</td>
                       <td>Online</td>
                       <td><span class="badge bg-success fw-medium">Checked Out</span></td>
-                      <td class="fw-semibold text-dark">$400</td>
+                      <td class="fw-semibold text-dark">₵400</td>
                       <td>
                         <a
                           href="javascript:void(0);"
@@ -496,7 +496,7 @@
                       <td>26 May 2025 - 10:15 AM</td>
                       <td>Online</td>
                       <td><span class="badge bg-warning fw-medium">Checked in</span></td>
-                      <td class="fw-semibold text-dark">$370</td>
+                      <td class="fw-semibold text-dark">₵370</td>
                       <td>
                         <a
                           href="javascript:void(0);"
@@ -556,7 +556,7 @@
                       <td>25 May 2025 - 02:40 PM</td>
                       <td>In-Person</td>
                       <td><span class="badge bg-danger fw-medium">Cancelled</span></td>
-                      <td class="fw-semibold text-dark">$450</td>
+                      <td class="fw-semibold text-dark">₵450</td>
                       <td>
                         <a
                           href="javascript:void(0);"
@@ -616,7 +616,7 @@
                       <td>24 May 2025 - 11:30 AM</td>
                       <td>In-Person</td>
                       <td><span class="badge bg-info fw-medium">Schedule</span></td>
-                      <td class="fw-semibold text-dark">$310</td>
+                      <td class="fw-semibold text-dark">₵310</td>
                       <td>
                         <a
                           href="javascript:void(0);"
@@ -676,7 +676,7 @@
                       <td>23 May 2025 - 04:10 PM</td>
                       <td>Online</td>
                       <td><span class="badge bg-info fw-medium">Schedule</span></td>
-                      <td class="fw-semibold text-dark">$400</td>
+                      <td class="fw-semibold text-dark">₵400</td>
                       <td>
                         <a
                           href="javascript:void(0);"

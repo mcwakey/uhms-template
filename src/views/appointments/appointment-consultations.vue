@@ -746,24 +746,24 @@
                   <h6
                     class="fs-14 fw-semibold d-flex align-items-center justify-content-between mb-2"
                   >
-                    Amount<span class="fw-normal">$0.00</span>
+                    Amount<span class="fw-normal">₵0.00</span>
                   </h6>
                   <h6
                     class="fs-14 fw-semibold d-flex align-items-center justify-content-between mb-2"
                   >
-                    Tax (0%)<span class="fw-normal">$0.00</span>
+                    Tax (0%)<span class="fw-normal">₵0.00</span>
                   </h6>
                   <h6
                     class="fs-14 fw-semibold d-flex align-items-center justify-content-between mb-2"
                   >
-                    Discount (0%)<span class="fw-normal">$0.00</span>
+                    Discount (0%)<span class="fw-normal">₵0.00</span>
                   </h6>
                 </div>
                 <div class="total mb-4">
                   <h6
                     class="fs-16 fw-bold d-flex align-items-center justify-content-between"
                   >
-                    Total : <span> $0.00</span>
+                    Total : <span> ₵0.00</span>
                   </h6>
                 </div>
 

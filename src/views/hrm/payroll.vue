@@ -471,7 +471,7 @@
                   <label class="form-label"
                     >TDS<span class="text-danger ms-1">*</span></label
                   >
-                  <input type="text" class="form-control" value="$600" />
+                  <input type="text" class="form-control" value="₵600" />
                 </div>
                 <div class="mb-3">
                   <label class="form-label">ESI</label>
@@ -624,7 +624,7 @@ const data = [
     Email: "james@gmail.com",
     JoiningDate: "01 Jan 2024",
     Role: "Admin",
-    Salary: "$1200",
+    Salary: "₵1200",
     Status: "Generate Slip",
   },
   {
@@ -633,7 +633,7 @@ const data = [
     Email: "esther@gmail.com",
     JoiningDate: "04 Jan 2023",
     Role: "Reception",
-    Salary: "$2000",
+    Salary: "₵2000",
     Status: "Generate Slip",
   },
   {
@@ -642,7 +642,7 @@ const data = [
     Email: "judi@gmail.com",
     JoiningDate: "26 Jan 2022",
     Role: "Admin",
-    Salary: "$1500",
+    Salary: "₵1500",
     Status: "Generate Slip",
   },
   {
@@ -651,7 +651,7 @@ const data = [
     Email: "robert@gmail.com",
     JoiningDate: "04 Feb 2022",
     Role: "Admin",
-    Salary: "$1200",
+    Salary: "₵1200",
     Status: "Generate Slip",
   },
   {
@@ -660,7 +660,7 @@ const data = [
     Email: "dottie@gmail.com",
     JoiningDate: "03 Mar 2021",
     Role: "Nurse",
-    Salary: "$1500",
+    Salary: "₵1500",
     Status: "Generate Slip",
   },
   {
@@ -669,7 +669,7 @@ const data = [
     Email: "cheryl@gmail.com",
     JoiningDate: "08 May 2021",
     Role: "Nurse (RN)",
-    Salary: "$2500",
+    Salary: "₵2500",
     Status: "Generate Slip",
   },
   {
@@ -678,7 +678,7 @@ const data = [
     Email: "valerie@gmail.com",
     JoiningDate: "29 Mar 2021",
     Role: "Nurse Practitioner",
-    Salary: "$1000",
+    Salary: "₵1000",
     Status: "Generate Slip",
   },
   {
@@ -687,7 +687,7 @@ const data = [
     Email: "diane@gmail.com",
     JoiningDate: "01 Apr 2020",
     Role: "Nurse",
-    Salary: "$1250",
+    Salary: "₵1250",
     Status: "Generate Slip",
   },
   {
@@ -696,7 +696,7 @@ const data = [
     Email: "sally@gmail.com",
     JoiningDate: "01 May 2020",
     Role: "Nurse",
-    Salary: "$1550",
+    Salary: "₵1550",
     Status: "Generate Slip",
   },
   {
@@ -705,7 +705,7 @@ const data = [
     Email: "forest@gmail.com",
     JoiningDate: "27 May 2020",
     Role: "Reception",
-    Salary: "$1250",
+    Salary: "₵1250",
     Status: "Generate Slip",
   },
 ];

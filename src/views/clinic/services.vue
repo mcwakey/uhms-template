@@ -137,7 +137,7 @@
                       <div class="dropdown-menu shadow-lg w-100 dropdown-info">
                         <div class="filter-range">
                           <input type="text" id="range_03" />
-                          <p>Range : <span class="text-gray-9">$200 - $5695</span></p>
+                          <p>Range : <span class="text-gray-9">₵200 - ₵5695</span></p>
                         </div>
                       </div>
                     </div>
@@ -350,7 +350,7 @@
               <label class="form-label"
                 >Price<span class="text-danger ms-1">*</span></label
               >
-              <input type="text" class="form-control" value="$200" />
+              <input type="text" class="form-control" value="₵200" />
             </div>
           </div>
           <div class="modal-footer d-flex align-items-center gap-1">
@@ -447,61 +447,61 @@ const data = [
   {
     ServiceName: "General Consultation",
     Department: "General Medicine",
-    Price: "$200",
+    Price: "₵200",
     Status: "Active",
   },
   {
     ServiceName: "Dental Cleaning",
     Department: "Dentistry",
-    Price: "$180",
+    Price: "₵180",
     Status: "Inactive",
   },
   {
     ServiceName: "Eye Checkup",
     Department: "Ophthalmology",
-    Price: "$150",
+    Price: "₵150",
     Status: "Active",
   },
   {
     ServiceName: "X-Ray",
     Department: "Radiology",
-    Price: "$80",
+    Price: "₵80",
     Status: "Active",
   },
   {
     ServiceName: "Physiotherapy Session",
     Department: "Physiotherapy",
-    Price: "$130",
+    Price: "₵130",
     Status: "Active",
   },
   {
     ServiceName: "Cardiac Screening",
     Department: "Cardiology",
-    Price: "$300",
+    Price: "₵300",
     Status: "Active",
   },
   {
     ServiceName: "Skin Allergy Test",
     Department: "Dermatology",
-    Price: "$220",
+    Price: "₵220",
     Status: "Inactive",
   },
   {
     ServiceName: "Blood Test",
     Department: "Pathology",
-    Price: "$150",
+    Price: "₵150",
     Status: "Active",
   },
   {
     ServiceName: "ENT Consultation",
     Department: "ENT",
-    Price: "$230",
+    Price: "₵230",
     Status: "Active",
   },
   {
     ServiceName: "Nutrition Counseling",
     Department: "Nutrition",
-    Price: "$250",
+    Price: "₵250",
     Status: "Active",
   },
 ];

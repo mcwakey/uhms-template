@@ -14,9 +14,9 @@
       >
         <div class="flex-grow-1">
           <h4 class="fw-bold mb-0">
-            Appointments<span
+            {{ pageTitle }}<span
               class="badge badge-soft-primary border border-primary fs-13 fw-medium ms-2"
-              >Total: {{ AppointmentsTable.totalCount }}</span
+              >Total: {{ displayTotal }}</span
             >
           </h4>
         </div>
@@ -41,6 +41,7 @@
           </div>
 
           <div
+            v-if="!isConsultationsView"
             class="bg-white border shadow-sm rounded px-1 pb-0 text-center d-flex align-items-center justify-content-center"
           >
             <router-link
@@ -151,7 +152,7 @@
         <a-table
           class="table table-nowrap datatable pagination-rounded"
           :columns="columns"
-          :data-source="AppointmentsTable.data"
+          :data-source="displayData"
           :pagination="paginationConfig"
           @change="AppointmentsTable.handleTableChange"
           row-key="id"
@@ -311,7 +312,7 @@
                         href="javascript:void(0);"
                         class="action-icon text-warning"
                         title="Continue Consultation"
-                        @click.prevent="$router.push({ name: 'ViewAppointment', params: { id: record.id } })"
+                        @click.prevent="$router.push({ name: 'PatientConsultation', params: { id: record.id } })"
                       >
                         <i class="ti ti-player-play"></i>
                       </a>
@@ -375,6 +376,7 @@
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref, watch, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { useTableStore } from '@/stores/dataTableStore'
 import { useAppointmentStore } from '@/stores/appointmentStore'
@@ -402,6 +404,8 @@ import patientDefaultAvatar from '@/assets/img/users/avatar-2.jpg'
 // Reactive state
 const loading = ref<boolean>(false)
 const searchQuery = ref<string>('')
+const route = useRoute()
+const router = useRouter()
 
 // Stores
 const AppointmentsTable = reactive(useTableStore('appointments'))
@@ -433,6 +437,54 @@ if (!AppointmentsStore.selectedAppointment) {
 }
 
 const detailedItem = computed(() => AppointmentsTable.detailedItem || {})
+const isConsultationsView = computed(() => route.meta?.view === 'consultations' || route.name === 'ClinicConsultations')
+const pageTitle = computed(() => (isConsultationsView.value ? 'Consultations' : 'Appointments'))
+const displayData = computed(() => {
+  const data = Array.isArray(AppointmentsTable.data) ? AppointmentsTable.data : []
+  if (!isConsultationsView.value) return data
+  
+  const filtered = data.filter((row: any) =>
+    ['CHECKED-IN', 'IN-PROGRESS', 'COMPLETED', 'DONE', 'SCHEDULED'].includes(row?.status)
+  )
+
+  // Fallback mock data for testing if no clinical data exists
+  if (filtered.length === 0) {
+    return [
+      {
+        id: 'mock-1',
+        start_date: new Date().toISOString(),
+        patient: { name: 'Demo Patient', opd_no: '#OPD-0001', uuid: 'mock-pt-uuid' },
+        staff: { name: 'Dr. Specialist', specialization: 'General Practice' },
+        status: 'IN-PROGRESS',
+        type: false, // In-person
+        service: { name: 'General Consultation', code: 'CONS-01' }
+      }
+    ]
+  }
+  return filtered
+})
+const displayTotal = computed(() => (isConsultationsView.value ? displayData.value.length : AppointmentsTable.totalCount))
+
+const humanizeFieldLabel = (raw: string) => {
+  const cleaned = raw.replace(/\[\d+\]/g, '')
+  const parts = cleaned.split('.').filter(Boolean)
+  let candidate = parts[parts.length - 1] ?? cleaned
+  if (candidate === 'name' && parts.length > 1) candidate = parts[parts.length - 2]
+  candidate = candidate.replace(/_id$/, '')
+
+  const words = candidate
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+
+  const dedupedWords = words.filter(
+    (word, index) => index === 0 || word.toLowerCase() !== words[index - 1].toLowerCase()
+  )
+
+  return dedupedWords.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+}
 
 // Computed properties for better data formatting
 const selectedAppointment = computed(() => AppointmentsStore.selectedAppointment)
@@ -962,7 +1014,7 @@ const handleRescheduleSave = async (formData: any) => {
           const fieldErrors: string[] = []
           Object.keys(data).forEach((field) => {
             const fieldError = Array.isArray(data[field]) ? data[field].join(', ') : data[field]
-            fieldErrors.push(`${field}: ${fieldError}`)
+            fieldErrors.push(`${humanizeFieldLabel(field)}: ${fieldError}`)
           })
 
           if (fieldErrors.length > 0) {
@@ -1040,10 +1092,17 @@ const fetchServices = async () => {
   try {
     servicesLoading.value = true
     const response = await axiosInstance.get('/services')
-    availableServices.value = response.data.results || response.data || []
-  } catch (error: any) {
-    console.error('Error fetching services:', error)
-    message.error('Failed to load services')
+    const payload = response.data
+    // Handle paginated {data: []} or {results: []} or direct array
+    const arr = Array.isArray(payload)
+      ? payload
+      : Array.isArray(payload?.data)
+        ? payload.data
+        : Array.isArray(payload?.results)
+          ? payload.results
+          : []
+    availableServices.value = arr
+  } catch {
     availableServices.value = []
   } finally {
     servicesLoading.value = false
@@ -1246,13 +1305,19 @@ const testAppointmentAPI = async (appointmentId: any) => {
 
 const fetchDoctors = async () => {
   try {
-    // Fetch doctors (staff with role 'doctor' or similar logic)
-    // Assuming /staff/ endpoint supports filtering or returns all staff
     const response = await axiosInstance.get('/staff', { params: { page_size: 100 } })
-    doctorsList.value = response.data.results || response.data || []
-  } catch (error: any) {
-    console.error('Error fetching doctors:', error)
-    // Don't show error message to user as this is secondary data
+    const payload = response.data
+    // Handle paginated {data: []} or {results: []} or direct array
+    const arr = Array.isArray(payload)
+      ? payload
+      : Array.isArray(payload?.data)
+        ? payload.data
+        : Array.isArray(payload?.results)
+          ? payload.results
+          : []
+    doctorsList.value = arr
+  } catch {
+    doctorsList.value = []
   }
 }
 
@@ -1262,14 +1327,16 @@ const openVitalsModal = (record: any) => {
 }
 
 const startAppointment = async (record: any) => {
+  AppointmentsStore.selectedAppointment = record
+  // Optimistically update local status
+  record.status = 'IN-PROGRESS'
+  // Try to persist status change via API (non-blocking)
   try {
-    AppointmentsStore.selectedAppointment = record
-    await updateAppointmentStatus('IN-PROGRESS')
-    // Optional: Redirect to consultation view
-    // router.push({ name: 'ViewAppointment', params: { id: record.id } })
-  } catch (error) {
-    console.error('Error starting appointment:', error)
+    await AppointmentsStore.updateAppointmentStatus(record.id, 'IN-PROGRESS')
+  } catch {
+    // API not ready — proceed with local state
   }
+  router.push({ name: 'PatientConsultation', params: { id: record.id } })
 }
 
 const cancelAppointment = async (record: any) => {

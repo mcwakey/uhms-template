@@ -582,7 +582,7 @@
                         <div class="input-group">
                           <input type="text" class="form-control" />
                           <span class="input-group-text bg-transparent text-dark fs-14"
-                            >$</span
+                            >₵</span
                           >
                         </div>
                       </div>

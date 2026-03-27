@@ -362,7 +362,7 @@
                     <div class="filter-range">
                       <input type="text" id="range_01" />
                       <p class="mt-2 fs-13">
-                        Range : <span class="text-dark">$200 - $5695</span>
+                        Range : <span class="text-dark">₵200 - ₵5695</span>
                       </p>
                     </div>
                   </div>
@@ -735,13 +735,13 @@
                     data-bs-auto-close="outside"
                     aria-expanded="true"
                   >
-                    $220
+                    ₵220
                   </a>
                   <div class="dropdown-menu shadow-lg w-100 dropdown-info p-2">
                     <div class="filter-range">
                       <input type="text" id="range_02" />
                       <p class="mt-2 fs-13">
-                        Range : <span class="text-dark">$200 - $5695</span>
+                        Range : <span class="text-dark">₵200 - ₵5695</span>
                       </p>
                     </div>
                   </div>
@@ -1175,7 +1175,7 @@ const columns = [
 const data = [
   {
     IncomeName: "General Consultation",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "30 Apr 2025",
     Image: "user-01.jpg",
     ReceivedFrom: "James Carter",
@@ -1184,7 +1184,7 @@ const data = [
   },
   {
     IncomeName: "Blood Test",
-    Amount: "$930",
+    Amount: "₵930",
     Date: "15 Apr 2025",
     Image: "user-02.jpg",
     ReceivedFrom: "Emily Johnson",
@@ -1193,7 +1193,7 @@ const data = [
   },
   {
     IncomeName: "MRI Scan",
-    Amount: "$850",
+    Amount: "₵850",
     Date: "02 Apr 2025",
     Image: "user-03.jpg",
     ReceivedFrom: "Robert Mitchell",
@@ -1202,7 +1202,7 @@ const data = [
   },
   {
     IncomeName: "CT Scan",
-    Amount: "$700",
+    Amount: "₵700",
     Date: "27 Mar 2025",
     Image: "user-04.jpg",
     ReceivedFrom: "Sophia Miller",
@@ -1211,7 +1211,7 @@ const data = [
   },
   {
     IncomeName: "Allergy Panel",
-    Amount: "$650",
+    Amount: "₵650",
     Date: "12 Mar 2025",
     Image: "user-05.jpg",
     ReceivedFrom: "Daniel Anderson",
@@ -1220,7 +1220,7 @@ const data = [
   },
   {
     IncomeName: "PET Scan",
-    Amount: "$430",
+    Amount: "₵430",
     Date: "05 Mar 2025",
     Image: "user-06.jpg",
     ReceivedFrom: "Olivia Davis",
@@ -1229,7 +1229,7 @@ const data = [
   },
   {
     IncomeName: "Orthopedic Checkup",
-    Amount: "$300",
+    Amount: "₵300",
     Date: "24 Feb 2025",
     Image: "user-07.jpg",
     ReceivedFrom: "Michael Thompson",
@@ -1238,7 +1238,7 @@ const data = [
   },
   {
     IncomeName: "Thyroid Test",
-    Amount: "$450",
+    Amount: "₵450",
     Date: "16 Feb 2025",
     Image: "user-08.jpg",
     ReceivedFrom: "Isabella Wilson",
@@ -1247,7 +1247,7 @@ const data = [
   },
   {
     IncomeName: "ENT Consultation",
-    Amount: "$570",
+    Amount: "₵570",
     Date: "01 Feb 2025",
     Image: "user-09.jpg",
     ReceivedFrom: "Michael Trade",
@@ -1256,7 +1256,7 @@ const data = [
   },
   {
     IncomeName: "Cataract Surgery",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "25 Jan 2025",
     Image: "user-10.jpg",
     ReceivedFrom: "Ava Robinson",
@@ -1307,9 +1307,9 @@ export default {
         { id: 3, name: "Debit Card" },
       ],
       Amount: [
-        { id: 1, name: "$501 - $1000" },
-        { id: 2, name: "$501 - $1100" },
-        { id: 3, name: "$701 - $1200" },
+        { id: 1, name: "₵501 - ₵1000" },
+        { id: 2, name: "₵501 - ₵1100" },
+        { id: 3, name: "₵701 - ₵1200" },
       ],
       Status: [
         { id: 1, name: "Approved" },

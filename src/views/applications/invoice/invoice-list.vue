@@ -33,7 +33,7 @@
               <div class="d-flex align-items-center overflow-hidden mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Total Invoice</p>
-                  <h6>$3,237.94</h6>
+                  <h6>₵3,237.94</h6>
                 </div>
               </div>
               <div class="attendance-report-bar mb-2">
@@ -68,7 +68,7 @@
               <div class="d-flex align-items-center overflow-hidden mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Outstanding</p>
-                  <h6>$3,237.94</h6>
+                  <h6>₵3,237.94</h6>
                 </div>
               </div>
               <div class="attendance-report-bar mb-2">
@@ -103,7 +103,7 @@
               <div class="d-flex align-items-center overflow-hidden mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Draft</p>
-                  <h6>$3,237.94</h6>
+                  <h6>₵3,237.94</h6>
                 </div>
               </div>
               <div class="attendance-report-bar mb-2">
@@ -138,7 +138,7 @@
               <div class="d-flex align-items-center overflow-hidden mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Total Overdue</p>
-                  <h6>$3,237.94</h6>
+                  <h6>₵3,237.94</h6>
                 </div>
               </div>
               <div class="attendance-report-bar mb-2">
@@ -321,8 +321,8 @@ const data = [
     Name: "Anthony Lewis",
     Email: "anthony@example.com",
     Created_On: "14 Jan 2024, 04:27 AM",
-    Total: "$300",
-    Amount_Due: "$0",
+    Total: "₵300",
+    Amount_Due: "₵0",
     Due_Date: "14 Jan 2024, 04:27 AM",
     Status: "Paid",
   },
@@ -333,8 +333,8 @@ const data = [
     Name: "Brian Villalobos",
     Email: "brian@example.com",
     Created_On: "21 Jan 2024, 03:19 AM",
-    Total: "$547",
-    Amount_Due: "$200",
+    Total: "₵547",
+    Amount_Due: "₵200",
     Due_Date: "21 Jan 2024, 03:19 AM",
     Status: "Overdue",
   },
@@ -345,8 +345,8 @@ const data = [
     Name: "Harvey Smith",
     Email: "harvey@example.com",
     Created_On: "20 Feb 2024, 12:15 PM",
-    Total: "$325",
-    Amount_Due: "$65",
+    Total: "₵325",
+    Amount_Due: "₵65",
     Due_Date: "20 Feb 2024, 12:15 PM",
     Status: "Pending",
   },
@@ -357,8 +357,8 @@ const data = [
     Name: "Stephan Peralt",
     Email: "peral@example.com",
     Created_On: "15 Mar 2024, 12:11 AM",
-    Total: "$471",
-    Amount_Due: "$145",
+    Total: "₵471",
+    Amount_Due: "₵145",
     Due_Date: "15 Mar 2024, 12:11 AM",
     Status: "Pending",
   },
@@ -369,8 +369,8 @@ const data = [
     Name: "Doglas Martini",
     Email: "martniwr@example.com",
     Created_On: "12 Apr 2024, 05:48 PM",
-    Total: "$147",
-    Amount_Due: "$32",
+    Total: "₵147",
+    Amount_Due: "₵32",
     Due_Date: "12 Apr 2024, 05:48 PM",
     Status: "Overdue",
   },
@@ -381,8 +381,8 @@ const data = [
     Name: "Linda Ray",
     Email: "ray456@example.com",
     Created_On: "20 Apr 2024, 06:11 PM",
-    Total: "$654",
-    Amount_Due: "$140",
+    Total: "₵654",
+    Amount_Due: "₵140",
     Due_Date: "20 Apr 2024, 06:11 PM",
     Status: "Draft",
   },
@@ -393,8 +393,8 @@ const data = [
     Name: "Elliot Murray",
     Email: "murray@example.com",
     Created_On: "14 Jan 2024, 04:27 AM",
-    Total: "$300",
-    Amount_Due: "$0",
+    Total: "₵300",
+    Amount_Due: "₵0",
     Due_Date: "14 Jan 2024, 04:27 AM",
     Status: "Paid",
   },
@@ -405,8 +405,8 @@ const data = [
     Name: "Rebecca Smtih",
     Email: "smtih@example.com",
     Created_On: "02 Sep 2024, 09:21 PM",
-    Total: "$654",
-    Amount_Due: "$65",
+    Total: "₵654",
+    Amount_Due: "₵65",
     Due_Date: "02 Sep 2024, 09:21 PM",
     Status: "Paid",
   },
@@ -417,8 +417,8 @@ const data = [
     Name: "Anthony Lewis",
     Email: "anthony@example.com",
     Created_On: "14 Jan 2024, 04:27 AM",
-    Total: "$300",
-    Amount_Due: "$0",
+    Total: "₵300",
+    Amount_Due: "₵0",
     Due_Date: "14 Jan 2024, 04:27 AM",
     Status: "Draft",
   },
@@ -429,8 +429,8 @@ const data = [
     Name: "Connie Waters",
     Email: "connie@example.com",
     Created_On: "15 Nov 2024, 12:44 PM",
-    Total: "$987",
-    Amount_Due: "$47",
+    Total: "₵987",
+    Amount_Due: "₵47",
     Due_Date: "15 Nov 2024, 12:44 PM",
     Status: "Pending",
   },
@@ -441,8 +441,8 @@ const data = [
     Name: "Lori Broaddus",
     Email: "broaddus@example.com",
     Created_On: "10 Dec 2024, 11:23 PM",
-    Total: "$365",
-    Amount_Due: "$21",
+    Total: "₵365",
+    Amount_Due: "₵21",
     Due_Date: "10 Dec 2024, 11:23 PM",
     Status: "Overdue",
   },

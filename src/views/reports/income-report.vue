@@ -43,7 +43,7 @@
               <div class="d-flex justify-content-between mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Total Clinic Income</p>
-                  <h6 class="mb-0 fw-bold">$18,750</h6>
+                  <h6 class="mb-0 fw-bold">₵18,750</h6>
                 </div>
                 <span
                   class="avatar avatar-lg bg-soft-primary text-primary rounded-circle flex-shrink-0"
@@ -78,7 +78,7 @@
               <div class="d-flex justify-content-between mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Doctor Fees Collected</p>
-                  <h6 class="mb-0 fw-bold">$7,000</h6>
+                  <h6 class="mb-0 fw-bold">₵7,000</h6>
                 </div>
                 <span
                   class="avatar avatar-lg bg-soft-success text-success rounded-circle flex-shrink-0"
@@ -113,7 +113,7 @@
               <div class="d-flex justify-content-between mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Medicine Sales</p>
-                  <h6 class="mb-0 fw-bold">$6,250</h6>
+                  <h6 class="mb-0 fw-bold">₵6,250</h6>
                 </div>
                 <span
                   class="avatar avatar-lg bg-soft-warning text-warning rounded-circle flex-shrink-0"
@@ -148,7 +148,7 @@
               <div class="d-flex justify-content-between mb-2">
                 <div>
                   <p class="mb-1 text-truncate">Lab Revenue</p>
-                  <h6 class="mb-0 fw-bold">$5,500</h6>
+                  <h6 class="mb-0 fw-bold">₵5,500</h6>
                 </div>
                 <span
                   class="avatar avatar-lg bg-soft-danger text-danger rounded-circle flex-shrink-0"
@@ -357,7 +357,7 @@ const columns = [
 const data = [
   {
     Income: "Nurse",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "22 Apr 2025",
     ReceivedFrom: "James Carter",
     PaymentMethod: "PayPal",
@@ -365,7 +365,7 @@ const data = [
   },
   {
     Income: "Pharmacist",
-    Amount: "$930",
+    Amount: "₵930",
     Date: "12 Apr 2025",
     ReceivedFrom: "Emily Johnson",
     PaymentMethod: "Debit Card",
@@ -373,7 +373,7 @@ const data = [
   },
   {
     Income: "Receptionist",
-    Amount: "$850",
+    Amount: "₵850",
     Date: "01 Apr 2025",
     ReceivedFrom: "Robert Mitchell",
     PaymentMethod: "Cheque",
@@ -381,7 +381,7 @@ const data = [
   },
   {
     Income: "Technician",
-    Amount: "$700",
+    Amount: "₵700",
     Date: "05 Mar 2025",
     ReceivedFrom: "Sophia Miller",
     PaymentMethod: "Cheque",
@@ -389,7 +389,7 @@ const data = [
   },
   {
     Income: "Medical Assistant",
-    Amount: "$650",
+    Amount: "₵650",
     Date: "20 Mar 2025",
     ReceivedFrom: "Daniel Anderson",
     PaymentMethod: "PayPal",
@@ -397,7 +397,7 @@ const data = [
   },
   {
     Income: "Phlebotomist",
-    Amount: "$430",
+    Amount: "₵430",
     Date: "01 Mar 2025",
     ReceivedFrom: "Olivia Davis",
     PaymentMethod: "Debit Card",
@@ -405,7 +405,7 @@ const data = [
   },
   {
     Income: "Dialysis Technician",
-    Amount: "$300",
+    Amount: "₵300",
     Date: "15 Feb 2025",
     ReceivedFrom: "Michael Thompson",
     PaymentMethod: "Cheque",
@@ -413,7 +413,7 @@ const data = [
   },
   {
     Income: "Medical Coder",
-    Amount: "$450",
+    Amount: "₵450",
     Date: "09 Feb 2025",
     ReceivedFrom: "Isabella Wilson",
     PaymentMethod: "PayPal",
@@ -421,7 +421,7 @@ const data = [
   },
   {
     Income: "Chiropractor",
-    Amount: "$570",
+    Amount: "₵570",
     Date: "01 Feb 2025",
     ReceivedFrom: "Michael Trade",
     PaymentMethod: "Debit Card",
@@ -429,7 +429,7 @@ const data = [
   },
   {
     Income: "Acupuncturist",
-    Amount: "$800",
+    Amount: "₵800",
     Date: "12 Jan 2025",
     ReceivedFrom: "Ava Robinson",
     PaymentMethod: "Cheque",

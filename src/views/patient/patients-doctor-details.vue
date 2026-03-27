@@ -66,7 +66,7 @@
           <div>
             <p class="mb-2">Consultation Charge</p>
             <h6 class="fs-18 fw-bold mb-3">
-              $499 <span class="fw-normal text-body fs-14"> / 30 Min</span>
+              ₵499 <span class="fw-normal text-body fs-14"> / 30 Min</span>
             </h6>
             <router-link to="/patient/patient-appointment-details" class="btn btn-primary"
               ><i class="ti ti-calendar-event me-1"></i>Book Apppointment</router-link

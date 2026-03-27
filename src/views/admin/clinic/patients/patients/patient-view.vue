@@ -149,7 +149,7 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold text-dark mb-0"><i class="ti ti-users me-2 text-primary"></i>{{ $t('patient_view.next_of_kin') }}</h5>
-                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6" data-bs-toggle="modal" data-bs-target="#edit_next_of_kin_modal"><i class="ti ti-pencil"></i></button>
+                    <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6" @click="openNextOfKinModal"><i class="ti ti-pencil"></i></button>
                 </div>
                 <div class="bg-light p-3 rounded-3 border-start border-primary border-3">
                     <div class="d-flex justify-content-between align-items-start">
@@ -167,230 +167,186 @@
                         </span>
                     </div>
                 </div>
-
-                <div class="border-top my-4"></div>
-
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold text-dark mb-0"><i class="ti ti-shield me-2 text-primary"></i>{{ $t('patient_view.insurance') }}</h5>
-                    <div class="d-flex gap-2">
-                        <button 
-                          class="btn btn-sm btn-primary-subtle rounded-3 fs-6" 
-                          @click="editCurrentInsurance"
-                          :disabled="insurances.length === 0"
-                          data-bs-toggle="modal"
-                          data-bs-target="#edit_insurance_modal"
-                        >
-                          <i class="ti ti-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6" @click="openCreateInsuranceModal"><i class="ti ti-plus"></i></button>
-                    </div>
-                </div>
-
-                <div class="">
-                    <div v-if="insurances.length === 0" class="text-center text-muted py-3">
-                      <p class="mb-2 fs-13">{{ $t('patient_view.no_insurance_details') }}</p>
-                      <button class="btn btn-sm btn-primary rounded-3" @click="openCreateInsuranceModal">
-                        <i class="ti ti-plus me-1"></i>{{ $t('patient_view.add_first_insurance') }}
-                      </button>
-                    </div>
-                    <div v-else class="insurance-slider-container position-relative">
-                      <!-- Left Arrow Overlay -->
-                      <button
-                        v-if="insurances.length > 1"
-                        @click="scrollToPreviousCard"
-                        :disabled="currentInsuranceIndex === 0"
-                        class="position-absolute start-0 top-50 translate-middle-y btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
-                        style="width: 32px; height: 32px; z-index: 10; left: 5px"
-                        :class="{ 'opacity-25': currentInsuranceIndex === 0 }"
-                      >
-                        <i class="ti ti-chevron-left fs-16"></i>
-                      </button>
-
-                      <!-- Right Arrow Overlay -->
-                      <button
-                        v-if="insurances.length > 1"
-                        @click="scrollToNextCard"
-                        :disabled="currentInsuranceIndex === insurances.length"
-                        class="position-absolute end-0 top-50 translate-middle-y btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
-                        style="width: 32px; height: 32px; z-index: 10; right: 5px"
-                        :class="{ 'opacity-25': currentInsuranceIndex === insurances.length - 1 }"
-                      >
-                        <i class="ti ti-chevron-right fs-16"></i>
-                      </button>
-
-                      <div
-                        class="d-flex overflow-hidden insurance-cards-wrapper"
-                        ref="insuranceSlider"
-                      >
-                        <div
-                          v-for="(insurance, index) in insurances"
-                          :key="insurance.id || index"
-                          class="insurance-card flex-shrink-0"
-                          :class="{ active: currentInsuranceIndex === index }"
-                          style="width: 85%; min-width: 85%; margin-right: 10px;"
-                        >
-                          <div
-                            class="card border-0 shadow-sm h-auto position-relative rounded-3 mb-0"
-                            :style="getCardGradient(insurance)"
-                          >
-                            <div class="card-body text-white p-3">
-                              <span
-                                :class="[
-                                  'badge fs-10 fw-medium position-absolute rounded-3',
-                                  insurance.status === true ? 'bg-success' : 'bg-danger',
-                                ]"
-                                style="top: 12px; right: 8px"
-                              >
-                                {{ insurance.status ? t('patient_view.active') : t('patient_view.inactive') }}
-                              </span>
-
-                              <div class="mb-3">
-                                <div>
-                                  <h6 class="text-white mb-1 fw-bold">
-                                    {{ insurance.plan?.company || t('patient_view.na') }}
-                                  </h6>
-                                  <small class="text-white-50">{{
-                                    insurance.plan?.name || t('patient_view.na')
-                                  }}</small>
-                                </div>
-                              </div>
-
-                              <div class="row">
-                                <div class="col-8">
-                                  <div class="text-white-50 fs-12 mb-1">
-                                    {{ t('patient_view.membership_number') }}
-                                  </div>
-                                  <div class="fw-bold fs-14 letter-spacing">
-                                    {{ formatCardNumber(insurance.membership_number) }}
-                                  </div>
-                                </div>
-                                <div class="col-4">
-                                  <div class="text-white-50 fs-12 mb-1">{{ t('patient_view.expiry_date') }}</div>
-                                  <div class="fw-semibold fs-13">
-                                    {{ formatDate(insurance.expiry_date) }}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
             </div>
           </div>
         </div>
 
         <!-- Right Column: Vital Signs & Medical History -->
         <div class="col-lg-8">
-           <!-- Vital Signs -->
-           <div class="card border shadow-none rounded-3 w-100 mb-4">
-             <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0 d-flex justify-content-between align-items-center">
-                <h5 class="fw-bold text-dark mb-0"><i class="ti ti-activity-heartbeat me-2 text-primary"></i>{{ $t('patient_view.vital_signs') }}</h5>
-                <small class="text-muted">{{ $t('patient_view.last_visit') }}: {{ patientStore.patient?.last_visit_date || '-' }}</small>
+            <!-- Medical History -->
+            <div class="card border shadow-none rounded-3 w-100 mb-4">
+              <div class="card-header bg-transparent border-bottom px-4 py-3 d-flex justify-content-between align-items-center">
+                 <h5 class="fw-bold text-dark mb-0"><i class="ti ti-history me-2 text-primary"></i>{{ $t('patient_view.medical_history') }}</h5>
+                 <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6">
+                    <i class="ti ti-plus"></i>
+                 </button>
+              </div>
+              <div class="card-body p-4">
+                 <div class="row g-4">
+                    <div class="col-md-6">
+                        <h6 class="fs-13 fw-bold text-muted mb-2">{{ $t('patient_view.conditions') }}</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                           <span class="badge badge-soft-danger border border-danger fw-medium fs-12 px-2 py-1">Hypertension</span>
+                           <span class="badge badge-soft-warning border border-warning fw-medium fs-12 px-2 py-1">Type 2 Diabetes</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fs-13 fw-bold text-muted mb-2">{{ $t('patient_view.allergies') }}</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                           <span class="badge badge-soft-info border border-info fw-medium fs-12 px-2 py-1">Penicillin</span>
+                           <span class="badge badge-soft-info border border-info fw-medium fs-12 px-2 py-1">Peanuts</span>
+                        </div>
+                    </div>
+                 </div>
+              </div>
+            </div>
+
+            <!-- Current Medications -->
+            <div class="card border shadow-none rounded-3 w-100 mb-4">
+              <div class="card-header bg-transparent border-bottom px-4 py-3 d-flex justify-content-between align-items-center">
+                 <h5 class="fw-bold text-dark mb-0"><i class="ti ti-pill me-2 text-primary"></i>{{ $t('patient_view.current_medications') }}</h5>
+                 <button class="btn btn-sm btn-primary-subtle rounded-3 fs-6">
+                    <i class="ti ti-plus"></i>
+                 </button>
+              </div>
+              <div class="card-body p-0">
+                 <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                       <thead class="table-light">
+                          <tr>
+                             <th class="ps-4 fs-12 text-muted fw-bold">{{ $t('patient_view.medication') }}</th>
+                             <th class="fs-12 text-muted fw-bold">{{ $t('patient_view.dosage') }}</th>
+                             <th class="fs-12 text-muted fw-bold">{{ $t('patient_view.frequency') }}</th>
+                             <th class="text-end pe-4 fs-12 text-muted fw-bold">{{ $t('patient_view.status') }}</th>
+                          </tr>
+                       </thead>
+                       <tbody>
+                          <tr v-for="med in medications.slice(0, 3)" :key="med.id">
+                             <td class="ps-4">
+                                <span class="fw-semibold text-dark fs-13">{{ med.name }}</span>
+                             </td>
+                             <td class="fs-13">{{ med.dosage }}</td>
+                             <td class="fs-13">{{ med.frequency }}</td>
+                             <td class="text-end pe-4">
+                                <span class="badge badge-soft-success border border-success fw-medium fs-11">Active</span>
+                             </td>
+                          </tr>
+                       </tbody>
+                    </table>
+                 </div>
+              </div>
+            </div>
+
+           <div class="card border shadow-none rounded-3 w-100">
+             <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0">
+               <div class="d-flex justify-content-between align-items-center mb-1">
+                 <h5 class="fw-bold text-dark mb-0">
+                   <i class="ti ti-shield me-2 text-primary"></i>{{ $t('patient_view.insurance') }}
+                 </h5>
+                 <div class="d-flex gap-2">
+                   <button
+                     class="btn btn-sm btn-primary-subtle rounded-3 fs-6"
+                     @click="editCurrentInsurance"
+                     :disabled="insurances.length === 0"
+                   >
+                     <i class="ti ti-pencil"></i>
+                   </button>
+                   <button
+                     class="btn btn-sm btn-primary-subtle rounded-3 fs-6"
+                     @click="openCreateInsuranceModal"
+                   >
+                     <i class="ti ti-plus"></i>
+                   </button>
+                 </div>
+               </div>
              </div>
              <div class="card-body p-4">
-                <div class="row g-3">
-                    <!-- Blood Pressure -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-droplet fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.blood_pressure') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.blood_pressure || '-' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Heart Rate -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-heart-rate-monitor fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.heart_rate') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.heart_rate || '-' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- SpO2 -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-lungs fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.spo2') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.spo2 || '-' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Temperature -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-temperature fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.temperature') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.temperature || '-' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Height -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-ruler fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.height') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.height || '-' }} <small class="fs-12 fw-normal ms-1">cm</small>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Weight -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-weight fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.weight') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.weight || '-' }} <small class="fs-12 fw-normal ms-1">kg</small>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- BMI -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-calculator fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.bmi') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.bmi || '-' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Health Score -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="d-flex align-items-center">
-                            <span class="avatar rounded-2 bg-light text-dark flex-shrink-0 me-3 border"><i class="ti ti-activity fs-20"></i></span>
-                            <div>
-                                <h6 class="fs-13 fw-bold mb-1 text-muted">{{ $t('patient_view.health_score') }}</h6>
-                                <p class="mb-0 d-flex align-items-center fw-bold text-dark fs-16">
-                                    <i class="ti ti-point-filled me-1 text-success fs-14"></i>{{ patientStore.patient?.vital_signs?.health_score || '-' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               <div v-if="insurances.length === 0" class="text-center text-muted py-3">
+                 <p class="mb-2 fs-13">{{ $t('patient_view.no_insurance_details') }}</p>
+                 <button class="btn btn-sm btn-primary rounded-3" @click="openCreateInsuranceModal">
+                   <i class="ti ti-plus me-1"></i>{{ $t('patient_view.add_first_insurance') }}
+                 </button>
+               </div>
+               <div v-else class="insurance-slider-container position-relative">
+                 <button
+                   v-if="insurances.length > 1"
+                   @click="scrollToPreviousCard"
+                   :disabled="currentInsuranceIndex === 0"
+                   class="position-absolute start-0 top-50 translate-middle-y btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
+                   style="width: 32px; height: 32px; z-index: 10; left: 5px"
+                   :class="{ 'opacity-25': currentInsuranceIndex === 0 }"
+                 >
+                   <i class="ti ti-chevron-left fs-16"></i>
+                 </button>
+
+                 <button
+                   v-if="insurances.length > 1"
+                   @click="scrollToNextCard"
+                   :disabled="currentInsuranceIndex === insurances.length"
+                   class="position-absolute end-0 top-50 translate-middle-y btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
+                   style="width: 32px; height: 32px; z-index: 10; right: 5px"
+                   :class="{ 'opacity-25': currentInsuranceIndex === insurances.length - 1 }"
+                 >
+                   <i class="ti ti-chevron-right fs-16"></i>
+                 </button>
+
+                 <div class="d-flex overflow-hidden insurance-cards-wrapper" ref="insuranceSlider">
+                   <div
+                     v-for="(insurance, index) in insurances"
+                     :key="insurance.id || index"
+                     class="insurance-card flex-shrink-0"
+                     :class="{ active: currentInsuranceIndex === index }"
+                     style="width: 85%; min-width: 85%; margin-right: 10px;"
+                   >
+                     <div
+                       class="card border-0 shadow-sm h-auto position-relative rounded-3 mb-0"
+                       :style="getCardGradient(insurance)"
+                     >
+                       <div class="card-body text-white p-3">
+                         <span
+                           :class="[
+                             'badge fs-10 fw-medium position-absolute rounded-3',
+                             insurance.status === true ? 'bg-success' : 'bg-danger',
+                           ]"
+                           style="top: 12px; right: 8px"
+                         >
+                           {{ insurance.status ? t('patient_view.active') : t('patient_view.inactive') }}
+                         </span>
+
+                         <div class="mb-3">
+                           <div>
+                             <h6 class="text-white mb-1 fw-bold">
+                               {{ insurance.plan?.company || t('patient_view.na') }}
+                             </h6>
+                             <small class="text-white-50">{{
+                               insurance.plan?.name || t('patient_view.na')
+                             }}</small>
+                           </div>
+                         </div>
+
+                         <div class="row">
+                           <div class="col-8">
+                             <div class="text-white-50 fs-12 mb-1">
+                               {{ t('patient_view.membership_number') }}
+                             </div>
+                             <div class="fw-bold fs-14 letter-spacing">
+                               {{ formatCardNumber(insurance.membership_number) }}
+                             </div>
+                           </div>
+                           <div class="col-4">
+                             <div class="text-white-50 fs-12 mb-1">{{ t('patient_view.expiry_date') }}</div>
+                             <div class="fw-semibold fs-13">
+                               {{ formatDate(insurance.expiry_date) }}
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
              </div>
            </div>
-
 
         </div>
       </div>
@@ -420,18 +376,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#medical_notes" aria-expanded="false" class="nav-link bg-transparent">
-            <span>{{ $t('patient_view.medical_notes') }}</span>
-          </a>
-        </li>
-        <li class="nav-item">
           <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#lab_results" aria-expanded="false" class="nav-link bg-transparent">
             <span>{{ $t('patient_view.lab_results') }}</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#medications" aria-expanded="false" class="nav-link bg-transparent">
-            <span>{{ $t('patient_view.medications') }}</span>
           </a>
         </li>
         <li class="nav-item">
@@ -640,10 +586,6 @@
                       href="javascript:void(0);"
                       class="dropdown-item d-flex align-items-center text-primary fw-semibold"
                       @click="openAppointmentDetails(record)"
-                      :data-bs-toggle="record.status === 'SCHEDULED' ? 'offcanvas' : undefined"
-                      :data-bs-target="
-                        record.status === 'SCHEDULED' ? '#appointment_details' : undefined
-                      "
                     >
                       {{
                         record.start_date
@@ -767,42 +709,7 @@
             <p class="text-muted">{{ $t('patient_view.transaction_details_placeholder') }}</p>
           </div>
         </div>
-        <div class="tab-pane" id="medical_notes">
-          <div class="table-responsive border rounded-3">
-            <table class="table table-nowrap mb-0">
-              <thead class="bg-light">
-                <tr>
-                  <th class="ps-4 py-3">{{ $t('patient_view.date') }}</th>
-                  <th class="py-3">{{ $t('patient_view.doctor') }}</th>
-                  <th class="py-3">{{ $t('patient_view.note') }}</th>
-                  <th class="pe-4 py-3">{{ $t('patient_view.status') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="note in medicalNotes" :key="note.id">
-                  <td class="ps-4 text-muted fs-13">{{ note.date }}</td>
-                  <td class="fs-13 text-dark">{{ note.doctor }}</td>
-                  <td class="fs-13">
-                    <div class="fw-semibold text-dark">{{ note.title }}</div>
-                    <div class="text-muted">{{ note.summary }}</div>
-                  </td>
-                  <td class="pe-4">
-                    <span
-                      :class="[
-                        'badge border fw-medium fs-12',
-                        note.status === 'Signed'
-                          ? 'badge-soft-success text-success'
-                          : 'badge-soft-warning text-warning',
-                      ]"
-                    >
-                      {{ note.status }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+
         <div class="tab-pane" id="lab_results">
           <div class="table-responsive border rounded-3">
             <table class="table table-nowrap mb-0">
@@ -838,46 +745,7 @@
             </table>
           </div>
         </div>
-        <div class="tab-pane" id="medications">
-          <div class="table-responsive border rounded-3">
-            <table class="table table-nowrap mb-0">
-              <thead class="bg-light">
-                <tr>
-                  <th class="ps-4 py-3">{{ $t('patient_view.medication') }}</th>
-                  <th class="py-3">{{ $t('patient_view.dosage') }}</th>
-                  <th class="py-3">{{ $t('patient_view.frequency') }}</th>
-                  <th class="py-3">{{ $t('patient_view.date_started') }}</th>
-                  <th class="py-3">{{ $t('patient_view.prescribed_by') }}</th>
-                  <th class="pe-4 py-3">{{ $t('patient_view.status') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="med in medications" :key="med.id">
-                  <td class="ps-4">
-                    <div class="fw-semibold text-dark fs-13">{{ med.name }}</div>
-                    <div class="text-muted fs-12">{{ med.indication }}</div>
-                  </td>
-                  <td class="fs-13 text-dark">{{ med.dosage }}</td>
-                  <td class="fs-13 text-muted">{{ med.frequency }}</td>
-                  <td class="fs-13 text-muted">{{ med.startDate }}</td>
-                  <td class="fs-13 text-dark">{{ med.prescribedBy }}</td>
-                  <td class="pe-4">
-                    <span
-                      :class="[
-                        'badge border fw-medium fs-12',
-                        med.status === 'Active'
-                          ? 'badge-soft-success text-success'
-                          : 'badge-soft-secondary text-secondary',
-                      ]"
-                    >
-                      {{ med.status }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+
         <div class="tab-pane" id="prescriptions">
           <div class="table-responsive border rounded-3">
             <table class="table table-nowrap mb-0">
@@ -939,6 +807,7 @@
 
   <!-- Edit Insurance Modal -->
   <EditInsuranceModal
+    v-if="isEditInsuranceModalVisible"
     modal-id="edit_insurance_modal"
     :modal-title="$t('edit_insurance')"
     :selected-patient="patientStore.patient"
@@ -948,6 +817,7 @@
 
   <!-- Edit Next of Kin Modal -->
   <EditNextOfKinModal
+    v-if="isNextOfKinModalVisible"
     modal-id="edit_next_of_kin_modal"
     :patient-id="uuid"
     :current-data="patientStore.patient?.emergency_contact"
@@ -956,6 +826,7 @@
 
   <!-- Add Insurance Modal -->
   <AddInsuranceModal
+    v-if="isInsuranceModalVisible"
     modal-id="create_insurance"
     :modal-title="$t('add_new_insurance')"
     :selected-patient="patientStore.patient"
@@ -964,6 +835,7 @@
 
   <!-- Set Appointment Modal -->
   <SetAppointmentModal
+    v-if="isSetAppointmentModalVisible"
     modal-id="set_appointment"
     :modal-title="$t('book_appointment')"
     :selected-patient="patientStore.patient"
@@ -971,7 +843,7 @@
   />
 
   <!-- Start Appointment Details Sidebar -->
-  <div class="offcanvas offcanvas-offset offcanvas-end" tabindex="-1" id="appointment_details">
+  <div v-if="isAppointmentDetailsVisible" class="offcanvas offcanvas-offset offcanvas-end" tabindex="-1" id="appointment_details">
     <div class="offcanvas-header d-block pb-0 px-0">
       <div class="border-bottom d-flex align-items-center justify-content-between pb-3 px-3">
         <h5 class="offcanvas-title fs-18 fw-bold">
@@ -1130,8 +1002,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, nextTick, watch, type Ref, type ComputedRef } from 'vue'
-import { useRoute, useRouter, isNavigationFailure } from 'vue-router'
+import { ref, onMounted, onUnmounted, computed, nextTick, watch, type Ref, type ComputedRef } from 'vue'
+import { useRoute, useRouter, isNavigationFailure, onBeforeRouteLeave } from 'vue-router'
 import axiosInstance from '@/utils/axios'
 import { usePatientStore } from '@/stores/patientStore'
 import { useI18n } from 'vue-i18n'
@@ -1144,7 +1016,7 @@ import DateRangePicker from '@/components/common/DateRangePicker.vue'
 import DataTablePagination from '@/components/common/DataTablePagination.vue'
 import ActionIcons from '@/components/common/ActionIcons.vue'
 import type { TableColumn } from '@/types/common'
-import { showModalById } from '@/utils/bootstrap'
+import { showModalById, hideModalById, showOffcanvasById, hideOffcanvasById } from '@/utils/bootstrap'
 
 // Types
 interface Appointment {
@@ -1274,6 +1146,14 @@ const dateRange: Ref<DateRange> = ref({
   startDate: null,
   endDate: null,
 })
+
+// Modal/Offcanvas visibility refs for robust v-if management
+const isInsuranceModalVisible = ref(false)
+const isEditInsuranceModalVisible = ref(false)
+const isNextOfKinModalVisible = ref(false)
+const isSetAppointmentModalVisible = ref(false)
+const isAppointmentDetailsVisible = ref(false)
+
 const selected: Ref<SelectOption[]> = ref([])
 const selectedOne: Ref<SelectOption[]> = ref([])
 const selectedTwo: Ref<SelectOption[]> = ref([])
@@ -1301,9 +1181,9 @@ const Department: Ref<SelectOption[]> = ref([
 ])
 
 const Amount: Ref<SelectOption[]> = ref([
-  { id: 1, name: '$0-$100' },
-  { id: 2, name: '$100-$500' },
-  { id: 3, name: '$500+' },
+  { id: 1, name: '₵0-₵100' },
+  { id: 2, name: '₵100-₵500' },
+  { id: 3, name: '₵500+' },
 ])
 
 const Status: Ref<SelectOption[]> = ref([
@@ -1623,17 +1503,29 @@ function openAppointmentDetails(appointment: Appointment): void {
   console.log('Opening appointment details:', appointment)
 
   if (appointment.status !== 'SCHEDULED') {
+    // If it's already visited, go to clinical view
+    cleanupBootstrapUI()
     router.push({
       name: 'ViewAppointment',
       params: { id: appointment.id },
     })
     return
   }
+  
+  // For SCHEDULED appointments, show the details offcanvas
+  isAppointmentDetailsVisible.value = true
+  nextTick(() => {
+    showOffcanvasById('appointment_details')
+  })
 }
 
 function openInsuranceModal(insurance: Insurance): void {
   selectedInsurance.value = { ...insurance }
+  isEditInsuranceModalVisible.value = true
   console.log('Opening insurance modal for:', insurance)
+  nextTick(() => {
+    showModalById('edit_insurance_modal')
+  })
 }
 
 function editCurrentInsurance(): void {
@@ -1643,6 +1535,7 @@ function editCurrentInsurance(): void {
 }
 
 function openCreateInsuranceModal(): void {
+  isInsuranceModalVisible.value = true
   nextTick(() => {
     showModalById('create_insurance')
   })
@@ -1650,10 +1543,12 @@ function openCreateInsuranceModal(): void {
 
 const handleInsuranceAdded = async (): Promise<void> => {
   await fetchInsurances()
+  isInsuranceModalVisible.value = false
   console.log('Insurance added, refreshing list')
 }
 
 const openSetAppointmentModal = (): void => {
+  isSetAppointmentModalVisible.value = true
   nextTick(() => {
     setTimeout(() => showModalById('set_appointment'), 50)
   })
@@ -1674,11 +1569,21 @@ const handleNextOfKinUpdated = async (): Promise<void> => {
   console.log('Next of Kin updated, refreshing patient data')
 }
 
+function openNextOfKinModal(): void {
+  isNextOfKinModalVisible.value = true
+  nextTick(() => {
+    showModalById('edit_next_of_kin_modal')
+  })
+}
+
 function editPatient(): void {
   router.push({ name: 'EditPatient', params: { id: uuid } })
 }
 
 function editAppointment(appointment: Appointment): void {
+  // Ensure we transition smoothly by cleaning up any active UI state
+  cleanupBootstrapUI()
+  
   router.push({
     name: 'ViewAppointment',
     params: { id: appointment.id || appointment.uuid },
@@ -1690,6 +1595,42 @@ onMounted(() => {
   patientStore.fetchPatient(uuid)
   fetchInsurances()
   fetchAppointments()
+})
+
+const cleanupBootstrapUI = () => {
+  console.log('Performing Bootstrap UI cleanup...')
+  
+  // 1. Hide all known instances via Bootstrap API
+  const modalIds = ['edit_insurance_modal', 'edit_next_of_kin_modal', 'create_insurance', 'set_appointment']
+  modalIds.forEach(id => hideModalById(id))
+  hideOffcanvasById('appointment_details')
+
+  // 2. Clear body styles and classes that block interaction
+  document.body.style.overflow = ''
+  document.body.style.paddingRight = ''
+  document.body.classList.remove('modal-open', 'offcanvas-open')
+
+  // 3. Force remove all lingering backdrops
+  const backdrops = document.querySelectorAll('.offcanvas-backdrop, .modal-backdrop')
+  backdrops.forEach((backdrop) => {
+    backdrop.remove()
+  })
+
+  // 4. Ensure any "fixed" elements are unlocked
+  const fixedElements = document.querySelectorAll('.fixed-top, .fixed-bottom, .is-fixed, .sticky-top')
+  fixedElements.forEach((el: any) => {
+    el.style.paddingRight = ''
+  })
+}
+
+// Ensure cleanup on route leave to prevent "stuck" navigation
+onBeforeRouteLeave((to, from, next) => {
+  cleanupBootstrapUI()
+  next()
+})
+
+onUnmounted(() => {
+  cleanupBootstrapUI()
 })
 </script>
 

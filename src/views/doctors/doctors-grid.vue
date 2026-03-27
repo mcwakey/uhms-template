@@ -70,7 +70,7 @@
                                 <span class="d-block mb-2 fs-13">Cardiologist</span>
                                 <p class="mb-2 fs-13">Available : Mon, 20 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $499</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵499</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                 <span class="d-block mb-2 fs-13">Orthopedic Surgeon</span>
                                 <p class="mb-2 fs-13">Available : Wed, 22 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $450</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵450</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                 <span class="d-block mb-2 fs-13">Pediatrician</span>
                                 <p class="mb-2 fs-13">Available : Fri, 24 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $300</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵300</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                                 <span class="d-block mb-2 fs-13">Gynecologist</span>
                                 <p class="mb-2 fs-13">Available : Tue, 21 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $250</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵250</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -198,7 +198,7 @@
                                 <span class="d-block mb-2 fs-13">Psychiatrist</span>
                                 <p class="mb-2 fs-13">Available : Mon, 27 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $350</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵350</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -230,7 +230,7 @@
                                 <span class="d-block mb-2 fs-13">Neurosurgeon</span>
                                 <p class="mb-2 fs-13">Available : Thu, Jan 30, 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $499</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵499</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@
                                 <span class="d-block mb-2 fs-13">Oncologist</span>
                                 <p class="mb-2 fs-13">Available : Sat, 25 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $200</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵200</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -294,7 +294,7 @@
                                 <span class="d-block mb-2 fs-13">Pulmonologist</span>
                                 <p class="mb-2 fs-13">Available : Sun, 01 Feb 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $450</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵450</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -326,7 +326,7 @@
                                 <span class="d-block mb-2 fs-13">Urologist</span>
                                 <p class="mb-2 fs-13">Available : Tue, 28 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $400</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵400</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -358,7 +358,7 @@
                                 <span class="d-block mb-2 fs-13">Cardiologist</span>
                                 <p class="mb-2 fs-13">Available : Thu, 05 Feb 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $300</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵300</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -390,7 +390,7 @@
                                 <span class="d-block mb-2 fs-13">Surgeon</span>
                                 <p class="mb-2 fs-13">Available : Mon, 09 Feb 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $500</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵500</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -422,7 +422,7 @@
                                 <span class="d-block mb-2 fs-13">Practitioner</span>
                                 <p class="mb-2 fs-13">Available : Sat, 25 Jan 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $200</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵200</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -454,7 +454,7 @@
                                 <span class="d-block mb-2 fs-13">Dermatologist</span>
                                 <p class="mb-2 fs-13">Available : Wed, 12 Feb 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $350</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵350</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -486,7 +486,7 @@
                                 <span class="d-block mb-2 fs-13">Orthopedist</span>
                                 <p class="mb-2 fs-13">Available : Fri, 14 Feb 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $600</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵600</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>
@@ -518,7 +518,7 @@
                                 <span class="d-block mb-2 fs-13">Endocrinologist</span>
                                 <p class="mb-2 fs-13">Available : Tue, 17 Feb 2025</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> $375</h6>
+                                    <h6 class="text-primary fs-14 mb-0"><span class="text-muted fs-13 fw-normal">Starts From : </span> ₵375</h6>
                                     <router-link to="/appointments/appointment-calendar" class="avatar avatar-xs border text-muted fs-14"><i class="ti ti-calendar-cog"></i></router-link>
                                 </div>
                             </div>

@@ -174,9 +174,9 @@
                       <a href="javascript:void(0);" class="link-primary mb-1">Reset</a>
                     </div>
                     <select class="select2" multiple="multiple">
-                      <option value="m-1" selected>$501 - $1000</option>
-                      <option value="m-2">$501 - $1100</option>
-                      <option value="m-3">$701 - $1200</option>
+                      <option value="m-1" selected>₵501 - ₵1000</option>
+                      <option value="m-2">₵501 - ₵1100</option>
+                      <option value="m-3">₵701 - ₵1200</option>
                     </select>
                   </div>
                   <div class="mb-3">

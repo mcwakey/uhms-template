@@ -620,6 +620,26 @@ const tOr = (key: string, fallback: string) => {
   const translated = t(key)
   return translated === key ? fallback : translated
 }
+const humanizeFieldLabel = (raw: string) => {
+  const cleaned = raw.replace(/\[\d+\]/g, '')
+  const parts = cleaned.split('.').filter(Boolean)
+  let candidate = parts[parts.length - 1] ?? cleaned
+  if (candidate === 'name' && parts.length > 1) candidate = parts[parts.length - 2]
+  candidate = candidate.replace(/_id$/, '')
+
+  const words = candidate
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+
+  const dedupedWords = words.filter(
+    (word, index) => index === 0 || word.toLowerCase() !== words[index - 1].toLowerCase()
+  )
+
+  return dedupedWords.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+}
 const patientStore = usePatientStore()
 const router = useRouter()
 const route = useRoute()
@@ -1505,7 +1525,10 @@ async function onSubmit(): Promise<void> {
         // If error data is an object with field-specific errors
         const fieldErrors = Object.entries(errorData)
           .filter(([key, value]) => key !== 'status' && key !== 'statusCode')
-          .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+          .map(
+            ([key, value]) =>
+              `${humanizeFieldLabel(key)}: ${Array.isArray(value) ? value.join(', ') : value}`
+          )
         
         if (fieldErrors.length > 0) {
           errorMessage = fieldErrors.join('\n')

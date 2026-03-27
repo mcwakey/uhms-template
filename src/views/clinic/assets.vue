@@ -347,7 +347,7 @@
                       <div class="dropdown-menu shadow-lg w-100 dropdown-info p-3">
                         <div class="filter-range">
                           <input type="text" id="range_03" />
-                          <p>Range : <span class="text-gray-9">$200 - $5695</span></p>
+                          <p>Range : <span class="text-gray-9">₵200 - ₵5695</span></p>
                         </div>
                       </div>
                     </div>
@@ -821,7 +821,7 @@
                 >Value <span class="text-danger">* </span>
               </label>
               <div class="input-group">
-                <span class="input-group-text bg-transparent text-dark fs-14">$</span>
+                <span class="input-group-text bg-transparent text-dark fs-14">₵</span>
                 <input type="text" class="form-control" placeholder="0" />
               </div>
             </div>
@@ -1139,7 +1139,7 @@
                 >Value <span class="text-danger">* </span>
               </label>
               <div class="input-group">
-                <span class="input-group-text bg-transparent text-dark fs-14">$</span>
+                <span class="input-group-text bg-transparent text-dark fs-14">₵</span>
                 <input type="text" class="form-control" placeholder="0" value="100" />
               </div>
             </div>
@@ -1319,7 +1319,7 @@ const data = [
     PurchaseDate: "30 Mar 2025",
     Warrenty: "3 Years",
     WarrantyEnd: "30 Mar 2028",
-    Amount: "$2587",
+    Amount: "₵2587",
     Status: "Approved",
   },
   {
@@ -1330,7 +1330,7 @@ const data = [
     PurchaseDate: "28 Mar 2025",
     Warrenty: "10 Years",
     WarrantyEnd: "28 Mar 2028",
-    Amount: "$47810",
+    Amount: "₵47810",
     Status: "Approved",
   },
   {
@@ -1341,7 +1341,7 @@ const data = [
     PurchaseDate: "20 Mar 2025",
     Warrenty: "1 Years",
     WarrantyEnd: "20 Mar 2028",
-    Amount: "$54789",
+    Amount: "₵54789",
     Status: "Pending",
   },
   {
@@ -1352,7 +1352,7 @@ const data = [
     PurchaseDate: "15 Mar 2025",
     Warrenty: "3 Years",
     WarrantyEnd: "15 Mar 2029",
-    Amount: "$21770",
+    Amount: "₵21770",
     Status: "Pending",
   },
   {
@@ -1363,7 +1363,7 @@ const data = [
     PurchaseDate: "07 Mar 2025",
     Warrenty: "5 Years",
     WarrantyEnd: "07 Mar 2028",
-    Amount: "$32580",
+    Amount: "₵32580",
     Status: "Approved",
   },
   {
@@ -1374,7 +1374,7 @@ const data = [
     PurchaseDate: "27 Feb 2025",
     Warrenty: "Up to 5Years",
     WarrantyEnd: "27 Feb 2028",
-    Amount: "$32547",
+    Amount: "₵32547",
     Status: "Approved",
   },
   {
@@ -1385,7 +1385,7 @@ const data = [
     PurchaseDate: "20 Feb 2025",
     Warrenty: "2 Years",
     WarrantyEnd: "20 Feb 2027",
-    Amount: "$54100",
+    Amount: "₵54100",
     Status: "Returned",
   },
   {
@@ -1396,7 +1396,7 @@ const data = [
     PurchaseDate: "12 Feb 2025",
     Warrenty: "10 Years",
     WarrantyEnd: "12 Feb 2035",
-    Amount: "$246798",
+    Amount: "₵246798",
     Status: "Approved",
   },
   {
@@ -1407,7 +1407,7 @@ const data = [
     PurchaseDate: "21 Jan 2025",
     Warrenty: "5 Years",
     WarrantyEnd: "21 Jan 2028",
-    Amount: "$12011",
+    Amount: "₵12011",
     Status: "Approved",
   },
   {
@@ -1418,7 +1418,7 @@ const data = [
     PurchaseDate: "15 Jan 2025",
     Warrenty: "2 Years",
     WarrantyEnd: "15 Jan 2028",
-    Amount: "$35421",
+    Amount: "₵35421",
     Status: "Pending",
   },
 ];

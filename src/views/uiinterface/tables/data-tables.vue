@@ -148,7 +148,7 @@ const data = [
     office: "Tokyo",
     age: "33",
     start_date: "2008/11/28",
-    salary: "$162,700",
+    salary: "₵162,700",
   },
   {
     key: "2",
@@ -157,7 +157,7 @@ const data = [
     office: "London",
     age: "47",
     start_date: "2009/10/09",
-    salary: "$1,200,000",
+    salary: "₵1,200,000",
   },
   {
     key: "3",
@@ -166,7 +166,7 @@ const data = [
     office: "San Francisco",
     age: "66",
     start_date: "2009/01/12",
-    salary: "$86,000",
+    salary: "₵86,000",
   },
   {
     key: "4",
@@ -175,7 +175,7 @@ const data = [
     office: "London",
     age: "41",
     start_date: "2012/10/13",
-    salary: "$132,000",
+    salary: "₵132,000",
   },
   {
     key: "5",
@@ -184,7 +184,7 @@ const data = [
     office: "San Francisco",
     age: "28",
     start_date: "2011/06/07",
-    salary: "$206,850",
+    salary: "₵206,850",
   },
   {
     key: "6",
@@ -193,7 +193,7 @@ const data = [
     office: "New York",
     age: "61",
     start_date: "2012/12/02",
-    salary: "$372,000",
+    salary: "₵372,000",
   },
   {
     key: "7",
@@ -202,7 +202,7 @@ const data = [
     office: "New York",
     age: "21",
     start_date: "2011/12/02",
-    salary: "$106,450",
+    salary: "₵106,450",
   },
   {
     key: "8",
@@ -211,7 +211,7 @@ const data = [
     office: "Edinburgh",
     age: "22",
     start_date: "2012/03/29",
-    salary: "$433,060",
+    salary: "₵433,060",
   },
   {
     key: "9",
@@ -220,7 +220,7 @@ const data = [
     office: "San Francisco",
     age: "36",
     start_date: "2008/10/16",
-    salary: "$470,600",
+    salary: "₵470,600",
   },
   {
     key: "10",
@@ -229,7 +229,7 @@ const data = [
     office: "San Francisco",
     age: "39",
     start_date: "2009/09/16",
-    salary: "$205,500",
+    salary: "₵205,500",
   },
   {
     key: "11",
@@ -238,7 +238,7 @@ const data = [
     office: "Edinburgh",
     age: "35",
     start_date: "2012/09/26",
-    salary: "$217,500",
+    salary: "₵217,500",
   },
   {
     key: "12",
@@ -247,7 +247,7 @@ const data = [
     office: "Sidney",
     age: "23",
     start_date: "2010/09/20",
-    salary: "$85,600",
+    salary: "₵85,600",
   },
   {
     key: "13",
@@ -256,7 +256,7 @@ const data = [
     office: "San Francisco",
     age: "48",
     start_date: "2010/03/11",
-    salary: "$850,000",
+    salary: "₵850,000",
   },
   {
     key: "14",
@@ -265,7 +265,7 @@ const data = [
     office: "Tokyo",
     age: "63",
     start_date: "2011/07/25",
-    salary: "$170,750",
+    salary: "₵170,750",
   },
   {
     key: "15",
@@ -274,7 +274,7 @@ const data = [
     office: "Edinburgh",
     age: "42",
     start_date: "2010/12/22",
-    salary: "$92,575",
+    salary: "₵92,575",
   },
   {
     key: "16",
@@ -283,7 +283,7 @@ const data = [
     office: "New York",
     age: "59",
     start_date: "2009/04/10",
-    salary: "$237,500",
+    salary: "₵237,500",
   },
   {
     key: "17",
@@ -292,7 +292,7 @@ const data = [
     office: "London",
     age: "43",
     start_date: "2012/12/18",
-    salary: "$313,500",
+    salary: "₵313,500",
   },
   {
     key: "18",
@@ -301,7 +301,7 @@ const data = [
     office: "San Francisco",
     age: "59",
     start_date: "2012/08/06",
-    salary: "$137,500",
+    salary: "₵137,500",
   },
   {
     key: "19",
@@ -310,7 +310,7 @@ const data = [
     office: "London",
     age: "30",
     start_date: "2008/12/19",
-    salary: "$90,560",
+    salary: "₵90,560",
   },
   {
     key: "20",
@@ -319,7 +319,7 @@ const data = [
     office: "New York",
     age: "30",
     start_date: "2011/09/03",
-    salary: "$345,000",
+    salary: "₵345,000",
   },
   {
     key: "21",
@@ -328,7 +328,7 @@ const data = [
     office: "Singapore",
     age: "28",
     start_date: "2010/11/14",
-    salary: "$357,650",
+    salary: "₵357,650",
   },
   {
     key: "22",
@@ -337,7 +337,7 @@ const data = [
     office: "London",
     age: "66",
     start_date: "2012/11/27",
-    salary: "$198,500",
+    salary: "₵198,500",
   },
   {
     key: "23",
@@ -346,7 +346,7 @@ const data = [
     office: "New York",
     age: "64",
     start_date: "2010/06/09",
-    salary: "$725,000",
+    salary: "₵725,000",
   },
   {
     key: "24",
@@ -355,7 +355,7 @@ const data = [
     office: "Edinburgh",
     age: "22",
     start_date: "2013/03/03",
-    salary: "$342,000",
+    salary: "₵342,000",
   },
   {
     key: "25",
@@ -364,7 +364,7 @@ const data = [
     office: "Tokyo",
     age: "55",
     start_date: "2010/10/14",
-    salary: "$327,900",
+    salary: "₵327,900",
   },
   {
     key: "26",
@@ -373,7 +373,7 @@ const data = [
     office: "Tokyo",
     age: "20",
     start_date: "2011/08/14",
-    salary: "$163,000",
+    salary: "₵163,000",
   },
   {
     key: "27",
@@ -382,7 +382,7 @@ const data = [
     office: "Edinburgh",
     age: "23",
     start_date: "2008/12/13",
-    salary: "$103,600",
+    salary: "₵103,600",
   },
   {
     key: "28",
@@ -391,7 +391,7 @@ const data = [
     office: "London",
     age: "19",
     start_date: "2010/03/17",
-    salary: "$385,750",
+    salary: "₵385,750",
   },
   {
     key: "29",
@@ -400,7 +400,7 @@ const data = [
     office: "Edinburgh",
     age: "61",
     start_date: "2011/04/25",
-    salary: "$320,800",
+    salary: "₵320,800",
   },
   {
     key: "30",
@@ -409,7 +409,7 @@ const data = [
     office: "New York",
     age: "40",
     start_date: "2009/06/25",
-    salary: "$675,000",
+    salary: "₵675,000",
   },
 ];
 export default defineComponent({

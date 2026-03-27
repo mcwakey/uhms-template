@@ -425,9 +425,9 @@ export default {
                 {id: 3, name: 'Pediatrics'},
             ],
             Amount: [
-                {id: 1, name: '$501 - $1000'},
-                {id: 2, name: '$501 - $1100'},
-                {id: 3, name: '$701 - $1200'},
+                {id: 1, name: '₵501 - ₵1000'},
+                {id: 2, name: '₵501 - ₵1100'},
+                {id: 3, name: '₵701 - ₵1200'},
             ],
             Status: [
                 {id: 1, name: 'Available'},

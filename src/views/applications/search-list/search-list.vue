@@ -49,7 +49,7 @@
                       <i class="ti ti-star-filled text-light me-1"></i>
                       (45)
                     </div>
-                    <span class="text-gray-9">$35</span>
+                    <span class="text-gray-9">₵35</span>
                   </div>
                 </div>
                 <!-- end card body -->

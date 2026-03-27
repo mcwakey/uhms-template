@@ -284,7 +284,7 @@
                   <tbody>
                     <tr>
                       <td>13 Jul 2025</td>
-                      <td>$4800</td>
+                      <td>₵4800</td>
                       <td>Jun 2025</td>
                       <td>
                         <div class="action-item">
@@ -316,7 +316,7 @@
                     </tr>
                     <tr>
                       <td>12 Jun 2025</td>
-                      <td>$4800</td>
+                      <td>₵4800</td>
                       <td>May 2025</td>
                       <td>
                         <div class="action-item">
@@ -348,7 +348,7 @@
                     </tr>
                     <tr>
                       <td>15 May 2025</td>
-                      <td>$4800</td>
+                      <td>₵4800</td>
                       <td>Apr 2025</td>
                       <td>
                         <div class="action-item">
@@ -380,7 +380,7 @@
                     </tr>
                     <tr>
                       <td>14 Apr 2025</td>
-                      <td>$4800</td>
+                      <td>₵4800</td>
                       <td>Mar 2025</td>
                       <td>
                         <div class="action-item">
@@ -412,7 +412,7 @@
                     </tr>
                     <tr>
                       <td>13 Mar 2025</td>
-                      <td>$4800</td>
+                      <td>₵4800</td>
                       <td>Feb 2025</td>
                       <td>
                         <div class="action-item">
@@ -444,7 +444,7 @@
                     </tr>
                     <tr>
                       <td>14 Feb 2025</td>
-                      <td>$4800</td>
+                      <td>₵4800</td>
                       <td>Jan 2025</td>
                       <td>
                         <div class="action-item">
@@ -476,7 +476,7 @@
                     </tr>
                     <tr>
                       <td>12 Jan 2025</td>
-                      <td>$4800</td>
+                      <td>₵4800</td>
                       <td>Dec 2024</td>
                       <td>
                         <div class="action-item">

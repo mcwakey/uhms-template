@@ -82,7 +82,7 @@
                   <label class="form-label col-lg-2">Group with Price</label>
                   <div class="col-lg-10">
                     <div class="input-group">
-                      <span class="input-group-text">$</span>
+                      <span class="input-group-text">₵</span>
                       <input
                         type="text"
                         class="form-control"
@@ -96,12 +96,12 @@
                   <label class="form-label col-lg-2">Group with Price (Left)</label>
                   <div class="col-lg-10">
                     <div class="input-group mb-3">
-                      <span class="input-group-text">$</span>
+                      <span class="input-group-text">₵</span>
                       <span class="input-group-text">0.00</span>
                       <input type="text" class="form-control" />
                     </div>
                     <div class="input-group">
-                      <span class="input-group-text">$</span>
+                      <span class="input-group-text">₵</span>
                       <input
                         type="text"
                         class="form-control"
@@ -254,7 +254,7 @@
                       <span class="input-group-text">
                         <input type="checkbox" />
                       </span>
-                      <span class="input-group-text">$</span>
+                      <span class="input-group-text">₵</span>
                       <input type="text" class="form-control" />
                     </div>
                   </div>
@@ -263,7 +263,7 @@
                   <label class="form-label col-lg-2">Two Addons Left</label>
                   <div class="col-lg-10">
                     <div class="input-group">
-                      <span class="input-group-text">$</span>
+                      <span class="input-group-text">₵</span>
                       <span class="input-group-text">0.00</span>
                       <input type="text" class="form-control" />
                     </div>
@@ -274,7 +274,7 @@
                   <div class="col-lg-10">
                     <div class="input-group">
                       <input type="text" class="form-control" />
-                      <span class="input-group-text">$</span>
+                      <span class="input-group-text">₵</span>
                       <span class="input-group-text">0.00</span>
                     </div>
                   </div>

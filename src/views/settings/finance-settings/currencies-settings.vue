@@ -48,15 +48,15 @@
                       <tr>
                         <td>
                           <div class="d-flex align-items-center">
-                            <p class="mb-0 me-2">Dollar</p>
+                            <p class="mb-0 me-2">Cedi</p>
                             <span
                               class="badge badge-soft-primary border border-primary fw-medium"
                               >Default</span
                             >
                           </div>
                         </td>
-                        <td>USD</td>
-                        <td>$</td>
+                        <td>GHS</td>
+                        <td>₵</td>
                         <td>01</td>
                         <td>
                           <span
@@ -379,7 +379,7 @@
               <label class="form-label"
                 >Currency Name<span class="text-danger ms-1">*</span></label
               >
-              <input type="text" class="form-control" value="Dollar" />
+              <input type="text" class="form-control" value="Cedi" />
             </div>
             <div class="mb-3">
               <label class="form-label"
@@ -394,7 +394,7 @@
                   <label class="form-label"
                     >Code<span class="text-danger ms-1">*</span></label
                   >
-                  <input type="text" class="form-control" value="USD" />
+                  <input type="text" class="form-control" value="GHS" />
                 </div>
               </div>
               <!-- end col -->
@@ -403,7 +403,7 @@
                   <label class="form-label"
                     >Symbol<span class="text-danger ms-1">*</span></label
                   >
-                  <input type="text" class="form-control" value="$" />
+                  <input type="text" class="form-control" value="₵" />
                 </div>
               </div>
               <!-- end col -->
