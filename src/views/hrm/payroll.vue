@@ -292,7 +292,7 @@
             <!-- start row -->
             <div class="row row-gap-2">
               <div class="col-md-6">
-                <h6 class="mb-3">Earnings ($)</h6>
+                <h6 class="mb-3">Earnings (₵)</h6>
                 <div class="mb-3">
                   <label class="form-label"
                     >Basic Salary<span class="text-danger ms-1">*</span></label
@@ -332,7 +332,7 @@
               </div>
               <!-- end col -->
               <div class="col-md-6">
-                <h6 class="mb-3">Deductions ($)</h6>
+                <h6 class="mb-3">Deductions (₵)</h6>
                 <div class="mb-3">
                   <label class="form-label"
                     >TDS<span class="text-danger ms-1">*</span></label
@@ -426,7 +426,7 @@
             <!-- start row -->
             <div class="row row-gap-2">
               <div class="col-md-6">
-                <h6 class="mb-3">Earnings ($)</h6>
+                <h6 class="mb-3">Earnings (₵)</h6>
                 <div class="mb-3">
                   <label class="form-label"
                     >Basic Salary<span class="text-danger ms-1">*</span></label
@@ -466,7 +466,7 @@
               </div>
               <!-- end col -->
               <div class="col-md-6">
-                <h6 class="mb-3">Deductions ($)</h6>
+                <h6 class="mb-3">Deductions (₵)</h6>
                 <div class="mb-3">
                   <label class="form-label"
                     >TDS<span class="text-danger ms-1">*</span></label

@@ -68,7 +68,7 @@
                   <div class="col-md-6">
                     <label class="form-label">Currency</label>
                     <input type="text" id="currency" class="form-control" />
-                    <span class="form-text text-muted">$ 999,999,999.99</span>
+                    <span class="form-text text-muted">₵ 999,999,999.99</span>
                   </div>
                   <!-- end col -->
                   <div class="col-md-6">

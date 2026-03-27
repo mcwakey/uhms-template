@@ -188,7 +188,7 @@
                     </div>
                     <div class="col-md-4">
                       <small class="text-muted d-block fs-11 text-uppercase fw-bold">{{ t('insurance_modal.cap_limit') }}</small>
-                      <span class="text-success fw-bold fs-13">${{ form.plan.cap || 'N/A' }}</span>
+                      <span class="text-success fw-bold fs-13">₵{{ form.plan.cap || 'N/A' }}</span>
                     </div>
                     <div class="col-md-4">
                       <small class="text-muted d-block fs-11 text-uppercase fw-bold">{{ t('insurance_modal.beneficiaries') }}</small>

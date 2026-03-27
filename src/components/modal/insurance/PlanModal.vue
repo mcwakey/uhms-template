@@ -30,7 +30,7 @@
 
             <!-- Cap & Beneficiaries -->
             <div class="col-md-6">
-              <label class="form-label fw-semibold text-dark fs-13">Cap Limit ($) <span class="text-danger">*</span></label>
+              <label class="form-label fw-semibold text-dark fs-13">Cap Limit (₵) <span class="text-danger">*</span></label>
               <input
                 type="number"
                 class="form-control shadow-none"

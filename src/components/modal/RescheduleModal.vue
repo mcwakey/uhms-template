@@ -111,7 +111,7 @@
                           option.code
                         }}</span>
                         <div v-if="option.price" class="text-success fw-bold fs-12">
-                          ${{ option.price }}
+                          ₵{{ option.price }}
                         </div>
                       </div>
                     </div>
