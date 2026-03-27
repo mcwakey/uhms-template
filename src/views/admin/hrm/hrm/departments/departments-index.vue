@@ -42,8 +42,7 @@
 
           <button
             class="btn btn-primary ms-2 fs-13 btn-md"
-            data-bs-toggle="modal"
-            data-bs-target="#add_department"
+            @click="openAddModal"
           >
             <i class="ti ti-plus me-1"></i>Add New Department
           </button>
@@ -142,8 +141,6 @@
                   href="javascript:void(0);"
                   class="avatar me-2 fs-14"
                   @click="openViewModal(record)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#view_department"
                 >
                   <img
                     width="16"
@@ -158,8 +155,6 @@
                     <a
                       href="javascript:void(0);"
                       @click="openViewModal(record)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#view_department"
                       >{{ record.name }}</a
                     >
                   </h6>
@@ -674,6 +669,11 @@ export default {
     }
 
     // Modal handlers
+    const openAddModal = () => {
+      resetForm()
+      showModalById('add_department')
+    }
+
     const openViewModal = (department) => {
       viewDepartmentData.value = {
         id: department.id,
@@ -851,6 +851,7 @@ export default {
       updateDepartment,
       resetForm,
       resetEditForm,
+      openAddModal,
       openViewModal,
       openEditModal,
       openEditFromView,

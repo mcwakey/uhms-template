@@ -172,12 +172,12 @@
             <!-- tab start -->
             <ul class="nav nav-tabs nav-bordered mb-3">
                 <li class="nav-item">
-                    <a href="#appointments" data-bs-toggle="tab" aria-expanded="false" class="nav-link active bg-transparent">
+                    <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#appointments" aria-expanded="false" class="nav-link active bg-transparent">
                         <span>Appointments</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#transactions" data-bs-toggle="tab" aria-expanded="true" class="nav-link bg-transparent">
+                    <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#transactions" aria-expanded="true" class="nav-link bg-transparent">
                         <span>Transactions</span>
                     </a>
                 </li>

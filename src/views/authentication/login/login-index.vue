@@ -1,5 +1,6 @@
 <template>
   <div class="auth-bg position-relative overflow-hidden">
+    <LoadingIndicator :show="isLoading" variant="overlay" :message="t('login.loading')" />
     <!-- Start Content -->
     <div class="container-fuild position-relative z-1">
       <div class="w-100 overflow-hidden position-relative flex-wrap d-block vh-100 bg-white">
@@ -129,8 +130,9 @@
                           </div>
                         </div>
                         <div class="mb-2">
-                          <button type="submit" class="btn bg-primary text-white w-100">
-                            {{ t('login.login_btn') }}
+                          <button type="submit" class="btn bg-primary text-white w-100" :disabled="isLoading">
+                            <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            {{ isLoading ? t('login.logging_in') : t('login.login_btn') }}
                           </button>
                         </div>
                         <div class="login-or position-relative mb-3">
@@ -173,6 +175,7 @@ import * as Yup from 'yup'
 import { useAuthStore } from '@/stores/authStore'
 import { useI18n } from 'vue-i18n'
 import { notifySuccess, notifyError } from '@/utils/notifications/toast'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 // Interfaces
 interface LoginFormValues {

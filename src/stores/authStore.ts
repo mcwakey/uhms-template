@@ -276,6 +276,14 @@ export const useAuthStore = defineStore('authStore', {
           return
         }
 
+        // Doctor redirect
+        if (this.user?.role === 'doctor') {
+          router.push({ name: 'DoctorDashboard' }).catch(() => {
+            router.push('/doctor/doctor-dashboard')
+          })
+          return
+        }
+
         // Department-based redirect
         const userDepartment = this.user?.department?.type
         if (userDepartment && ROUTES[userDepartment as keyof typeof ROUTES]) {

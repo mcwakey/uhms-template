@@ -484,7 +484,7 @@ const updateInsurance = async () => {
       is_active: form.value.isActive,
     }
 
-    const response = await axiosInstance.put(
+    const response = await axiosInstance.patch(
       `/patients/${props.selectedPatient.uuid}/insurances/${props.insuranceData.id}`,
       payload
     )

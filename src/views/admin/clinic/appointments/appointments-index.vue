@@ -277,37 +277,6 @@
               </span>
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center justify-content-end gap-2">
-                <template v-if="['SCHEDULED', 'CONFIRMED'].includes(record.status)">
-                  <a
-                    href="javascript:void(0);"
-                    class="action-icon text-primary"
-                    title="Enter Vitals"
-                    @click.prevent="$router.push({ name: 'PatientVitals', params: { id: record.id } })"
-                  >
-                    <i class="ti ti-activity"></i>
-                  </a>
-                </template>
-                <template v-else-if="record.status === 'CHECKED-IN'">
-                  <a
-                    href="javascript:void(0);"
-                    class="action-icon text-secondary"
-                    title="Start Appointment"
-                    @click.prevent="startAppointment(record)"
-                  >
-                    <i class="ti ti-stethoscope"></i>
-                  </a>
-                </template>
-                <template v-else-if="record.status === 'IN-PROGRESS'">
-                  <a
-                    href="javascript:void(0);"
-                    class="action-icon text-warning"
-                    title="Continue Consultation"
-                    @click.prevent="$router.push({ name: 'ViewAppointment', params: { id: record.id } })"
-                  >
-                    <i class="ti ti-player-play"></i>
-                  </a>
-                </template>
                 <ActionIcons
                   viewTitle="View Appointment"
                   editTitle="Edit Appointment"
@@ -315,8 +284,40 @@
                   @view="$router.push({ name: 'ViewAppointment', params: { id: record.id } })"
                   @edit="openModal(record)"
                   @delete="() => { openModal(record); }"
-                />
-              </div>
+                >
+                  <template #prepend>
+                    <template v-if="['SCHEDULED', 'CONFIRMED'].includes(record.status)">
+                      <a
+                        href="javascript:void(0);"
+                        class="action-icon text-primary"
+                        title="Enter Vitals"
+                        @click.prevent="$router.push({ name: 'PatientVitals', params: { id: record.id } })"
+                      >
+                        <i class="ti ti-activity"></i>
+                      </a>
+                    </template>
+                    <template v-else-if="record.status === 'CHECKED-IN'">
+                      <a
+                        href="javascript:void(0);"
+                        class="action-icon text-secondary"
+                        title="Start Appointment"
+                        @click.prevent="startAppointment(record)"
+                      >
+                        <i class="ti ti-stethoscope"></i>
+                      </a>
+                    </template>
+                    <template v-else-if="record.status === 'IN-PROGRESS'">
+                      <a
+                        href="javascript:void(0);"
+                        class="action-icon text-warning"
+                        title="Continue Consultation"
+                        @click.prevent="$router.push({ name: 'ViewAppointment', params: { id: record.id } })"
+                      >
+                        <i class="ti ti-player-play"></i>
+                      </a>
+                    </template>
+                  </template>
+                </ActionIcons>
             </template>
           </template>
         </a-table>

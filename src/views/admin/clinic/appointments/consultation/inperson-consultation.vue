@@ -3341,6 +3341,7 @@ import SetAppointmentModal from '@/components/modal/SetAppointmentModal.vue'
 import axiosInstance from '@/utils/axios.js'
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 import { defineComponent } from 'vue'
+import { showModalById, hideModalById } from '@/utils/bootstrap'
 
 export default defineComponent({
   name: 'SocialLinks',
@@ -4133,9 +4134,13 @@ export default defineComponent({
     },
     openSetAppointmentModal() {
       this.showSetAppointmentModal = true
+      this.$nextTick(() => {
+        showModalById('setAppointmentModal')
+      })
     },
     closeSetAppointmentModal() {
       this.showSetAppointmentModal = false
+      hideModalById('setAppointmentModal')
     },
     handleAppointmentScheduled(appointmentData) {
       // Add to recent appointments

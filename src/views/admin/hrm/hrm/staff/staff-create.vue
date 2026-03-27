@@ -24,7 +24,7 @@
                 <h4 class="header-title">Create New Staff Member</h4>
               </div>
 
-              <div class="card-body">
+              <div class="card-body" v-if="!store.loading">
                 <div id="progressbarwizard">
                   <ul class="nav nav-pills nav-justified form-wizard-header mb-3">
                     <li class="nav-item">
@@ -146,39 +146,42 @@
                               <label class="form-label"
                                 >Phone Number <span class="text-danger">*</span></label
                               >
-                              <Field
-                                type="tel"
-                                as="vue-tel-input"
-                                name="phone"
-                                v-model="formData.phone"
-                                :inputOptions="{
-                                  styleClasses: ['form-control'].join(' '),
-                                  name: 'phone',
-                                  type: 'tel',
-                                  placeholder: 'e.g. 0801234567',
-                                }"
-                                :validCharactersOnly="true"
-                                :class="{ 'is-invalid': errors.phone }"
-                              />
+                              <Field name="phone" v-model="formData.phone" v-slot="{ field, errorMessage }">
+                                <vue-tel-input
+                                  v-bind="field"
+                                  :model-value="field.value"
+                                  :inputOptions="{
+                                    styleClasses: ['form-control'].join(' '),
+                                    name: 'phone',
+                                    type: 'tel',
+                                    placeholder: 'e.g. 0801234567',
+                                  }"
+                                  :validCharactersOnly="true"
+                                  :class="{ 'is-invalid': errorMessage }"
+                                  @update:model-value="(val) => field.onChange(val)"
+                                />
+                              </Field>
                               <ErrorMessage name="phone" class="invalid-feedback" />
                             </div>
                           </div>
                           <div class="col-lg-4">
                             <div class="mb-3">
                               <label class="form-label">Other Phone</label>
-                              <Field
-                                type="tel"
-                                as="vue-tel-input"
-                                name="other_phone"
-                                v-model="formData.other_phone"
-                                :inputOptions="{
-                                  styleClasses: ['form-control'].join(' '),
-                                  name: 'phone',
-                                  type: 'tel',
-                                  placeholder: 'e.g. 0801234567',
-                                }"
-                                :validCharactersOnly="true"
-                              />
+                              <Field name="other_phone" v-model="formData.other_phone" v-slot="{ field, errorMessage }">
+                                <vue-tel-input
+                                  v-bind="field"
+                                  :model-value="field.value"
+                                  :inputOptions="{
+                                    styleClasses: ['form-control'].join(' '),
+                                    name: 'phone',
+                                    type: 'tel',
+                                    placeholder: 'e.g. 0801234567',
+                                  }"
+                                  :validCharactersOnly="true"
+                                  :class="{ 'is-invalid': errorMessage }"
+                                  @update:model-value="(val) => field.onChange(val)"
+                                />
+                              </Field>
                             </div>
                           </div>
                           <div class="col-lg-4">
@@ -195,6 +198,24 @@
                                 :class="{ 'is-invalid': errors.email }"
                               />
                               <ErrorMessage name="email" class="invalid-feedback" />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Bio Information -->
+                        <div class="bg-light px-3 py-2 mb-3">
+                          <h6 class="fw-bold mb-0">Bio Information</h6>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="mb-3">
+                              <label class="form-label">BIO</label>
+                              <Field
+                                as="textarea"
+                                class="form-control"
+                                name="about_long"
+                                rows="6"
+                                v-model="formData.about_long"
+                              />
                             </div>
                           </div>
                         </div>
@@ -496,21 +517,24 @@
                                     >
                                     <Field
                                       :name="`emergency_contact[${index}].phone`"
-                                      type="tel"
-                                      as="vue-tel-input"
                                       v-model="contact.phone"
+                                      v-slot="{ field, errorMessage }"
                                       rules="required"
-                                      :inputOptions="{
-                                        styleClasses: ['form-control'].join(' '),
-                                        name: `emergency_contact[${index}].phone`,
-                                        type: 'tel',
-                                        placeholder: 'e.g. 0801234567',
-                                      }"
-                                      :validCharactersOnly="true"
-                                      :class="{
-                                        'is-invalid': errors[`emergency_contact[${index}].phone`],
-                                      }"
-                                    />
+                                    >
+                                      <vue-tel-input
+                                        v-bind="field"
+                                        :model-value="field.value"
+                                        :inputOptions="{
+                                          styleClasses: ['form-control'].join(' '),
+                                          name: `emergency_contact[${index}].phone`,
+                                          type: 'tel',
+                                          placeholder: 'e.g. 0801234567',
+                                        }"
+                                        :validCharactersOnly="true"
+                                        :class="{ 'is-invalid': errorMessage }"
+                                        @update:model-value="(val) => field.onChange(val)"
+                                      />
+                                    </Field>
                                     <ErrorMessage
                                       :name="`emergency_contact[${index}].phone`"
                                       class="invalid-feedback"
@@ -918,6 +942,9 @@
                 </div>
                 <!-- end #progressbarwizard-->
               </div>
+              <div class="card-body text-center" v-else>
+                <LoadingIndicator :show="store.loading" variant="center" message="Processing request..." />
+              </div>
             </div>
           </div>
         </div>
@@ -932,7 +959,7 @@ import * as yup from 'yup'
 import { Form as VeeForm, Field, ErrorMessage } from 'vee-validate'
 import { useAuthStore } from '@/stores/authStore'
 import { useCreateStore } from '@/stores/createStore'
-import { notifyError } from '@/utils/notifications/toast'
+import { notifyError, notifySuccess } from '@/utils/notifications/toast'
 import { router } from '@/router'
 import { useGetStore } from '@/stores/getStore'
 import VueMultiselect from 'vue-multiselect'
@@ -1050,7 +1077,6 @@ const store = useCreateStore()
 
 const pageLoading = computed(() => {
   return (
-    store.loading ||
     loadingDepartments.value ||
     loadingSpecializations.value ||
     loadingStates.value ||
@@ -1077,6 +1103,8 @@ const formData = ref({
   role: null,
   designation: '',
   department: null,
+  about_short: '',
+  about_long: '',
   address: {
     address_line_1: '',
     address_line_2: '',
@@ -1105,14 +1133,37 @@ const religionOptions = constants.find((obj) => obj.religionOptions)?.religionOp
 const relationshipOptions =
   constants.find((obj) => obj.relationshipOptions)?.relationshipOptions || []
 const designationOptions = constants.find((obj) => obj.designationOptions)?.designationOptions || []
+const normalizeToArray = (data) => {
+  const payload = data?.data ?? data
+  if (Array.isArray(payload?.results)) return payload.results
+  if (Array.isArray(payload)) return payload
+  if (Array.isArray(payload?.data)) return payload.data
+  return []
+}
+
+const extractArrayFromResponse = (data) => {
+  const normalized = normalizeToArray(data)
+  if (normalized.length) return normalized
+
+  const payload = data?.data ?? data
+  if (Array.isArray(payload?.specializations)) return payload.specializations
+  if (Array.isArray(data?.results)) return data.results
+  if (Array.isArray(data?.data?.results)) return data.data.results
+  return []
+}
+
 onMounted(async () => {
   try {
     loadingDepartments.value = true
     // specialization.value = await useGetStore().getObjects('specializations/');
-    roles.value = await useGetStore().getObjects('auth/roles/')
-    // roles.value = await axiosInstance.get('auth/roles');
-    console.log('Roles:', roles.value)
     departments.value = await useGetStore().getObjects('departments/')
+    roles.value = [
+      { id: 'Admin', name: 'Admin' },
+      { id: 'Reception', name: 'Reception' },
+      { id: 'Nurse', name: 'Nurse' },
+      { id: 'Nurse Practitioner', name: 'Nurse Practitioner' },
+      { id: 'Doctor', name: 'Doctor' },
+    ]
 
     // Initialize form repeaters
     // Emergency contacts are required - start with one empty contact
@@ -1175,24 +1226,45 @@ const removeExperienceEntry = (index) => {
 // Load specializations when department changes
 const onDepartmentChange = async (selectedDepartment) => {
   formData.value.specialization = null // Reset specialization
-  if (selectedDepartment) {
-    try {
-      loadingSpecializations.value = true
-      const response = await axiosInstance.get(
-        `/departments/${selectedDepartment.id}/specializations/`
-      )
-      specialization.value = response.data.results || response.data || []
+  const deptId =
+    typeof selectedDepartment === 'number'
+      ? selectedDepartment
+      : typeof selectedDepartment === 'object'
+        ? selectedDepartment?.id
+        : null
 
-      // Force reactivity by using nextTick and changing key
-      specializationKey.value += 1
-      await nextTick()
-    } catch (error) {
-      console.error('Error fetching specializations:', error)
-    } finally {
-      loadingSpecializations.value = false
-    }
-  } else {
+  if (!deptId) {
     specialization.value = []
+    return
+  }
+
+  try {
+    loadingSpecializations.value = true
+    const attempts = [
+      { url: `/departments/${deptId}/specializations/`, params: undefined },
+      { url: '/specializations/', params: { department: deptId } },
+      { url: '/specializations/', params: { department_id: deptId } },
+    ]
+
+    specialization.value = []
+    for (const attempt of attempts) {
+      try {
+        const response = await axiosInstance.get(attempt.url, attempt.params ? { params: attempt.params } : undefined)
+        const items = extractArrayFromResponse(response.data)
+        if (items.length) {
+          specialization.value = items
+          break
+        }
+      } catch {}
+    }
+
+    specializationKey.value += 1
+    await nextTick()
+  } catch (error) {
+    console.error('Error fetching specializations:', error)
+    specialization.value = []
+  } finally {
+    loadingSpecializations.value = false
   }
 }
 
@@ -1229,12 +1301,25 @@ watch(
 
 const formCount = 2
 const onSubmit = async () => {
-  const payload = convertDate()
-  if (!auth.isAdmin) {
-    notifyError('You are not authorized to perform this action')
-    router.push({ name: '' })
+  try {
+    const payload = convertDate()
+    if (!auth.isAdmin && !auth.isSuperAdmin) {
+      notifyError('You are not authorized to perform this action')
+      router.push({ name: 'HrmStaffs' })
+      return
+    }
+
+    await store.createStaff(payload)
+    notifySuccess('Staff created successfully')
+    router.push({ name: 'HrmStaffs' })
+  } catch (error) {
+    const message =
+      error?.response?.data?.message ||
+      error?.response?.data?.status?.message ||
+      store.error ||
+      'Failed to create staff'
+    notifyError(message)
   }
-  await store.createStaff(payload)
   // if (store.error) {
   //   notifyError(store.error);
   //   return;
@@ -1297,18 +1382,21 @@ const convertDate = () => {
     payload.designation = payload.designation.value
   }
   if (payload.department && typeof payload.department === 'object') {
-    payload.department = payload.department.id
+    payload.department_id = payload.department.id
+    delete payload.department
+  } else if (payload.department) {
+    payload.department_id = payload.department
+    delete payload.department
   }
   if (payload.role && typeof payload.role === 'object') {
-    payload.role = payload.role.id
+    payload.role = payload.role.id ?? payload.role.name ?? payload.role
   }
   if (payload.specialization && typeof payload.specialization === 'object') {
-    // Handle nested specialization object structure
-    // if (payload.specialization.specialization && payload.specialization.specialization.id) {
-    //   payload.specialization = payload.specialization.specialization.id;
-    // } else if (payload.specialization.id) {
-    payload.specialization = payload.specialization.id
-    // }
+    payload.specialization_id = payload.specialization.id
+    delete payload.specialization
+  } else if (payload.specialization) {
+    payload.specialization_id = payload.specialization
+    delete payload.specialization
   }
 
   // Handle address object values

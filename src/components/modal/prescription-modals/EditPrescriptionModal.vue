@@ -232,7 +232,7 @@ const submitForm = async () => {
       ]
     }
 
-    const response = await axiosInstance.put(`/prescriptions/${props.prescription.id}`, payload)
+    const response = await axiosInstance.patch(`/prescriptions/${props.prescription.id}`, payload)
     
     message.success('Prescription updated successfully')
     emit('prescription-updated', response.data)

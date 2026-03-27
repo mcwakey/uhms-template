@@ -102,39 +102,42 @@
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.phone_no') }} <span class="text-danger">*</span></label>
-                    <Field
-                      type="tel"
-                      as="vue-tel-input"
-                      name="phone"
-                      v-model="formData.phone"
-                      :inputOptions="{
-                        styleClasses: 'form-control',
-                        name: 'phone',
-                        type: 'tel',
-                        placeholder: $t('patient_create.placeholder_phone'),
-                      }"
-                      :validCharactersOnly="true"
-                      :class="{ 'is-invalid': errors.phone }"
-                    />
+                    <Field name="phone" v-model="formData.phone" v-slot="{ field, errorMessage }">
+                      <vue-tel-input
+                        v-bind="field"
+                        :model-value="field.value"
+                        :inputOptions="{
+                          styleClasses: 'form-control',
+                          name: 'phone',
+                          type: 'tel',
+                          placeholder: $t('patient_create.placeholder_phone'),
+                        }"
+                        :validCharactersOnly="true"
+                        :class="{ 'is-invalid': errorMessage }"
+                        @update:model-value="(val: any) => field.onChange(val)"
+                      />
+                    </Field>
                     <div class="invalid-feedback d-block" v-if="errors.phone">{{ errors.phone }}</div>
                   </div>
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label">{{ $t('patient_create.other_phone') }}</label>
-                    <Field
-                      type="tel"
-                      as="vue-tel-input"
-                      name="other_phone"
-                      v-model="formData.other_phone"
-                      :inputOptions="{
-                        styleClasses: 'form-control',
-                        name: 'other_phone',
-                        type: 'tel',
-                        placeholder: $t('patient_create.placeholder_phone'),
-                      }"
-                      :validCharactersOnly="true"
-                    />
+                    <Field name="other_phone" v-model="formData.other_phone" v-slot="{ field, errorMessage }">
+                      <vue-tel-input
+                        v-bind="field"
+                        :model-value="field.value"
+                        :inputOptions="{
+                          styleClasses: 'form-control',
+                          name: 'other_phone',
+                          type: 'tel',
+                          placeholder: $t('patient_create.placeholder_phone'),
+                        }"
+                        :validCharactersOnly="true"
+                        :class="{ 'is-invalid': errorMessage }"
+                        @update:model-value="(val: any) => field.onChange(val)"
+                      />
+                    </Field>
                   </div>
                 </div>
                 <div class="col-lg-4">
@@ -623,6 +626,10 @@ import dayjs from 'dayjs'
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const { t } = useI18n()
+const tOr = (key: string, fallback: string) => {
+  const translated = t(key)
+  return translated === key ? fallback : translated
+}
 const patientStore = usePatientStore()
 const router = useRouter()
 
@@ -1444,13 +1451,13 @@ async function onSubmit(): Promise<void> {
   
   try {
     await patientStore.createPatient(payload)
-    message.success(t('validation.patient_created_success') || 'Patient created successfully')
+    message.success(tOr('validation.patient_created_success', 'Patient created successfully'))
     router.push({ name: 'PatientList' })
   } catch (error: any) {
     console.error('❌ Error creating patient:', error)
     
     // Try to extract meaningful error message from API response
-    let errorMessage = t('validation.patient_create_failed') || 'Failed to create patient. Please try again.'
+    let errorMessage = tOr('validation.patient_create_failed', 'Failed to create patient. Please try again.')
     
     if (error?.response?.data) {
       const errorData = error.response.data

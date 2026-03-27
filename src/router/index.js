@@ -372,6 +372,14 @@ const routes = [
         component: () => import('@/views/finance/insurance.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
+      {
+        path: 'insurance/:id',
+        name: 'FinanceInsuranceDetails',
+        component: () => import('@/views/finance/insurance-details.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+
+
     ],
   },
   {
@@ -1151,6 +1159,92 @@ const routes = [
 //       { path: "maps-vector", component: () => import('@/views/pages/uiinterface/maps/maps-vector.vue') },
 //     ],
 //   },
+  {
+    path: '/doctor',
+    component: () => import('@/views/doctor/doctor-index.vue'),
+    meta: { requiresAuth: true, isDoctor: true },
+    children: [
+      { path: '', redirect: '/doctor/doctor-dashboard' },
+      {
+        path: 'doctor-dashboard',
+        name: 'DoctorDashboard',
+        component: () => import('@/views/doctor/doctor-dashboard.vue'),
+      },
+      {
+        path: 'doctors-appointments',
+        name: 'DoctorAppointments',
+        component: () => import('@/views/doctor/appointments/doctors-appointments.vue'),
+      },
+      {
+        path: 'doctors-appointment-details',
+        name: 'DoctorAppointmentDetails',
+        component: () => import('@/views/doctor/appointments/doctors-appointment-details.vue'),
+      },
+      {
+        path: 'online-consultations',
+        name: 'DoctorOnlineConsultations',
+        component: () => import('@/views/doctor/appointments/online-consultations.vue'),
+      },
+      {
+        path: 'doctors-schedules',
+        name: 'DoctorSchedules',
+        component: () => import('@/views/doctor/doctors-schedules.vue'),
+      },
+      {
+        path: 'doctors-prescriptions',
+        name: 'DoctorPrescriptions',
+        component: () => import('@/views/doctor/doctors-prescriptions.vue'),
+      },
+      {
+        path: 'doctors-prescription-details',
+        name: 'DoctorPrescriptionDetails',
+        component: () => import('@/views/doctor/doctors-prescription-details.vue'),
+      },
+      {
+        path: 'doctors-patient-details',
+        name: 'DoctorPatientDetails',
+        component: () => import('@/views/doctor/doctors-patient-details.vue'),
+      },
+      {
+        path: 'doctors-leaves',
+        name: 'DoctorLeaves',
+        component: () => import('@/views/doctor/doctors-leaves.vue'),
+      },
+      {
+        path: 'doctors-reviews',
+        name: 'DoctorReviews',
+        component: () => import('@/views/doctor/doctors-reviews.vue'),
+      },
+      {
+        path: 'doctors-notifications',
+        name: 'DoctorNotifications',
+        component: () => import('@/views/doctor/doctors-notifications.vue'),
+      },
+      {
+        path: 'settings',
+        component: () => import('@/views/doctor/doctor-settings/doctor-settings.vue'),
+        children: [
+          { path: '', redirect: '/doctor/settings/doctors-profile-settings' },
+          {
+            path: 'doctors-profile-settings',
+            name: 'DoctorProfileSettings',
+            component: () => import('@/views/doctor/doctor-settings/doctors-profile-settings.vue'),
+          },
+          {
+            path: 'doctors-password-settings',
+            name: 'DoctorPasswordSettings',
+            component: () => import('@/views/doctor/doctor-settings/doctors-password-settings.vue'),
+          },
+          {
+            path: 'doctors-notification-settings',
+            name: 'DoctorNotificationSettings',
+            component: () =>
+              import('@/views/doctor/doctor-settings/doctors-notification-settings.vue'),
+          },
+        ],
+      },
+    ],
+  },
   {
     path: '/:pathMatch(.*)*',
     redirect: '/not-found',

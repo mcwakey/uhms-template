@@ -1,8 +1,10 @@
 import axios from 'axios'
 
 // Create axios instance with base configuration
+const baseURL =
+  (import.meta as any)?.env?.VITE_API_BASE_URL || 'https://api.uhms.clicksoftwaregh.com/api'
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',
+  baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

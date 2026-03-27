@@ -233,6 +233,7 @@
 <script>
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import FilterIndex from '@/components/common/filter-index.vue'
@@ -257,8 +258,8 @@ export default {
   setup() {
     const router = useRouter()
     const staffTable = useTableStore('staffManagement', 'staff')
-    const { data, totalCount, currentPage, perPage, searchQuery, fetchData, selectItem, fetchItemDetails, handleTableChange } = staffTable
-    const detailedItem = computed(() => staffTable.detailedItem.value || {})
+    const { data, totalCount, currentPage, perPage, searchQuery, loading } = storeToRefs(staffTable)
+    const { fetchData, selectItem, fetchItemDetails, handleTableChange } = staffTable
     const tableData = computed(() => data.value ?? [])
 
     const paginationConfig = computed(() => ({
@@ -382,13 +383,13 @@ export default {
       tableData,
       totalCount,
       searchQuery,
-      loading: staffTable.loading,
+      loading,
       paginationConfig,
       columns,
       openModal,
       handleDelete,
       goToAppointments,
-      handleTableChange
+      handleTableChange,
     }
   },
 }

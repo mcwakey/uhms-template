@@ -140,8 +140,7 @@ const submitDispense = async () => {
       status: status.value
     }
 
-    // API call mock
-    await axiosInstance.put(`/pharmacy/dispense/${props.prescription.id}`, payload)
+    await axiosInstance.patch(`/pharmacy/dispense/${props.prescription.id}`, payload)
     
     message.success('Medication dispensed successfully')
     emit('dispensed', { id: props.prescription.id, ...payload })

@@ -8,7 +8,7 @@
       <div class="d-flex align-items-sm-center flex-sm-row flex-column gap-2 mb-3">
         <div class="flex-grow-1">
           <h6 class="fw-bold mb-0 d-flex align-items-center">
-            <router-link to="/hrm/staff/"
+            <router-link :to="{ name: 'HrmStaffs' }"
               ><i class="ti ti-chevron-left me-1 fs-14"></i>Staff</router-link
             >
           </h6>
@@ -36,8 +36,10 @@
                   :validation-schema="schema"
                   v-slot="{ errors }"
                   @submit="onSubmit"
+                  @invalid-submit="onInvalidSubmit"
                   class="staff-form"
                 >
+                  <LoadingIndicator :show="submitting" variant="inline" size="sm" message="Updating staff..." />
                   <div class="bg-light px-3 py-2 mb-3">
                     <h6 class="fw-bold mb-0">Contact Information</h6>
                   </div>
@@ -114,42 +116,57 @@
                     </div>
                     <div class="col-lg-4">
                       <div class="mb-3">
+                        <label class="form-label">Staff ID</label>
+                        <Field
+                          type="text"
+                          class="form-control"
+                          name="staff_id"
+                          v-model="formData.staff_id"
+                          disabled
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="mb-3">
                         <label class="form-label"
                           >Phone Number <span class="text-danger">*</span></label
                         >
-                        <Field
-                          type="tel"
-                          as="vue-tel-input"
-                          name="phone"
-                          v-model="formData.phone"
-                          :inputOptions="{
-                            styleClasses: ['form-control'].join(' '),
-                            name: 'phone',
-                            type: 'tel',
-                            placeholder: 'e.g. 0801234567',
-                          }"
-                          :validCharactersOnly="true"
-                          :class="{ 'is-invalid': errors.phone }"
-                        />
+                        <Field name="phone" v-model="formData.phone" v-slot="{ field, errorMessage }">
+                          <vue-tel-input
+                            v-bind="field"
+                            :model-value="field.value"
+                            :inputOptions="{
+                              styleClasses: ['form-control'].join(' '),
+                              name: 'phone',
+                              type: 'tel',
+                              placeholder: 'e.g. 0801234567',
+                            }"
+                            :validCharactersOnly="true"
+                            :class="{ 'is-invalid': errorMessage }"
+                            @update:model-value="(val) => field.onChange(val)"
+                          />
+                        </Field>
                         <ErrorMessage name="phone" class="invalid-feedback" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="mb-3">
                         <label class="form-label">Other Phone</label>
-                        <Field
-                          type="tel"
-                          as="vue-tel-input"
-                          name="other_phone"
-                          v-model="formData.other_phone"
-                          :inputOptions="{
-                            styleClasses: ['form-control'].join(' '),
-                            name: 'phone',
-                            type: 'tel',
-                            placeholder: 'e.g. 0801234567',
-                          }"
-                          :validCharactersOnly="true"
-                        />
+                        <Field name="other_phone" v-model="formData.other_phone" v-slot="{ field, errorMessage }">
+                          <vue-tel-input
+                            v-bind="field"
+                            :model-value="field.value"
+                            :inputOptions="{
+                              styleClasses: ['form-control'].join(' '),
+                              name: 'phone',
+                              type: 'tel',
+                              placeholder: 'e.g. 0801234567',
+                            }"
+                            :validCharactersOnly="true"
+                            :class="{ 'is-invalid': errorMessage }"
+                            @update:model-value="(val) => field.onChange(val)"
+                          />
+                        </Field>
                       </div>
                     </div>
                     <div class="col-lg-4">
@@ -175,10 +192,10 @@
                         <label class="form-label"
                           >Gender<span class="text-danger ms-1">*</span></label
                         >
-                        <Field name="gender" v-slot="{ field, errorMessage }">
+                        <Field name="gender" v-model="formData.gender" v-slot="{ field, errorMessage }">
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.gender"
+                            :model-value="field.value"
                             :options="GenderOptions || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -187,7 +204,7 @@
                             label="label"
                             track-by="value"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="gender" class="invalid-feedback" />
@@ -214,10 +231,14 @@
                         <label class="form-label"
                           >Marital Status <span class="text-danger">*</span></label
                         >
-                        <Field name="marital_status" v-slot="{ field, errorMessage }">
+                        <Field
+                          name="marital_status"
+                          v-model="formData.marital_status"
+                          v-slot="{ field, errorMessage }"
+                        >
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.marital_status"
+                            :model-value="field.value"
                             :options="MaritalStatusOptions || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -226,7 +247,7 @@
                             label="label"
                             track-by="value"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="marital_status" class="invalid-feedback" />
@@ -237,10 +258,10 @@
                         <label class="form-label"
                           >Religion <span class="text-danger">*</span></label
                         >
-                        <Field name="religion" v-slot="{ field, errorMessage }">
+                        <Field name="religion" v-model="formData.religion" v-slot="{ field, errorMessage }">
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.religion"
+                            :model-value="field.value"
                             :options="religionOptions || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -249,7 +270,7 @@
                             label="label"
                             track-by="value"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="religion" class="invalid-feedback" />
@@ -265,10 +286,14 @@
                     <div class="col-lg-6">
                       <div class="mb-3">
                         <label class="form-label">Designation</label>
-                        <Field name="designation" v-slot="{ field, errorMessage }">
+                        <Field
+                          name="designation"
+                          v-model="formData.designation"
+                          v-slot="{ field, errorMessage }"
+                        >
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.designation"
+                            :model-value="field.value"
                             :options="designationOptions || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -277,7 +302,7 @@
                             label="label"
                             track-by="value"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="designation" class="invalid-feedback" />
@@ -288,10 +313,14 @@
                         <label class="form-label"
                           >Department <span class="text-danger">*</span></label
                         >
-                        <Field name="department" v-slot="{ field, errorMessage }">
+                        <Field
+                          name="department"
+                          v-model="formData.department"
+                          v-slot="{ field, errorMessage }"
+                        >
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.department"
+                            :model-value="field.value"
                             :options="departments || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -317,10 +346,14 @@
                         <label class="form-label"
                           >Specialization <span class="text-danger">*</span></label
                         >
-                        <Field name="specialization" v-slot="{ field, errorMessage }">
+                        <Field
+                          name="specialization"
+                          v-model="formData.specialization"
+                          v-slot="{ field, errorMessage }"
+                        >
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.specialization"
+                            :model-value="field.value"
                             :options="specialization || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -331,7 +364,7 @@
                             track-by="id"
                             :key="specializationKey"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="specialization" class="invalid-feedback" />
@@ -340,10 +373,10 @@
                     <div class="col-lg-6">
                       <div class="mb-3">
                         <label class="form-label">Role</label>
-                        <Field name="role" v-slot="{ field, errorMessage }">
+                        <Field name="role" v-model="formData.role" v-slot="{ field, errorMessage }">
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.role"
+                            :model-value="field.value"
                             :options="roles || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -352,7 +385,7 @@
                             label="name"
                             track-by="id"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="role" class="invalid-feedback" />
@@ -376,6 +409,25 @@
                     </div>
                   </div>
 
+                  <!-- Bio Information -->
+                  <div class="bg-light px-3 py-2 mb-3">
+                    <h6 class="fw-bold mb-0">Bio Information</h6>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="mb-3">
+                        <label class="form-label">BIO</label>
+                        <Field
+                          as="textarea"
+                          class="form-control"
+                          name="about_long"
+                          rows="6"
+                          v-model="formData.about_long"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Address Information -->
                   <div class="bg-light px-3 py-2 mb-3">
                     <h6 class="fw-bold mb-0">Address Information</h6>
@@ -384,10 +436,14 @@
                     <div class="col-lg-6">
                       <div class="mb-3">
                         <label class="form-label">Country <span class="text-danger">*</span></label>
-                        <Field name="country" v-slot="{ field, errorMessage }">
+                        <Field
+                          name="country"
+                          v-model="formData.address.country"
+                          v-slot="{ field, errorMessage }"
+                        >
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.address.country"
+                            :model-value="field.value"
                             :options="[{ label: 'Ghana', value: 'Ghana' }]"
                             :searchable="false"
                             :close-on-select="true"
@@ -396,7 +452,7 @@
                             label="label"
                             track-by="value"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="country" class="invalid-feedback" />
@@ -405,10 +461,10 @@
                     <div class="col-lg-6">
                       <div class="mb-3">
                         <label class="form-label">State <span class="text-danger">*</span></label>
-                        <Field name="state" v-slot="{ field, errorMessage }">
+                        <Field name="state" v-model="formData.address.state" v-slot="{ field, errorMessage }">
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.address.state"
+                            :model-value="field.value"
                             :options="StateOptions || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -432,10 +488,10 @@
                     <div class="col-lg-6">
                       <div class="mb-3">
                         <label class="form-label">City <span class="text-danger">*</span></label>
-                        <Field name="city" v-slot="{ field, errorMessage }">
+                        <Field name="city" v-model="formData.address.city" v-slot="{ field, errorMessage }">
                           <VueMultiselect
                             v-bind="field"
-                            v-model="formData.address.city"
+                            :model-value="field.value"
                             :options="CityOptions || []"
                             :searchable="false"
                             :close-on-select="true"
@@ -445,7 +501,7 @@
                             label="label"
                             track-by="value"
                             :class="{ 'is-invalid': errorMessage }"
-                            @update:model-value="field.onChange"
+                            @update:model-value="(val) => field.onChange(val)"
                           />
                         </Field>
                         <ErrorMessage name="city" class="invalid-feedback" />
@@ -526,12 +582,13 @@
                               >
                               <Field
                                 :name="`emergency_contact[${index}].relation`"
+                                v-model="contact.relation"
                                 v-slot="{ field, errorMessage }"
                                 rules="required"
                               >
                                 <VueMultiselect
                                   v-bind="field"
-                                  v-model="contact.relation"
+                                  :model-value="field.value"
                                   :options="relationshipOptions || []"
                                   :searchable="false"
                                   :close-on-select="true"
@@ -540,7 +597,7 @@
                                   label="label"
                                   track-by="value"
                                   :class="{ 'is-invalid': errorMessage }"
-                                  @update:model-value="field.onChange"
+                                  @update:model-value="(val) => field.onChange(val)"
                                 />
                               </Field>
                               <ErrorMessage
@@ -556,21 +613,24 @@
                               >
                               <Field
                                 :name="`emergency_contact[${index}].phone`"
-                                type="tel"
-                                as="vue-tel-input"
                                 v-model="contact.phone"
+                                v-slot="{ field, errorMessage }"
                                 rules="required"
-                                :inputOptions="{
-                                  styleClasses: ['form-control'].join(' '),
-                                  name: `emergency_contact[${index}].phone`,
-                                  type: 'tel',
-                                  placeholder: 'e.g. 0801234567',
-                                }"
-                                :validCharactersOnly="true"
-                                :class="{
-                                  'is-invalid': errors[`emergency_contact[${index}].phone`],
-                                }"
-                              />
+                              >
+                                <vue-tel-input
+                                  v-bind="field"
+                                  :model-value="field.value"
+                                  :inputOptions="{
+                                    styleClasses: ['form-control'].join(' '),
+                                    name: `emergency_contact[${index}].phone`,
+                                    type: 'tel',
+                                    placeholder: 'e.g. 0801234567',
+                                  }"
+                                  :validCharactersOnly="true"
+                                  :class="{ 'is-invalid': errorMessage }"
+                                  @update:model-value="(val) => field.onChange(val)"
+                                />
+                              </Field>
                               <ErrorMessage
                                 :name="`emergency_contact[${index}].phone`"
                                 class="invalid-feedback"
@@ -601,8 +661,14 @@
                   </div>
 
                   <div class="d-flex align-items-center justify-content-end mb-3">
-                    <router-link to="/hrm/staff/" class="btn btn-light me-2">Cancel</router-link>
-                    <button type="submit" class="btn btn-primary">Update Staff</button>
+                    <router-link :to="{ name: 'HrmStaffs' }" class="btn btn-light me-2"
+                      >Cancel</router-link
+                    >
+                    <button type="submit" class="btn btn-primary" :disabled="submitting">
+                      <span v-if="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      <span v-if="submitting">Updating...</span>
+                      <span v-else>Update Staff</span>
+                    </button>
                   </div>
                 </VeeForm>
               </div>
@@ -618,8 +684,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, onMounted, computed, watch, nextTick, onBeforeUnmount } from 'vue'
+import { useRoute, useRouter, isNavigationFailure } from 'vue-router'
 import * as yup from 'yup'
 import { Form as VeeForm, Field, ErrorMessage } from 'vee-validate'
 import { useAuthStore } from '@/stores/authStore'
@@ -635,6 +701,22 @@ const router = useRouter()
 const staffId = ref(route.params.id)
 
 const loading = ref(true)
+const isMounted = ref(false)
+const isInitializing = ref(true)
+
+const goBackToStaffs = async () => {
+  try {
+    const result = await router.push({ name: 'HrmStaffs' })
+    if (result && isNavigationFailure(result)) {
+      const fallbackResult = await router.replace('/hrm/staffs')
+      if (fallbackResult && isNavigationFailure(fallbackResult)) {
+        window.location.assign('/hrm/staffs')
+      }
+    }
+  } catch {
+    window.location.assign('/hrm/staffs')
+  }
+}
 
 const schema = yup
   .object()
@@ -642,6 +724,7 @@ const schema = yup
     first_name: yup.string().required('First name is required'),
     last_name: yup.string().required('Last name is required'),
     other_names: yup.string(),
+    staff_id: yup.string(),
     date_of_birth: yup.date().required('Date of birth is required'),
     phone: yup.string().required('Phone number is required'),
     other_phone: yup.string(),
@@ -696,6 +779,8 @@ const schema = yup
         })
       )
       .min(1, 'At least one emergency contact is required'),
+    about_short: yup.string(),
+    about_long: yup.string(),
   })
   .test('emergency-contacts', 'At least one emergency contact is required', function () {
     return (
@@ -724,6 +809,7 @@ const formData = ref({
   first_name: '',
   last_name: '',
   other_names: '',
+  staff_id: '',
   date_of_birth: '',
   phone: '',
   other_phone: '',
@@ -737,6 +823,8 @@ const formData = ref({
   role: null,
   designation: '',
   department: null,
+  about_short: '',
+  about_long: '',
   address: {
     address_line_1: '',
     address_line_2: '',
@@ -766,27 +854,78 @@ const relationshipOptions =
   constants.find((obj) => obj.relationshipOptions)?.relationshipOptions || []
 const designationOptions = constants.find((obj) => obj.designationOptions)?.designationOptions || []
 
+const findOptionByValueOrLabel = (options, rawValue) => {
+  if (!rawValue) return null
+  const stringValue = String(rawValue).trim()
+  if (!stringValue) return null
+
+  const byValue = (options || []).find((o) => String(o?.value ?? '').trim() === stringValue)
+  if (byValue) return byValue
+
+  const lower = stringValue.toLowerCase()
+  const byLabel = (options || []).find((o) => String(o?.label ?? '').trim().toLowerCase() === lower)
+  if (byLabel) return byLabel
+
+  return { label: stringValue, value: stringValue }
+}
+
+const getDepartmentId = (selectedDepartment) => {
+  if (!selectedDepartment) return null
+  if (typeof selectedDepartment === 'number') return selectedDepartment
+  if (typeof selectedDepartment === 'string') {
+    const match = (departments.value || []).find((d) => d?.name === selectedDepartment)
+    return match?.id ?? null
+  }
+  if (typeof selectedDepartment === 'object') {
+    if (selectedDepartment?.id) return selectedDepartment.id
+    if (selectedDepartment?.name) {
+      const match = (departments.value || []).find((d) => d?.name === selectedDepartment.name)
+      return match?.id ?? null
+    }
+    return null
+  }
+  return null
+}
+
+const resolveDepartmentOption = (selectedDepartment) => {
+  if (!selectedDepartment) return null
+  if (typeof selectedDepartment === 'object' && selectedDepartment?.id) return selectedDepartment
+
+  const deptId = getDepartmentId(selectedDepartment)
+  if (!deptId) return null
+
+  return (departments.value || []).find((d) => d?.id === deptId) ?? null
+}
+
+const normalizeToArray = (data) => {
+  const payload = data?.data ?? data
+  if (Array.isArray(payload?.results)) return payload.results
+  if (Array.isArray(payload)) return payload
+  if (Array.isArray(payload?.data)) return payload.data
+  return []
+}
+
 // Load specializations when department changes
 const onDepartmentChange = async (selectedDepartment) => {
   formData.value.specialization = null // Reset specialization
-  if (selectedDepartment) {
-    try {
-      loadingSpecializations.value = true
-      const response = await axiosInstance.get(
-        `/departments/${selectedDepartment.id}/specializations/`
-      )
-      specialization.value = response.data.results || response.data || []
-
-      // Force reactivity by using nextTick and changing key
-      specializationKey.value += 1
-      await nextTick()
-    } catch (error) {
-      console.error('Error fetching specializations:', error)
-    } finally {
-      loadingSpecializations.value = false
-    }
-  } else {
+  const deptId = getDepartmentId(selectedDepartment)
+  if (!deptId) {
     specialization.value = []
+    return
+  }
+
+  try {
+    loadingSpecializations.value = true
+    const response = await axiosInstance.get(`/departments/${deptId}/specializations/`)
+    specialization.value = normalizeToArray(response.data)
+
+    specializationKey.value += 1
+    await nextTick()
+  } catch (error) {
+    console.error('Error fetching specializations:', error)
+    specialization.value = []
+  } finally {
+    loadingSpecializations.value = false
   }
 }
 
@@ -794,6 +933,7 @@ const onDepartmentChange = async (selectedDepartment) => {
 watch(
   () => formData.value.address?.country,
   (newCountry) => {
+    if (isInitializing.value) return
     if (newCountry) {
       loadingStates.value = true
       formData.value.address.state = null
@@ -810,6 +950,7 @@ watch(
 watch(
   () => formData.value.address?.state,
   (newState) => {
+    if (isInitializing.value) return
     if (newState) {
       loadingCities.value = true
       formData.value.address.city = null
@@ -825,8 +966,11 @@ watch(
 const loadStaffData = async () => {
   try {
     loading.value = true
-    const response = await axiosInstance.get(`/staff/${staffId.value}`)
-    const staff = response.data
+    if (!isMounted.value) return
+    const response = await axiosInstance.get(`/staff/${staffId.value}/`)
+    if (!isMounted.value) return
+    const payload = response.data?.data ?? response.data
+    const staff = payload
 
     // Set selected state for city options FIRST to trigger city computation
     if (staff.address?.state) {
@@ -836,35 +980,42 @@ const loadStaffData = async () => {
     }
 
     // Populate form data with proper object structure for dropdowns
+    const staffPhone = staff.phone ?? staff.phone_number ?? staff.user?.phone ?? ''
+    const staffOtherPhone = staff.other_phone ?? staff.other_phone_number ?? ''
+    const staffEmail = staff.email ?? staff.user?.email ?? ''
+
     formData.value = {
       first_name: staff.first_name || '',
       last_name: staff.last_name || '',
       other_names: staff.other_names || '',
+      staff_id: staff.staff_id || '',
       date_of_birth: staff.date_of_birth || '',
-      phone: staff.phone || '',
-      other_phone: '', // Not in API response, will be empty
-      email: staff.email || '',
-      gender: staff.gender ? GenderOptions.find((g) => g.value === staff.gender) || '' : '',
+      phone: staffPhone ? String(staffPhone) : '',
+      other_phone: staffOtherPhone ? String(staffOtherPhone) : '',
+      email: staffEmail ? String(staffEmail) : '',
+      gender: findOptionByValueOrLabel(GenderOptions, staff.gender),
       marital_status: staff.marital_status
-        ? MaritalStatusOptions.find((m) => m.value === staff.marital_status) || ''
-        : '',
-      religion: staff.religion ? religionOptions.find((r) => r.value === staff.religion) || '' : '',
+        ? findOptionByValueOrLabel(MaritalStatusOptions, staff.marital_status)
+        : null,
+      religion: staff.religion ? findOptionByValueOrLabel(religionOptions, staff.religion) : null,
       avatar: null,
       specialization: '', // Will be set after department loads specializations
       savedSpecializationId: staff.specialization?.id || null, // API returns object with id
       employment_date: staff.employment_date || '',
       role: staff.role || null, // Role from API if available
       designation: staff.designation
-        ? designationOptions.find((d) => d.value === staff.designation) || ''
-        : '', // Map designation to option
-      department: staff.specialization?.department || null, // Extract from specialization
+        ? findOptionByValueOrLabel(designationOptions, staff.designation)
+        : null, // Map designation to option
+      department: staff.department ?? staff.specialization?.department ?? null, // Extract from specialization
+      about_short: staff.about_short || '',
+      about_long: staff.about_long || '',
       address: {
         address_line_1: staff.address?.address_line_1 || '',
         address_line_2: staff.address?.address_line_2 || '',
-        city: staff.address?.city ? { label: staff.address.city, value: staff.address.city } : '',
+        city: staff.address?.city ? { label: staff.address.city, value: staff.address.city } : null,
         state: staff.address?.state
           ? { label: staff.address.state, value: staff.address.state }
-          : '',
+          : null,
         country: staff.address?.country
           ? { label: staff.address.country, value: staff.address.country }
           : { label: 'Ghana', value: 'Ghana' },
@@ -881,10 +1032,10 @@ const loadStaffData = async () => {
       emergencyContacts.value.push({
         name: staff.emergency_contact.name || '',
         relation: staff.emergency_contact.relation
-          ? relationshipOptions.find((r) => r.value === staff.emergency_contact.relation) || null
+          ? findOptionByValueOrLabel(relationshipOptions, staff.emergency_contact.relation)
           : null,
-        phone: staff.emergency_contact.phone || '',
-        other_phone: staff.emergency_contact.other_phone || '',
+        phone: staff.emergency_contact.phone ? String(staff.emergency_contact.phone) : '',
+        other_phone: staff.emergency_contact.other_phone ? String(staff.emergency_contact.other_phone) : '',
       })
     }
 
@@ -895,28 +1046,25 @@ const loadStaffData = async () => {
   } catch (error) {
     console.error('Failed to load staff data:', error)
     notifyError('Failed to load staff data')
-    router.push('/hrm/staff/')
+    await goBackToStaffs()
   } finally {
     loading.value = false
   }
 }
 
 onMounted(async () => {
+  isMounted.value = true
+  await loadStaffData()
   try {
     loadingDepartments.value = true
+    departments.value = (await useGetStore().getObjects('departments/')) || []
 
-    // Load dropdown data
-    roles.value = await useGetStore().getObjects('auth/roles/')
-    departments.value = await useGetStore().getObjects('departments/')
-
-    // Load staff data
-    await loadStaffData()
-
-    // If department is selected, load specializations and set the saved specialization
     if (formData.value.department) {
+      const resolvedDepartment = resolveDepartmentOption(formData.value.department)
+      if (resolvedDepartment) {
+        formData.value.department = resolvedDepartment
+      }
       await onDepartmentChange(formData.value.department)
-
-      // Set the saved specialization after specializations are loaded
       const savedSpecializationId = formData.value.savedSpecializationId
       if (savedSpecializationId && specialization.value.length > 0) {
         const foundSpecialization = specialization.value.find((s) => s.id === savedSpecializationId)
@@ -924,23 +1072,16 @@ onMounted(async () => {
           formData.value.specialization = foundSpecialization
         }
       }
-      // Clean up the temporary saved value
       delete formData.value.savedSpecializationId
-    } else if (formData.value.savedSpecializationId) {
-      // If no department but we have a specialization ID, try to find the department
+    } else if (formData.value.savedSpecializationId && departments.value && departments.value.length) {
       const savedSpecializationId = formData.value.savedSpecializationId
-
-      // Try to find department that contains this specialization
       for (const dept of departments.value) {
         try {
-          const response = await axiosInstance.get(`/departments/${dept.id}/specializations`)
+          if (!dept?.id) continue
+          const response = await axiosInstance.get(`/departments/${dept.id}/specializations/`)
           const deptSpecializations = response.data.results || response.data || []
-
-          const foundSpecialization = deptSpecializations.find(
-            (s) => s.id === savedSpecializationId
-          )
+          const foundSpecialization = deptSpecializations.find((s) => s.id === savedSpecializationId)
           if (foundSpecialization) {
-            // Found the department, set it and the specialization
             formData.value.department = dept
             specialization.value = deptSpecializations
             formData.value.specialization = foundSpecialization
@@ -951,34 +1092,47 @@ onMounted(async () => {
           console.error(`Error loading specializations for department ${dept.id}:`, error)
         }
       }
-
-      // Clean up the temporary saved value
       delete formData.value.savedSpecializationId
     }
   } catch (error) {
     console.error('Failed to load data:', error)
   } finally {
     loadingDepartments.value = false
+    isInitializing.value = false
   }
+})
+
+onBeforeUnmount(() => {
+  isMounted.value = false
 })
 
 const auth = useAuthStore()
 
+const onInvalidSubmit = () => {
+  notifyError('Please fill all required fields to update staff details')
+}
+
+const submitting = ref(false)
+
 // Simple form submission function
 const onSubmit = async () => {
   const payload = convertDate()
-  if (!auth.isAdmin) {
+  if (!auth.isAdmin && !auth.isSuperAdmin) {
     notifyError('You are not authorized to perform this action')
-    router.push({ name: '' })
+    await goBackToStaffs()
+    return
   }
 
   try {
-    await axiosInstance.put(`/staff/${staffId.value}/`, payload)
+    submitting.value = true
+    await axiosInstance.patch(`/staff/${staffId.value}`, payload)
     notifySuccess('Staff updated successfully')
-    router.push('/hrm/staff/')
+    await goBackToStaffs()
   } catch (error) {
     console.error('Failed to update staff:', error)
     notifyError('Failed to update staff')
+  } finally {
+    submitting.value = false
   }
 }
 
@@ -1093,37 +1247,6 @@ const removeEmergencyContact = (index) => {
     emergencyContacts.value.splice(index, 1)
   }
 }
-
-// Watch for country changes to reset state and city
-watch(
-  () => formData.value.address?.country,
-  (newCountry) => {
-    if (newCountry) {
-      loadingStates.value = true
-      formData.value.address.state = null
-      formData.value.address.city = null
-      selectedState.value = ''
-      setTimeout(() => {
-        loadingStates.value = false
-      }, 300)
-    }
-  }
-)
-
-// Watch for state changes to reset city
-watch(
-  () => formData.value.address?.state,
-  (newState) => {
-    if (newState) {
-      loadingCities.value = true
-      formData.value.address.city = null
-      selectedState.value = newState?.value || newState
-      setTimeout(() => {
-        loadingCities.value = false
-      }, 300)
-    }
-  }
-)
 </script>
 
 <style>

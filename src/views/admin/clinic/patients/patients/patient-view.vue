@@ -391,128 +391,7 @@
              </div>
            </div>
 
-           <!-- Medical History & Medications -->
-           <div class="card border shadow-none rounded-3 w-100 mb-4">
-             <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0">
-                <h5 class="fw-bold text-dark mb-0"><i class="ti ti-file-medical me-2 text-primary"></i>{{ $t('patient_view.medical_history') }}</h5>
-             </div>
-             <div class="card-body p-4">
-                <div class="row g-4 mb-4">
-                    <!-- Conditions -->
-                    <div class="col-md-9">
-                        <h6 class="fw-bold text-dark mb-3 fs-14 d-flex align-items-center">
-                            {{ $t('patient_view.conditions') }}
-                        </h6>
-                        <div class="row g-2">
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center p-3 border rounded-3 bg-light-subtle hover-bg-light transition-all h-100">
-                                    <div class="avatar avatar-sm bg-white shadow-sm rounded-circle me-3 text-danger flex-shrink-0">
-                                        <i class="ti ti-heartbeat fs-16"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="fs-13 fw-bold mb-1 text-dark">Hypertension</h6>
-                                        <span class="badge bg-success-subtle text-success border border-success-subtle fs-10 rounded-pill">Controlled</span>
-                                        <span class="text-muted fs-11 ms-2">Since 2020</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center p-3 border rounded-3 bg-light-subtle hover-bg-light transition-all h-100">
-                                    <div class="avatar avatar-sm bg-white shadow-sm rounded-circle me-3 text-info flex-shrink-0">
-                                        <i class="ti ti-eye fs-16"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="fs-13 fw-bold mb-1 text-dark">Myopia</h6>
-                                        <span class="badge bg-info-subtle text-info border border-info-subtle fs-10 rounded-pill">Corrected</span>
-                                        <span class="text-muted fs-11 ms-2">Since childhood</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Allergies -->
-                    <div class="col-md-3">
-                        <h6 class="fw-bold text-dark mb-3 fs-14 d-flex align-items-center">
-                            {{ $t('patient_view.allergies') }}
-                        </h6>
-                        <div class="d-flex flex-wrap gap-2">
-                            <div class="d-flex align-items-center px-3 py-2 border border-danger-subtle bg-danger-subtle text-danger rounded-pill">
-                                <i class="ti ti-alert-triangle me-2 fs-14"></i>
-                                <span class="fw-semibold fs-13">Penicillin</span>
-                            </div>
-                            <div class="d-flex align-items-center px-3 py-2 border border-warning-subtle bg-warning-subtle text-warning rounded-pill">
-                                <i class="ti ti-flower me-2 fs-14"></i>
-                                <span class="fw-semibold fs-13">Pollen</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-top mb-4"></div>
-
-                <!-- Medications Table -->
-                <h5 class="fw-bold text-dark mb-3 fs-14"><i class="ti ti-pill me-2 text-primary"></i>{{ $t('patient_view.medications') }}</h5>
-                <div class="table-responsive border rounded-3">
-                    <table class="table table-nowrap mb-0">
-                        <thead class="bg-light">
-                            <tr>
-                                <th class="ps-4 py-3">{{ $t('patient_view.medication') }}</th>
-                                <th class="py-3">{{ $t('patient_view.dosage') }}</th>
-                                <th class="py-3">{{ $t('patient_view.prescribed_by') }}</th>
-                                <th class="pe-4 py-3">{{ $t('patient_view.date') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="ps-4">
-                                    <div class="d-flex align-items-center">
-                                        <span class="avatar avatar-xs bg-primary-subtle text-primary rounded-circle me-2"><i class="ti ti-pill"></i></span>
-                                        <div>
-                                            <h6 class="fw-semibold mb-0 text-dark fs-14">Lisinopril</h6>
-                                            <small class="text-muted">ACE Inhibitor</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-light text-dark border">10mg</span>
-                                    <span class="text-muted ms-2 fs-13">Once daily</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="@/assets/img/doctors/doctor-03.jpg" class="avatar avatar-xs rounded-circle me-2" alt="Doctor">
-                                        <span class="text-dark fs-13">Dr. Sarah Smith</span>
-                                    </div>
-                                </td>
-                                <td class="pe-4 text-muted fs-13">12 Oct 2024</td>
-                            </tr>
-                            <tr>
-                                <td class="ps-4">
-                                    <div class="d-flex align-items-center">
-                                        <span class="avatar avatar-xs bg-info-subtle text-info rounded-circle me-2"><i class="ti ti-droplet"></i></span>
-                                        <div>
-                                            <h6 class="fw-semibold mb-0 text-dark fs-14">Artificial Tears</h6>
-                                            <small class="text-muted">Eye Drops</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-light text-dark border">2 drops</span>
-                                    <span class="text-muted ms-2 fs-13">As needed</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="@/assets/img/doctors/doctor-03.jpg" class="avatar avatar-xs rounded-circle me-2" alt="Doctor">
-                                        <span class="text-dark fs-13">Dr. Sarah Smith</span>
-                                    </div>
-                                </td>
-                                <td class="pe-4 text-muted fs-13">10 Oct 2024</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-             </div>
-           </div>
         </div>
       </div>
 
@@ -520,8 +399,9 @@
       <ul class="nav nav-tabs nav-bordered mb-3">
         <li class="nav-item">
           <a
-            href="#appointments"
+            href="javascript:void(0);"
             data-bs-toggle="tab"
+            data-bs-target="#appointments"
             aria-expanded="false"
             class="nav-link active bg-transparent"
           >
@@ -530,12 +410,33 @@
         </li>
         <li class="nav-item">
           <a
-            href="#transactions"
+            href="javascript:void(0);"
             data-bs-toggle="tab"
+            data-bs-target="#transactions"
             aria-expanded="true"
             class="nav-link bg-transparent"
           >
             <span>{{ $t('patient_view.transactions') }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#medical_notes" aria-expanded="false" class="nav-link bg-transparent">
+            <span>{{ $t('patient_view.medical_notes') }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#lab_results" aria-expanded="false" class="nav-link bg-transparent">
+            <span>{{ $t('patient_view.lab_results') }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#medications" aria-expanded="false" class="nav-link bg-transparent">
+            <span>{{ $t('patient_view.medications') }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#prescriptions" aria-expanded="false" class="nav-link bg-transparent">
+            <span>{{ $t('patient_view.prescriptions') }}</span>
           </a>
         </li>
       </ul>
@@ -843,10 +744,9 @@
                   <ActionIcons
                     :viewTitle="$t('patient_view.view')"
                     :editTitle="$t('patient_view.edit')"
-                    :deleteTitle="$t('patient_view.delete')"
-                    @view="viewAppointment(record)"
+                    :show-delete="false"
+                    @view="openAppointmentDetails(record)"
                     @edit="editAppointment(record)"
-                    @delete="deleteAppointment(record)"
                   />
                 </template>
               </template>
@@ -865,6 +765,154 @@
           <!-- Transactions content placeholder -->
           <div class="text-center py-5">
             <p class="text-muted">{{ $t('patient_view.transaction_details_placeholder') }}</p>
+          </div>
+        </div>
+        <div class="tab-pane" id="medical_notes">
+          <div class="table-responsive border rounded-3">
+            <table class="table table-nowrap mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th class="ps-4 py-3">{{ $t('patient_view.date') }}</th>
+                  <th class="py-3">{{ $t('patient_view.doctor') }}</th>
+                  <th class="py-3">{{ $t('patient_view.note') }}</th>
+                  <th class="pe-4 py-3">{{ $t('patient_view.status') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="note in medicalNotes" :key="note.id">
+                  <td class="ps-4 text-muted fs-13">{{ note.date }}</td>
+                  <td class="fs-13 text-dark">{{ note.doctor }}</td>
+                  <td class="fs-13">
+                    <div class="fw-semibold text-dark">{{ note.title }}</div>
+                    <div class="text-muted">{{ note.summary }}</div>
+                  </td>
+                  <td class="pe-4">
+                    <span
+                      :class="[
+                        'badge border fw-medium fs-12',
+                        note.status === 'Signed'
+                          ? 'badge-soft-success text-success'
+                          : 'badge-soft-warning text-warning',
+                      ]"
+                    >
+                      {{ note.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane" id="lab_results">
+          <div class="table-responsive border rounded-3">
+            <table class="table table-nowrap mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th class="ps-4 py-3">{{ $t('patient_view.test') }}</th>
+                  <th class="py-3">{{ $t('patient_view.date') }}</th>
+                  <th class="py-3">{{ $t('patient_view.result') }}</th>
+                  <th class="py-3">{{ $t('patient_view.reference_range') }}</th>
+                  <th class="pe-4 py-3">{{ $t('patient_view.status') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="lab in labResults" :key="lab.id">
+                  <td class="ps-4">
+                    <div class="fw-semibold text-dark fs-13">{{ lab.test }}</div>
+                    <div class="text-muted fs-12">{{ lab.sample }}</div>
+                  </td>
+                  <td class="text-muted fs-13">{{ lab.date }}</td>
+                  <td class="fs-13">
+                    <span :class="lab.flag === 'High' ? 'text-danger fw-semibold' : lab.flag === 'Low' ? 'text-warning fw-semibold' : 'text-dark fw-semibold'">
+                      {{ lab.value }}
+                    </span>
+                    <span v-if="lab.unit" class="text-muted ms-1">{{ lab.unit }}</span>
+                    <span v-if="lab.flag" class="text-muted ms-2">({{ lab.flag }})</span>
+                  </td>
+                  <td class="text-muted fs-13">{{ lab.range }}</td>
+                  <td class="pe-4">
+                    <span class="badge border fw-medium fs-12 badge-soft-success text-success">{{ lab.status }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane" id="medications">
+          <div class="table-responsive border rounded-3">
+            <table class="table table-nowrap mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th class="ps-4 py-3">{{ $t('patient_view.medication') }}</th>
+                  <th class="py-3">{{ $t('patient_view.dosage') }}</th>
+                  <th class="py-3">{{ $t('patient_view.frequency') }}</th>
+                  <th class="py-3">{{ $t('patient_view.date_started') }}</th>
+                  <th class="py-3">{{ $t('patient_view.prescribed_by') }}</th>
+                  <th class="pe-4 py-3">{{ $t('patient_view.status') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="med in medications" :key="med.id">
+                  <td class="ps-4">
+                    <div class="fw-semibold text-dark fs-13">{{ med.name }}</div>
+                    <div class="text-muted fs-12">{{ med.indication }}</div>
+                  </td>
+                  <td class="fs-13 text-dark">{{ med.dosage }}</td>
+                  <td class="fs-13 text-muted">{{ med.frequency }}</td>
+                  <td class="fs-13 text-muted">{{ med.startDate }}</td>
+                  <td class="fs-13 text-dark">{{ med.prescribedBy }}</td>
+                  <td class="pe-4">
+                    <span
+                      :class="[
+                        'badge border fw-medium fs-12',
+                        med.status === 'Active'
+                          ? 'badge-soft-success text-success'
+                          : 'badge-soft-secondary text-secondary',
+                      ]"
+                    >
+                      {{ med.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane" id="prescriptions">
+          <div class="table-responsive border rounded-3">
+            <table class="table table-nowrap mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th class="ps-4 py-3">{{ $t('patient_view.prescription') }}</th>
+                  <th class="py-3">{{ $t('patient_view.date') }}</th>
+                  <th class="py-3">{{ $t('patient_view.doctor') }}</th>
+                  <th class="py-3">{{ $t('patient_view.items') }}</th>
+                  <th class="pe-4 py-3">{{ $t('patient_view.status') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="rx in prescriptions" :key="rx.id">
+                  <td class="ps-4 fw-semibold text-dark fs-13">{{ rx.number }}</td>
+                  <td class="text-muted fs-13">{{ rx.date }}</td>
+                  <td class="text-dark fs-13">{{ rx.doctor }}</td>
+                  <td class="text-muted fs-13">{{ rx.items }}</td>
+                  <td class="pe-4">
+                    <span
+                      :class="[
+                        'badge border fw-medium fs-12',
+                        rx.status === 'Dispensed'
+                          ? 'badge-soft-success text-success'
+                          : rx.status === 'Pending'
+                            ? 'badge-soft-warning text-warning'
+                            : 'badge-soft-secondary text-secondary',
+                      ]"
+                    >
+                      {{ rx.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -1150,6 +1198,47 @@ interface DateRange {
   endDate: Date | null
 }
 
+interface MedicalNote {
+  id: string
+  date: string
+  doctor: string
+  title: string
+  summary: string
+  status: 'Draft' | 'Signed'
+}
+
+interface LabResult {
+  id: string
+  test: string
+  sample: string
+  date: string
+  value: string
+  unit?: string
+  range: string
+  flag?: 'High' | 'Low'
+  status: string
+}
+
+interface MedicationItem {
+  id: string
+  name: string
+  indication: string
+  dosage: string
+  frequency: string
+  startDate: string
+  prescribedBy: string
+  status: 'Active' | 'Stopped'
+}
+
+interface PrescriptionItem {
+  id: string
+  number: string
+  date: string
+  doctor: string
+  items: number
+  status: 'Pending' | 'Dispensed' | 'Cancelled'
+}
+
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -1236,6 +1325,105 @@ const appointmentColumns: TableColumn[] = [
 const currentPage: Ref<number> = ref(1)
 const pageSize: Ref<number> = ref(5)
 const pageSizeOptions: number[] = [5, 10, 20, 50]
+
+const medicalNotes: Ref<MedicalNote[]> = ref([
+  {
+    id: 'note-1',
+    date: '2026-01-16',
+    doctor: 'Dr. Ama Owusu',
+    title: 'Follow-up visit',
+    summary: 'Patient reports improved symptoms. Continue current plan and review in 2 weeks.',
+    status: 'Signed',
+  },
+  {
+    id: 'note-2',
+    date: '2026-01-04',
+    doctor: 'Dr. John Mensah',
+    title: 'Initial assessment',
+    summary: 'Baseline exam completed. Labs ordered. Start lifestyle modifications.',
+    status: 'Signed',
+  },
+  {
+    id: 'note-3',
+    date: '2025-12-20',
+    doctor: 'Dr. Daniel Lee',
+    title: 'Draft note',
+    summary: 'Draft clinical note saved for completion.',
+    status: 'Draft',
+  },
+])
+
+const labResults: Ref<LabResult[]> = ref([
+  {
+    id: 'lab-1',
+    test: 'Complete Blood Count (CBC)',
+    sample: 'Whole blood',
+    date: '2026-01-05',
+    value: 'Normal',
+    range: '—',
+    status: 'Reported',
+  },
+  {
+    id: 'lab-2',
+    test: 'Fasting Blood Glucose',
+    sample: 'Plasma',
+    date: '2026-01-05',
+    value: '6.4',
+    unit: 'mmol/L',
+    range: '3.9–5.5',
+    flag: 'High',
+    status: 'Reported',
+  },
+  {
+    id: 'lab-3',
+    test: 'Creatinine',
+    sample: 'Serum',
+    date: '2026-01-05',
+    value: '86',
+    unit: 'µmol/L',
+    range: '60–110',
+    status: 'Reported',
+  },
+])
+
+const medications: Ref<MedicationItem[]> = ref([
+  {
+    id: 'med-1',
+    name: 'Metformin',
+    indication: 'Glycemic control',
+    dosage: '500 mg',
+    frequency: 'Twice daily',
+    startDate: '2026-01-06',
+    prescribedBy: 'Dr. John Mensah',
+    status: 'Active',
+  },
+  {
+    id: 'med-2',
+    name: 'Amlodipine',
+    indication: 'Blood pressure control',
+    dosage: '5 mg',
+    frequency: 'Once daily',
+    startDate: '2025-11-12',
+    prescribedBy: 'Dr. Sarah Smith',
+    status: 'Active',
+  },
+  {
+    id: 'med-3',
+    name: 'Ibuprofen',
+    indication: 'Pain relief',
+    dosage: '400 mg',
+    frequency: 'As needed',
+    startDate: '2025-10-01',
+    prescribedBy: 'Dr. Daniel Lee',
+    status: 'Stopped',
+  },
+])
+
+const prescriptions: Ref<PrescriptionItem[]> = ref([
+  { id: 'rx-1', number: 'RX-2026-00021', date: '2026-01-06', doctor: 'Dr. John Mensah', items: 2, status: 'Dispensed' },
+  { id: 'rx-2', number: 'RX-2026-00018', date: '2026-01-04', doctor: 'Dr. Ama Owusu', items: 1, status: 'Pending' },
+  { id: 'rx-3', number: 'RX-2025-00992', date: '2025-12-20', doctor: 'Dr. Daniel Lee', items: 3, status: 'Cancelled' },
+])
 
 // Reset to page 1 when page size changes
 watch(pageSize, () => {
@@ -1490,16 +1678,11 @@ function editPatient(): void {
   router.push({ name: 'EditPatient', params: { id: uuid } })
 }
 
-function viewAppointment(appointment: Appointment): void {
-  console.log('Viewing appointment:', appointment)
-}
-
 function editAppointment(appointment: Appointment): void {
-  console.log('Editing appointment:', appointment)
-}
-
-function deleteAppointment(appointment: Appointment): void {
-  console.log('Deleting appointment:', appointment)
+  router.push({
+    name: 'ViewAppointment',
+    params: { id: appointment.id || appointment.uuid },
+  })
 }
 
 // Lifecycle

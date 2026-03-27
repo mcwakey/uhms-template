@@ -44,8 +44,6 @@
             @click="openAddServiceModal"
             title="Add Service"
             class="btn btn-primary ms-2 fs-13 btn-md"
-            data-bs-toggle="modal"
-            data-bs-target="#add_service"
           >
             <i class="ti ti-plus me-1"></i>Add New Services
           </a>
@@ -171,8 +169,6 @@
                       href="javascript:void(0);"
                       @click="openViewServiceModal(record)"
                       title="View Service"
-                      data-bs-toggle="modal"
-                      data-bs-target="#view_service"
                       class="text-primary rounded-circle d-flex align-items-center justify-content-center"
                     >
                       {{ record.name }}

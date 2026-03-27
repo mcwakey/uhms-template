@@ -115,7 +115,7 @@
           class="table table-nowrap datatable pagination-rounded"
           :columns="columns"
           :table-layout="fixed"
-          :data-source="DoctorsTable.data.value"
+          :data-source="tableData"
           :pagination="paginationConfig"
           @change="DoctorsTable.handleTableChange"
           row-key="id"
@@ -178,15 +178,6 @@
               >
             </template>
             <template v-else-if="column.key === 'actions'">
-              <div class="d-flex align-items-center justify-content-end gap-2">
-                <a
-                  href="javascript:void(0);"
-                  class="action-icon text-success"
-                  title="Calendar"
-                  @click.prevent="$router.push('/appointments/appointment-calendar')"
-                >
-                  <i class="ti ti-calendar-cog"></i>
-                </a>
                 <ActionIcons
                   viewTitle="View Doctor"
                   editTitle="Edit Doctor"
@@ -194,8 +185,18 @@
                   @view="() => { openModal(record); }"
                   @edit="() => { openModal(record); }"
                   @delete="() => { openModal(record); }"
-                />
-              </div>
+                >
+                  <template #prepend>
+                    <a
+                      href="javascript:void(0);"
+                      class="action-icon text-success"
+                      title="Calendar"
+                      @click.prevent="$router.push('/appointments/appointment-calendar')"
+                    >
+                      <i class="ti ti-calendar-cog"></i>
+                    </a>
+                  </template>
+                </ActionIcons>
             </template>
           </template>
         </a-table>
@@ -238,14 +239,14 @@
                   />
                 </div>
                 <div>
-                  <span class="text-primary mb-1">{{ detailedItem.staff_id }}</span>
+                  <span class="text-primary mb-1">{{ selectedStaff.staff_id }}</span>
                   <div class="d-flex align-items-center mb-1">
-                    <h5 class="fw-bold mb-0 me-2">{{ detailedItem.full_name }}</h5>
+                    <h5 class="fw-bold mb-0 me-2">{{ selectedStaff.full_name }}</h5>
                     <span class="badge badge-soft-success border border-success fw-medium fs-13"
                       >Available</span
                     >
                   </div>
-                  <p>{{ detailedItem.specialization?.name }}</p>
+                  <p>{{ selectedStaff.specialization?.name }}</p>
                 </div>
               </div>
             </div>
@@ -278,27 +279,27 @@
               <div class="row row-gap-2">
                 <div class="col-md-4">
                   <p class="text-dark fs-13 fw-medium mb-0">Gender</p>
-                  <p class="fs-13">{{ detailedItem.gender }}</p>
+                  <p class="fs-13">{{ selectedStaff.gender }}</p>
                 </div>
                 <div class="col-md-4">
                   <p class="text-dark fs-13 fw-medium mb-0">Phone Number</p>
-                  <p class="fs-13">{{ detailedItem.phone }}</p>
+                  <p class="fs-13">{{ selectedStaff.phone }}</p>
                 </div>
                 <div class="col-md-4">
                   <p class="text-dark fs-13 fw-medium mb-0">Email</p>
-                  <p class="fs-13">{{ detailedItem.email }}</p>
+                  <p class="fs-13">{{ selectedStaff.email }}</p>
                 </div>
                 <div class="col-md-4">
                   <p class="text-dark fs-13 fw-medium mb-0">Date of Joining</p>
-                  <p class="fs-13">{{ detailedItem.date_of_birth }}</p>
+                  <p class="fs-13">{{ selectedStaff.employment_date || selectedStaff.date_of_birth }}</p>
                 </div>
                 <div class="col-md-4">
                   <p class="text-dark fs-13 fw-medium mb-0">Role</p>
-                  <p class="fs-13">{{ detailedItem.role }}</p>
+                  <p class="fs-13">{{ selectedStaff.role }}</p>
                 </div>
                 <div class="col-md-12">
                   <p class="text-dark fs-13 fw-medium mb-0">Address</p>
-                  <p class="fs-13">{{ detailedItem.address || 'No address available' }}</p>
+                  <p class="fs-13">{{ selectedStaff.address || 'No address available' }}</p>
                 </div>
               </div>
             </div>
@@ -558,6 +559,7 @@
 <script>
 import { useTableStore } from '@/stores/dataTable'
 import { onMounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { message } from 'ant-design-vue'
 import FilterIndex from '@/components/common/filter-index.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
@@ -569,12 +571,14 @@ export default {
 
   setup() {
     const DoctorsTable = useTableStore('doctorsManagement', 'staff')
-    const detailedItem = computed(() => DoctorsTable.detailedItem.value || {})
+    const { data, detailedItem, currentPage, perPage, totalCount } = storeToRefs(DoctorsTable)
+    const tableData = computed(() => data.value ?? [])
+    const selectedStaff = computed(() => detailedItem.value || {})
 
     const paginationConfig = computed(() => ({
-      current: DoctorsTable.currentPage.value,
-      pageSize: DoctorsTable.perPage.value,
-      total: DoctorsTable.totalCount.value,
+      current: currentPage.value,
+      pageSize: perPage.value,
+      total: totalCount.value,
       showSizeChanger: false,
       showQuickJumper: false,
     }))
@@ -677,7 +681,8 @@ export default {
 
     return {
       DoctorsTable,
-      detailedItem,
+      selectedStaff,
+      tableData,
       paginationConfig,
       columns,
       openModal,

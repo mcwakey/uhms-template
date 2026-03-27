@@ -1,42 +1,44 @@
 <template>
   <div class="d-flex align-items-center justify-content-end gap-2">
-    <a
+    <slot name="prepend"></slot>
+    <button
       v-if="showAppointment"
-      href="javascript:void(0);"
+      type="button"
       :title="appointmentTitle"
       class="action-icon"
       :class="appointmentClass"
-      @click.prevent="emit('appointment')"
+      @click="emit('appointment')"
     >
       <i class="ti ti-calendar-event"></i>
-    </a>
-    <a
+    </button>
+    <button
       v-if="showView"
-      href="javascript:void(0);"
+      type="button"
       :title="viewTitle"
       class="action-icon text-primary"
-      @click.prevent="emit('view')"
+      @click="emit('view')"
     >
       <i class="ti ti-eye"></i>
-    </a>
-    <a
+    </button>
+    <button
       v-if="showEdit"
-      href="javascript:void(0);"
+      type="button"
       :title="editTitle"
       class="action-icon text-warning"
-      @click.prevent="emit('edit')"
+      @click="emit('edit')"
     >
       <i class="ti ti-edit"></i>
-    </a>
-    <a
+    </button>
+    <button
       v-if="showDelete"
-      href="javascript:void(0);"
+      type="button"
       :title="deleteTitle"
       class="action-icon text-danger"
-      @click.prevent="emit('delete')"
+      @click="emit('delete')"
     >
       <i class="ti ti-trash"></i>
-    </a>
+    </button>
+    <slot name="append"></slot>
   </div>
 </template>
 
@@ -45,7 +47,7 @@ const props = defineProps({
   showAppointment: { type: Boolean, default: false },
   showView: { type: Boolean, default: true },
   showEdit: { type: Boolean, default: true },
-  showDelete: { type: Boolean, default: true },
+  showDelete: { type: Boolean, default: false },
   appointmentTitle: { type: String, default: 'Appointments' },
   viewTitle: { type: String, default: 'View' },
   editTitle: { type: String, default: 'Edit' },

@@ -43,8 +43,6 @@
             href="javascript:void(0);"
             @click="openAddSpecializationModal"
             title="Add Specialization"
-            data-bs-toggle="modal"
-            data-bs-target="#add_specialization"
             class="btn btn-primary ms-2 fs-13 btn-md"
           >
             <i class="ti ti-plus me-1"></i>Add Specializations
@@ -159,8 +157,6 @@
               <a
                 href="javascript:void(0);"
                 @click="openViewSpecializationModal(record)"
-                data-bs-toggle="modal"
-                data-bs-target="#view_specialization"
                 class="text-dark fw-semibold"
                 title="View Details"
               >

@@ -80,7 +80,7 @@ export const usePatientStore = defineStore('patient', {
       this.loading = true
       this.error = null
       try {
-        const response = await axiosInstance.put(`/patients/${id}`, patientData, {
+        const response = await axiosInstance.patch(`/patients/${id}`, patientData, {
           headers: {
             'Content-Type': 'application/json',
           },

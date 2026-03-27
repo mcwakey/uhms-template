@@ -168,7 +168,7 @@ const submitForm = async () => {
       status: form.value.status
     }
 
-    const response = await axiosInstance.put(`/laboratory/${props.labTest.id}`, payload)
+    const response = await axiosInstance.patch(`/laboratory/${props.labTest.id}`, payload)
     
     message.success('Results saved successfully')
     emit('results-updated', response.data)

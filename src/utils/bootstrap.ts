@@ -1,63 +1,45 @@
-type BootstrapGlobal = {
-  Modal?: any
-  Offcanvas?: any
-  Tooltip?: any
+import { Modal, Offcanvas } from 'bootstrap'
+
+export function getOrCreateModal(element: Element): Modal {
+  return Modal.getInstance(element) ?? new Modal(element)
 }
 
-export function getBootstrap(): BootstrapGlobal | null {
-  const w = window as any
-  return (w?.bootstrap ?? w?.Bootstrap) || null
-}
-
-export function getOrCreateModal(element: Element) {
-  const Bootstrap = getBootstrap()
-  if (!Bootstrap?.Modal) return null
-
-  const existing = Bootstrap.Modal.getInstance?.(element) || null
-  return existing ?? new Bootstrap.Modal(element)
-}
-
-export function showModalById(id: string) {
+export function showModalById(id: string): Modal | null {
   const el = document.getElementById(id)
   if (!el) return null
   const modal = getOrCreateModal(el)
-  modal?.show?.()
+  modal.show()
   return modal
 }
 
-export function hideModalById(id: string) {
+export function hideModalById(id: string): Modal | null {
   const el = document.getElementById(id)
   if (!el) return null
-  const modal = getOrCreateModal(el)
-  modal?.hide?.()
-  return modal
+  const modal = Modal.getInstance(el)
+  modal?.hide()
+  return modal ?? null
 }
 
-export function getOffcanvasInstance(element: Element) {
-  const Bootstrap = getBootstrap()
-  return Bootstrap?.Offcanvas?.getInstance?.(element) || null
+export function getOrCreateOffcanvas(element: Element): Offcanvas {
+  return Offcanvas.getInstance(element) ?? new Offcanvas(element)
 }
 
-export function getOrCreateOffcanvas(element: Element) {
-  const Bootstrap = getBootstrap()
-  if (!Bootstrap?.Offcanvas) return null
-
-  const existing = Bootstrap.Offcanvas.getInstance?.(element) || null
-  return existing ?? new Bootstrap.Offcanvas(element)
+export function getOffcanvasInstance(element: Element): Offcanvas | null {
+  return Offcanvas.getInstance(element)
 }
 
-export function hideOffcanvasById(id: string) {
-  const el = document.getElementById(id)
-  if (!el) return null
-  const instance = getOffcanvasInstance(el)
-  instance?.hide?.()
-  return instance
-}
-
-export function showOffcanvasById(id: string) {
+export function showOffcanvasById(id: string): Offcanvas | null {
   const el = document.getElementById(id)
   if (!el) return null
   const instance = getOrCreateOffcanvas(el)
-  instance?.show?.()
+  instance.show()
   return instance
+}
+
+export function hideOffcanvasById(id: string): Offcanvas | null {
+  const el = document.getElementById(id)
+  if (!el) return null
+  const instance = Offcanvas.getInstance(el)
+  instance?.hide()
+  return instance ?? null
 }

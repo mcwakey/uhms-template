@@ -140,12 +140,13 @@
                         calculateExperience(staffData.employment_date)
                       }}</small>
                     </div>
-                    <router-link
-                      :to="{ name: 'StaffAppointments', params: { id: staffId } }"
+                    <a
+                      href="javascript:void(0);"
                       class="btn btn-primary"
+                      @click.prevent="$router.push('/appointments/appointment-calendar')"
                     >
                       <i class="ti ti-calendar-cog me-1"></i>View Appointments
-                    </router-link>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -1295,7 +1296,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import axiosInstance from '@/utils/axios.js'
+import axiosInstance from '@/utils/axios'
 import { notifyError, notifySuccess } from '@/utils/notifications/toast'
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
@@ -1360,6 +1361,9 @@ const staffId = computed(() => route.params.id)
 
 // Staff data
 const staffData = ref({
+  id: '',
+  staff_id: '',
+  full_name: '',
   first_name: '',
   last_name: '',
   other_names: '',
@@ -1379,13 +1383,21 @@ const staffData = ref({
   emergency_contact: {},
   education_experience: [],
   avatar: null,
+  avatar_url: '',
 })
 
 const loadStaffData = async () => {
   try {
     loading.value = true
     const response = await axiosInstance.get(`/staff/${staffId.value}`)
-    staffData.value = response.data
+    const raw = response.data?.data ?? response.data
+    const departmentName = raw?.department?.name ?? raw?.specialization?.department ?? null
+    staffData.value = {
+      ...staffData.value,
+      ...raw,
+      avatar: raw?.avatar ?? raw?.avatar_url ?? null,
+      department: raw?.department ?? (departmentName ? { name: departmentName } : null),
+    }
   } catch (error) {
     console.error('Failed to load staff data:', error)
     notifyError('Failed to load staff data')
@@ -1416,6 +1428,7 @@ const calculateExperience = (employmentDate) => {
 
 // Get full name
 const fullName = () => {
+  if (staffData.value.full_name && staffData.value.full_name.trim()) return staffData.value.full_name
   const names = [staffData.value.first_name, staffData.value.other_names, staffData.value.last_name]
     .filter((name) => name && name.trim())
     .join(' ')
