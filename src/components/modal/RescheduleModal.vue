@@ -111,7 +111,7 @@
                           option.code
                         }}</span>
                         <div v-if="option.price" class="text-success fw-bold fs-12">
-                          ${{ option.price }}
+                          ₵{{ option.price }}
                         </div>
                       </div>
                     </div>
@@ -167,12 +167,14 @@
                 @click="saveChanges"
                 :disabled="loading || !isFormValid"
               >
-                <span
-                  v-if="loading"
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-                ></span>
-                <i v-else class="ti ti-check me-2"></i>
+                <LoadingIndicator
+                  :show="loading"
+                  variant="inline"
+                  size="sm"
+                  message=""
+                  ariaLabel="Saving..."
+                />
+                <i v-if="!loading" class="ti ti-check me-2"></i>
                 {{ loading ? 'Saving...' : 'Save Changes' }}
               </button>
             </div>
@@ -186,13 +188,14 @@
 <script>
 import { computed, ref, watch, onUnmounted } from 'vue'
 import Multiselect from 'vue-multiselect'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 // Static imports for default avatars
 import patientDefaultAvatar from '@/assets/img/users/avatar-2.jpg'
 
 export default {
   name: 'RescheduleModal',
-  components: { Multiselect },
+  components: { Multiselect, LoadingIndicator },
   props: {
     visible: {
       type: Boolean,

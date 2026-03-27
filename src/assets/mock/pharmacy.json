@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1001,
+    "patient_name": "John Doe",
+    "medication": "Amoxicillin 500mg",
+    "dosage": "1 tablet TDS",
+    "status": "Unfilled",
+    "created_at": "2024-03-24T10:00:00Z",
+    "items": [
+      { "name": "Amoxicillin 500mg", "qty_requested": 21, "qty_dispensed": 0 }
+    ]
+  },
+  {
+    "id": 1002,
+    "patient_name": "Ama K.",
+    "medication": "Metformin 500mg",
+    "dosage": "1 tablet BD",
+    "status": "Partial",
+    "created_at": "2024-03-25T11:30:00Z",
+    "items": [
+      { "name": "Metformin 500mg", "qty_requested": 60, "qty_dispensed": 30 }
+    ]
+  },
+  {
+    "id": 1003,
+    "patient_name": "Kojo M.",
+    "medication": "Ibuprofen 400mg",
+    "dosage": "1 tablet BD",
+    "status": "Dispensed",
+    "created_at": "2024-03-26T09:00:00Z",
+    "items": [
+      { "name": "Ibuprofen 400mg", "qty_requested": 10, "qty_dispensed": 10 }
+    ]
+  }
+]

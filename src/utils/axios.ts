@@ -1,17 +1,24 @@
 import axios from 'axios'
 
 // Create axios instance with base configuration
+const baseURL =
+  (import.meta as any)?.env?.VITE_API_BASE_URL || 'https://api.uhms.clicksoftwaregh.com/api'
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',
+  baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-// Request interceptor - Add auth token to requests
+// Request interceptor - Add auth token to requests and remove trailing slashes
 axiosInstance.interceptors.request.use(
   (config) => {
+    // Remove trailing slash from the URL if it exists (before query parameters)
+    if (config.url) {
+      config.url = config.url.replace(/\/(\?|$)/, '$1')
+    }
+
     const authData = localStorage.getItem('authStore')
     if (authData) {
       try {
@@ -45,10 +52,9 @@ axiosInstance.interceptors.response.use(
         if (authData) {
           const { refreshToken } = JSON.parse(authData)
           if (refreshToken) {
-            const response = await axios.post(
-              `${axiosInstance.defaults.baseURL}/auth/token/refresh/`,
-              { refresh: refreshToken }
-            )
+            const response = await axios.post(`${axiosInstance.defaults.baseURL}/auth/token/refresh`, {
+              refresh: refreshToken,
+            })
 
             const { access } = response.data
             

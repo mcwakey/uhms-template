@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "patient_name": "John Doe",
+    "test_name": "Full Blood Count (FBC)",
+    "requested_by": "Dr. Michael Chen",
+    "status": "Completed",
+    "created_at": "2024-03-24T10:15:00Z",
+    "category": "Hematology",
+    "results": {
+      "WBC": "7.5 x10^9/L (4.0-11.0)",
+      "RBC": "5.1 x10^12/L (4.5-5.9)",
+      "Hemoglobin": "14.2 g/dL (13.5-17.5)",
+      "Hematocrit": "42% (41-53)",
+      "Platelets": "250 x10^9/L (150-450)"
+    },
+    "notes": "All parameters within normal ranges."
+  },
+  {
+    "id": 2,
+    "patient_name": "Ama K.",
+    "test_name": "Blood Glucose (Fasting)",
+    "requested_by": "Dr. Sarah Adams",
+    "status": "In Progress",
+    "created_at": "2024-03-25T08:00:00Z",
+    "category": "Biochemistry",
+    "results": null,
+    "notes": "Sample received, currently being processed."
+  },
+  {
+    "id": 3,
+    "patient_name": "Kojo M.",
+    "test_name": "Malaria Parasite (MP)",
+    "requested_by": "Dr. Michael Chen",
+    "status": "Pending",
+    "created_at": "2024-03-26T09:30:00Z",
+    "category": "Parasitology",
+    "results": null,
+    "notes": "Awaiting sample collection."
+  },
+  {
+    "id": 4,
+    "patient_name": "Yaw B.",
+    "test_name": "Urinalysis",
+    "requested_by": "Dr. James Smith",
+    "status": "Completed",
+    "created_at": "2024-03-23T14:45:00Z",
+    "category": "Clinical Pathology",
+    "results": {
+      "Color": "Straw",
+      "Clarity": "Clear",
+      "Glucose": "Negative",
+      "Protein": "Trace",
+      "Ketones": "Negative",
+      "Bilirubin": "Negative"
+    },
+    "notes": "Trace protein noted, otherwise normal."
+  },
+  {
+    "id": 5,
+    "patient_name": "Alice W.",
+    "test_name": "Lipid Profile",
+    "requested_by": "Dr. Sarah Adams",
+    "status": "Cancelled",
+    "created_at": "2024-03-22T09:00:00Z",
+    "category": "Biochemistry",
+    "results": null,
+    "notes": "Patient did not fast for the required 12 hours. Retest rescheduled."
+  }
+]

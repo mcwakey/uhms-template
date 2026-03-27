@@ -1,6 +1,7 @@
 export interface User {
   uuid: string
   email: string
+  name?: string
   first_name?: string
   last_name?: string
   is_superuser: boolean
@@ -39,6 +40,7 @@ export interface AuthState {
 export interface DecodedToken {
   uuid: string
   email: string
+  name?: string
   role: string
   is_superuser: boolean
   department?: {

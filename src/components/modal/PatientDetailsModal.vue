@@ -2,7 +2,7 @@
   <div :id="modalId" class="modal fade modal-lg" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header border-0 pb-2 bg-gradient-primary text-white">
+        <div class="modal-header border-0 pb-2 bg-primary text-white">
           <div class="d-flex align-items-center">
             <div class="me-2">
               <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center">
@@ -23,17 +23,18 @@
         </div>
         <div class="modal-body pt-2">
           <!-- Loading State -->
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="text-muted">Loading patient details...</p>
-          </div>
+          <LoadingIndicator
+            v-if="loading"
+            :show="loading"
+            variant="center"
+            wrapperClass="py-5 w-100"
+            message="Loading patient details..."
+          />
 
           <!-- Modal Content -->
           <div v-else-if="patientDetails">
             <!-- Patient Info Card -->
-            <div class="card border-0 bg-gradient-primary text-white mb-4 shadow-lg">
+            <div class="card border-0 bg-primary text-white mb-4 shadow-lg">
               <div class="card-body p-4">
                 <div class="d-flex align-items-center">
                   <div class="me-3">
@@ -427,11 +428,13 @@
 <script>
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 dayjs.extend(relativeTime)
 
 export default {
   name: 'PatientDetailsModal',
+  components: { LoadingIndicator },
   props: {
     modalId: {
       type: String,
@@ -508,20 +511,6 @@ export default {
   display: flex;
   align-items: center;
   min-height: calc(100vh - 1rem);
-}
-
-/* Modal header gradient */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-/* Close button for white header */
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover {
-  opacity: 1;
 }
 
 /* Card styling */

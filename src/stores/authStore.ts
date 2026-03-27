@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
-import axiosInstance from '@/utils/axios'
-import { router } from '@/router'
-import type { AuthState, LoginCredentials, AuthResponse, DecodedToken } from '@/types'
+import axiosInstance from '../utils/axios'
+import { router } from '../router/index.js'
+import type { AuthState, LoginCredentials, AuthResponse, DecodedToken } from '../types/auth'
 
 /**
  * Route mapping for different user roles and departments
@@ -110,7 +110,7 @@ export const useAuthStore = defineStore('authStore', {
       this.error = null
 
       try {
-        const { data } = await axiosInstance.post<AuthResponse>('auth/token/', credentials)
+        const { data } = await axiosInstance.post<AuthResponse>('auth/token', credentials)
         if (data.access) {
           // Decode JWT to extract user information
           const decoded = jwtDecode<DecodedToken>(data.access)
@@ -146,9 +146,7 @@ export const useAuthStore = defineStore('authStore', {
     async logout() {
       try {
         // Blacklist refresh token on server
-        await axiosInstance.delete('auth/token/blacklist/', {
-          data: { refresh: this.refreshToken },
-        })
+        await axiosInstance.post('auth/token/blacklist', { refresh: this.refreshToken })
       } catch (error) {
         console.error('Logout failed:', error)
       } finally {
@@ -168,7 +166,7 @@ export const useAuthStore = defineStore('authStore', {
      * @returns Promise with response or error
      */
     async forgotPassword(email: string) {
-      const response = await axiosInstance.post('auth/password-reset-token/', { email })
+      const response = await axiosInstance.post('auth/password-reset-token', { email })
       return response
     },
 
@@ -181,7 +179,7 @@ export const useAuthStore = defineStore('authStore', {
     async tokenVerify(token: string) {
       this.userToken = token
       try {
-        const response = await axiosInstance.patch('auth/token/verification/', { token })
+        const response = await axiosInstance.post('auth/token/verify', { token })
         return response
       } catch (error: any) {
         console.error('Token verification failed:', error)
@@ -197,10 +195,9 @@ export const useAuthStore = defineStore('authStore', {
      */
     async newPassword(uuid: string, password: string) {
       try {
-        const response = await axiosInstance.patch(`auth/${uuid}/password/`, {
+        const response = await axiosInstance.patch(`auth/${uuid}/password`, {
           password,
           password2: password,
-          token: this.userToken,
         })
         this.$reset()
         return response
@@ -217,7 +214,7 @@ export const useAuthStore = defineStore('authStore', {
      */
     async refreshAccessToken() {
       try {
-        const { data } = await axiosInstance.post<AuthResponse>('auth/token/refresh/', {
+        const { data } = await axiosInstance.post<AuthResponse>('auth/token/refresh', {
           refresh: this.refreshToken,
         })
         if (data.access) {
@@ -274,7 +271,15 @@ export const useAuthStore = defineStore('authStore', {
         // Super admin redirect
         if (this.user?.is_superuser) {
           router.push({ name: 'AdminDashboard' }).catch(() => {
-            router.push('/dashboard')
+            router.push('/admin/dashboard')
+          })
+          return
+        }
+
+        // Doctor redirect
+        if (this.user?.role === 'doctor') {
+          router.push({ name: 'DoctorDashboard' }).catch(() => {
+            router.push('/doctor/doctor-dashboard')
           })
           return
         }
@@ -283,17 +288,17 @@ export const useAuthStore = defineStore('authStore', {
         const userDepartment = this.user?.department?.type
         if (userDepartment && ROUTES[userDepartment as keyof typeof ROUTES]) {
           router.push({ name: ROUTES[userDepartment as keyof typeof ROUTES] }).catch(() => {
-            router.push('/dashboard')
+            router.push('/admin/dashboard')
           })
         } else {
           router.push({ name: 'AdminDashboard' }).catch(() => {
-            router.push('/dashboard')
+            router.push('/admin/dashboard')
           })
         }
       } catch (error) {
         console.error('Route navigation error:', error)
         // Ultimate fallback
-        router.push('/dashboard').catch(() => {
+        router.push('/admin/dashboard').catch(() => {
           console.error('Failed to navigate to fallback route')
         })
       }

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg rounded-3">
         <!-- Header -->
-        <div class="modal-header bg-gradient-primary text-white border-0 py-3 px-4">
+        <div class="modal-header bg-primary text-white border-0 py-3 px-4">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="modal-title fw-bold text-white mb-1">{{ displayTitle }}</h5>
@@ -15,12 +15,14 @@
 
         <div class="modal-body p-4 bg-light bg-opacity-10">
           <!-- Loading State -->
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="text-muted fw-medium">{{ displayLoadingMessage }}</p>
-          </div>
+          <LoadingIndicator
+            v-if="loading"
+            :show="loading"
+            variant="center"
+            wrapperClass="py-5 w-100"
+            :message="displayLoadingMessage"
+            messageClass="text-muted fw-medium mt-3"
+          />
 
           <!-- Form Content -->
           <div v-else>
@@ -92,7 +94,13 @@
             @click="updateNextOfKin"
             :disabled="isSubmitting || !canSubmit"
           >
-            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+            <LoadingIndicator
+              :show="isSubmitting"
+              variant="inline"
+              size="sm"
+              message=""
+              ariaLabel="Saving..."
+            />
             {{ isSubmitting ? displaySubmittingText : displayPrimaryActionText }}
           </button>
         </div>
@@ -107,6 +115,8 @@ import { useI18n } from 'vue-i18n'
 import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
+import { hideModalById } from '@/utils/bootstrap'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const props = defineProps({
   modalId: { type: String, default: 'edit_next_of_kin_modal' },
@@ -193,13 +203,7 @@ const updateNextOfKin = async () => {
     emit('updated', response.data)
 
     // Close modal
-    const modalElement = document.getElementById(props.modalId)
-    if (modalElement && window.bootstrap) {
-      const modal = window.bootstrap.Modal.getInstance(modalElement)
-      if (modal) {
-        modal.hide()
-      }
-    }
+    hideModalById(props.modalId)
   } catch (error) {
     console.error('Error updating next of kin:', error)
     message.error(t('next_of_kin_modal.update_fail'))
@@ -219,18 +223,6 @@ watch(
 </script>
 
 <style scoped>
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover {
-  opacity: 1;
-}
-
 .custom-multiselect :deep(.multiselect__tags) {
   border: 1px solid #dee2e6;
   border-radius: 0.375rem;

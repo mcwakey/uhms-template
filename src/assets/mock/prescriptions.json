@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "patient_name": "John Doe",
+    "consultation_id": 101,
+    "status": "Issued",
+    "created_at": "2024-03-24T10:00:00Z",
+    "items": [
+      {
+        "medication": "Amoxicillin 500mg",
+        "dosage": "1 tablet",
+        "frequency": "Thrice daily (TDS)",
+        "route": "Oral",
+        "duration": "7 days",
+        "instructions": "Take after meals"
+      },
+      {
+        "medication": "Paracetamol 500mg",
+        "dosage": "2 tablets",
+        "frequency": "As needed (PRN)",
+        "route": "Oral",
+        "duration": "3 days",
+        "instructions": "For fever or pain"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "patient_name": "Ama K.",
+    "consultation_id": 102,
+    "status": "Dispensed",
+    "created_at": "2024-03-25T11:30:00Z",
+    "items": [
+      {
+        "medication": "Metformin 500mg",
+        "dosage": "1 tablet",
+        "frequency": "Twice daily (BD)",
+        "route": "Oral",
+        "duration": "30 days",
+        "instructions": "With breakfast and dinner"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "patient_name": "Kojo M.",
+    "consultation_id": null,
+    "status": "Pending",
+    "created_at": "2024-03-26T09:00:00Z",
+    "items": [
+      {
+        "medication": "Ibuprofen 400mg",
+        "dosage": "1 tablet",
+        "frequency": "Twice daily (BD)",
+        "route": "Oral",
+        "duration": "5 days",
+        "instructions": "Avoid on empty stomach"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "patient_name": "Yaw B.",
+    "consultation_id": 105,
+    "status": "Issued",
+    "created_at": "2024-03-23T08:15:00Z",
+    "items": [
+      {
+        "medication": "Lisinopril 10mg",
+        "dosage": "1 tablet",
+        "frequency": "Once daily (OD)",
+        "route": "Oral",
+        "duration": "90 days",
+        "instructions": "Take in the morning"
+      },
+      {
+        "medication": "Atorvastatin 20mg",
+        "dosage": "1 tablet",
+        "frequency": "Once daily (OD)",
+        "route": "Oral",
+        "duration": "90 days",
+        "instructions": "Take at night"
+      }
+    ]
+  }
+]

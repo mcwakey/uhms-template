@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow-lg rounded-3">
         <!-- Header -->
-        <div class="modal-header bg-gradient-primary text-white border-0 py-3 px-4">
+        <div class="modal-header bg-primary text-white border-0 py-3 px-4">
           <div class="d-flex align-items-center">
             <!-- <div class="avatar avatar-md bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center me-3">
               <i class="ti ti-calendar-plus fs-4 text-white"></i>
@@ -20,12 +20,15 @@
 
         <div class="modal-body p-4 bg-light bg-opacity-10">
           <!-- Loading State -->
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">{{ t('appointment_modal.loading') }}</span>
-            </div>
-            <p class="text-muted fw-medium">{{ t('appointment_modal.loading') }}</p>
-          </div>
+          <LoadingIndicator
+            v-if="loading"
+            :show="loading"
+            variant="center"
+            wrapperClass="py-5 w-100"
+            :message="t('appointment_modal.loading')"
+            messageClass="text-muted fw-medium mt-3"
+            :ariaLabel="t('appointment_modal.loading')"
+          />
 
           <!-- Modal Content -->
           <div v-else>
@@ -271,7 +274,13 @@
             @click="createAppointment"
             :disabled="!canCreateAppointment || isSubmitting"
           >
-            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+            <LoadingIndicator
+              :show="isSubmitting"
+              variant="inline"
+              size="sm"
+              message=""
+              ariaLabel="Creating..."
+            />
             {{ t('appointment_modal.confirm') }}
           </button>
         </div>
@@ -287,6 +296,7 @@ import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const { t } = useI18n()
 
@@ -473,7 +483,7 @@ const createAppointment = async () => {
       }
     })
 
-    const response = await axiosInstance.post('/appointments/', appointmentData)
+    const response = await axiosInstance.post('/appointments', appointmentData)
 
     message.success(t('appointment_modal.success'))
     emit('appointment-created', response.data)
@@ -542,18 +552,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover {
-  opacity: 1;
-}
-
 .custom-multiselect :deep(.multiselect__tags) {
   border: 1px solid #dee2e6;
   border-radius: 0.375rem;

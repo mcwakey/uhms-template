@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow-lg rounded-3">
         <!-- Header -->
-        <div class="modal-header bg-gradient-primary text-white border-0 py-3 px-4">
+        <div class="modal-header bg-primary text-white border-0 py-3 px-4">
           <div class="d-flex align-items-center">
             <div>
               <h5 class="modal-title fw-bold text-white mb-1">{{ displayTitle }}</h5>
@@ -15,12 +15,14 @@
 
         <div class="modal-body p-4 bg-light bg-opacity-10">
           <!-- Loading State -->
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="text-muted fw-medium">{{ displayLoadingMessage }}</p>
-          </div>
+          <LoadingIndicator
+            v-if="loading"
+            :show="loading"
+            variant="center"
+            wrapperClass="py-5 w-100"
+            :message="displayLoadingMessage"
+            messageClass="text-muted fw-medium mt-3"
+          />
 
           <!-- Form Content -->
           <div v-else>
@@ -186,7 +188,7 @@
                     </div>
                     <div class="col-md-4">
                       <small class="text-muted d-block fs-11 text-uppercase fw-bold">{{ t('insurance_modal.cap_limit') }}</small>
-                      <span class="text-success fw-bold fs-13">${{ form.plan.cap || 'N/A' }}</span>
+                      <span class="text-success fw-bold fs-13">₵{{ form.plan.cap || 'N/A' }}</span>
                     </div>
                     <div class="col-md-4">
                       <small class="text-muted d-block fs-11 text-uppercase fw-bold">{{ t('insurance_modal.beneficiaries') }}</small>
@@ -212,7 +214,13 @@
             @click="updateInsurance"
             :disabled="isSubmitting || !canSubmit"
           >
-            <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+            <LoadingIndicator
+              :show="isSubmitting"
+              variant="inline"
+              size="sm"
+              message=""
+              ariaLabel="Saving..."
+            />
             {{ isSubmitting ? displaySubmittingText : displayPrimaryActionText }}
           </button>
         </div>
@@ -228,6 +236,7 @@ import VueMultiselect from 'vue-multiselect'
 import axiosInstance from '@/utils/axios'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue'
 
 const props = defineProps({
   modalId: { type: String, default: 'edit_insurance_modal' },
@@ -312,7 +321,7 @@ const resetForm = () => {
 const loadInsuranceTypes = async () => {
   try {
     loadingInsuranceTypes.value = true
-    const response = await axiosInstance.get('/insurance/types/')
+    const response = await axiosInstance.get('/insurance/types')
     insuranceTypes.value = response.data.results || response.data || []
   } catch (error) {
     console.error('Error loading insurance types:', error)
@@ -326,7 +335,7 @@ const loadInsuranceTypes = async () => {
 const loadInsuranceCompanies = async (typeId) => {
   try {
     loadingInsuranceCompanies.value = true
-    const response = await axiosInstance.get(`/insurance/companies/?type=${typeId}`)
+    const response = await axiosInstance.get(`/insurance/companies?type=${typeId}`)
     insuranceCompanies.value = response.data.results || response.data || []
   } catch (error) {
     console.error('Error loading insurance companies:', error)
@@ -475,8 +484,8 @@ const updateInsurance = async () => {
       is_active: form.value.isActive,
     }
 
-    const response = await axiosInstance.put(
-      `/patients/${props.selectedPatient.uuid}/insurances/${props.insuranceData.id}/`,
+    const response = await axiosInstance.patch(
+      `/patients/${props.selectedPatient.uuid}/insurances/${props.insuranceData.id}`,
       payload
     )
 
@@ -487,13 +496,7 @@ const updateInsurance = async () => {
     emit('update:visible', false)
 
     // Close modal
-    const modalElement = document.getElementById(props.modalId)
-    if (modalElement && window.bootstrap) {
-      const modal = window.bootstrap.Modal.getInstance(modalElement)
-      if (modal) {
-        modal.hide()
-      }
-    }
+    hideModalById(props.modalId)
   } catch (error) {
     console.error('Error updating insurance:', error)
     message.error(t('insurance_modal.update_fail'))
@@ -520,18 +523,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.btn-close-white {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-.btn-close-white:hover {
-  opacity: 1;
-}
-
 .custom-multiselect :deep(.multiselect__tags) {
   border: 1px solid #dee2e6;
   border-radius: 0.375rem;

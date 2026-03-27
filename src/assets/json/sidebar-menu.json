@@ -13,8 +13,8 @@
                 "subMenus": [
                     {
                         "menuValue": "Admin Dashboard",
-                        "route": "/admin/dashboard/",
-                        "active_link": "/dashboard/admin-dashboard"
+                        "route": "/admin/dashboard",
+                        "active_link": "/admin/dashboard"
                     },
                     {
                         "menuValue": "Consultation Dashboard",
@@ -129,6 +129,23 @@
             "Icon": "ti ti-map-pin",
             "active_link" : "/admin/clinic/locations",
             "route": "/admin/clinic/locations",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+        {
+            "menuValue": "Laboratory",
+            "Icon": "ti ti-flask",
+            "active_link" : "/admin/clinic/laboratory",
+            "route": "/admin/clinic/laboratory",
+            "hasSubRoute": false,
+            "showSubRoute": false
+        },
+
+        {
+            "menuValue": "Pharmacy",
+            "Icon": "ti ti-building-store",
+            "active_link" : "/admin/clinic/pharmacy",
+            "route": "/admin/clinic/pharmacy",
             "hasSubRoute": false,
             "showSubRoute": false
         }
@@ -272,6 +289,14 @@
                 "Icon": "ti ti-transition-right",
                 "active_link" : "/finance/transactions",
                 "route": "/finance/transactions",
+                "hasSubRoute": false,
+                "showSubRoute": false
+            },
+            {
+                "menuValue": "Insurance",
+                "Icon": "ti ti-shield-check",
+                "active_link" : "/finance/insurance",
+                "route": "/finance/insurance",
                 "hasSubRoute": false,
                 "showSubRoute": false
             },

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import axiosInstance from '@/utils/axios'
-import type { Appointment } from '@/types/appointment'
+import axiosInstance from '../utils/axios'
+import type { Appointment } from '../types/appointment'
 
 interface AppointmentState {
   appointments: Appointment[]
@@ -30,7 +30,7 @@ export const useAppointmentStore = defineStore('appointment', {
       this.loading = true
       this.error = null
       try {
-        const response = await axiosInstance.get('/appointments/', { params })
+        const response = await axiosInstance.get('/appointments', { params })
         this.appointments = response.data.results || response.data
         return this.appointments
       } catch (error: any) {
@@ -51,7 +51,7 @@ export const useAppointmentStore = defineStore('appointment', {
       this.error = null
       
       try {
-        const response = await axiosInstance.get(`/appointments/${id}/`)
+        const response = await axiosInstance.get(`/appointments/${id}`)
         // Merge with existing if it exists to preserve mapped properties
         if (this.selectedAppointment && this.selectedAppointment.id === id) {
           this.selectedAppointment = { ...this.selectedAppointment, ...response.data }
@@ -83,7 +83,7 @@ export const useAppointmentStore = defineStore('appointment', {
       this.loading = true
       this.error = null
       try {
-        const response = await axiosInstance.patch(`/appointments/${id}/`, data)
+        const response = await axiosInstance.patch(`/appointments/${id}`, data)
         
         // Update in list if exists
         const index = this.appointments.findIndex(a => a.id === id)

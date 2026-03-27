@@ -9,34 +9,47 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/pages/authentication/login/login-index.vue'),
+    component: () => import('@/views/authentication/login/login-index.vue'),
     meta: { guestOnly: true },
+  },
+  {
+    path: '/dashboard',
+    redirect: '/admin/dashboard',
+  },
+  {
+    path: '/dashboard/',
+    redirect: '/admin/dashboard',
   },
   {
     path: '/forget',
     name: 'ForgetPassword',
-    component: () => import('@/views/pages/authentication/forget/forget-index.vue'),
+    component: () => import('@/views/authentication/forget/forget-index.vue'),
     meta: { guestOnly: true },
   },
   {
     path: '/internal-server-error',
     name: 'InternalServerError',
-    component: () => import('@/views/pages/error/error-500.vue'),
+    component: () => import('@/views/error/error-500.vue'),
   },
   {
     path: '/unauthorized',
     name: 'Unauthorized',
-    component: () => import('@/views/pages/authentication/login/login-index.vue'),
+    component: () => import('@/views/authentication/login/login-index.vue'),
     meta: { guestOnly: true },
   },
   {
     path: '/not-found',
     name: 'NotFound',
-    component: () => import('@/views/pages/error/error-404.vue'),
+    component: () => import('@/views/error/error-404.vue'),
+  },
+  {
+    path: '/under-maintenance',
+    name: 'UnderMaintenance',
+    component: () => import('@/views/misc-pages/under-maintenance.vue'),
   },
   {
     path: '/admin',
-    // component: () => import('@/views/pages/admin/admin-layout.vue'),
+    // component: () => import('@/views/admin/admin-layout.vue'),
     children: [
       { path: '', redirect: '/admin/dashboard' },
 
@@ -44,8 +57,116 @@ const routes = [
       {
         path: 'dashboard',
         name: 'AdminDashboard',
-        component: () => import('@/views/pages/admin/dashboard-index.vue'),
+        component: () => import('@/views/admin/dashboard-index.vue'),
         meta: { requiresAuth: true, isAdmin: true, isSuperAdmin: true },
+      },
+    ],
+  },
+  {
+    path: '/consultation',
+    children: [
+      { path: '', redirect: '/consultation/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'ConsultationDashboard',
+        component: () => import('@/views/consultation/consultation-dashboard.vue'),
+        meta: { requiresAuth: true, isConsultation: true },
+      },
+    ],
+  },
+  {
+    path: '/investigation',
+    children: [
+      { path: '', redirect: '/investigation/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'InvestigationDashboard',
+        component: () => import('@/views/investigation/investigation-dashboard.vue'),
+        meta: { requiresAuth: true, isInvestigation: true },
+      },
+    ],
+  },
+  {
+    path: '/nursing',
+    children: [
+      { path: '', redirect: '/nursing/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'NursingDashboard',
+        component: () => import('@/views/nursing/nursing-dashboard.vue'),
+        meta: { requiresAuth: true, isNursing: true },
+      },
+    ],
+  },
+  {
+    path: '/treatment',
+    children: [
+      { path: '', redirect: '/treatment/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'TreatmentDashboard',
+        component: () => import('@/views/treatment/treatment-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/procedure',
+    children: [
+      { path: '', redirect: '/procedure/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'ProcedureDashboard',
+        component: () => import('@/views/procedure/procedure-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/medication',
+    children: [
+      { path: '', redirect: '/medication/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'MedicationDashboard',
+        component: () => import('@/views/medication/medication-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/emergency',
+    children: [
+      { path: '', redirect: '/emergency/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'EmergencyDashboard',
+        component: () => import('@/views/emergency/emergency-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/support',
+    children: [
+      { path: '', redirect: '/support/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'SupportDashboard',
+        component: () => import('@/views/support/support-dashboard.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/patient',
+    children: [
+      { path: '', redirect: '/patient/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'PatientDashboard',
+        component: () => import('@/views/patient/patient-dashboard.vue'),
+        meta: { requiresAuth: true },
       },
     ],
   },
@@ -57,20 +178,20 @@ const routes = [
       {
         path: 'appointments',
         name: 'AppointmentList',
-        component: () => import('@/views/pages/admin/clinic/appointments/appointments-index.vue'),
+        component: () => import('@/views/admin/clinic/appointments/appointments-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/calendar',
         name: 'AppointmentCalendar',
         component: () =>
-          import('@/views/pages/admin/clinic/appointments/appointments-calendar.vue'),
+          import('@/views/admin/clinic/appointments/appointments-calendar.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/:id',
         name: 'ViewAppointment',
-        component: () => import('@/views/pages/admin/clinic/appointments/appointment-view.vue'),
+        component: () => import('@/views/admin/clinic/appointments/appointment-view.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
 
@@ -79,25 +200,25 @@ const routes = [
       {
         path: 'patients',
         name: 'PatientList',
-        component: () => import('@/views/pages/admin/clinic/patients/patients-index.vue'),
+        component: () => import('@/views/admin/clinic/patients/patients/patients-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'patients/create',
         name: 'CreatePatient',
-        component: () => import('@/views/pages/admin/clinic/patients/patients-create.vue'),
+        component: () => import('@/views/admin/clinic/patients/patients/patients-create.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'patients/:id',
         name: 'ViewPatient',
-        component: () => import('@/views/pages/admin/clinic/patients/patient-view.vue'),
+        component: () => import('@/views/admin/clinic/patients/patients/patient-view.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'patients/:id/edit',
         name: 'EditPatient',
-        component: () => import('@/views/pages/admin/clinic/patients/patients-edit.vue'),
+        component: () => import('@/views/admin/clinic/patients/patients/patients-edit.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
 
@@ -108,52 +229,262 @@ const routes = [
         path: 'appointments/:id/consultation',
         name: 'PatientConsultation',
         component: () =>
-          import('@/views/pages/admin/clinic/appointments/consultation/inperson-consultation.vue'),
+          import('@/views/admin/clinic/appointments/consultation/inperson-consultation.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/:id/telehealth',
         name: 'PatientTelehealth',
         component: () =>
-          import('@/views/pages/admin/clinic/appointments/consultation/online-consultation.vue'),
+          import('@/views/admin/clinic/appointments/consultation/online-consultation.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'appointments/:id/vitals',
         name: 'PatientVitals',
-        component: () => import('@/views/pages/admin/clinic/appointments/vitals/vitals-index.vue'),
+        component: () => import('@/views/admin/clinic/appointments/vitals/vitals-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
 
       {
         path: 'doctors',
         name: 'Doctors',
-        component: () => import('@/views/pages/admin/clinic/doctors/doctors-index.vue'),
+        component: () => import('@/views/admin/clinic/doctors/doctors-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'specializations',
         name: 'Specializations',
         component: () =>
-          import('@/views/pages/admin/clinic/specializations/specializations-index.vue'),
+          import('@/views/admin/clinic/specializations/specializations/specializations-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'locations',
         name: 'Locations',
-        component: () => import('@/views/pages/admin/clinic/locations/locations-index.vue'),
+        component: () => import('@/views/admin/clinic/locations/locations-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'services',
         name: 'Services',
-        component: () => import('@/views/pages/admin/clinic/services/services-index.vue'),
+        component: () => import('@/views/admin/clinic/services/services/services-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
       {
         path: 'assets',
         name: 'Assets',
-        component: () => import('@/views/pages/admin/clinic/assets/assets-index.vue'),
+        component: () => import('@/views/admin/clinic/assets/assets-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'laboratory',
+        name: 'Laboratory',
+        component: () => import('@/views/admin/clinic/laboratory/laboratory-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'prescriptions',
+        name: 'ClinicPrescriptions',
+        component: () => import('@/views/admin/clinic/prescriptions/prescriptions-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'consultations',
+        name: 'ClinicConsultations',
+        component: () => import('@/views/admin/clinic/appointments/appointments-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true, view: 'consultations' },
+      },
+      {
+        path: 'medical-notes',
+        name: 'MedicalNotes',
+        component: () => import('@/views/applications/notes.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'pharmacy',
+        name: 'Pharmacy',
+        component: () => import('@/views/admin/clinic/pharmacy/pharmacy-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+    ],
+  },
+  {
+    path: '/expenses',
+    children: [
+      { path: '', redirect: '/expenses/expenses-list' },
+      {
+        path: 'expenses-list',
+        name: 'ExpensesList',
+        component: () => import('@/views/finance/expenses/expenses-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'expense-category',
+        name: 'ExpenseCategory',
+        component: () => import('@/views/finance/expenses/expense-category.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+    ],
+  },
+  {
+    path: '/invoices',
+    children: [
+      { path: '', redirect: '/invoices/invoices-list' },
+      {
+        path: 'invoices-list',
+        name: 'InvoicesList',
+        component: () => import('@/views/finance/invoices/invoices.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'invoices-details',
+        name: 'InvoiceDetails',
+        component: () => import('@/views/finance/invoices/invoices-details.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+    ],
+  },
+  {
+    path: '/finance',
+    children: [
+      {
+        path: 'income',
+        name: 'FinanceIncome',
+        component: () => import('@/views/finance/income.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'payments',
+        name: 'FinancePayments',
+        component: () => import('@/views/finance/payments.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'transactions',
+        name: 'FinanceTransactions',
+        component: () => import('@/views/finance/transactions.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'insurance',
+        name: 'FinanceInsurance',
+        component: () => import('@/views/finance/insurance.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'insurance/:id',
+        name: 'FinanceInsuranceDetails',
+        component: () => import('@/views/finance/insurance-details.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+
+
+    ],
+  },
+  {
+    path: '/reports',
+    children: [
+      { path: '', redirect: '/reports/income-report' },
+      {
+        path: 'income-report',
+        name: 'IncomeReport',
+        component: () => import('@/views/reports/income-report.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'expense-report',
+        name: 'ExpenseReport',
+        component: () => import('@/views/reports/expense-report.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'profit-and-loss',
+        name: 'ProfitAndLoss',
+        component: () => import('@/views/reports/profit-and-loss.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'appointment-report',
+        name: 'AppointmentReport',
+        component: () => import('@/views/reports/appointment-report.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'patient-report',
+        name: 'PatientReport',
+        component: () => import('@/views/reports/patient-report.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+    ],
+  },
+  {
+    path: '/hrm',
+    children: [
+      {
+        path: 'staffs',
+        name: 'HrmStaffs',
+        component: () => import('@/views/admin/hrm/hrm/staff/staff-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'staffs/create',
+        name: 'CreateStaff',
+        component: () => import('@/views/admin/hrm/hrm/staff/staff-create.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'staffs/:id/edit',
+        name: 'EditStaff',
+        component: () => import('@/views/admin/hrm/hrm/staff/staff-edit.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'staffs/:id',
+        name: 'ViewStaff',
+        component: () => import('@/views/admin/hrm/hrm/staff/staff-view.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'hrm-departments',
+        name: 'HrmDepartments',
+        component: () => import('@/views/admin/hrm/hrm/departments/departments-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'designation',
+        name: 'HrmDesignation',
+        component: () => import('@/views/admin/hrm/hrm/designations/designations-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'holidays',
+        name: 'HrmHolidays',
+        component: () => import('@/views/admin/hrm/hrm/holidays/holidays-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'payroll',
+        name: 'HrmPayroll',
+        component: () => import('@/views/admin/hrm/hrm/payroll/payroll-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+    ],
+  },
+  {
+    path: '/leaves',
+    children: [
+      { path: '', redirect: '/leaves/leaves-list' },
+      {
+        path: 'leaves-list',
+        name: 'LeavesList',
+        component: () => import('@/views/admin/hrm/hrm/leaves/leaves-index.vue'),
+        meta: { requiresAuth: true, isAdmin: true },
+      },
+      {
+        path: 'leave-type',
+        name: 'LeaveType',
+        component: () => import('@/views/admin/hrm/hrm/leaves/leaves-index.vue'),
         meta: { requiresAuth: true, isAdmin: true },
       },
     ],
@@ -828,6 +1159,96 @@ const routes = [
 //       { path: "maps-vector", component: () => import('@/views/pages/uiinterface/maps/maps-vector.vue') },
 //     ],
 //   },
+  {
+    path: '/doctor',
+    component: () => import('@/views/doctor/doctor-index.vue'),
+    meta: { requiresAuth: true, isDoctor: true },
+    children: [
+      { path: '', redirect: '/doctor/doctor-dashboard' },
+      {
+        path: 'doctor-dashboard',
+        name: 'DoctorDashboard',
+        component: () => import('@/views/doctor/doctor-dashboard.vue'),
+      },
+      {
+        path: 'doctors-appointments',
+        name: 'DoctorAppointments',
+        component: () => import('@/views/doctor/appointments/doctors-appointments.vue'),
+      },
+      {
+        path: 'doctors-appointment-details',
+        name: 'DoctorAppointmentDetails',
+        component: () => import('@/views/doctor/appointments/doctors-appointment-details.vue'),
+      },
+      {
+        path: 'online-consultations',
+        name: 'DoctorOnlineConsultations',
+        component: () => import('@/views/doctor/appointments/online-consultations.vue'),
+      },
+      {
+        path: 'doctors-schedules',
+        name: 'DoctorSchedules',
+        component: () => import('@/views/doctor/doctors-schedules.vue'),
+      },
+      {
+        path: 'doctors-prescriptions',
+        name: 'DoctorPrescriptions',
+        component: () => import('@/views/doctor/doctors-prescriptions.vue'),
+      },
+      {
+        path: 'doctors-prescription-details',
+        name: 'DoctorPrescriptionDetails',
+        component: () => import('@/views/doctor/doctors-prescription-details.vue'),
+      },
+      {
+        path: 'doctors-patient-details',
+        name: 'DoctorPatientDetails',
+        component: () => import('@/views/doctor/doctors-patient-details.vue'),
+      },
+      {
+        path: 'doctors-leaves',
+        name: 'DoctorLeaves',
+        component: () => import('@/views/doctor/doctors-leaves.vue'),
+      },
+      {
+        path: 'doctors-reviews',
+        name: 'DoctorReviews',
+        component: () => import('@/views/doctor/doctors-reviews.vue'),
+      },
+      {
+        path: 'doctors-notifications',
+        name: 'DoctorNotifications',
+        component: () => import('@/views/doctor/doctors-notifications.vue'),
+      },
+      {
+        path: 'settings',
+        component: () => import('@/views/doctor/doctor-settings/doctor-settings.vue'),
+        children: [
+          { path: '', redirect: '/doctor/settings/doctors-profile-settings' },
+          {
+            path: 'doctors-profile-settings',
+            name: 'DoctorProfileSettings',
+            component: () => import('@/views/doctor/doctor-settings/doctors-profile-settings.vue'),
+          },
+          {
+            path: 'doctors-password-settings',
+            name: 'DoctorPasswordSettings',
+            component: () => import('@/views/doctor/doctor-settings/doctors-password-settings.vue'),
+          },
+          {
+            path: 'doctors-notification-settings',
+            name: 'DoctorNotificationSettings',
+            component: () =>
+              import('@/views/doctor/doctor-settings/doctors-notification-settings.vue'),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/not-found',
+  },
 ];
 
 export const router = createRouter({

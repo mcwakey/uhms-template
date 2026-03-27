@@ -17,23 +17,37 @@
             ><i class="ti ti-trash fs-24"></i
           ></span>
         </div>
-        <h5 class="fw-bold mb-1">Delete Confirmation</h5>
-        <p class="mb-3">Are you sure want to delete?</p>
+        <h5 class="fw-bold mb-1">{{ title }}</h5>
+        <p class="mb-3">{{ message }}</p>
         <div class="d-flex justify-content-center">
-          <a
-            href="javascript:void(0);"
+          <button
+            type="button"
             class="btn btn-light position-relative z-1 me-3"
             data-bs-dismiss="modal"
-            >Cancel</a
           >
-          <a
-            href="javascript:void(0);"
+            {{ cancelText }}
+          </button>
+          <button
+            type="button"
             class="btn btn-danger position-relative z-1"
             data-bs-dismiss="modal"
-            >Yes, Delete</a
+            @click="emit('confirm')"
           >
+            {{ confirmText }}
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+const props = defineProps({
+  title: { type: String, default: 'Delete Confirmation' },
+  message: { type: String, default: 'Are you sure want to delete?' },
+  confirmText: { type: String, default: 'Yes, Delete' },
+  cancelText: { type: String, default: 'Cancel' },
+})
+
+const emit = defineEmits(['confirm'])
+</script>

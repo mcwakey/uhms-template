@@ -22,6 +22,11 @@ import { useAuthStore } from '@/stores/authStore'
 
 export const authGuard = (to, from, next) => {
   const authStore = useAuthStore()
+  const targetDashboardRoute = authStore.userRole === 'doctor'
+    ? 'DoctorDashboard'
+    : authStore.userDepartment
+      ? authStore.routes[authStore.userDepartment]
+      : 'AdminDashboard'
 
   // Debug logging (remove in production)
   if (authStore.isSuperAdmin) console.log('isSuperAdmin: true')
@@ -48,46 +53,51 @@ export const authGuard = (to, from, next) => {
     console.log('Redirecting to login page due to authentication requirement')
     next({ name: 'Login' })
   }
+  // 4. Doctor route check
+  else if (
+    to.meta.isDoctor &&
+    authStore.userRole !== 'doctor' &&
+    !authStore.isAdmin &&
+    !authStore.isSuperAdmin
+  ) {
+    console.log('Access denied: Doctor privileges required')
+    next({ name: 'Unauthorized' })
+  }
   // 4. Department-based permission checks (super admin bypasses these)
-  else if (to.meta.isConsultation && !authStore.isConsultation && !authStore.isSuperAdmin) {
+  else if (
+    to.meta.isConsultation &&
+    !authStore.isConsultation &&
+    !authStore.isAdmin &&
+    !authStore.isSuperAdmin
+  ) {
     console.log('User does not have consultation department access')
-    const targetRoute = authStore.userDepartment
-      ? authStore.routes[authStore.userDepartment]
-      : 'AdminDashboard'
-    next({ name: targetRoute })
-  } else if (to.meta.isInvestigation && !authStore.isInvestigation && !authStore.isSuperAdmin) {
+    next({ name: targetDashboardRoute })
+  } else if (
+    to.meta.isInvestigation &&
+    !authStore.isInvestigation &&
+    !authStore.isAdmin &&
+    !authStore.isSuperAdmin
+  ) {
     console.log('User does not have investigation department access')
-    const targetRoute = authStore.userDepartment
-      ? authStore.routes[authStore.userDepartment]
-      : 'AdminDashboard'
-    next({ name: targetRoute })
-  } else if (to.meta.isNursing && !authStore.isNursing && !authStore.isSuperAdmin) {
+    next({ name: targetDashboardRoute })
+  } else if (to.meta.isNursing && !authStore.isNursing && !authStore.isAdmin && !authStore.isSuperAdmin) {
     console.log('User does not have nursing department access')
-    const targetRoute = authStore.userDepartment
-      ? authStore.routes[authStore.userDepartment]
-      : 'AdminDashboard'
-    next({ name: targetRoute })
+    next({ name: targetDashboardRoute })
   }
   // 5. Guest only route check
   else if (to.meta.guestOnly && authStore.isLoggedIn) {
-    const targetRoute = authStore.userDepartment
-      ? authStore.routes[authStore.userDepartment]
-      : 'AdminDashboard'
-    if (to.name !== targetRoute) {
+    if (to.name !== targetDashboardRoute) {
       console.log('Redirecting to user dashboard due to guest-only route')
-      next({ name: targetRoute })
+      next({ name: targetDashboardRoute })
     } else {
       next()
     }
   }
   // 6. Redirect from login if already logged in
   else if (from.name === 'Login' && authStore.isLoggedIn) {
-    const targetRoute = authStore.userDepartment
-      ? authStore.routes[authStore.userDepartment]
-      : 'AdminDashboard'
-    if (to.name !== targetRoute) {
+    if (to.name !== targetDashboardRoute) {
       console.log('Redirecting to user dashboard from login page')
-      next({ name: targetRoute })
+      next({ name: targetDashboardRoute })
     } else {
       next()
     }
